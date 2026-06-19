@@ -11,6 +11,7 @@ The repository is organized as a project root that can grow into multiple app ta
 ├── apps/
 │   ├── ios/
 │   └── android/
+├── design/
 ├── docs/
 │   └── product/
 ├── packages/
@@ -38,6 +39,10 @@ Additional app targets can be added later, for example:
 Project documents live here.
 
 - `docs/product/`: idea docs, user flows, wireframes, MVP specs, product decisions
+
+### `design/`
+
+Design references, exports, and handoff files live here.
 
 ### `packages/`
 
