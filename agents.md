@@ -70,6 +70,9 @@ CookLog는 사용자가 요리 중 또는 요리 후 남긴 짧은 기록을 AI�
 
 - `docs/product/CookLog_Idea_v0.1.md`
 - `docs/product/CookLog_MVP_Spec_v0.1.md`
+- `docs/product/CookLog_User_Flow_v0.1.md`
+- `docs/product/CookLog_Wireframe_v0.1.md`
+- `docs/product/CookLog_MVP_Detail_Spec_v0.1.md`
 
 ### `design/`
 

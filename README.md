@@ -86,3 +86,6 @@ CookLog는 요리 중 남긴 짧은 기록을 AI가 레시피로 정리해주고
 
 - [CookLog 아이디어 v0.1](docs/product/CookLog_Idea_v0.1.md)
 - [CookLog MVP 기획 초안 v0.1](docs/product/CookLog_MVP_Spec_v0.1.md)
+- [CookLog 사용자 플로우 v0.1](docs/product/CookLog_User_Flow_v0.1.md)
+- [CookLog 와이어프레임 v0.1](docs/product/CookLog_Wireframe_v0.1.md)
+- [CookLog MVP 상세 명세 v0.1](docs/product/CookLog_MVP_Detail_Spec_v0.1.md)
