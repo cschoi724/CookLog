@@ -100,6 +100,8 @@ Figma 원본은 Figma에 두고, 저장소에는 필요한 산출물만 커밋�
 - 원격 저장소: `https://github.com/cschoi724/CookLog.git`
 - 기본 브랜치: `main`
 - 의미 있는 단위로 커밋합니다.
+- 커밋 메시지는 한글 설명을 기본으로 하고, `feat:`, `fix:`, `docs:`, `design:`, `refactor:`, `test:`, `chore:` 같은 영문 타입 prefix를 붙입니다.
+- 예시: `docs: 커밋 규칙 문서화`, `feat: 레시피 저장 기능 추가`, `chore: 저장소 구조 정리`
 - 변경 후 가능하면 원격에 푸시합니다.
 - 작업 전 `git status -sb`로 상태를 확인합니다.
 - 사용자 변경사항이 있으면 임의로 되돌리지 않습니다.
