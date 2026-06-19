@@ -1,5 +1,12 @@
-# Packages
+# 패키지
 
-Shared packages and reusable modules live here.
+공통 패키지와 재사용 가능한 모듈을 관리하는 디렉토리입니다.
 
-Use this directory for code that should be shared across app targets, such as domain models, validation logic, AI prompt templates, and common utilities.
+앱 타겟 간에 공유해야 하는 코드를 이곳에 둡니다.
+
+예시:
+
+- 도메인 모델
+- 검증 로직
+- AI 프롬프트 템플릿
+- 공통 유틸리티

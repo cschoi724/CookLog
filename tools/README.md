@@ -1,10 +1,10 @@
-# Tools
+# 도구
 
-Development scripts and local automation live here.
+개발 스크립트와 로컬 자동화 도구를 관리하는 디렉토리입니다.
 
-Examples:
+예시:
 
-- formatting scripts
-- project generation scripts
-- release helpers
-- local data migration utilities
+- 포맷팅 스크립트
+- 프로젝트 생성 스크립트
+- 릴리스 보조 스크립트
+- 로컬 데이터 마이그레이션 도구

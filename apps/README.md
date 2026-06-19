@@ -1,10 +1,16 @@
-# Apps
+# 앱
 
-Application projects live here.
+앱 프로젝트를 관리하는 디렉토리입니다.
 
-Initial reserved targets:
+초기 예약 타겟은 다음과 같습니다.
 
 - `ios/`
 - `android/`
 
-Add new app targets as sibling directories when needed.
+추가 앱 타겟이 필요하면 같은 레벨에 새 디렉토리를 추가합니다.
+
+예시:
+
+- `web/`
+- `admin/`
+- `backend/`

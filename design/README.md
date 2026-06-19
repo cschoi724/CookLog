@@ -1,11 +1,11 @@
-# Design
+# 디자인
 
-Design source notes, references, and exported assets live here.
+디자인 노트, 레퍼런스, 내보낸 산출물을 관리하는 디렉토리입니다.
 
-Suggested structure:
+권장 구조는 다음과 같습니다.
 
-- `references/`: screenshots, inspiration, and product references
-- `exports/`: exported images, PDFs, and handoff files
-- `tmp/`: temporary files that should not be committed
+- `references/`: 스크린샷, 영감 자료, 제품 레퍼런스
+- `exports/`: 내보낸 이미지, PDF, 핸드오프 파일
+- `tmp/`: 커밋하지 않을 임시 파일
 
-Figma source files should remain in Figma. Commit only durable exports or handoff files that are useful to the project.
+Figma 원본은 Figma에 유지합니다. 저장소에는 프로젝트에 필요한 영구 산출물이나 핸드오프 파일만 커밋합니다.

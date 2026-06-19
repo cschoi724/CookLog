@@ -1,5 +1,7 @@
-# Docs
+# 문서
 
-Project documentation lives here.
+프로젝트 문서를 관리하는 디렉토리입니다.
 
-- `product/`: product ideas, user flows, wireframes, MVP specs, and product decisions
+모든 문서는 한글로 작성합니다.
+
+- `product/`: 제품 아이디어, 사용자 플로우, 와이어프레임, MVP 명세, 제품 의사결정

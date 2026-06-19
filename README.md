@@ -1,10 +1,18 @@
 # CookLog
 
-CookLog is a personal recipe log app concept.
+CookLog는 요리 중 남긴 짧은 기록을 AI가 레시피로 정리해주고, 다음에는 오디오 가이드로 다시 요리할 수 있게 해주는 개인 레시피 저장소입니다.
 
-The repository is organized as a project root that can grow into multiple app targets, shared packages, and supporting tools.
+이 저장소는 기획, 디자인, iOS/Android 개발, 공통 패키지, 개발 도구를 모두 담는 프로젝트 루트입니다.
 
-## Repository Structure
+## 문서 작성 기준
+
+이 저장소의 모든 문서는 한글로 작성합니다.
+
+- 파일명은 기존 버전 문서처럼 영문을 사용할 수 있습니다.
+- 본문, README, 기획 문서, 디자인 설명, 개발 메모는 한글을 기본으로 합니다.
+- 외부 API 이름, 코드 식별자, 명령어, 고유명사는 원문 표기를 유지할 수 있습니다.
+
+## 저장소 구조
 
 ```text
 .
@@ -19,16 +27,16 @@ The repository is organized as a project root that can grow into multiple app ta
 └── tools/
 ```
 
-## Directories
+## 디렉토리
 
 ### `apps/`
 
-Application projects live here.
+앱 프로젝트를 관리합니다.
 
-- `apps/ios/`: iOS app project
-- `apps/android/`: Android app project
+- `apps/ios/`: iOS 앱 프로젝트
+- `apps/android/`: Android 앱 프로젝트
 
-Additional app targets can be added later, for example:
+필요하면 다음과 같은 앱 타겟을 추가할 수 있습니다.
 
 - `apps/web/`
 - `apps/admin/`
@@ -36,25 +44,25 @@ Additional app targets can be added later, for example:
 
 ### `docs/`
 
-Project documents live here.
+프로젝트 문서를 관리합니다.
 
-- `docs/product/`: idea docs, user flows, wireframes, MVP specs, product decisions
+- `docs/product/`: 아이디어 문서, 사용자 플로우, 와이어프레임, MVP 명세, 제품 의사결정
 
 ### `design/`
 
-Design references, exports, and handoff files live here.
+디자인 레퍼런스, 내보낸 산출물, 핸드오프 파일을 관리합니다.
 
 ### `packages/`
 
-Shared code or reusable modules live here.
+공통 코드 또는 재사용 가능한 모듈을 관리합니다.
 
-- `packages/shared/`: shared models, validation, prompts, or cross-platform business logic
+- `packages/shared/`: 공통 모델, 검증 로직, AI 프롬프트, 크로스 플랫폼 비즈니스 로직
 
 ### `tools/`
 
-Development scripts and local automation live here.
+개발 스크립트와 로컬 자동화 도구를 관리합니다.
 
-## Current Documents
+## 현재 문서
 
-- [CookLog idea v0.1](docs/product/CookLog_Idea_v0.1.md)
-- [CookLog MVP spec v0.1](docs/product/CookLog_MVP_Spec_v0.1.md)
+- [CookLog 아이디어 v0.1](docs/product/CookLog_Idea_v0.1.md)
+- [CookLog MVP 기획 초안 v0.1](docs/product/CookLog_MVP_Spec_v0.1.md)
