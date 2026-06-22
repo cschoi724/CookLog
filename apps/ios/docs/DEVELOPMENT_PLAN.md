@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: M2-A Home 화면과 기본 내비게이션 완료
+- 상태: M3-A Mock STT 기반 Cooking Log 흐름 완료
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
 - scheme: `CookLog`
@@ -23,9 +23,9 @@
 1. `git status -sb`로 작업트리 상태를 확인합니다.
 2. `docs/GIT_WORKFLOW.md`를 확인합니다.
 3. `apps/ios/agents.md`를 확인합니다.
-4. 이 문서의 `현재 상태 요약`과 `M3. 10초 음성 기록과 STEP Preview`를 확인합니다.
+4. 이 문서의 `현재 상태 요약`과 `M4. A-Lite와 AI Review`를 확인합니다.
 5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
-6. M3-A Mock STT 기반 Cooking Log 흐름부터 시작합니다.
+6. M4-A Mock AI 기반 AI Review 흐름부터 시작합니다.
 7. 변경 후 기본 빌드와 가능한 테스트를 확인합니다.
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
 
@@ -246,18 +246,30 @@ M2-A 검증 결과:
 
 체크리스트:
 
-- [ ] `CookingLogViewModel` 작성
-- [ ] Cooking Log 화면 작성
-- [ ] 10초 기록 버튼 작성
-- [ ] 녹음 중 상태 UI 작성
-- [ ] 남은 시간 표시
-- [ ] STT 결과 표시
-- [ ] STEP Preview 리스트 작성
-- [ ] 10초 기록 반복 동작 작성
-- [ ] 기록 실패 상태 작성
+- [x] `CookingLogViewModel` 작성
+- [x] Cooking Log 화면 작성
+- [x] 10초 기록 버튼 작성
+- [x] 녹음 중 상태 UI 작성
+- [x] 남은 시간 표시
+- [x] STT 결과 표시
+- [x] STEP Preview 리스트 작성
+- [x] 10초 기록 반복 동작 작성
+- [x] 기록 실패 상태 작성
 - [x] STT 실패 시 텍스트 fallback 미제공 정책 반영
-- [ ] AI 정리하기 버튼 작성
-- [ ] STEP Preview가 없을 때 AI 정리하기 비활성화
+- [x] AI 정리하기 버튼 작성
+- [x] STEP Preview가 없을 때 AI 정리하기 비활성화
+- [x] STEP Preview가 1개 이상일 때 AI 정리하기 활성화
+- [x] CookingLogViewModel 초기 상태 테스트 작성
+- [x] 1회 기록 시 STEP Preview 추가 테스트 작성
+- [x] 여러 회 기록 시 order 증가 테스트 작성
+- [x] STT 실패 시 에러 메시지 테스트 작성
+
+M3-A 검증 결과:
+
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test`: XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단
+- `AI 정리하기` 실제 이동은 M4에서 구현합니다.
 
 완료 기준:
 

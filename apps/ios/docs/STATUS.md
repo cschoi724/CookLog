@@ -4,19 +4,19 @@
 
 ## 현재 상태
 
-- 상태: M2-A Home 화면과 기본 내비게이션 완료
+- 상태: M3-A Mock STT 기반 Cooking Log 흐름 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M3. 10초 음성 기록과 STEP Preview 착수 준비
+- 현재 이정표: M4. A-Lite와 AI Review 착수 준비
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. M3-A Mock STT 기반 Cooking Log 흐름 착수
-2. `CookingLogViewModel`에서 `MockSpeechRecognitionService`와 `AddStepPreviewUseCase` 연결
-3. 10초 기록 버튼, 기록 상태, STEP Preview 리스트 작성
+1. M4-A Mock AI 기반 AI Review 흐름 착수
+2. `GenerateRecipeDraftUseCase`를 AI Review 화면에 연결
+3. STEP Preview 배열을 `RecipeDraft`로 변환하고 저장 흐름 준비
 4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
 
 ## 최근 작업
@@ -66,6 +66,13 @@
 - `HomeViewModelTests`를 추가해 샘플 레시피 로드와 빈 목록 상태를 검증할 수 있게 했습니다.
 - M2-A 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
 - M2-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
+- M3-A `CookingLogView`, `CookingLogViewModel`, `StepPreviewRowView`, `RecordingState`를 추가했습니다.
+- Home의 `요리 기록 시작` 이동 대상을 `CookingLogView`로 교체했습니다.
+- `MockSpeechRecognitionService`와 `AddStepPreviewUseCase`를 연결해 10초 기록 후 STEP Preview가 누적되게 했습니다.
+- 기록 중/처리 중 상태, 남은 시간, 실패 메시지, STEP Preview 빈 상태/목록, `AI 정리하기` 활성 상태를 구현했습니다.
+- `CookingLogViewModelTests`를 추가해 초기 상태, 1회 기록, 여러 회 기록 order 증가, STT 실패 메시지를 검증할 수 있게 했습니다.
+- M3-A 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- M3-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 
 ## 열린 질문
 

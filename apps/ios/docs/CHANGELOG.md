@@ -4,6 +4,13 @@
 
 ## 2026-06-22
 
+- M3-A `CookingLogView`, `CookingLogViewModel`, `StepPreviewRowView`, `RecordingState`를 추가했습니다.
+- Home의 `요리 기록 시작` 이동 대상을 실제 `CookingLogView`로 교체했습니다.
+- `MockSpeechRecognitionService`와 `AddStepPreviewUseCase`를 연결해 10초 기록 후 STEP Preview가 누적되게 했습니다.
+- 기록 중/처리 중 상태, 남은 시간, 실패 메시지, STEP Preview 목록, `AI 정리하기` 활성/비활성 상태를 구현했습니다.
+- `CookingLogViewModelTests`를 추가해 초기 상태, 1회 기록, order 증가, 실패 메시지를 검증할 수 있게 했습니다.
+- M3-A 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- M3-A 변경 후 `xcodebuild test`의 XCTest runner 대기 현상을 재확인하고 `TESTING.md`에 기록했습니다.
 - M2-A `AppRoute`, `AppEnvironment`, `HomeViewModel`, `HomeView`, `RecipeRowView`를 추가했습니다.
 - 앱 시작 화면을 `HomeView`로 교체하고 `NavigationStack` 기반 기본 내비게이션을 연결했습니다.
 - Home에서 샘플 레시피 목록, 빈 상태, 요리 기록 시작, Recipe Detail placeholder 이동을 구현했습니다.

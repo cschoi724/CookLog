@@ -112,24 +112,6 @@ struct HomeView: View {
     }
 }
 
-struct CookingLogPlaceholderView: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("요리 기록")
-                .font(.title2)
-                .fontWeight(.semibold)
-
-            Text("10초 음성 기록 흐름은 M3에서 구현합니다.")
-                .font(.body)
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(20)
-        .background(Color(.systemGroupedBackground))
-        .navigationTitle("요리 기록")
-    }
-}
-
 struct RecipeDetailPlaceholderView: View {
     let recipeID: UUID
 

@@ -20,7 +20,12 @@ struct CookLogApp: App {
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
                     case .cookingLog:
-                        CookingLogPlaceholderView()
+                        CookingLogView(
+                            viewModel: CookingLogViewModel(
+                                speechRecognitionService: environment.speechRecognitionService,
+                                addStepPreviewUseCase: environment.addStepPreviewUseCase
+                            )
+                        )
                     case .recipeDetail(let recipeID):
                         RecipeDetailPlaceholderView(recipeID: recipeID)
                     }

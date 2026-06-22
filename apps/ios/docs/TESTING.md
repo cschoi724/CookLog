@@ -43,6 +43,7 @@
 - M7: 저장/조회 동작 확인
 - M8: 전체 MVP 흐름 수동 테스트
 - M2-A: HomeViewModel 샘플 레시피 로드와 빈 목록 상태 테스트
+- M3-A: CookingLogViewModel 초기 상태, Mock STT 기록, order 증가, 실패 상태 테스트
 
 ## 5. 빌드 확인
 
@@ -189,3 +190,47 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
 - 2026-06-22 M2-A 변경 후에는 약 78초 대기 후 수동 중단했습니다.
 - 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_15-32-32-+0900.xcresult`
+
+## 8. M3-A 검증 기록
+
+M3-A Cooking Log 화면, Mock STT 연결, STEP Preview 누적 흐름 추가 후 다음을 확인했습니다.
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- `** BUILD SUCCEEDED **`
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- `** TEST BUILD SUCCEEDED **`
+- `CookingLogViewModelTests`가 테스트 번들에 포함되는 것을 확인했습니다.
+
+추가한 테스트:
+
+- `CookingLogViewModelTests`
+- 초기 상태 확인
+- 1회 기록 후 STEP Preview가 1개 추가되는지 확인
+- 여러 번 기록 시 order가 증가하는지 확인
+- STT 실패 시 `errorMessage`가 설정되는지 확인
+
+테스트 실행:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+```
+
+현재 결과:
+
+- M3-A 변경 후에도 테스트 실행 단계에서 기존과 동일하게 대기합니다.
+- `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
+- 2026-06-22 M3-A 변경 후에는 약 62초 대기 후 수동 중단했습니다.
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_15-50-12-+0900.xcresult`
