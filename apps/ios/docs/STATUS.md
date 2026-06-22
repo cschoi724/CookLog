@@ -4,19 +4,19 @@
 
 ## 현재 상태
 
-- 상태: M1 도메인 모델과 서비스 경계 완료
+- 상태: M2-A Home 화면과 기본 내비게이션 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M2. Home과 레시피 조회 착수 준비
+- 현재 이정표: M3. 10초 음성 기록과 STEP Preview 착수 준비
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. M2-A Home 화면과 샘플 레시피 목록 착수
-2. `AppEnvironment`에서 Mock Repository/UseCase 조립
-3. `AppRoute`와 기본 `NavigationStack` 연결
+1. M3-A Mock STT 기반 Cooking Log 흐름 착수
+2. `CookingLogViewModel`에서 `MockSpeechRecognitionService`와 `AddStepPreviewUseCase` 연결
+3. 10초 기록 버튼, 기록 상태, STEP Preview 리스트 작성
 4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
 
 ## 최근 작업
@@ -60,6 +60,12 @@
 - `DefaultRecipeRepositoryTests`, `GenerateRecipeDraftUseCaseTests`를 추가해 저장/조회/삭제와 Mock AI 기반 RecipeDraft 생성을 검증할 수 있게 했습니다.
 - M1-C 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
 - M1-C 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
+- M2-A `AppRoute`, `AppEnvironment`, `HomeViewModel`, `HomeView`, `RecipeRowView`를 추가했습니다.
+- 앱 시작 화면을 `HomeView`로 교체하고 `NavigationStack` 기반 기본 내비게이션을 연결했습니다.
+- Home에서 샘플 레시피 목록, 빈 상태, `요리 기록 시작` 버튼, Recipe Detail placeholder 이동을 구현했습니다.
+- `HomeViewModelTests`를 추가해 샘플 레시피 로드와 빈 목록 상태를 검증할 수 있게 했습니다.
+- M2-A 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- M2-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 
 ## 열린 질문
 

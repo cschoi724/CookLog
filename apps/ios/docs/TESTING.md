@@ -42,6 +42,7 @@
 - M6: Audio Player 단계 이동 로직 단위 테스트
 - M7: 저장/조회 동작 확인
 - M8: 전체 MVP 흐름 수동 테스트
+- M2-A: HomeViewModel 샘플 레시피 로드와 빈 목록 상태 테스트
 
 ## 5. 빌드 확인
 
@@ -145,3 +146,46 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
 - 2026-06-22 M1-C 변경 후에는 약 65초 대기 후 수동 중단했습니다.
 - 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_14-29-44-+0900.xcresult`
+
+## 7. M2-A 검증 기록
+
+M2-A Home 화면, AppRoute, AppEnvironment, 기본 NavigationStack 연결 후 다음을 확인했습니다.
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- `** BUILD SUCCEEDED **`
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- `** TEST BUILD SUCCEEDED **`
+- `HomeViewModelTests`가 테스트 번들에 포함되는 것을 확인했습니다.
+
+추가한 테스트:
+
+- `HomeViewModelTests`
+- 샘플 레시피 목록을 로드하는지 확인
+- 빈 레시피 목록에서 빈 상태로 전환되는지 확인
+
+테스트 실행:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+```
+
+현재 결과:
+
+- M2-A 변경 후에도 테스트 실행 단계에서 기존과 동일하게 대기합니다.
+- `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
+- `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
+- 2026-06-22 M2-A 변경 후에는 약 78초 대기 후 수동 중단했습니다.
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_15-32-32-+0900.xcresult`

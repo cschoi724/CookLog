@@ -4,6 +4,12 @@
 
 ## 2026-06-22
 
+- M2-A `AppRoute`, `AppEnvironment`, `HomeViewModel`, `HomeView`, `RecipeRowView`를 추가했습니다.
+- 앱 시작 화면을 `HomeView`로 교체하고 `NavigationStack` 기반 기본 내비게이션을 연결했습니다.
+- Home에서 샘플 레시피 목록, 빈 상태, 요리 기록 시작, Recipe Detail placeholder 이동을 구현했습니다.
+- `HomeViewModelTests`를 추가해 샘플 레시피 로드와 빈 목록 상태를 검증할 수 있게 했습니다.
+- M2-A 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- M2-A 변경 후 `xcodebuild test`의 XCTest runner 대기 현상을 재확인하고 `TESTING.md`에 기록했습니다.
 - M1-C Mock 구현 `DefaultRecipeRepository`, `DefaultRecipeGenerationRepository`, `InMemoryRecipeLocalDataSource`, `MockRecipeAIDataSource`, `MockSpeechRecognitionService`, `MockAudioGuideService`를 추가했습니다.
 - `PreviewSupport/SampleRecipes.swift`, `PreviewSupport/SampleStepPreviews.swift`에 M2 화면 개발과 SwiftUI Preview용 샘플 데이터를 추가했습니다.
 - `DefaultRecipeRepositoryTests`를 추가해 저장/조회/삭제 흐름을 검증할 수 있게 했습니다.

@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: M1 도메인 모델과 서비스 경계 완료
+- 상태: M2-A Home 화면과 기본 내비게이션 완료
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
 - scheme: `CookLog`
@@ -23,9 +23,9 @@
 1. `git status -sb`로 작업트리 상태를 확인합니다.
 2. `docs/GIT_WORKFLOW.md`를 확인합니다.
 3. `apps/ios/agents.md`를 확인합니다.
-4. 이 문서의 `현재 상태 요약`과 `M1. 도메인 모델과 서비스 경계`를 확인합니다.
+4. 이 문서의 `현재 상태 요약`과 `M3. 10초 음성 기록과 STEP Preview`를 확인합니다.
 5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
-6. M2-A Home 준비 작업부터 시작합니다.
+6. M3-A Mock STT 기반 Cooking Log 흐름부터 시작합니다.
 7. 변경 후 기본 빌드와 가능한 테스트를 확인합니다.
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
 
@@ -205,16 +205,25 @@ M1 검증 결과:
 
 체크리스트:
 
-- [ ] `AppRoute` 작성
-- [ ] `AppEnvironment` 작성
-- [ ] `HomeViewModel` 작성
-- [ ] Home 화면 작성
-- [ ] 요리 기록 시작 버튼 작성
-- [ ] 최근 레시피 영역 작성
-- [ ] 레시피 목록 화면 작성
-- [ ] 레시피 상세 화면으로 이동 연결
-- [ ] 빈 상태 UI 작성
+- [x] `AppRoute` 작성
+- [x] `AppEnvironment` 작성
+- [x] `HomeViewModel` 작성
+- [x] Home 화면 작성
+- [x] 요리 기록 시작 버튼 작성
+- [x] 최근 레시피 영역 작성
+- [x] 레시피 목록 화면 작성
+- [x] 레시피 상세 화면으로 이동 연결
+- [x] 빈 상태 UI 작성
+- [x] HomeViewModel 샘플 레시피 로드 테스트 작성
+- [x] HomeViewModel 빈 목록 상태 테스트 작성
 - [x] 검색을 MVP에 포함할지 보류/확정
+
+M2-A 검증 결과:
+
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test`: XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단
+- Recipe Detail과 Cooking Log는 이후 이정표에서 실제 구현할 placeholder 화면으로 연결했습니다.
 
 완료 기준:
 
