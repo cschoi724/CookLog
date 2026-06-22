@@ -47,6 +47,7 @@
 - M4-A: AIReviewViewModel draft 로드, 수정 상태, 저장, AI 생성 실패 상태 테스트
 - M5-A: RecipeDetailViewModel recipeID 조회, notFound 상태, 조회 실패 상태 테스트
 - M6-A: AudioPlayerViewModel 초기 로드, 단계 이동, 경계 상태, play/replay/stop 호출, 빈 step, 조회 실패 상태 테스트
+- M7: RecipePersistenceMapper 변환 테스트, SwiftDataRecipeLocalDataSource 저장/조회/정렬/삭제 테스트
 
 ## 5. 빌드 확인
 
@@ -374,3 +375,50 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
 - 2026-06-22 M6-A 변경 후에는 약 60초 대기 후 수동 중단했습니다.
 - 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-41-02-+0900.xcresult`
+
+## 12. M7 검증 기록
+
+M7 SwiftData 저장 모델, Mapper, SwiftDataRecipeLocalDataSource, 앱 실행 경로 SwiftData 전환 후 다음을 확인했습니다.
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 성공
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 성공
+- `RecipePersistenceMapperTests`, `SwiftDataRecipeLocalDataSourceTests`가 테스트 번들에 포함되는 것을 확인했습니다.
+
+추가한 테스트:
+
+- `RecipePersistenceMapperTests`
+- domain -> persistent -> domain 변환 확인
+- child model 정렬 복원 확인
+- `SwiftDataRecipeLocalDataSourceTests`
+- 저장 후 단건 조회 확인
+- 목록 조회가 `updatedAt` 내림차순으로 정렬되는지 확인
+- 삭제 후 단건 조회가 nil이 되는지 확인
+
+테스트 실행:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+```
+
+현재 결과:
+
+- M7 변경 후에도 테스트 실행 단계에서 기존과 동일하게 대기합니다.
+- `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
+- `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
+- 2026-06-22 M7 변경 후에는 약 60초 대기 후 수동 중단했습니다.
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-55-39-+0900.xcresult`

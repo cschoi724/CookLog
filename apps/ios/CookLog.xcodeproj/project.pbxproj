@@ -69,6 +69,13 @@
 		10B201022C29100100000001 /* AudioPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B201212C29100100000001 /* AudioPlayerViewModel.swift */; };
 		10B201032C29100100000001 /* AudioPlayerControlBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B201222C29100100000001 /* AudioPlayerControlBarView.swift */; };
 		10B201042C29100100000001 /* AudioPlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B201232C29100100000001 /* AudioPlayerViewModelTests.swift */; };
+		10B202012C29200100000001 /* PersistentRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202202C29200100000001 /* PersistentRecipe.swift */; };
+		10B202022C29200100000001 /* PersistentIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202212C29200100000001 /* PersistentIngredient.swift */; };
+		10B202032C29200100000001 /* PersistentRecipeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202222C29200100000001 /* PersistentRecipeStep.swift */; };
+		10B202042C29200100000001 /* RecipePersistenceMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202232C29200100000001 /* RecipePersistenceMapper.swift */; };
+		10B202052C29200100000001 /* SwiftDataRecipeLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202242C29200100000001 /* SwiftDataRecipeLocalDataSource.swift */; };
+		10B202062C29200100000001 /* RecipePersistenceMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202252C29200100000001 /* RecipePersistenceMapperTests.swift */; };
+		10B202072C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202262C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +154,13 @@
 		10B201212C29100100000001 /* AudioPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModel.swift; sourceTree = "<group>"; };
 		10B201222C29100100000001 /* AudioPlayerControlBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerControlBarView.swift; sourceTree = "<group>"; };
 		10B201232C29100100000001 /* AudioPlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModelTests.swift; sourceTree = "<group>"; };
+		10B202202C29200100000001 /* PersistentRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentRecipe.swift; sourceTree = "<group>"; };
+		10B202212C29200100000001 /* PersistentIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentIngredient.swift; sourceTree = "<group>"; };
+		10B202222C29200100000001 /* PersistentRecipeStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentRecipeStep.swift; sourceTree = "<group>"; };
+		10B202232C29200100000001 /* RecipePersistenceMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipePersistenceMapper.swift; sourceTree = "<group>"; };
+		10B202242C29200100000001 /* SwiftDataRecipeLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRecipeLocalDataSource.swift; sourceTree = "<group>"; };
+		10B202252C29200100000001 /* RecipePersistenceMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipePersistenceMapperTests.swift; sourceTree = "<group>"; };
+		10B202262C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRecipeLocalDataSourceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +300,8 @@
 				10B1F0242C28F00100000001 /* AIReviewViewModelTests.swift */,
 				10B200252C29000100000001 /* RecipeDetailViewModelTests.swift */,
 				10B201232C29100100000001 /* AudioPlayerViewModelTests.swift */,
+				10B202252C29200100000001 /* RecipePersistenceMapperTests.swift */,
+				10B202262C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift */,
 			);
 			path = CookLogTests;
 			sourceTree = "<group>";
@@ -343,6 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				10B1B0552C28B00100000001 /* DataSources */,
+				10B202302C29200100000001 /* Persistence */,
 				10B1C0522C28C00100000001 /* Repositories */,
 			);
 			path = Data;
@@ -355,8 +372,20 @@
 				10B1C0232C28C00100000001 /* MockRecipeAIDataSource.swift */,
 				10B1B03C2C28B00100000001 /* RecipeAIDataSource.swift */,
 				10B1B03B2C28B00100000001 /* RecipeLocalDataSource.swift */,
+				10B202242C29200100000001 /* SwiftDataRecipeLocalDataSource.swift */,
 			);
 			path = DataSources;
+			sourceTree = "<group>";
+		};
+		10B202302C29200100000001 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				10B202212C29200100000001 /* PersistentIngredient.swift */,
+				10B202202C29200100000001 /* PersistentRecipe.swift */,
+				10B202222C29200100000001 /* PersistentRecipeStep.swift */,
+				10B202232C29200100000001 /* RecipePersistenceMapper.swift */,
+			);
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 		10B1C0522C28C00100000001 /* Repositories */ = {
@@ -529,6 +558,9 @@
 				10B1C0062C28C00100000001 /* MockAudioGuideService.swift in Sources */,
 				10B1B00E2C28B00100000001 /* SpeechAuthorizationStatus.swift in Sources */,
 				10B1A0012C28A00100000001 /* CookLogApp.swift in Sources */,
+				10B202022C29200100000001 /* PersistentIngredient.swift in Sources */,
+				10B202012C29200100000001 /* PersistentRecipe.swift in Sources */,
+				10B202032C29200100000001 /* PersistentRecipeStep.swift in Sources */,
 				10B1B00A2C28B00100000001 /* RecipeRepository.swift in Sources */,
 				10B1B0162C28B00100000001 /* GenerateRecipeDraftUseCase.swift in Sources */,
 				10B1B0032C28B00100000001 /* Ingredient.swift in Sources */,
@@ -547,6 +579,7 @@
 				10B1B00C2C28B00100000001 /* RecipeLocalDataSource.swift in Sources */,
 				10B1A0022C28A00100000001 /* ContentView.swift in Sources */,
 				10B1B0092C28B00100000001 /* RecipeGenerationInput.swift in Sources */,
+				10B202042C29200100000001 /* RecipePersistenceMapper.swift in Sources */,
 				10B1B0132C28B00100000001 /* SaveRecipeUseCase.swift in Sources */,
 				10B1C0052C28C00100000001 /* MockSpeechRecognitionService.swift in Sources */,
 				10B1B0012C28B00100000001 /* RecipeSource.swift in Sources */,
@@ -561,6 +594,7 @@
 				10B1B0112C28B00100000001 /* FetchRecipesUseCase.swift in Sources */,
 				10B1B0022C28B00100000001 /* SyncStatus.swift in Sources */,
 				10B1C0072C28C00100000001 /* SampleStepPreviews.swift in Sources */,
+				10B202052C29200100000001 /* SwiftDataRecipeLocalDataSource.swift in Sources */,
 				10B1B0042C28B00100000001 /* RecipeStep.swift in Sources */,
 				10B1B0072C28B00100000001 /* Recipe.swift in Sources */,
 				10B1C0042C28C00100000001 /* MockRecipeAIDataSource.swift in Sources */,
@@ -581,6 +615,8 @@
 				10B1F0052C28F00100000001 /* AIReviewViewModelTests.swift in Sources */,
 				10B200062C29000100000001 /* RecipeDetailViewModelTests.swift in Sources */,
 				10B201042C29100100000001 /* AudioPlayerViewModelTests.swift in Sources */,
+				10B202062C29200100000001 /* RecipePersistenceMapperTests.swift in Sources */,
+				10B202072C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

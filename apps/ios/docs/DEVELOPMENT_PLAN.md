@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: M6-A Mock 기반 오디오 플레이어 화면 완료
+- 상태: M7 SwiftData 기반 로컬 영구 저장 완료
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
 - scheme: `CookLog`
@@ -23,9 +23,9 @@
 1. `git status -sb`로 작업트리 상태를 확인합니다.
 2. `docs/GIT_WORKFLOW.md`를 확인합니다.
 3. `apps/ios/agents.md`를 확인합니다.
-4. 이 문서의 `현재 상태 요약`과 `M7. 로컬 영구 저장`을 확인합니다.
+4. 이 문서의 `현재 상태 요약`과 `M8. MVP 정리와 검증`을 확인합니다.
 5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
-6. M7 SwiftData 기반 로컬 영구 저장부터 시작합니다.
+6. M8 전체 MVP 흐름 수동 검증부터 시작합니다.
 7. 변경 후 기본 빌드와 가능한 테스트를 확인합니다.
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
 
@@ -415,13 +415,22 @@ M6-A 검증 결과:
 체크리스트:
 
 - [x] SwiftData 적용 가능 여부 확정
-- [ ] SwiftData 모델 또는 저장 모델 작성
-- [ ] `RecipeRepository` 실제 구현 작성
-- [ ] `SwiftDataRecipeLocalDataSource` 작성
-- [ ] Mock 저장소와 실제 저장소 교체 지점 정리
-- [ ] 저장, 조회 동작 확인
+- [x] SwiftData 모델 또는 저장 모델 작성
+- [x] `RecipeRepository` 실제 구현 작성
+- [x] `SwiftDataRecipeLocalDataSource` 작성
+- [x] Mock 저장소와 실제 저장소 교체 지점 정리
+- [x] 저장, 조회 동작 확인
 - [ ] 앱 재실행 후 데이터 유지 확인
-- [ ] 저장 실패 에러 처리 작성
+- [x] 저장 실패 에러 처리 작성
+
+M7 검증 결과:
+
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test`: XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-55-39-+0900.xcresult`
+- SwiftData 저장소의 저장/단건 조회/목록 정렬/삭제는 in-memory `ModelContainer` 기반 테스트로 컴파일 검증했습니다.
+- 앱 재실행 후 데이터 유지 여부는 M8 수동 검증 항목으로 남깁니다.
 
 완료 기준:
 
@@ -476,15 +485,15 @@ M6-A 검증 결과:
 
 ## 현재 진행 위치
 
-현재 이정표: M7. 로컬 영구 저장
+현재 이정표: M8. MVP 정리와 검증
 
 다음 작업:
 
-1. SwiftData 저장 모델 작성
-2. 도메인 모델과 SwiftData 모델 Mapper 작성
-3. `SwiftDataRecipeLocalDataSource` 작성
-4. Mock 저장소와 실제 저장소 교체 지점 정리
-5. 저장, 조회, 앱 재실행 후 유지 흐름 확인
+1. 전체 기록 흐름 수동 테스트
+2. AI Review 수정/저장 후 Recipe Detail 조회 확인
+3. 앱 재실행 후 저장된 Recipe 유지 확인
+4. Audio Player 진입과 단계 이동 확인
+5. 빈 상태, 에러 상태, 작은 화면 레이아웃 확인
 
 ## 최근 작업 로그
 
@@ -521,6 +530,14 @@ M6-A 검증 결과:
 - `AudioPlayerViewModelTests`를 추가해 초기 로드, 단계 이동, 경계 상태, play/replay/stop 호출, 빈 step, 조회 실패 상태를 검증할 수 있게 했습니다.
 - M6-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
 - M6-A 변경 후 `xcodebuild test`는 XCTest runner 대기 현상으로 수동 중단했습니다.
+- M7 SwiftData 저장 모델 `PersistentRecipe`, `PersistentIngredient`, `PersistentRecipeStep`을 추가했습니다.
+- `RecipePersistenceMapper`로 도메인 모델과 SwiftData 모델 변환을 분리했습니다.
+- `SwiftDataRecipeLocalDataSource`로 저장, 목록 조회, 단건 조회, 삭제를 구현했습니다.
+- 앱 실행 경로를 `AppEnvironment.live(modelContainer:)`와 SwiftData `ModelContainer` 기반 저장소로 전환했습니다.
+- Preview와 테스트는 기존 `AppEnvironment.mock`과 InMemory 저장소 경로를 유지했습니다.
+- `RecipePersistenceMapperTests`, `SwiftDataRecipeLocalDataSourceTests`를 추가했습니다.
+- M7 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M7 변경 후 `xcodebuild test`는 XCTest runner 대기 현상으로 수동 중단했습니다.
 
 ### 2026-06-19
 

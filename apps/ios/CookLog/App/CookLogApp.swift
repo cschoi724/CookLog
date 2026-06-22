@@ -1,10 +1,27 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct CookLogApp: App {
-    private let environment = AppEnvironment.mock()
+    private let modelContainer: ModelContainer
+    private let environment: AppEnvironment
     @State private var path: [AppRoute] = []
     @State private var aiReviewStepPreviews: [StepPreview] = []
+
+    @MainActor
+    init() {
+        do {
+            let modelContainer = try ModelContainer(
+                for: PersistentRecipe.self,
+                PersistentIngredient.self,
+                PersistentRecipeStep.self
+            )
+            self.modelContainer = modelContainer
+            self.environment = AppEnvironment.live(modelContainer: modelContainer)
+        } catch {
+            fatalError("SwiftData ModelContainer 생성 실패: \(error)")
+        }
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -64,6 +81,7 @@ struct CookLogApp: App {
                     }
                 }
             }
+            .modelContainer(modelContainer)
         }
     }
 }

@@ -4,6 +4,14 @@
 
 ## 2026-06-22
 
+- M7 `PersistentRecipe`, `PersistentIngredient`, `PersistentRecipeStep` SwiftData 저장 모델을 추가했습니다.
+- `RecipePersistenceMapper`를 추가해 도메인 모델과 SwiftData 모델 변환을 분리했습니다.
+- `SwiftDataRecipeLocalDataSource`를 추가해 Recipe 저장, 목록 조회, 단건 조회, 삭제를 구현했습니다.
+- `AppEnvironment.live(modelContainer:)`를 추가하고 앱 실행 경로를 SwiftData 저장소로 전환했습니다.
+- SwiftUI Preview와 테스트용 `AppEnvironment.mock`은 기존 InMemory/Mock 경로를 유지했습니다.
+- `RecipePersistenceMapperTests`, `SwiftDataRecipeLocalDataSourceTests`를 추가했습니다.
+- M7 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M7 변경 후 `xcodebuild test`의 XCTest runner 대기 현상을 재확인하고 `TESTING.md`에 기록했습니다.
 - M6-A `AudioPlayerView`, `AudioPlayerViewModel`, `AudioPlayerControlBarView`를 추가했습니다.
 - `AudioPlayerPlaceholderView`를 제거하고 `audioPlayer` route를 실제 오디오 플레이어 화면으로 교체했습니다.
 - 저장된 Recipe를 recipeID로 조회해 현재 단계 번호와 본문을 표시하게 했습니다.
