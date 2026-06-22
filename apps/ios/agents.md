@@ -8,7 +8,7 @@
 
 - 작업 범위는 기본적으로 `apps/ios/` 안으로 제한합니다.
 - 루트 문서나 제품 문서를 수정해야 하면 변경 이유를 명확히 남깁니다.
-- 루트 `agents.md`와 `docs/product/` 문서를 제품 기준으로 삼습니다.
+- 루트 `agents.md`와 `docs/product/CookLog_PRD_v2.md`를 제품 기준으로 삼습니다.
 - iOS 개발 환경과 기술 선택은 `docs/development/CookLog_iOS_Development_Environment.md`를 우선 참고합니다.
 - 개발 진행 순서와 체크리스트는 `docs/development/CookLog_iOS_Development_Plan.md`를 계속 업데이트하며 따릅니다.
 - 기술 결정이 생기면 `docs/development/CookLog_iOS_Decision_Log.md`에 기록합니다.
@@ -16,7 +16,7 @@
 
 ## 제품 기준
 
-CookLog는 개인 요리 기록 앱입니다. 사용자가 요리 중 또는 요리 후 남긴 짧은 기록을 AI가 레시피로 정리하고, 저장된 레시피를 오디오 가이드로 다시 재생할 수 있어야 합니다.
+CookLog는 개인 요리 기록 앱입니다. 사용자가 요리 중 10초 음성 기록을 반복하면 앱은 STT 결과를 STEP Preview로 축적하고, 사용자가 `AI 정리하기`를 선택했을 때 레시피로 정리합니다. 저장된 레시피는 오디오 가이드로 다시 재생할 수 있어야 합니다.
 
 핵심 가치는 다음 세 가지입니다.
 
@@ -26,13 +26,14 @@ CookLog는 개인 요리 기록 앱입니다. 사용자가 요리 중 또는 요
 
 ## MVP 포함 기능
 
-- 10초 기록
+- 10초 음성 기록
 - STT
-- STEP 생성
+- STEP Preview 생성
+- 10초 기록 반복
 - AI 정리
+- 레시피 검토
 - 레시피 저장
 - 레시피 목록
-- 레시피 검색
 - 레시피 상세 조회
 - 단계별 오디오 플레이어
 - 이전 단계, 재생/정지, 다음 단계, 다시 듣기
@@ -44,17 +45,17 @@ CookLog는 개인 요리 기록 앱입니다. 사용자가 요리 중 또는 요
 - 공유
 - 커뮤니티
 - 공개 레시피
-- AI 채팅
 - 블로그 Import
 - 유튜브 Import
 - 이미지 OCR
+- AI 챗
 - 음성 명령
 
 ## 사용자 흐름
 
 ### 기록 흐름
 
-Home -> 요리 기록 시작 -> 10초 기록 -> STEP 생성 -> AI 정리 -> 저장 -> 레시피 상세
+Home -> 요리 기록 시작 -> 10초 기록 -> STEP Preview 생성 -> 10초 기록 반복 -> AI 정리하기 -> 레시피 검토 -> 저장 -> 레시피 상세 -> 오디오 가이드
 
 ### 다시 요리 흐름
 
@@ -67,13 +68,13 @@ Home -> 저장된 레시피 -> 오디오 가이드 시작
 - 요리 기록 시작 버튼
 - 최근 레시피
 - 저장된 레시피 목록
-- 검색 진입
 
 ### Cooking Log
 
-- 음성 또는 텍스트 기록 입력
+- 10초 음성 기록
 - 10초 기록 상태 표시
-- 생성된 STEP 리스트
+- 남은 시간 표시
+- STT 결과 기반 STEP Preview 리스트
 - AI 정리하기 버튼
 
 ### AI Review
@@ -82,7 +83,7 @@ Home -> 저장된 레시피 -> 오디오 가이드 시작
 - 제목
 - 재료
 - 조리 순서
-- 시간
+- 예상시간
 - 메모
 - 저장 버튼
 
@@ -92,6 +93,7 @@ Home -> 저장된 레시피 -> 오디오 가이드 시작
 - 재료
 - 조리 순서
 - 메모
+- 예상시간
 - 오디오 가이드 시작 버튼
 
 ### Audio Player
@@ -144,6 +146,20 @@ apps/ios/
 
 초기 구현에서 최소한 다음 개념을 분리합니다.
 
+### CookingLogSession
+
+- id
+- stepPreviews
+- createdAt
+- updatedAt
+
+### StepPreview
+
+- id
+- order
+- transcript
+- createdAt
+
 ### Recipe
 
 - id
@@ -151,6 +167,7 @@ apps/ios/
 - ingredients
 - steps
 - memo
+- estimatedTime
 - createdAt
 - updatedAt
 
@@ -162,17 +179,12 @@ apps/ios/
 - durationSeconds
 - note
 
-### CookingLog
-
-- id
-- rawText
-- createdAt
-
 ### AI 정리 결과
 
 - title
 - ingredients
 - steps
+- estimatedTime
 - memo
 
 ## 서비스 인터페이스 기준
@@ -180,8 +192,8 @@ apps/ios/
 실제 API 연동 전에도 다음 서비스를 교체 가능하게 둡니다.
 
 - `SpeechRecognitionService`: 음성 입력을 텍스트로 변환
-- `RecipeAIService`: 원본 로그를 레시피 구조로 변환
-- `RecipeStore`: 레시피 저장, 조회, 검색
+- `RecipeAIService`: STEP Preview 배열을 레시피 구조로 변환
+- `RecipeStore`: 레시피 저장, 조회
 - `AudioGuideService`: 단계별 안내 재생
 
 초기 MVP에서는 Mock 또는 로컬 구현을 사용해도 됩니다.
@@ -190,6 +202,8 @@ apps/ios/
 
 - 첫 화면은 기록 시작과 최근 레시피에 집중합니다.
 - 사용자가 처음부터 복잡한 레시피 폼을 작성하게 만들지 않습니다.
+- Cooking Log 화면은 10초 음성 기록과 STEP Preview 누적에 집중합니다.
+- STEP Preview는 AI 정리 결과가 아니라 STT 기반 중간 결과입니다.
 - 저장 전 AI Review 화면에서 결과를 확인하고 수정할 수 있게 합니다.
 - 오디오 플레이어는 현재 단계와 이동 컨트롤이 명확해야 합니다.
 - 디자인은 조용하고 실용적인 개인 도구 톤을 우선합니다.

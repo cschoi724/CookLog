@@ -3,6 +3,8 @@
 이 문서는 CookLog iOS MVP를 어떤 환경과 기술 조합으로 개발할지 정리한 기준 문서입니다.
 
 작성일: 2026-06-19
+최종 업데이트: 2026-06-22
+기준 PRD: `docs/product/CookLog_PRD_v2.md`
 
 ## 결론
 
@@ -16,9 +18,11 @@ CookLog iOS 앱은 SwiftUI 기반 네이티브 앱으로 시작합니다.
 - 로컬 데이터: SwiftData 우선 검토
 - 음성 입력: Apple Speech 프레임워크 우선 검토
 - 오디오 안내: AVFoundation의 `AVSpeechSynthesizer` 우선 검토
-- AI 정리: 초기에는 Mock 또는 로컬 규칙 기반 구현 후, 서비스 인터페이스 뒤에 실제 API를 연결
+- AI 정리: STEP Preview 누적 후 `AI 정리하기` 시점에만 Mock 또는 실제 API 호출
 
 이 조합은 CookLog MVP의 핵심인 기록, 저장, 다시 듣기 흐름을 가장 빠르게 검증하기 좋습니다. React Native, Flutter, 서버 우선 구조보다 iOS 단일 MVP를 작게 완성하기 쉽고, STT/TTS 같은 Apple 플랫폼 기능을 직접 활용하기 좋습니다.
+
+PRD v2 기준으로 사용자는 레시피를 작성하지 않고 10초 음성 기록만 반복합니다. 각 음성 기록은 STT 결과 기반 STEP Preview가 되고, 실제 AI 레시피 구조화는 사용자가 `AI 정리하기`를 선택한 시점에만 수행합니다.
 
 ## 현재 로컬 환경
 
@@ -143,7 +147,10 @@ MVP의 STT는 Apple Speech 프레임워크를 우선 검토합니다.
 초기 구현 방향:
 
 - 권한 요청 흐름을 명확히 둡니다.
-- 음성 입력 실패 시 텍스트 입력으로 대체할 수 있게 합니다.
+- 10초 기록 단위로 음성을 텍스트로 변환합니다.
+- STT 결과를 그대로 STEP Preview로 추가합니다.
+- 음성 입력 실패 시 재시도 흐름을 제공합니다.
+- 개발 중에는 텍스트 fallback을 둘 수 있지만, PRD v2의 사용자 경험은 음성 기록 중심입니다.
 - 실제 음성 인식 구현은 `SpeechRecognitionService` 뒤에 숨깁니다.
 
 ### AVSpeechSynthesizer
@@ -165,9 +172,10 @@ MVP 초기에는 실제 AI API 연동을 바로 넣지 않아도 됩니다.
 권장 순서:
 
 1. `RecipeAIService` 인터페이스를 먼저 정의합니다.
-2. Mock 구현으로 입력 로그를 Recipe 구조로 변환합니다.
-3. 전체 앱 흐름을 완성합니다.
-4. 이후 실제 AI API를 연결합니다.
+2. STEP Preview 배열을 입력으로 받는 Mock 구현을 만듭니다.
+3. `AI 정리하기` 시점에만 Recipe 구조로 변환합니다.
+4. 전체 앱 흐름을 완성합니다.
+5. 이후 실제 AI API를 연결합니다.
 
 API 키는 저장소에 커밋하지 않습니다. 실제 연동 시 `.xcconfig`, 환경 변수, 또는 별도 시크릿 관리 방식을 정합니다.
 
@@ -176,12 +184,12 @@ API 키는 저장소에 커밋하지 않습니다. 실제 연동 시 `.xcconfig`
 1. SwiftUI 프로젝트 생성
 2. 기본 도메인 모델 작성
 3. Mock `RecipeStore`로 Home, 목록, 상세 화면 구성
-4. Cooking Log 화면에서 텍스트 입력으로 로그 작성
-5. Mock `RecipeAIService`로 AI Review 화면 연결
-6. 저장 후 Recipe Detail로 이동
-7. `AVSpeechSynthesizer` 기반 Audio Player 구현
-8. SwiftData 저장소로 교체
-9. Speech 기반 STT 연결
+4. Cooking Log 화면에서 10초 기록과 STEP Preview 누적 흐름 작성
+5. Speech 기반 STT 연결 또는 개발용 Mock STT 연결
+6. Mock `RecipeAIService`로 AI Review 화면 연결
+7. 저장 후 Recipe Detail로 이동
+8. `AVSpeechSynthesizer` 기반 Audio Player 구현
+9. SwiftData 저장소로 교체
 10. 실제 AI API 연결 검토
 
 이 순서가 좋은 이유는 외부 API와 권한 처리 없이도 CookLog의 핵심 경험을 먼저 확인할 수 있기 때문입니다.
@@ -194,7 +202,7 @@ API 키는 저장소에 커밋하지 않습니다. 실제 연동 시 `.xcconfig`
 
 - Recipe 생성 결과 검증
 - Mock AI 정리 결과 검증
-- Recipe 검색 로직 검증
+- STEP Preview 누적 로직 검증
 - 오디오 플레이어 단계 이동 로직 검증
 
 UI 테스트는 핵심 흐름이 안정된 뒤 추가합니다.
@@ -229,6 +237,7 @@ STT와 마이크 기능을 구현할 때는 권한 설명이 필요합니다.
 - 블로그 Import
 - 유튜브 Import
 - 이미지 OCR
+- AI 챗
 - 음성 명령
 - 복잡한 디자인 시스템
 

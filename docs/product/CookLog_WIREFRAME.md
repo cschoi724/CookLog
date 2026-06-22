@@ -1,24 +1,50 @@
-# CookLog WIREFRAME v1
+# CookLog WIREFRAME v2
 
-1. Home
-- 🎤 요리 기록 시작
+## 1. Home
+
+- 요리 기록 시작
 - 최근 레시피
+- 저장된 레시피 목록 진입
 
-2. Cooking Log
-- 🎤 10초 기록
-- STEP 리스트
+## 2. Cooking Log
+
+- 10초 기록 버튼
+- 녹음 상태
+- 남은 시간
+- STEP Preview 리스트
 - AI 정리하기
 
-3. AI Review
-- 재료
-- 순서
-- 시간
-- 메모
+핵심 기준:
 
-4. Recipe Detail
+- 사용자는 레시피 폼을 작성하지 않습니다.
+- 기록은 음성 중심입니다.
+- STEP Preview는 STT 결과를 그대로 빠르게 보여주는 중간 결과입니다.
+
+## 3. AI Review
+
+- 레시피 제목
+- 재료
+- 조리순서
+- 예상시간
+- 메모
+- 각 항목 수정
+- 저장
+
+## 4. Recipe Detail
+
+- 제목
+- 재료
+- 조리순서
+- 메모
+- 예상시간
 - 오디오 가이드 시작
 
-5. Audio Player
-- 이전
+## 5. Audio Player
+
+- 현재 단계
+- 현재 단계 본문
+- 이전 단계
 - 재생
-- 다음
+- 정지
+- 다음 단계
+- 현재 단계 다시 듣기

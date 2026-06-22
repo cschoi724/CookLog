@@ -1,6 +1,6 @@
 # CookLog
 
-CookLog는 요리 중 남긴 짧은 기록을 AI가 레시피로 정리해주고, 다음에는 오디오 가이드로 다시 요리할 수 있게 해주는 개인 레시피 저장소입니다.
+CookLog는 요리 중 10초 음성 기록을 반복하면 앱이 STEP Preview를 쌓고, AI가 레시피로 정리해주며, 다음에는 오디오 가이드로 다시 요리할 수 있게 해주는 개인 레시피 저장소입니다.
 
 이 저장소는 기획, 디자인, iOS/Android 개발, 공통 패키지, 개발 도구를 모두 담는 프로젝트 루트입니다.
 
@@ -85,7 +85,10 @@ CookLog는 요리 중 남긴 짧은 기록을 AI가 레시피로 정리해주고
 ## 현재 문서
 
 - [CookLog 아이디어 v0.1](docs/product/CookLog_Idea_v0.1.md)
-- [CookLog MVP 기획 초안 v0.1](docs/product/CookLog_MVP_Spec_v0.1.md)
-- [CookLog 사용자 플로우 v0.1](docs/product/CookLog_User_Flow_v0.1.md)
-- [CookLog 와이어프레임 v0.1](docs/product/CookLog_Wireframe_v0.1.md)
-- [CookLog MVP 상세 명세 v0.1](docs/product/CookLog_MVP_Detail_Spec_v0.1.md)
+- [CookLog PRD v2](docs/product/CookLog_PRD_v2.md)
+- [CookLog PRODUCT v2](docs/product/CookLog_PRODUCT.md)
+- [CookLog MVP Scope v2](docs/product/CookLog_MVP_SCOPE.md)
+- [CookLog USER FLOW v2](docs/product/CookLog_USER_FLOW.md)
+- [CookLog WIREFRAME v2](docs/product/CookLog_WIREFRAME.md)
+- [CookLog Roadmap v2](docs/product/CookLog_ROADMAP.md)
+- [CookLog iOS 개발 계획](docs/development/CookLog_iOS_Development_Plan.md)

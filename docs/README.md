@@ -10,11 +10,12 @@
 현재 주요 문서:
 
 - [CookLog 아이디어 v0.1](product/CookLog_Idea_v0.1.md)
-- [CookLog PRODUCT v1](product/CookLog_PRODUCT.md)
-- [CookLog MVP Scope](product/CookLog_MVP_SCOPE.md)
-- [CookLog USER FLOW v1](product/CookLog_USER_FLOW.md)
-- [CookLog WIREFRAME v1](product/CookLog_WIREFRAME.md)
-- [CookLog Roadmap](product/CookLog_ROADMAP.md)
+- [CookLog PRD v2](product/CookLog_PRD_v2.md)
+- [CookLog PRODUCT v2](product/CookLog_PRODUCT.md)
+- [CookLog MVP Scope v2](product/CookLog_MVP_SCOPE.md)
+- [CookLog USER FLOW v2](product/CookLog_USER_FLOW.md)
+- [CookLog WIREFRAME v2](product/CookLog_WIREFRAME.md)
+- [CookLog Roadmap v2](product/CookLog_ROADMAP.md)
 - [CookLog iOS 개발 환경 권장안](development/CookLog_iOS_Development_Environment.md)
 - [CookLog iOS 개발 계획](development/CookLog_iOS_Development_Plan.md)
 - [CookLog iOS 의사결정 로그](development/CookLog_iOS_Decision_Log.md)
