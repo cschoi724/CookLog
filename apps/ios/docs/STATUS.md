@@ -13,9 +13,12 @@
 ## 다음 작업
 
 1. `apps/ios/` 안에 SwiftUI iOS 프로젝트 생성
-2. 기본 빌드 성공 확인
-3. 기본 시뮬레이터 실행 확인
-4. 실제 프로젝트 구조를 `apps/ios/agents.md`와 `apps/ios/docs/DEVELOPMENT_PLAN.md`에 반영
+2. Unit Test 타겟 포함 여부 확인
+3. Deployment Target iOS 17 이상 확인
+4. 기본 빌드 성공 확인
+5. 기본 시뮬레이터 실행 확인
+6. 실제 scheme, destination, 빌드 명령 기록
+7. 실제 프로젝트 구조를 `apps/ios/agents.md`, `apps/ios/docs/DEVELOPMENT_PLAN.md`, `apps/ios/docs/TESTING.md`에 반영
 
 ## 최근 작업
 
@@ -37,6 +40,7 @@
 - NavigationStack/AppRoute, AppError, 제한적 ViewState, Mock/Preview/Test 데이터 분리를 확정했습니다.
 - 비대해질 수 있는 iOS 개발 스펙을 역할별 문서로 분리했습니다.
 - `ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md`를 추가했습니다.
+- iOS 개발 세션이 바로 착수할 수 있도록 `DEVELOPMENT_PLAN.md`의 M0-M7 실행 순서와 체크리스트를 구체화했습니다.
 
 ## 열린 질문
 

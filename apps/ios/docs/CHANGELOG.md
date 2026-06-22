@@ -16,6 +16,7 @@
 - NavigationStack/AppRoute, AppError, 제한적 ViewState, Mock/Preview/Test 데이터 분리를 결정사항으로 기록했습니다.
 - `DEVELOPMENT_SPEC.md`를 최상위 기술 기준과 문서 인덱스 역할로 축소했습니다.
 - 아키텍처, 도메인 모델, 저장소, 내비게이션, 서비스, 테스트 기준을 역할별 문서로 분리했습니다.
+- `DEVELOPMENT_PLAN.md`의 M0-M7 실행 순서와 체크리스트를 세분화해 다음 iOS 개발 세션의 시작 기준을 명확히 했습니다.
 
 ## 2026-06-19
 

@@ -236,10 +236,15 @@ apps/ios/
 
 ## Git 기준
 
-- 커밋 메시지는 한글 설명을 기본으로 하고 영문 타입 prefix를 붙입니다.
-- 예시: `feat: iOS 홈 화면 추가`
-- 예시: `feat: 레시피 로컬 저장 구현`
-- 예시: `fix: 오디오 플레이어 다음 단계 이동 수정`
+- Git 운영 기준은 `../../docs/GIT_WORKFLOW.md`를 따릅니다.
+- 작업 전 `git status -sb`로 상태를 확인합니다.
+- 사용자 변경사항이 있으면 임의로 되돌리지 않습니다.
+
+작업 종료 전에는 가능하면 다음 문서를 갱신합니다.
+
+- `apps/ios/docs/STATUS.md`
+- `apps/ios/docs/DEVELOPMENT_PLAN.md`
+- `apps/ios/docs/CHANGELOG.md`
 
 ## 주의사항
 

@@ -14,6 +14,21 @@
 - 권장 구현: SwiftUI + Feature 중심 MVVM + UseCase + Repository/DataSource + 로컬 저장 + STT 기반 STEP Preview + AI 정리 시점 호출
 - 우선 참고 문서: `../../../docs/product/CookLog_PRD_v2.md`
 
+## 바로 시작 가이드
+
+새 iOS 개발 세션은 다음 순서로 시작합니다.
+
+1. `git status -sb`로 작업트리 상태를 확인합니다.
+2. `docs/GIT_WORKFLOW.md`를 확인합니다.
+3. `apps/ios/agents.md`를 확인합니다.
+4. 이 문서의 `현재 진행 위치`와 `M0. 개발 기반 준비`를 확인합니다.
+5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
+6. `apps/ios/` 안에 Xcode SwiftUI 프로젝트를 생성합니다.
+7. 기본 빌드와 시뮬레이터 실행을 확인합니다.
+8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
+
+처음 개발 세션의 목표는 기능 구현이 아니라 **빌드 가능한 iOS 프로젝트 골격을 만드는 것**입니다.
+
 ## 개발 원칙
 
 - MVP는 iOS 네이티브 앱으로 먼저 완성합니다.
@@ -39,11 +54,43 @@
 - 저장된 레시피 상세를 볼 수 있습니다.
 - 저장된 레시피를 단계별 오디오 플레이어로 재생할 수 있습니다.
 
+## 개발 순서 요약
+
+권장 진행 순서는 다음과 같습니다.
+
+1. M0: Xcode 프로젝트 생성과 기본 빌드 확인
+2. M1-A: 도메인 모델 작성
+3. M1-B: Repository/DataSource/Service 프로토콜 작성
+4. M1-C: UseCase와 Mock 구현 작성
+5. M2-A: Home 화면과 샘플 레시피 목록
+6. M3-A: Mock STT 기반 Cooking Log 흐름
+7. M4-A: Mock AI 기반 AI Review 흐름
+8. M5-A: Recipe Detail 연결
+9. M6-A: Mock 또는 TTS 기반 Audio Player 연결
+10. M7: SwiftData 실제 저장소 연결
+11. M8: 전체 흐름 검증과 정리
+
+MVP 초반에는 실제 Apple Speech, SwiftData, 실제 AI API보다 Mock 흐름을 먼저 완성합니다. 단, 구조는 실제 구현으로 교체하기 쉽게 유지합니다.
+
 ## 전체 이정표
 
 ### M0. 개발 기반 준비
 
 목표: iOS 프로젝트를 만들고 빌드 가능한 기본 앱 상태를 만든다.
+
+권장 실행 순서:
+
+1. Xcode에서 `apps/ios/` 위치에 새 iOS App 프로젝트를 생성합니다.
+2. Product Name은 `CookLog`로 설정합니다.
+3. Interface는 SwiftUI, Language는 Swift로 설정합니다.
+4. Unit Tests는 포함합니다.
+5. Deployment Target은 iOS 17 이상으로 설정합니다.
+6. 기본 생성 파일이 `apps/ios/CookLog/`와 `apps/ios/CookLogTests/` 아래에 놓였는지 확인합니다.
+7. `CookLog/` 아래에 문서 기준 폴더를 만듭니다.
+8. 기본 `ContentView`는 최소 화면으로 유지하고, 실제 Home 구현은 M2에서 진행합니다.
+9. `xcodebuild` 또는 Xcode로 기본 빌드를 확인합니다.
+10. 가능한 경우 시뮬레이터 실행을 확인합니다.
+11. 실제 생성된 scheme, destination, 빌드 명령을 이 문서와 `TESTING.md`에 기록합니다.
 
 체크리스트:
 
@@ -53,48 +100,94 @@
 - [ ] SwiftUI App 템플릿 적용
 - [ ] Unit Test 타겟 포함
 - [ ] 앱 이름 `CookLog` 확인
+- [ ] Deployment Target iOS 17 이상 확인
+- [ ] `CookLog/` 기본 앱 타겟 폴더 확인
+- [ ] `CookLogTests/` 테스트 타겟 폴더 확인
+- [ ] `App/`, `Domain/`, `Data/`, `Services/`, `Features/`, `Support/`, `PreviewSupport/`, `Resources/` 폴더 생성
+- [ ] 기본 `CookLogApp.swift` 위치 정리
+- [ ] 기본 `ContentView` 또는 임시 시작 화면 정리
 - [ ] 기본 빌드 성공
 - [ ] 기본 시뮬레이터 실행 성공
 - [ ] 프로젝트 구조 정리
 - [ ] `apps/ios/agents.md`에 실제 프로젝트 구조 반영
+- [ ] `apps/ios/docs/TESTING.md`에 실제 빌드/테스트 명령 기록
+- [ ] `apps/ios/docs/STATUS.md`에 프로젝트 생성 결과 기록
 
 완료 기준:
 
 - `xcodebuild` 또는 Xcode에서 기본 앱이 빌드됩니다.
 - 다음 세션이 프로젝트를 열어 바로 개발을 시작할 수 있습니다.
+- 앱 기능은 아직 없어도 됩니다.
 
 ### M1. 도메인 모델과 서비스 경계
 
 목표: PRD v2 흐름에 맞는 최소 도메인 모델과 서비스 인터페이스를 만든다.
+
+권장 구현 순서:
+
+1. `Domain/Models/`에 도메인 모델을 작성합니다.
+2. `Domain/Repositories/`에 Repository 프로토콜을 작성합니다.
+3. `Services/Speech/`, `Services/AudioGuide/`에 Service 프로토콜을 작성합니다.
+4. `Domain/UseCases/`에 주요 UseCase를 작성합니다.
+5. `Data/DataSources/`와 `Data/Repositories/`에 Mock 기반 구현을 작성합니다.
+6. `PreviewSupport/`에 샘플 Recipe와 StepPreview를 작성합니다.
+7. STEP Preview 누적 로직 단위 테스트를 작성합니다.
 
 체크리스트:
 
 - [ ] `CookingLogSession` 모델 작성
 - [ ] `StepPreview` 모델 작성
 - [ ] `Recipe` 모델 작성
+- [ ] `Ingredient` 모델 작성
 - [ ] `RecipeStep` 모델 작성
-- [ ] `AIReviewResult` 모델 작성
+- [ ] `RecipeDraft` 모델 작성
+- [ ] `RecipeGenerationInput` 모델 작성
+- [ ] `RecipeSource` 모델 작성
+- [ ] `SyncStatus` 모델 작성
 - [ ] `SpeechRecognitionService` 프로토콜 작성
 - [ ] `RecipeGenerationRepository` 프로토콜 작성
 - [ ] `RecipeRepository` 프로토콜 작성
 - [ ] `RecipeLocalDataSource` 프로토콜 작성
 - [ ] `RecipeAIDataSource` 프로토콜 작성
 - [ ] `AudioGuideService` 프로토콜 작성
-- [ ] 주요 UseCase 작성
-- [ ] Mock Repository/DataSource/Service 작성
+- [ ] `FetchRecipesUseCase` 작성
+- [ ] `FetchRecipeUseCase` 작성
+- [ ] `SaveRecipeUseCase` 작성
+- [ ] `DeleteRecipeUseCase` 작성
+- [ ] `AddStepPreviewUseCase` 작성
+- [ ] `GenerateRecipeDraftUseCase` 작성
+- [ ] `PlayRecipeStepUseCase` 작성
+- [ ] `MockSpeechRecognitionService` 작성
+- [ ] `MockRecipeAIDataSource` 작성
+- [ ] `InMemoryRecipeLocalDataSource` 또는 Mock 저장소 작성
+- [ ] `MockAudioGuideService` 작성
 - [ ] 샘플 STEP Preview와 샘플 Recipe 데이터 작성
 - [ ] STEP Preview 추가 로직 단위 테스트 작성
 
 완료 기준:
 
 - UI 없이도 10초 기록 결과를 STEP Preview로 쌓고, 샘플 레시피로 변환할 수 있습니다.
+- 실제 Speech, SwiftData, AI API 없이도 UseCase 테스트가 가능합니다.
 
 ### M2. Home과 레시피 조회
 
 목표: 저장된 레시피를 확인하고 요리 기록을 시작할 수 있는 첫 화면을 만든다.
 
+권장 구현 순서:
+
+1. `AppRoute`와 기본 `NavigationStack`을 연결합니다.
+2. `AppEnvironment`에서 Mock Repository/UseCase를 조립합니다.
+3. `HomeViewModel`을 작성합니다.
+4. `HomeView`를 작성합니다.
+5. 샘플 레시피 목록을 표시합니다.
+6. 요리 기록 시작 버튼을 `CookingLogView`로 연결합니다.
+7. 레시피 행 선택을 `RecipeDetailView`로 연결합니다.
+
 체크리스트:
 
+- [ ] `AppRoute` 작성
+- [ ] `AppEnvironment` 작성
+- [ ] `HomeViewModel` 작성
 - [ ] Home 화면 작성
 - [ ] 요리 기록 시작 버튼 작성
 - [ ] 최근 레시피 영역 작성
@@ -106,13 +199,25 @@
 완료 기준:
 
 - 사용자가 Home에서 기록을 시작하거나 저장된 레시피 상세로 이동할 수 있습니다.
+- 이 단계에서는 Mock 샘플 데이터 기반이어도 됩니다.
 
 ### M3. 10초 음성 기록과 STEP Preview
 
 목표: 사용자가 10초 음성 기록을 반복하고, 각 기록이 STEP Preview로 쌓이게 한다.
 
+권장 구현 순서:
+
+1. `CookingLogViewModel`을 작성합니다.
+2. `MockSpeechRecognitionService`를 연결합니다.
+3. 10초 기록 버튼을 누르면 Mock STT 결과가 `StepPreview`로 추가되게 합니다.
+4. 실제 10초 타이머 UI를 작성합니다.
+5. STEP Preview 리스트를 작성합니다.
+6. STEP Preview가 1개 이상일 때 `AI 정리하기` 버튼을 활성화합니다.
+7. AI Review 화면으로 STEP Preview를 전달합니다.
+
 체크리스트:
 
+- [ ] `CookingLogViewModel` 작성
 - [ ] Cooking Log 화면 작성
 - [ ] 10초 기록 버튼 작성
 - [ ] 녹음 중 상태 UI 작성
@@ -128,13 +233,24 @@
 완료 기준:
 
 - 사용자가 10초 기록을 여러 번 수행하고 STEP Preview를 누적할 수 있습니다.
+- 실제 Apple Speech 연결 전에도 Mock STT로 흐름을 확인할 수 있습니다.
 
 ### M4. A-Lite와 AI Review
 
 목표: STEP Preview는 STT 기반으로 유지하고, `AI 정리하기` 시점에만 레시피 구조화를 수행한다.
 
+권장 구현 순서:
+
+1. `GenerateRecipeDraftUseCase`를 `AIReviewViewModel`에 연결합니다.
+2. `MockRecipeAIDataSource`가 STEP Preview 배열을 `RecipeDraft`로 변환하게 합니다.
+3. `AIReviewView`에서 제목, 재료, 조리순서, 예상시간, 메모를 수정 가능하게 표시합니다.
+4. 저장 버튼을 `SaveRecipeUseCase`에 연결합니다.
+5. 저장 후 `RecipeDetailView`로 이동합니다.
+6. AI 정리 실패와 저장 실패 상태를 표시합니다.
+
 체크리스트:
 
+- [ ] `AIReviewViewModel` 작성
 - [ ] `RecipeGenerationRepository` Mock 경로 작성
 - [ ] `MockRecipeAIDataSource` 작성
 - [ ] 전체 STEP Preview를 AI Review 입력으로 전달
@@ -152,13 +268,23 @@
 완료 기준:
 
 - 사용자가 누적한 STEP Preview가 레시피 형태로 정리되고, 모든 내용을 수정한 뒤 저장할 수 있습니다.
+- 실제 AI API 없이도 전체 저장 흐름이 동작합니다.
 
 ### M5. Recipe Detail
 
 목표: 저장된 레시피를 다시 볼 수 있는 상세 화면을 만든다.
 
+권장 구현 순서:
+
+1. `RecipeDetailViewModel`을 작성합니다.
+2. `FetchRecipeUseCase`로 레시피를 조회합니다.
+3. 제목, 재료, 조리순서, 메모, 예상시간을 표시합니다.
+4. 오디오 가이드 시작 버튼을 `AudioPlayerView`로 연결합니다.
+5. 삭제 또는 편집은 MVP에서 바로 넣지 말고 필요 여부만 결정합니다.
+
 체크리스트:
 
+- [ ] `RecipeDetailViewModel` 작성
 - [ ] Recipe Detail 화면 작성
 - [ ] 제목 표시
 - [ ] 재료 표시
@@ -177,8 +303,18 @@
 
 목표: 저장된 레시피를 단계별 오디오 가이드로 재생한다.
 
+권장 구현 순서:
+
+1. `AudioPlayerViewModel`을 작성합니다.
+2. 현재 단계 index 상태를 관리합니다.
+3. 이전, 다음, 다시 듣기 동작을 먼저 Mock으로 구현합니다.
+4. `SystemTTSAudioGuideService`로 `AVSpeechSynthesizer`를 연결합니다.
+5. 화면 이탈 시 재생을 정리합니다.
+6. 단계 이동 로직 단위 테스트를 작성합니다.
+
 체크리스트:
 
+- [ ] `AudioPlayerViewModel` 작성
 - [ ] `AudioGuideService` 구현 작성
 - [ ] `AVSpeechSynthesizer` 기반 재생 작성
 - [ ] Audio Player 화면 작성
@@ -200,6 +336,15 @@
 ### M7. 로컬 영구 저장
 
 목표: 앱을 종료해도 저장된 레시피가 유지되게 한다.
+
+권장 구현 순서:
+
+1. `PersistentRecipe`, `PersistentRecipeStep`, `PersistentIngredient`를 작성합니다.
+2. 도메인 모델과 SwiftData 모델 Mapper를 작성합니다.
+3. `SwiftDataRecipeLocalDataSource`를 작성합니다.
+4. `DefaultRecipeRepository`를 SwiftData DataSource와 연결합니다.
+5. 기존 Mock 저장소를 실제 저장소로 교체할 수 있게 `AppEnvironment`를 정리합니다.
+6. 앱 재실행 후 데이터 유지 여부를 확인합니다.
 
 체크리스트:
 
@@ -270,8 +415,11 @@
 다음 작업:
 
 1. `apps/ios/`에 SwiftUI iOS 프로젝트 생성
-2. 기본 빌드와 시뮬레이터 실행 확인
-3. 실제 프로젝트 구조를 `apps/ios/agents.md`에 반영
+2. Unit Test 타겟 포함 여부 확인
+3. Deployment Target iOS 17 이상 확인
+4. 기본 빌드와 시뮬레이터 실행 확인
+5. 실제 scheme, destination, 빌드 명령 기록
+6. 실제 프로젝트 구조를 `apps/ios/agents.md`, `TESTING.md`, 이 문서에 반영
 
 ## 최근 작업 로그
 
@@ -288,6 +436,7 @@
 - NavigationStack/AppRoute, AppError, 제한적 ViewState, Mock/Preview/Test 데이터 분리를 확정했습니다.
 - iOS 개발 스펙을 역할별 문서로 분리했습니다.
 - `ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md`를 추가했습니다.
+- iOS 프로젝트 생성 전 개발 세션이 바로 착수할 수 있도록 M0-M7 실행 순서와 체크리스트를 구체화했습니다.
 
 ### 2026-06-19
 

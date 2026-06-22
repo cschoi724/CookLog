@@ -63,3 +63,15 @@ CookLog는 개인 요리 기록 앱입니다. 사용자가 요리 중 10초 음�
 4. 기능은 사용자 흐름 단위로 작게 구현합니다.
 5. 빌드 또는 테스트를 실행하고 결과를 남깁니다.
 6. 사용자 변경사항은 임의로 되돌리지 않습니다.
+
+## Git 기준
+
+- Git 운영 기준은 `../../docs/GIT_WORKFLOW.md`를 따릅니다.
+- 작업 전 `git status -sb`로 상태를 확인합니다.
+- 사용자 변경사항이 있으면 임의로 되돌리지 않습니다.
+
+작업 종료 전에는 가능하면 다음 문서를 갱신합니다.
+
+- `apps/android/docs/STATUS.md`
+- `apps/android/docs/DEVELOPMENT_PLAN.md`
+- `apps/android/docs/CHANGELOG.md`
