@@ -4,6 +4,14 @@
 
 ## 2026-06-22
 
+- M5-A `RecipeDetailView`, `RecipeDetailViewModel`, `IngredientListView`, `RecipeStepListView`를 추가했습니다.
+- Recipe Detail placeholder를 실제 조회 화면으로 교체했습니다.
+- `FetchRecipeUseCase`로 recipeID 기반 Recipe 조회를 연결하고 로딩, 없음, 실패 상태를 구현했습니다.
+- Recipe Detail에서 제목, 재료, 조리 순서, 예상 시간, 메모를 표시하게 했습니다.
+- M6 진입점으로 `audioPlayer` route와 `AudioPlayerPlaceholderView`를 추가했습니다.
+- `RecipeDetailViewModelTests`를 추가해 조회 성공, notFound, 조회 실패 상태를 검증할 수 있게 했습니다.
+- M5-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M5-A 변경 후 `xcodebuild test`의 XCTest runner 대기 현상을 재확인하고 `TESTING.md`에 기록했습니다.
 - M4-A `AIReviewView`, `AIReviewViewModel`, `IngredientEditorRowView`, `RecipeStepEditorRowView`를 추가했습니다.
 - Cooking Log의 `AI 정리하기` 버튼을 AI Review 화면으로 연결했습니다.
 - 누적된 STEP Preview 배열을 `GenerateRecipeDraftUseCase`에 전달해 Mock AI 기반 `RecipeDraft`를 생성하게 했습니다.

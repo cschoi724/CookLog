@@ -60,6 +60,12 @@
 		10B1F0032C28F00100000001 /* IngredientEditorRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1F0222C28F00100000001 /* IngredientEditorRowView.swift */; };
 		10B1F0042C28F00100000001 /* RecipeStepEditorRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1F0232C28F00100000001 /* RecipeStepEditorRowView.swift */; };
 		10B1F0052C28F00100000001 /* AIReviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1F0242C28F00100000001 /* AIReviewViewModelTests.swift */; };
+		10B200012C29000100000001 /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200202C29000100000001 /* RecipeDetailView.swift */; };
+		10B200022C29000100000001 /* RecipeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200212C29000100000001 /* RecipeDetailViewModel.swift */; };
+		10B200032C29000100000001 /* IngredientListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200222C29000100000001 /* IngredientListView.swift */; };
+		10B200042C29000100000001 /* RecipeStepListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200232C29000100000001 /* RecipeStepListView.swift */; };
+		10B200052C29000100000001 /* AudioPlayerPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200242C29000100000001 /* AudioPlayerPlaceholderView.swift */; };
+		10B200062C29000100000001 /* RecipeDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200252C29000100000001 /* RecipeDetailViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +135,12 @@
 		10B1F0222C28F00100000001 /* IngredientEditorRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientEditorRowView.swift; sourceTree = "<group>"; };
 		10B1F0232C28F00100000001 /* RecipeStepEditorRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepEditorRowView.swift; sourceTree = "<group>"; };
 		10B1F0242C28F00100000001 /* AIReviewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIReviewViewModelTests.swift; sourceTree = "<group>"; };
+		10B200202C29000100000001 /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
+		10B200212C29000100000001 /* RecipeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewModel.swift; sourceTree = "<group>"; };
+		10B200222C29000100000001 /* IngredientListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListView.swift; sourceTree = "<group>"; };
+		10B200232C29000100000001 /* RecipeStepListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepListView.swift; sourceTree = "<group>"; };
+		10B200242C29000100000001 /* AudioPlayerPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerPlaceholderView.swift; sourceTree = "<group>"; };
+		10B200252C29000100000001 /* RecipeDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,8 +200,21 @@
 				10B1F0302C28F00100000001 /* AIReview */,
 				10B1E0302C28E00100000001 /* CookingLog */,
 				10B1A0652C28A00100000001 /* Home */,
+				10B200302C29000100000001 /* RecipeDetail */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		10B200302C29000100000001 /* RecipeDetail */ = {
+			isa = PBXGroup;
+			children = (
+				10B200242C29000100000001 /* AudioPlayerPlaceholderView.swift */,
+				10B200222C29000100000001 /* IngredientListView.swift */,
+				10B200202C29000100000001 /* RecipeDetailView.swift */,
+				10B200212C29000100000001 /* RecipeDetailViewModel.swift */,
+				10B200232C29000100000001 /* RecipeStepListView.swift */,
+			);
+			path = RecipeDetail;
 			sourceTree = "<group>";
 		};
 		10B1F0302C28F00100000001 /* AIReview */ = {
@@ -243,6 +268,7 @@
 				10B1D0252C28D00100000001 /* HomeViewModelTests.swift */,
 				10B1E0242C28E00100000001 /* CookingLogViewModelTests.swift */,
 				10B1F0242C28F00100000001 /* AIReviewViewModelTests.swift */,
+				10B200252C29000100000001 /* RecipeDetailViewModelTests.swift */,
 			);
 			path = CookLogTests;
 			sourceTree = "<group>";
@@ -474,6 +500,7 @@
 				10B1F0022C28F00100000001 /* AIReviewViewModel.swift in Sources */,
 				10B1D0022C28D00100000001 /* AppEnvironment.swift in Sources */,
 				10B1D0012C28D00100000001 /* AppRoute.swift in Sources */,
+				10B200052C29000100000001 /* AudioPlayerPlaceholderView.swift in Sources */,
 				10B1E0032C28E00100000001 /* CookingLogView.swift in Sources */,
 				10B1E0022C28E00100000001 /* CookingLogViewModel.swift in Sources */,
 				10B1B0062C28B00100000001 /* CookingLogSession.swift in Sources */,
@@ -487,8 +514,11 @@
 				10B1B0162C28B00100000001 /* GenerateRecipeDraftUseCase.swift in Sources */,
 				10B1B0032C28B00100000001 /* Ingredient.swift in Sources */,
 				10B1F0032C28F00100000001 /* IngredientEditorRowView.swift in Sources */,
+				10B200032C29000100000001 /* IngredientListView.swift in Sources */,
 				10B1C0082C28C00100000001 /* SampleRecipes.swift in Sources */,
 				10B1B0082C28B00100000001 /* RecipeDraft.swift in Sources */,
+				10B200012C29000100000001 /* RecipeDetailView.swift in Sources */,
+				10B200022C29000100000001 /* RecipeDetailViewModel.swift in Sources */,
 				10B1C0012C28C00100000001 /* DefaultRecipeRepository.swift in Sources */,
 				10B1B00B2C28B00100000001 /* RecipeGenerationRepository.swift in Sources */,
 				10B1C0032C28C00100000001 /* InMemoryRecipeLocalDataSource.swift in Sources */,
@@ -502,6 +532,7 @@
 				10B1C0052C28C00100000001 /* MockSpeechRecognitionService.swift in Sources */,
 				10B1B0012C28B00100000001 /* RecipeSource.swift in Sources */,
 				10B1F0042C28F00100000001 /* RecipeStepEditorRowView.swift in Sources */,
+				10B200042C29000100000001 /* RecipeStepListView.swift in Sources */,
 				10B1D0052C28D00100000001 /* RecipeRowView.swift in Sources */,
 				10B1E0012C28E00100000001 /* RecordingState.swift in Sources */,
 				10B1B0102C28B00100000001 /* AudioGuideService.swift in Sources */,
@@ -529,6 +560,7 @@
 				10B1D0062C28D00100000001 /* HomeViewModelTests.swift in Sources */,
 				10B1E0052C28E00100000001 /* CookingLogViewModelTests.swift in Sources */,
 				10B1F0052C28F00100000001 /* AIReviewViewModelTests.swift in Sources */,
+				10B200062C29000100000001 /* RecipeDetailViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

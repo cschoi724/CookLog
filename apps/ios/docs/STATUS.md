@@ -4,20 +4,20 @@
 
 ## 현재 상태
 
-- 상태: M4-A Mock AI 기반 AI Review 흐름 완료
+- 상태: M5-A Recipe Detail 실제 화면 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M5. Recipe Detail 착수 준비
+- 현재 이정표: M6. 오디오 플레이어 착수 준비
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. M5-A Recipe Detail 실제 화면 착수
-2. `FetchRecipeUseCase`로 저장된 Recipe 조회 연결
-3. Recipe Detail placeholder를 실제 상세 화면으로 교체
-4. 오디오 가이드 시작 버튼을 M6 Audio Player 진입점으로 준비
+1. M6-A Mock 또는 TTS 기반 Audio Player 흐름 착수
+2. `AudioPlayerViewModel`에서 현재 단계 index와 이전/다음/다시 듣기 동작 구현
+3. `PlayRecipeStepUseCase`와 `AudioGuideService`를 실제 화면에 연결
+4. `audioPlayer` route의 placeholder를 실제 Audio Player 화면으로 교체
 5. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
 
 ## 최근 작업
@@ -83,6 +83,15 @@
 - `AIReviewViewModelTests`를 추가해 draft 로드, 수정 상태 반영, 저장, AI 생성 실패 상태를 검증할 수 있게 했습니다.
 - M4-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
 - M4-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
+- M5-A `RecipeDetailView`, `RecipeDetailViewModel`, `IngredientListView`, `RecipeStepListView`를 추가했습니다.
+- Recipe Detail placeholder를 실제 조회 화면으로 교체했습니다.
+- `FetchRecipeUseCase`로 recipeID 기반 Recipe 조회를 연결했습니다.
+- Recipe Detail에서 제목, 재료, 조리 순서, 예상 시간, 메모를 표시하게 했습니다.
+- `오디오 가이드 시작` 버튼과 M6용 `audioPlayer` route, `AudioPlayerPlaceholderView`를 추가했습니다.
+- 삭제/편집 기능은 M5-A 범위에서 제외하고 추후 필요 여부만 문서상 유지합니다.
+- `RecipeDetailViewModelTests`를 추가해 recipeID 조회, 없음 상태, 조회 실패 상태를 검증할 수 있게 했습니다.
+- M5-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M5-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 
 ## 열린 질문
 

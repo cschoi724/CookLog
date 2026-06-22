@@ -45,6 +45,7 @@
 - M2-A: HomeViewModel 샘플 레시피 로드와 빈 목록 상태 테스트
 - M3-A: CookingLogViewModel 초기 상태, Mock STT 기록, order 증가, 실패 상태 테스트
 - M4-A: AIReviewViewModel draft 로드, 수정 상태, 저장, AI 생성 실패 상태 테스트
+- M5-A: RecipeDetailViewModel recipeID 조회, notFound 상태, 조회 실패 상태 테스트
 
 ## 5. 빌드 확인
 
@@ -280,3 +281,46 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
 - 2026-06-22 M4-A 변경 후에는 약 76초 대기 후 수동 중단했습니다.
 - 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-03-00-+0900.xcresult`
+
+## 10. M5-A 검증 기록
+
+M5-A Recipe Detail 실제 화면, FetchRecipeUseCase 조회 연결, 오디오 플레이어 진입점 추가 후 다음을 확인했습니다.
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 성공
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 성공
+- `RecipeDetailViewModelTests`가 테스트 번들에 포함되는 것을 확인했습니다.
+
+추가한 테스트:
+
+- `RecipeDetailViewModelTests`
+- recipeID로 Recipe를 조회하는지 확인
+- Recipe가 없을 때 notFound 상태가 되는지 확인
+- 조회 실패 시 `errorMessage`가 설정되는지 확인
+
+테스트 실행:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+```
+
+현재 결과:
+
+- M5-A 변경 후에도 테스트 실행 단계에서 기존과 동일하게 대기합니다.
+- `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
+- 2026-06-22 M5-A 변경 후에는 약 60초 대기 후 수동 중단했습니다.
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-28-03-+0900.xcresult`

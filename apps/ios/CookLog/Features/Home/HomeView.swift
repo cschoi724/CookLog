@@ -112,30 +112,6 @@ struct HomeView: View {
     }
 }
 
-struct RecipeDetailPlaceholderView: View {
-    let recipeID: UUID
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("레시피 상세")
-                .font(.title2)
-                .fontWeight(.semibold)
-
-            Text("레시피 상세 화면은 M5에서 구현합니다.")
-                .font(.body)
-                .foregroundStyle(.secondary)
-
-            Text(recipeID.uuidString)
-                .font(.caption)
-                .foregroundStyle(.tertiary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(20)
-        .background(Color(.systemGroupedBackground))
-        .navigationTitle("레시피")
-    }
-}
-
 #Preview {
     NavigationStack {
         HomeView(
