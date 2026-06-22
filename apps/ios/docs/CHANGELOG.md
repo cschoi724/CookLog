@@ -4,6 +4,14 @@
 
 ## 2026-06-22
 
+- M6-A `AudioPlayerView`, `AudioPlayerViewModel`, `AudioPlayerControlBarView`를 추가했습니다.
+- `AudioPlayerPlaceholderView`를 제거하고 `audioPlayer` route를 실제 오디오 플레이어 화면으로 교체했습니다.
+- 저장된 Recipe를 recipeID로 조회해 현재 단계 번호와 본문을 표시하게 했습니다.
+- 이전, 다음, 다시 듣기, 재생, 정지 동작을 `PlayRecipeStepUseCase`와 `AudioGuideService`에 연결했습니다.
+- 첫 단계 이전 버튼과 마지막 단계 다음 버튼 비활성화, step 없는 recipe 재생 불가 상태, 화면 이탈 시 stop 호출을 구현했습니다.
+- `AudioPlayerViewModelTests`를 추가해 초기 로드, 단계 이동, 경계 상태, play/replay/stop 호출, 빈 step, 조회 실패 상태를 검증할 수 있게 했습니다.
+- M6-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M6-A 변경 후 `xcodebuild test`의 XCTest runner 대기 현상을 재확인하고 `TESTING.md`에 기록했습니다.
 - M5-A `RecipeDetailView`, `RecipeDetailViewModel`, `IngredientListView`, `RecipeStepListView`를 추가했습니다.
 - Recipe Detail placeholder를 실제 조회 화면으로 교체했습니다.
 - `FetchRecipeUseCase`로 recipeID 기반 Recipe 조회를 연결하고 로딩, 없음, 실패 상태를 구현했습니다.

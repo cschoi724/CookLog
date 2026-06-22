@@ -4,20 +4,20 @@
 
 ## 현재 상태
 
-- 상태: M5-A Recipe Detail 실제 화면 완료
+- 상태: M6-A Mock 기반 오디오 플레이어 화면 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M6. 오디오 플레이어 착수 준비
+- 현재 이정표: M7. 로컬 영구 저장 착수 준비
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. M6-A Mock 또는 TTS 기반 Audio Player 흐름 착수
-2. `AudioPlayerViewModel`에서 현재 단계 index와 이전/다음/다시 듣기 동작 구현
-3. `PlayRecipeStepUseCase`와 `AudioGuideService`를 실제 화면에 연결
-4. `audioPlayer` route의 placeholder를 실제 Audio Player 화면으로 교체
+1. M7 SwiftData 기반 로컬 영구 저장 착수
+2. 도메인 모델과 SwiftData 저장 모델 Mapper 작성
+3. `SwiftDataRecipeLocalDataSource` 작성
+4. `AppEnvironment`에서 Mock 저장소와 실제 저장소 교체 지점 정리
 5. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
 
 ## 최근 작업
@@ -92,6 +92,15 @@
 - `RecipeDetailViewModelTests`를 추가해 recipeID 조회, 없음 상태, 조회 실패 상태를 검증할 수 있게 했습니다.
 - M5-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
 - M5-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
+- M6-A `AudioPlayerView`, `AudioPlayerViewModel`, `AudioPlayerControlBarView`를 추가했습니다.
+- `AudioPlayerPlaceholderView`를 제거하고 `audioPlayer` route를 실제 Audio Player 화면으로 교체했습니다.
+- recipeID 기반 Recipe 조회, 현재 단계 index, 이전/다음/다시 듣기/재생/정지 동작을 구현했습니다.
+- `PlayRecipeStepUseCase`와 `AudioGuideService`를 Audio Player에 연결했습니다.
+- 첫 단계 이전 버튼과 마지막 단계 다음 버튼 비활성화, step 없는 recipe 재생 불가 상태를 구현했습니다.
+- 화면 이탈 시 `AudioGuideService.stop()`을 호출하도록 처리했습니다.
+- `AudioPlayerViewModelTests`를 추가해 초기 로드, 단계 이동, 경계 상태, play/replay/stop 호출, 빈 step, 조회 실패 상태를 검증할 수 있게 했습니다.
+- M6-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M6-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 
 ## 열린 질문
 

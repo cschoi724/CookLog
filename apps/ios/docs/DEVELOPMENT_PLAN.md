@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: M5-A Recipe Detail 실제 화면 완료
+- 상태: M6-A Mock 기반 오디오 플레이어 화면 완료
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
 - scheme: `CookLog`
@@ -23,9 +23,9 @@
 1. `git status -sb`로 작업트리 상태를 확인합니다.
 2. `docs/GIT_WORKFLOW.md`를 확인합니다.
 3. `apps/ios/agents.md`를 확인합니다.
-4. 이 문서의 `현재 상태 요약`과 `M6. 오디오 플레이어`를 확인합니다.
+4. 이 문서의 `현재 상태 요약`과 `M7. 로컬 영구 저장`을 확인합니다.
 5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
-6. M6-A Mock 또는 TTS 기반 Audio Player 흐름부터 시작합니다.
+6. M7 SwiftData 기반 로컬 영구 저장부터 시작합니다.
 7. 변경 후 기본 빌드와 가능한 테스트를 확인합니다.
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
 
@@ -372,20 +372,28 @@ M5-A 검증 결과:
 
 체크리스트:
 
-- [ ] `AudioPlayerViewModel` 작성
-- [ ] `AudioGuideService` 구현 작성
+- [x] `AudioPlayerViewModel` 작성
+- [x] `AudioGuideService` 구현 작성
 - [ ] `AVSpeechSynthesizer` 기반 재생 작성
-- [ ] Audio Player 화면 작성
-- [ ] 현재 단계 표시
-- [ ] 현재 단계 본문 표시
-- [ ] 재생 버튼 작성
-- [ ] 정지 버튼 작성
-- [ ] 이전 단계 버튼 작성
-- [ ] 다음 단계 버튼 작성
-- [ ] 현재 단계 다시 듣기 버튼 작성
-- [ ] 마지막 단계 처리
-- [ ] 화면 이탈 시 재생 정리
-- [ ] 단계 이동 로직 단위 테스트 작성
+- [x] Audio Player 화면 작성
+- [x] 현재 단계 표시
+- [x] 현재 단계 본문 표시
+- [x] 재생 버튼 작성
+- [x] 정지 버튼 작성
+- [x] 이전 단계 버튼 작성
+- [x] 다음 단계 버튼 작성
+- [x] 현재 단계 다시 듣기 버튼 작성
+- [x] 마지막 단계 처리
+- [x] 화면 이탈 시 재생 정리
+- [x] 단계 이동 로직 단위 테스트 작성
+
+M6-A 검증 결과:
+
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test`: XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-41-02-+0900.xcresult`
+- 실제 TTS는 이번 단계 범위에서 제외했고, 기존 `MockAudioGuideService` 기반으로 플레이어 흐름을 완성했습니다.
 
 완료 기준:
 
@@ -468,15 +476,15 @@ M5-A 검증 결과:
 
 ## 현재 진행 위치
 
-현재 이정표: M6. 오디오 플레이어
+현재 이정표: M7. 로컬 영구 저장
 
 다음 작업:
 
-1. `AudioPlayerViewModel` 작성
-2. `audioPlayer` route의 placeholder를 실제 Audio Player 화면으로 교체
-3. 현재 단계 index 상태 관리
-4. 이전, 재생/정지, 다음, 다시 듣기 동작 구현
-5. `PlayRecipeStepUseCase`와 `AudioGuideService` 연결
+1. SwiftData 저장 모델 작성
+2. 도메인 모델과 SwiftData 모델 Mapper 작성
+3. `SwiftDataRecipeLocalDataSource` 작성
+4. Mock 저장소와 실제 저장소 교체 지점 정리
+5. 저장, 조회, 앱 재실행 후 유지 흐름 확인
 
 ## 최근 작업 로그
 
@@ -506,6 +514,13 @@ M5-A 검증 결과:
 - `RecipeDetailViewModelTests`를 추가해 조회 성공, notFound, 실패 상태를 검증할 수 있게 했습니다.
 - M5-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
 - M5-A 변경 후 `xcodebuild test`는 XCTest runner 대기 현상으로 수동 중단했습니다.
+- M6-A Mock 기반 Audio Player 화면을 추가하고 placeholder를 교체했습니다.
+- recipeID로 저장된 Recipe를 조회해 현재 단계 번호와 본문을 표시하게 했습니다.
+- 이전, 다음, 다시 듣기, 재생, 정지 동작을 `PlayRecipeStepUseCase`와 `AudioGuideService`에 연결했습니다.
+- 첫/마지막 단계 버튼 비활성화, step 없는 recipe 재생 불가 상태, 화면 이탈 시 stop 호출을 구현했습니다.
+- `AudioPlayerViewModelTests`를 추가해 초기 로드, 단계 이동, 경계 상태, play/replay/stop 호출, 빈 step, 조회 실패 상태를 검증할 수 있게 했습니다.
+- M6-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M6-A 변경 후 `xcodebuild test`는 XCTest runner 대기 현상으로 수동 중단했습니다.
 
 ### 2026-06-19
 

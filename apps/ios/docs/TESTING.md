@@ -46,6 +46,7 @@
 - M3-A: CookingLogViewModel 초기 상태, Mock STT 기록, order 증가, 실패 상태 테스트
 - M4-A: AIReviewViewModel draft 로드, 수정 상태, 저장, AI 생성 실패 상태 테스트
 - M5-A: RecipeDetailViewModel recipeID 조회, notFound 상태, 조회 실패 상태 테스트
+- M6-A: AudioPlayerViewModel 초기 로드, 단계 이동, 경계 상태, play/replay/stop 호출, 빈 step, 조회 실패 상태 테스트
 
 ## 5. 빌드 확인
 
@@ -324,3 +325,52 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
 - 2026-06-22 M5-A 변경 후에는 약 60초 대기 후 수동 중단했습니다.
 - 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-28-03-+0900.xcresult`
+
+## 11. M6-A 검증 기록
+
+M6-A Mock 기반 Audio Player 화면, 단계 이동, 재생/정지 흐름 추가 후 다음을 확인했습니다.
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 성공
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 성공
+- `AudioPlayerViewModelTests`가 테스트 번들에 포함되는 것을 확인했습니다.
+
+추가한 테스트:
+
+- `AudioPlayerViewModelTests`
+- 초기 로드 시 첫 step으로 초기화되는지 확인
+- 다음 단계 이동 확인
+- 이전 단계 이동 확인
+- 첫 단계에서 이전 이동이 막히는지 확인
+- 마지막 단계에서 다음 이동이 막히는지 확인
+- play/replay/stop 호출이 `AudioGuideService`에 전달되는지 확인
+- step 없는 recipe가 재생 불가 상태가 되는지 확인
+- recipe 조회 실패 시 `errorMessage`가 설정되는지 확인
+
+테스트 실행:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+```
+
+현재 결과:
+
+- M6-A 변경 후에도 테스트 실행 단계에서 기존과 동일하게 대기합니다.
+- `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
+- `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
+- 2026-06-22 M6-A 변경 후에는 약 60초 대기 후 수동 중단했습니다.
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-41-02-+0900.xcresult`

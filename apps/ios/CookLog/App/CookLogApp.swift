@@ -53,7 +53,14 @@ struct CookLogApp: App {
                             }
                         )
                     case .audioPlayer(let recipeID):
-                        AudioPlayerPlaceholderView(recipeID: recipeID)
+                        AudioPlayerView(
+                            viewModel: AudioPlayerViewModel(
+                                recipeID: recipeID,
+                                fetchRecipeUseCase: environment.fetchRecipeUseCase,
+                                playRecipeStepUseCase: environment.playRecipeStepUseCase,
+                                audioGuideService: environment.audioGuideService
+                            )
+                        )
                     }
                 }
             }

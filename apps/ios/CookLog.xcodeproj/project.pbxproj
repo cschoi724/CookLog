@@ -64,8 +64,11 @@
 		10B200022C29000100000001 /* RecipeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200212C29000100000001 /* RecipeDetailViewModel.swift */; };
 		10B200032C29000100000001 /* IngredientListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200222C29000100000001 /* IngredientListView.swift */; };
 		10B200042C29000100000001 /* RecipeStepListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200232C29000100000001 /* RecipeStepListView.swift */; };
-		10B200052C29000100000001 /* AudioPlayerPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200242C29000100000001 /* AudioPlayerPlaceholderView.swift */; };
 		10B200062C29000100000001 /* RecipeDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B200252C29000100000001 /* RecipeDetailViewModelTests.swift */; };
+		10B201012C29100100000001 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B201202C29100100000001 /* AudioPlayerView.swift */; };
+		10B201022C29100100000001 /* AudioPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B201212C29100100000001 /* AudioPlayerViewModel.swift */; };
+		10B201032C29100100000001 /* AudioPlayerControlBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B201222C29100100000001 /* AudioPlayerControlBarView.swift */; };
+		10B201042C29100100000001 /* AudioPlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B201232C29100100000001 /* AudioPlayerViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,8 +142,11 @@
 		10B200212C29000100000001 /* RecipeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewModel.swift; sourceTree = "<group>"; };
 		10B200222C29000100000001 /* IngredientListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListView.swift; sourceTree = "<group>"; };
 		10B200232C29000100000001 /* RecipeStepListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepListView.swift; sourceTree = "<group>"; };
-		10B200242C29000100000001 /* AudioPlayerPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerPlaceholderView.swift; sourceTree = "<group>"; };
 		10B200252C29000100000001 /* RecipeDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewModelTests.swift; sourceTree = "<group>"; };
+		10B201202C29100100000001 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
+		10B201212C29100100000001 /* AudioPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModel.swift; sourceTree = "<group>"; };
+		10B201222C29100100000001 /* AudioPlayerControlBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerControlBarView.swift; sourceTree = "<group>"; };
+		10B201232C29100100000001 /* AudioPlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				10B1F0302C28F00100000001 /* AIReview */,
+				10B201302C29100100000001 /* AudioPlayer */,
 				10B1E0302C28E00100000001 /* CookingLog */,
 				10B1A0652C28A00100000001 /* Home */,
 				10B200302C29000100000001 /* RecipeDetail */,
@@ -208,13 +215,22 @@
 		10B200302C29000100000001 /* RecipeDetail */ = {
 			isa = PBXGroup;
 			children = (
-				10B200242C29000100000001 /* AudioPlayerPlaceholderView.swift */,
 				10B200222C29000100000001 /* IngredientListView.swift */,
 				10B200202C29000100000001 /* RecipeDetailView.swift */,
 				10B200212C29000100000001 /* RecipeDetailViewModel.swift */,
 				10B200232C29000100000001 /* RecipeStepListView.swift */,
 			);
 			path = RecipeDetail;
+			sourceTree = "<group>";
+		};
+		10B201302C29100100000001 /* AudioPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				10B201222C29100100000001 /* AudioPlayerControlBarView.swift */,
+				10B201202C29100100000001 /* AudioPlayerView.swift */,
+				10B201212C29100100000001 /* AudioPlayerViewModel.swift */,
+			);
+			path = AudioPlayer;
 			sourceTree = "<group>";
 		};
 		10B1F0302C28F00100000001 /* AIReview */ = {
@@ -269,6 +285,7 @@
 				10B1E0242C28E00100000001 /* CookingLogViewModelTests.swift */,
 				10B1F0242C28F00100000001 /* AIReviewViewModelTests.swift */,
 				10B200252C29000100000001 /* RecipeDetailViewModelTests.swift */,
+				10B201232C29100100000001 /* AudioPlayerViewModelTests.swift */,
 			);
 			path = CookLogTests;
 			sourceTree = "<group>";
@@ -500,7 +517,9 @@
 				10B1F0022C28F00100000001 /* AIReviewViewModel.swift in Sources */,
 				10B1D0022C28D00100000001 /* AppEnvironment.swift in Sources */,
 				10B1D0012C28D00100000001 /* AppRoute.swift in Sources */,
-				10B200052C29000100000001 /* AudioPlayerPlaceholderView.swift in Sources */,
+				10B201032C29100100000001 /* AudioPlayerControlBarView.swift in Sources */,
+				10B201012C29100100000001 /* AudioPlayerView.swift in Sources */,
+				10B201022C29100100000001 /* AudioPlayerViewModel.swift in Sources */,
 				10B1E0032C28E00100000001 /* CookingLogView.swift in Sources */,
 				10B1E0022C28E00100000001 /* CookingLogViewModel.swift in Sources */,
 				10B1B0062C28B00100000001 /* CookingLogSession.swift in Sources */,
@@ -561,6 +580,7 @@
 				10B1E0052C28E00100000001 /* CookingLogViewModelTests.swift in Sources */,
 				10B1F0052C28F00100000001 /* AIReviewViewModelTests.swift in Sources */,
 				10B200062C29000100000001 /* RecipeDetailViewModelTests.swift in Sources */,
+				10B201042C29100100000001 /* AudioPlayerViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,7 @@ struct AppEnvironment {
     let generateRecipeDraftUseCase: GenerateRecipeDraftUseCase
     let playRecipeStepUseCase: PlayRecipeStepUseCase
     let speechRecognitionService: SpeechRecognitionService
+    let audioGuideService: AudioGuideService
 
     static func mock(recipes: [Recipe] = SampleRecipes.all) -> AppEnvironment {
         let recipeLocalDataSource = InMemoryRecipeLocalDataSource(recipes: recipes)
@@ -26,7 +27,8 @@ struct AppEnvironment {
             addStepPreviewUseCase: AddStepPreviewUseCase(),
             generateRecipeDraftUseCase: GenerateRecipeDraftUseCase(recipeGenerationRepository: recipeGenerationRepository),
             playRecipeStepUseCase: PlayRecipeStepUseCase(audioGuideService: audioGuideService),
-            speechRecognitionService: speechRecognitionService
+            speechRecognitionService: speechRecognitionService,
+            audioGuideService: audioGuideService
         )
     }
 }
