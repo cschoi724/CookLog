@@ -9,9 +9,12 @@
 - 작업 범위는 기본적으로 `apps/ios/` 안으로 제한합니다.
 - 루트 문서나 제품 문서를 수정해야 하면 변경 이유를 명확히 남깁니다.
 - 루트 `agents.md`와 `docs/product/CookLog_PRD_v2.md`를 제품 기준으로 삼습니다.
-- iOS 개발 환경과 기술 선택은 `docs/development/CookLog_iOS_Development_Environment.md`를 우선 참고합니다.
-- 개발 진행 순서와 체크리스트는 `docs/development/CookLog_iOS_Development_Plan.md`를 계속 업데이트하며 따릅니다.
-- 기술 결정이 생기면 `docs/development/CookLog_iOS_Decision_Log.md`에 기록합니다.
+- iOS 개발 환경과 기술 선택은 `apps/ios/docs/DEVELOPMENT_SPEC.md`를 우선 참고합니다.
+- 아키텍처, 도메인 모델, 저장소, 서비스, 내비게이션, 테스트 상세는 `apps/ios/docs/`의 역할별 문서를 참고합니다.
+- 개발 진행 순서와 체크리스트는 `apps/ios/docs/DEVELOPMENT_PLAN.md`를 계속 업데이트하며 따릅니다.
+- 현재 상태와 다음 작업은 `apps/ios/docs/STATUS.md`에 기록합니다.
+- 기술 결정이 생기면 `apps/ios/docs/DECISIONS.md`에 기록합니다.
+- 변경 기록은 `apps/ios/docs/CHANGELOG.md`에 기록합니다.
 - 구현 중 제품 판단이 필요한 경우 현재 MVP 범위를 우선합니다.
 
 ## 제품 기준
@@ -111,16 +114,25 @@ Home -> 저장된 레시피 -> 오디오 가이드 시작
 
 - 언어: Swift
 - UI: SwiftUI
-- 아키텍처: 가벼운 MVVM
-- 최소 OS 버전: 프로젝트 생성 시 최신 안정 Xcode 기준으로 과도하게 낮추지 않습니다.
-- 저장소: 초기 MVP는 로컬 저장을 우선합니다.
-- AI/STT/TTS: 실제 연동 전에도 교체 가능한 서비스 인터페이스로 분리합니다.
+- 아키텍처: Feature 중심 MVVM + UseCase + Repository/DataSource
+- 최소 OS 버전: iOS 17 이상
+- 저장소: SwiftData 기반 로컬 저장을 우선합니다.
+- AI/STT/TTS: 실제 연동 전에도 교체 가능한 Repository/DataSource/Service 인터페이스로 분리합니다.
 
-초기에는 네트워크나 계정 기능보다 앱 내부 흐름이 동작하는 것을 우선합니다.
+초기에는 네트워크나 계정 기능보다 앱 내부 흐름이 동작하는 것을 우선합니다. DI 라이브러리는 사용하지 않고 `AppEnvironment`와 생성자 주입으로 의존성을 조립합니다.
 
-자세한 개발 환경 기준은 `docs/development/CookLog_iOS_Development_Environment.md`를 따릅니다.
+자세한 개발 환경 기준은 `apps/ios/docs/DEVELOPMENT_SPEC.md`를 따릅니다.
 
-개발 진행 중에는 `docs/development/CookLog_iOS_Development_Plan.md`의 현재 이정표, 체크리스트, 최근 작업 로그를 업데이트합니다.
+상세 구현 기준은 다음 문서를 따릅니다.
+
+- `apps/ios/docs/ARCHITECTURE.md`
+- `apps/ios/docs/DATA_MODEL.md`
+- `apps/ios/docs/PERSISTENCE.md`
+- `apps/ios/docs/NAVIGATION.md`
+- `apps/ios/docs/SERVICES.md`
+- `apps/ios/docs/TESTING.md`
+
+개발 진행 중에는 `apps/ios/docs/STATUS.md`와 `apps/ios/docs/DEVELOPMENT_PLAN.md`의 현재 이정표, 체크리스트, 최근 작업 로그를 업데이트합니다.
 
 ## 권장 모듈 구조
 
@@ -129,13 +141,16 @@ Home -> 저장된 레시피 -> 오디오 가이드 시작
 ```text
 apps/ios/
 ├── agents.md
+├── docs/
+├── CookLog.xcodeproj
 ├── CookLog/
 │   ├── App/
-│   ├── Models/
+│   ├── Domain/
+│   ├── Data/
 │   ├── Services/
-│   ├── Stores/
-│   ├── ViewModels/
-│   ├── Views/
+│   ├── Features/
+│   ├── Support/
+│   ├── PreviewSupport/
 │   └── Resources/
 └── CookLogTests/
 ```
@@ -192,8 +207,8 @@ apps/ios/
 실제 API 연동 전에도 다음 서비스를 교체 가능하게 둡니다.
 
 - `SpeechRecognitionService`: 음성 입력을 텍스트로 변환
-- `RecipeAIService`: STEP Preview 배열을 레시피 구조로 변환
-- `RecipeStore`: 레시피 저장, 조회
+- `RecipeGenerationRepository`: STEP Preview 배열을 레시피 초안으로 변환
+- `RecipeRepository`: 레시피 저장, 조회
 - `AudioGuideService`: 단계별 안내 재생
 
 초기 MVP에서는 Mock 또는 로컬 구현을 사용해도 됩니다.
@@ -212,10 +227,12 @@ apps/ios/
 
 1. 작업 전 `git status -sb`를 확인합니다.
 2. `docs/product/`와 이 파일을 읽고 현재 범위를 확인합니다.
-3. iOS 프로젝트가 없다면 `apps/ios/` 안에 생성합니다.
-4. 기능은 사용자 흐름 단위로 작게 구현합니다.
-5. 빌드 또는 테스트를 실행하고 결과를 남깁니다.
-6. 사용자 변경사항은 임의로 되돌리지 않습니다.
+3. `apps/ios/docs/STATUS.md`와 `apps/ios/docs/DEVELOPMENT_PLAN.md`를 확인합니다.
+4. 작업 주제에 맞는 상세 문서를 확인합니다.
+5. iOS 프로젝트가 없다면 `apps/ios/` 안에 생성합니다.
+6. 기능은 사용자 흐름 단위로 작게 구현합니다.
+7. 빌드 또는 테스트를 실행하고 결과를 남깁니다.
+8. 사용자 변경사항은 임의로 되돌리지 않습니다.
 
 ## Git 기준
 

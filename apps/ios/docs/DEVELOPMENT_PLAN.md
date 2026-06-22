@@ -4,15 +4,15 @@
 
 작성일: 2026-06-19
 최종 업데이트: 2026-06-22
-기준 PRD: `docs/product/CookLog_PRD_v2.md`
+기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 
 ## 현재 상태 요약
 
 - 상태: PRD v2 반영 완료, 개발 준비 단계
 - iOS 프로젝트: 아직 생성 전
 - 현재 로컬 Xcode: 15.2
-- 권장 구현: SwiftUI + MVVM + 로컬 저장 + STT 기반 STEP Preview + AI 정리 시점 호출
-- 우선 참고 문서: `docs/product/CookLog_PRD_v2.md`
+- 권장 구현: SwiftUI + Feature 중심 MVVM + UseCase + Repository/DataSource + 로컬 저장 + STT 기반 STEP Preview + AI 정리 시점 호출
+- 우선 참고 문서: `../../../docs/product/CookLog_PRD_v2.md`
 
 ## 개발 원칙
 
@@ -47,8 +47,8 @@
 
 체크리스트:
 
-- [ ] Xcode 버전 기준 확정
-- [ ] 최소 iOS 버전 확정
+- [x] Xcode 버전 기준 확정
+- [x] 최소 iOS 버전 확정
 - [ ] `apps/ios/` 안에 iOS 프로젝트 생성
 - [ ] SwiftUI App 템플릿 적용
 - [ ] Unit Test 타겟 포함
@@ -75,10 +75,13 @@
 - [ ] `RecipeStep` 모델 작성
 - [ ] `AIReviewResult` 모델 작성
 - [ ] `SpeechRecognitionService` 프로토콜 작성
-- [ ] `RecipeAIService` 프로토콜 작성
-- [ ] `RecipeStore` 프로토콜 작성
+- [ ] `RecipeGenerationRepository` 프로토콜 작성
+- [ ] `RecipeRepository` 프로토콜 작성
+- [ ] `RecipeLocalDataSource` 프로토콜 작성
+- [ ] `RecipeAIDataSource` 프로토콜 작성
 - [ ] `AudioGuideService` 프로토콜 작성
-- [ ] Mock 서비스 작성
+- [ ] 주요 UseCase 작성
+- [ ] Mock Repository/DataSource/Service 작성
 - [ ] 샘플 STEP Preview와 샘플 Recipe 데이터 작성
 - [ ] STEP Preview 추가 로직 단위 테스트 작성
 
@@ -98,7 +101,7 @@
 - [ ] 레시피 목록 화면 작성
 - [ ] 레시피 상세 화면으로 이동 연결
 - [ ] 빈 상태 UI 작성
-- [ ] 검색을 MVP에 포함할지 보류/확정
+- [x] 검색을 MVP에 포함할지 보류/확정
 
 완료 기준:
 
@@ -118,7 +121,7 @@
 - [ ] STEP Preview 리스트 작성
 - [ ] 10초 기록 반복 동작 작성
 - [ ] 기록 실패 상태 작성
-- [ ] STT 실패 시 재시도 또는 임시 텍스트 fallback 정책 결정
+- [x] STT 실패 시 텍스트 fallback 미제공 정책 반영
 - [ ] AI 정리하기 버튼 작성
 - [ ] STEP Preview가 없을 때 AI 정리하기 비활성화
 
@@ -132,7 +135,8 @@
 
 체크리스트:
 
-- [ ] `RecipeAIService` Mock 구현 작성
+- [ ] `RecipeGenerationRepository` Mock 경로 작성
+- [ ] `MockRecipeAIDataSource` 작성
 - [ ] 전체 STEP Preview를 AI Review 입력으로 전달
 - [ ] AI Review 화면 작성
 - [ ] 레시피 제목 표시/수정
@@ -199,9 +203,10 @@
 
 체크리스트:
 
-- [ ] SwiftData 적용 가능 여부 확정
+- [x] SwiftData 적용 가능 여부 확정
 - [ ] SwiftData 모델 또는 저장 모델 작성
-- [ ] `RecipeStore` 실제 구현 작성
+- [ ] `RecipeRepository` 실제 구현 작성
+- [ ] `SwiftDataRecipeLocalDataSource` 작성
 - [ ] Mock 저장소와 실제 저장소 교체 지점 정리
 - [ ] 저장, 조회 동작 확인
 - [ ] 앱 재실행 후 데이터 유지 확인
@@ -242,7 +247,7 @@
 - [ ] `git status -sb` 확인
 - [ ] 루트 `agents.md` 확인
 - [ ] `apps/ios/agents.md` 확인
-- [ ] `docs/product/CookLog_PRD_v2.md` 확인
+- [ ] `../../../docs/product/CookLog_PRD_v2.md` 확인
 - [ ] 이 개발 계획 문서 확인
 - [ ] 최근 작업 로그 확인
 - [ ] 현재 이정표와 다음 작업 확인
@@ -264,11 +269,9 @@
 
 다음 작업:
 
-1. Xcode 버전 기준 확정
-2. 최소 iOS 버전 확정
-3. `apps/ios/`에 SwiftUI iOS 프로젝트 생성
-4. 기본 빌드와 시뮬레이터 실행 확인
-5. 실제 프로젝트 구조를 `apps/ios/agents.md`에 반영
+1. `apps/ios/`에 SwiftUI iOS 프로젝트 생성
+2. 기본 빌드와 시뮬레이터 실행 확인
+3. 실제 프로젝트 구조를 `apps/ios/agents.md`에 반영
 
 ## 최근 작업 로그
 
@@ -277,30 +280,42 @@
 - `docs/product/CookLog PRD v2.pdf`를 기준으로 PRD v2 Markdown 문서를 추가했습니다.
 - 제품 문서, MVP 범위, 사용자 흐름, 와이어프레임, 로드맵을 PRD v2 기준으로 업데이트했습니다.
 - iOS 개발 계획을 10초 음성 기록, STEP Preview, A-Lite Strategy, AI Review 중심으로 재정리했습니다.
+- iOS 개발 문서를 `apps/ios/docs/` 구조로 이동했습니다.
+- Xcode 15.2, iOS 17 이상, SwiftData, 검색 MVP 제외를 확정했습니다.
+- STT 실패 fallback 정책과 실제 AI API 연동 방향을 확정했습니다.
+- 프로젝트 직접 생성, DI 라이브러리 미사용, 도메인 모델과 SwiftData 모델 분리를 확정했습니다.
+- Feature 중심 MVVM + UseCase + Repository/DataSource 구조를 확정했습니다.
+- NavigationStack/AppRoute, AppError, 제한적 ViewState, Mock/Preview/Test 데이터 분리를 확정했습니다.
+- iOS 개발 스펙을 역할별 문서로 분리했습니다.
+- `ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md`를 추가했습니다.
 
 ### 2026-06-19
 
 - 루트 `agents.md`를 전체 서비스 관리 에이전트 기준으로 재정리했습니다.
 - `apps/ios/agents.md`를 추가해 iOS 개발 에이전트 기준을 만들었습니다.
-- `docs/development/CookLog_iOS_Development_Environment.md`를 추가해 iOS 개발 환경 권장안을 정리했습니다.
+- iOS 개발 환경 권장안을 정리했습니다.
 - 이 개발 계획 문서를 추가했습니다.
 
 ## 열린 질문
 
-- 실제 프로젝트 생성 시 Xcode 15.2를 그대로 사용할지, 최신 안정 Xcode로 업데이트한 뒤 시작할지 결정이 필요합니다.
-- 최소 iOS 버전을 iOS 17 이상으로 확정할지, iOS 16 지원을 고려할지 결정이 필요합니다.
-- 로컬 저장을 SwiftData로 바로 시작할지, 프로젝트 생성 환경에 따라 JSON 저장으로 먼저 시작할지 결정이 필요합니다.
-- STT 실패 시 텍스트 fallback을 개발용으로만 허용할지, 사용자 기능으로 노출할지 결정이 필요합니다.
-- 레시피 검색을 MVP에 포함할지 PRD v2 기준으로 재확정이 필요합니다.
+- 현재 열린 질문 없음
 
 ## 관련 문서
 
-- `docs/product/CookLog_PRD_v2.md`
-- `docs/product/CookLog_PRODUCT.md`
-- `docs/product/CookLog_MVP_SCOPE.md`
-- `docs/product/CookLog_USER_FLOW.md`
-- `docs/product/CookLog_WIREFRAME.md`
-- `docs/product/CookLog_ROADMAP.md`
-- `docs/development/CookLog_iOS_Development_Environment.md`
-- `docs/development/CookLog_iOS_Decision_Log.md`
+- `../../../docs/product/CookLog_PRD_v2.md`
+- `../../../docs/product/CookLog_PRODUCT.md`
+- `../../../docs/product/CookLog_MVP_SCOPE.md`
+- `../../../docs/product/CookLog_USER_FLOW.md`
+- `../../../docs/product/CookLog_WIREFRAME.md`
+- `../../../docs/product/CookLog_ROADMAP.md`
+- `apps/ios/docs/STATUS.md`
+- `apps/ios/docs/DEVELOPMENT_SPEC.md`
+- `apps/ios/docs/ARCHITECTURE.md`
+- `apps/ios/docs/DATA_MODEL.md`
+- `apps/ios/docs/PERSISTENCE.md`
+- `apps/ios/docs/NAVIGATION.md`
+- `apps/ios/docs/SERVICES.md`
+- `apps/ios/docs/TESTING.md`
+- `apps/ios/docs/DECISIONS.md`
+- `apps/ios/docs/CHANGELOG.md`
 - `apps/ios/agents.md`

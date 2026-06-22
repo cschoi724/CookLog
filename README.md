@@ -2,7 +2,7 @@
 
 CookLog는 요리 중 10초 음성 기록을 반복하면 앱이 STEP Preview를 쌓고, AI가 레시피로 정리해주며, 다음에는 오디오 가이드로 다시 요리할 수 있게 해주는 개인 레시피 저장소입니다.
 
-이 저장소는 기획, 디자인, iOS/Android 개발, 공통 패키지, 개발 도구를 모두 담는 프로젝트 루트입니다.
+이 저장소는 기획, 디자인, iOS/Android 개발 문서를 함께 관리하는 프로젝트 루트입니다.
 
 ## 문서 작성 기준
 
@@ -38,13 +38,19 @@ CookLog는 요리 중 10초 음성 기록을 반복하면 앱이 STEP Preview를
 .
 ├── apps/
 │   ├── ios/
+│   │   ├── agents.md
+│   │   └── docs/
 │   └── android/
+│       ├── agents.md
+│       └── docs/
 ├── design/
+│   ├── exports/
+│   └── references/
 ├── docs/
+│   ├── PROJECT_STATUS.md
+│   ├── PROJECT_CHANGELOG.md
+│   ├── PROJECT_DECISIONS.md
 │   └── product/
-├── packages/
-│   └── shared/
-└── tools/
 ```
 
 ## 디렉토리
@@ -55,6 +61,7 @@ CookLog는 요리 중 10초 음성 기록을 반복하면 앱이 STEP Preview를
 
 - `apps/ios/`: iOS 앱 프로젝트
 - `apps/android/`: Android 앱 프로젝트
+- 각 앱 폴더의 `docs/`: 플랫폼별 개발 상태, 계획, 스펙, 결정, 변경 기록
 
 필요하면 다음과 같은 앱 타겟을 추가할 수 있습니다.
 
@@ -66,24 +73,20 @@ CookLog는 요리 중 10초 음성 기록을 반복하면 앱이 STEP Preview를
 
 프로젝트 문서를 관리합니다.
 
+- `PROJECT_STATUS.md`: 전체 프로젝트 현재 상태
+- `PROJECT_CHANGELOG.md`: 전체 프로젝트 변경 기록
+- `PROJECT_DECISIONS.md`: 전체 프로젝트 결정사항
 - `docs/product/`: 아이디어 문서, 사용자 플로우, 와이어프레임, MVP 명세, 제품 의사결정
 
 ### `design/`
 
 디자인 레퍼런스, 내보낸 산출물, 핸드오프 파일을 관리합니다.
 
-### `packages/`
-
-공통 코드 또는 재사용 가능한 모듈을 관리합니다.
-
-- `packages/shared/`: 공통 모델, 검증 로직, AI 프롬프트, 크로스 플랫폼 비즈니스 로직
-
-### `tools/`
-
-개발 스크립트와 로컬 자동화 도구를 관리합니다.
-
 ## 현재 문서
 
+- [전체 프로젝트 상태](docs/PROJECT_STATUS.md)
+- [전체 프로젝트 변경 기록](docs/PROJECT_CHANGELOG.md)
+- [전체 프로젝트 결정사항](docs/PROJECT_DECISIONS.md)
 - [CookLog 아이디어 v0.1](docs/product/CookLog_Idea_v0.1.md)
 - [CookLog PRD v2](docs/product/CookLog_PRD_v2.md)
 - [CookLog PRODUCT v2](docs/product/CookLog_PRODUCT.md)
@@ -91,4 +94,6 @@ CookLog는 요리 중 10초 음성 기록을 반복하면 앱이 STEP Preview를
 - [CookLog USER FLOW v2](docs/product/CookLog_USER_FLOW.md)
 - [CookLog WIREFRAME v2](docs/product/CookLog_WIREFRAME.md)
 - [CookLog Roadmap v2](docs/product/CookLog_ROADMAP.md)
-- [CookLog iOS 개발 계획](docs/development/CookLog_iOS_Development_Plan.md)
+- [CookLog iOS 상태](apps/ios/docs/STATUS.md)
+- [CookLog iOS 개발 계획](apps/ios/docs/DEVELOPMENT_PLAN.md)
+- [CookLog Android 상태](apps/android/docs/STATUS.md)

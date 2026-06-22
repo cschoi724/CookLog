@@ -4,11 +4,21 @@
 
 모든 문서는 한글로 작성합니다.
 
+- `PROJECT_STATUS.md`: 전체 프로젝트 현재 상태
+- `PROJECT_CHANGELOG.md`: 전체 프로젝트 변경 기록
+- `PROJECT_DECISIONS.md`: 전체 프로젝트 결정사항
 - `product/`: 제품 아이디어, 사용자 플로우, 와이어프레임, MVP 명세, 제품 의사결정
-- `development/`: 앱 개발 환경, 기술 선택, 구현 기준
+
+플랫폼별 개발 문서는 각 앱 폴더에서 관리합니다.
+
+- `apps/ios/docs/`: iOS 개발 상태, 계획, 스펙, 아키텍처, 도메인 모델, 저장소, 서비스, 테스트, 결정, 변경 기록
+- `apps/android/docs/`: Android 개발 상태, 계획, 스펙, 결정, 변경 기록
 
 현재 주요 문서:
 
+- [전체 프로젝트 상태](PROJECT_STATUS.md)
+- [전체 프로젝트 변경 기록](PROJECT_CHANGELOG.md)
+- [전체 프로젝트 결정사항](PROJECT_DECISIONS.md)
 - [CookLog 아이디어 v0.1](product/CookLog_Idea_v0.1.md)
 - [CookLog PRD v2](product/CookLog_PRD_v2.md)
 - [CookLog PRODUCT v2](product/CookLog_PRODUCT.md)
@@ -16,6 +26,3 @@
 - [CookLog USER FLOW v2](product/CookLog_USER_FLOW.md)
 - [CookLog WIREFRAME v2](product/CookLog_WIREFRAME.md)
 - [CookLog Roadmap v2](product/CookLog_ROADMAP.md)
-- [CookLog iOS 개발 환경 권장안](development/CookLog_iOS_Development_Environment.md)
-- [CookLog iOS 개발 계획](development/CookLog_iOS_Development_Plan.md)
-- [CookLog iOS 의사결정 로그](development/CookLog_iOS_Decision_Log.md)
