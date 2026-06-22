@@ -2,9 +2,14 @@ import SwiftUI
 
 struct CookingLogView: View {
     @StateObject private var viewModel: CookingLogViewModel
+    private let onGenerateRecipeDraft: ([StepPreview]) -> Void
 
-    init(viewModel: CookingLogViewModel) {
+    init(
+        viewModel: CookingLogViewModel,
+        onGenerateRecipeDraft: @escaping ([StepPreview]) -> Void = { _ in }
+    ) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.onGenerateRecipeDraft = onGenerateRecipeDraft
     }
 
     var body: some View {
@@ -81,11 +86,6 @@ struct CookingLogView: View {
                 .font(.subheadline)
                 .foregroundStyle(.red)
                 .frame(maxWidth: .infinity, alignment: .leading)
-        } else if let infoMessage = viewModel.infoMessage {
-            Text(infoMessage)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -122,7 +122,7 @@ struct CookingLogView: View {
 
     private var generateButton: some View {
         Button {
-            viewModel.handleGenerateRecipeDraftTapped()
+            onGenerateRecipeDraft(viewModel.stepPreviews)
         } label: {
             Label("AI 정리하기", systemImage: "sparkles")
                 .font(.headline)

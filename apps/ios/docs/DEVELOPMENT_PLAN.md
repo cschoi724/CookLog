@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: M3-A Mock STT 기반 Cooking Log 흐름 완료
+- 상태: M4-A Mock AI 기반 AI Review 흐름 완료
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
 - scheme: `CookLog`
@@ -23,9 +23,9 @@
 1. `git status -sb`로 작업트리 상태를 확인합니다.
 2. `docs/GIT_WORKFLOW.md`를 확인합니다.
 3. `apps/ios/agents.md`를 확인합니다.
-4. 이 문서의 `현재 상태 요약`과 `M4. A-Lite와 AI Review`를 확인합니다.
+4. 이 문서의 `현재 상태 요약`과 `M5. Recipe Detail`을 확인합니다.
 5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
-6. M4-A Mock AI 기반 AI Review 흐름부터 시작합니다.
+6. M5-A Recipe Detail 실제 화면부터 시작합니다.
 7. 변경 후 기본 빌드와 가능한 테스트를 확인합니다.
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
 
@@ -291,20 +291,29 @@ M3-A 검증 결과:
 
 체크리스트:
 
-- [ ] `AIReviewViewModel` 작성
-- [ ] `RecipeGenerationRepository` Mock 경로 작성
-- [ ] `MockRecipeAIDataSource` 작성
-- [ ] 전체 STEP Preview를 AI Review 입력으로 전달
-- [ ] AI Review 화면 작성
-- [ ] 레시피 제목 표시/수정
-- [ ] 재료 표시/수정
-- [ ] 조리순서 표시/수정
-- [ ] 예상시간 표시/수정
-- [ ] 메모 표시/수정
-- [ ] 저장 버튼 작성
-- [ ] 저장 후 Recipe Detail 이동 연결
-- [ ] AI 정리 실패 상태 작성
-- [ ] Mock AI 변환 단위 테스트 작성
+- [x] `AIReviewViewModel` 작성
+- [x] `RecipeGenerationRepository` Mock 경로 작성
+- [x] `MockRecipeAIDataSource` 작성
+- [x] 전체 STEP Preview를 AI Review 입력으로 전달
+- [x] AI Review 화면 작성
+- [x] 레시피 제목 표시/수정
+- [x] 재료 표시/수정
+- [x] 조리순서 표시/수정
+- [x] 예상시간 표시/수정
+- [x] 메모 표시/수정
+- [x] 저장 버튼 작성
+- [x] 저장 후 Recipe Detail 이동 연결
+- [x] AI 정리 실패 상태 작성
+- [x] Mock AI 변환 단위 테스트 작성
+- [x] RecipeDraft 수정 상태 반영 테스트 작성
+- [x] 저장 시 Recipe 생성과 SaveRecipeUseCase 호출 테스트 작성
+
+M4-A 검증 결과:
+
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test`: XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-03-00-+0900.xcresult`
 
 완료 기준:
 
@@ -451,16 +460,15 @@ M3-A 검증 결과:
 
 ## 현재 진행 위치
 
-현재 이정표: M0. 개발 기반 준비
+현재 이정표: M5. Recipe Detail
 
 다음 작업:
 
-1. `apps/ios/`에 SwiftUI iOS 프로젝트 생성
-2. Unit Test 타겟 포함 여부 확인
-3. Deployment Target iOS 17 이상 확인
-4. 기본 빌드와 시뮬레이터 실행 확인
-5. 실제 scheme, destination, 빌드 명령 기록
-6. 실제 프로젝트 구조를 `apps/ios/agents.md`, `TESTING.md`, 이 문서에 반영
+1. `RecipeDetailViewModel` 작성
+2. `FetchRecipeUseCase`로 저장된 Recipe 조회
+3. Recipe Detail placeholder를 실제 상세 화면으로 교체
+4. 제목, 재료, 조리 순서, 메모, 예상 시간 표시
+5. 오디오 가이드 시작 버튼 진입점 준비
 
 ## 최근 작업 로그
 
@@ -478,6 +486,11 @@ M3-A 검증 결과:
 - iOS 개발 스펙을 역할별 문서로 분리했습니다.
 - `ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md`를 추가했습니다.
 - iOS 프로젝트 생성 전 개발 세션이 바로 착수할 수 있도록 M0-M7 실행 순서와 체크리스트를 구체화했습니다.
+- M4-A AI Review 흐름을 추가해 STEP Preview 배열을 Mock AI 기반 RecipeDraft로 변환하고 검토/수정/저장할 수 있게 했습니다.
+- Cooking Log의 `AI 정리하기` 버튼을 AI Review 화면으로 연결했습니다.
+- `AIReviewViewModelTests`를 추가해 draft 로드, 수정 상태, 저장, 생성 실패 상태를 검증할 수 있게 했습니다.
+- M4-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M4-A 변경 후 `xcodebuild test`는 XCTest runner 대기 현상으로 수동 중단했습니다.
 
 ### 2026-06-19
 
@@ -488,7 +501,7 @@ M3-A 검증 결과:
 
 ## 열린 질문
 
-- 현재 열린 질문 없음
+- `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
 
 ## 관련 문서
 

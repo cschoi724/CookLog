@@ -4,20 +4,21 @@
 
 ## 현재 상태
 
-- 상태: M3-A Mock STT 기반 Cooking Log 흐름 완료
+- 상태: M4-A Mock AI 기반 AI Review 흐름 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M4. A-Lite와 AI Review 착수 준비
+- 현재 이정표: M5. Recipe Detail 착수 준비
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. M4-A Mock AI 기반 AI Review 흐름 착수
-2. `GenerateRecipeDraftUseCase`를 AI Review 화면에 연결
-3. STEP Preview 배열을 `RecipeDraft`로 변환하고 저장 흐름 준비
-4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
+1. M5-A Recipe Detail 실제 화면 착수
+2. `FetchRecipeUseCase`로 저장된 Recipe 조회 연결
+3. Recipe Detail placeholder를 실제 상세 화면으로 교체
+4. 오디오 가이드 시작 버튼을 M6 Audio Player 진입점으로 준비
+5. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
 
 ## 최근 작업
 
@@ -73,6 +74,15 @@
 - `CookingLogViewModelTests`를 추가해 초기 상태, 1회 기록, 여러 회 기록 order 증가, STT 실패 메시지를 검증할 수 있게 했습니다.
 - M3-A 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
 - M3-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
+- M4-A `AIReviewView`, `AIReviewViewModel`, `IngredientEditorRowView`, `RecipeStepEditorRowView`를 추가했습니다.
+- Cooking Log의 `AI 정리하기` 버튼을 AI Review 흐름으로 연결했습니다.
+- 누적된 STEP Preview 배열을 `GenerateRecipeDraftUseCase`에 전달해 Mock AI 기반 `RecipeDraft`를 생성하게 했습니다.
+- AI Review에서 제목, 재료, 조리 순서, 예상 시간, 메모를 수정할 수 있게 했습니다.
+- 저장 버튼을 `SaveRecipeUseCase`에 연결하고 저장 성공 후 Recipe Detail placeholder로 이동하게 했습니다.
+- AI 정리 실패 상태와 저장 실패 상태를 화면에 표시하도록 구현했습니다.
+- `AIReviewViewModelTests`를 추가해 draft 로드, 수정 상태 반영, 저장, AI 생성 실패 상태를 검증할 수 있게 했습니다.
+- M4-A 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- M4-A 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 
 ## 열린 질문
 

@@ -6,7 +6,6 @@ final class CookingLogViewModel: ObservableObject {
     @Published private(set) var recordingState: RecordingState = .idle
     @Published private(set) var remainingSeconds: Int
     @Published private(set) var errorMessage: String?
-    @Published var infoMessage: String?
 
     var stepPreviews: [StepPreview] {
         session.stepPreviews.sorted { $0.order < $1.order }
@@ -43,7 +42,6 @@ final class CookingLogViewModel: ObservableObject {
         }
 
         errorMessage = nil
-        infoMessage = nil
 
         let authorizationStatus = await speechRecognitionService.requestAuthorization()
         guard authorizationStatus == .authorized else {
@@ -73,13 +71,5 @@ final class CookingLogViewModel: ObservableObject {
             remainingSeconds = recordingDurationSeconds
             recordingState = .idle
         }
-    }
-
-    func handleGenerateRecipeDraftTapped() {
-        guard canGenerateRecipeDraft else {
-            return
-        }
-
-        infoMessage = "AI 정리 화면은 M4에서 연결합니다."
     }
 }
