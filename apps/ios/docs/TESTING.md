@@ -85,7 +85,7 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - 테스트 타겟은 `@testable import CookLog`로 앱 모듈을 참조합니다.
 - 시뮬레이터 XCTest runner 설치/실행 단계에서 결과 없이 대기합니다.
 - `waiting for workers to materialize`, `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
-- 2026-06-22에는 장시간 대기 후 수동 중단했습니다.
+- 2026-06-22에는 `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 
 시뮬레이터 수동 실행 확인:
 
@@ -102,7 +102,7 @@ xcrun simctl launch booted app.cooklog.CookLog
 
 ## 6. M1 검증 기록
 
-M1 도메인 모델, 경계 프로토콜, UseCase 추가 후 다음을 확인했습니다.
+M1 도메인 모델, 경계 프로토콜, UseCase, Mock 구현, 샘플 데이터 추가 후 다음을 확인했습니다.
 
 ```bash
 xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build
@@ -128,6 +128,10 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - `AddStepPreviewUseCaseTests`
 - STEP Preview가 비어 있는 세션에서 order 1로 추가되는지 확인
 - 기존 STEP Preview가 있는 세션에서 다음 order로 추가되고 `updatedAt`이 갱신되는지 확인
+- `DefaultRecipeRepositoryTests`
+- `DefaultRecipeRepository`와 `InMemoryRecipeLocalDataSource` 조합의 저장/목록 조회/단건 조회/삭제 확인
+- `GenerateRecipeDraftUseCaseTests`
+- `DefaultRecipeGenerationRepository`와 `MockRecipeAIDataSource` 조합의 RecipeDraft 생성 확인
 
 테스트 실행:
 
@@ -139,4 +143,5 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 
 - M1 변경 후에도 테스트 실행 단계에서 기존과 동일하게 대기합니다.
 - `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
-- 2026-06-22에는 30초 이상 대기 후 수동 중단했습니다.
+- 2026-06-22 M1-C 변경 후에는 약 65초 대기 후 수동 중단했습니다.
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_14-29-44-+0900.xcresult`

@@ -4,6 +4,12 @@
 
 ## 2026-06-22
 
+- M1-C Mock 구현 `DefaultRecipeRepository`, `DefaultRecipeGenerationRepository`, `InMemoryRecipeLocalDataSource`, `MockRecipeAIDataSource`, `MockSpeechRecognitionService`, `MockAudioGuideService`를 추가했습니다.
+- `PreviewSupport/SampleRecipes.swift`, `PreviewSupport/SampleStepPreviews.swift`에 M2 화면 개발과 SwiftUI Preview용 샘플 데이터를 추가했습니다.
+- `DefaultRecipeRepositoryTests`를 추가해 저장/조회/삭제 흐름을 검증할 수 있게 했습니다.
+- `GenerateRecipeDraftUseCaseTests`를 추가해 Mock AI 기반 RecipeDraft 생성을 검증할 수 있게 했습니다.
+- M1-C 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- M1-C 변경 후 `xcodebuild test`의 XCTest runner 대기 현상을 재확인하고 `TESTING.md`에 기록했습니다.
 - M1-A 도메인 모델 `CookingLogSession`, `StepPreview`, `Recipe`, `Ingredient`, `RecipeStep`, `RecipeDraft`, `RecipeGenerationInput`, `RecipeSource`, `SyncStatus`를 추가했습니다.
 - M1-B Repository/DataSource/Service 경계 프로토콜을 추가했습니다.
 - M1-C 기본 UseCase `FetchRecipesUseCase`, `FetchRecipeUseCase`, `SaveRecipeUseCase`, `DeleteRecipeUseCase`, `AddStepPreviewUseCase`, `GenerateRecipeDraftUseCase`, `PlayRecipeStepUseCase`를 추가했습니다.

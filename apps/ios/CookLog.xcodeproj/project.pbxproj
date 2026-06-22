@@ -34,6 +34,16 @@
 		10B1B0162C28B00100000001 /* GenerateRecipeDraftUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0452C28B00100000001 /* GenerateRecipeDraftUseCase.swift */; };
 		10B1B0172C28B00100000001 /* PlayRecipeStepUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0462C28B00100000001 /* PlayRecipeStepUseCase.swift */; };
 		10B1B0182C28B00100000001 /* AddStepPreviewUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0472C28B00100000001 /* AddStepPreviewUseCaseTests.swift */; };
+		10B1C0012C28C00100000001 /* DefaultRecipeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0202C28C00100000001 /* DefaultRecipeRepository.swift */; };
+		10B1C0022C28C00100000001 /* DefaultRecipeGenerationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0212C28C00100000001 /* DefaultRecipeGenerationRepository.swift */; };
+		10B1C0032C28C00100000001 /* InMemoryRecipeLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0222C28C00100000001 /* InMemoryRecipeLocalDataSource.swift */; };
+		10B1C0042C28C00100000001 /* MockRecipeAIDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0232C28C00100000001 /* MockRecipeAIDataSource.swift */; };
+		10B1C0052C28C00100000001 /* MockSpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0242C28C00100000001 /* MockSpeechRecognitionService.swift */; };
+		10B1C0062C28C00100000001 /* MockAudioGuideService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0252C28C00100000001 /* MockAudioGuideService.swift */; };
+		10B1C0072C28C00100000001 /* SampleStepPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0262C28C00100000001 /* SampleStepPreviews.swift */; };
+		10B1C0082C28C00100000001 /* SampleRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0272C28C00100000001 /* SampleRecipes.swift */; };
+		10B1C0092C28C00100000001 /* DefaultRecipeRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0282C28C00100000001 /* DefaultRecipeRepositoryTests.swift */; };
+		10B1C00A2C28C00100000001 /* GenerateRecipeDraftUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1C0292C28C00100000001 /* GenerateRecipeDraftUseCaseTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +87,16 @@
 		10B1B0452C28B00100000001 /* GenerateRecipeDraftUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeDraftUseCase.swift; sourceTree = "<group>"; };
 		10B1B0462C28B00100000001 /* PlayRecipeStepUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayRecipeStepUseCase.swift; sourceTree = "<group>"; };
 		10B1B0472C28B00100000001 /* AddStepPreviewUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStepPreviewUseCaseTests.swift; sourceTree = "<group>"; };
+		10B1C0202C28C00100000001 /* DefaultRecipeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRecipeRepository.swift; sourceTree = "<group>"; };
+		10B1C0212C28C00100000001 /* DefaultRecipeGenerationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRecipeGenerationRepository.swift; sourceTree = "<group>"; };
+		10B1C0222C28C00100000001 /* InMemoryRecipeLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryRecipeLocalDataSource.swift; sourceTree = "<group>"; };
+		10B1C0232C28C00100000001 /* MockRecipeAIDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecipeAIDataSource.swift; sourceTree = "<group>"; };
+		10B1C0242C28C00100000001 /* MockSpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSpeechRecognitionService.swift; sourceTree = "<group>"; };
+		10B1C0252C28C00100000001 /* MockAudioGuideService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioGuideService.swift; sourceTree = "<group>"; };
+		10B1C0262C28C00100000001 /* SampleStepPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleStepPreviews.swift; sourceTree = "<group>"; };
+		10B1C0272C28C00100000001 /* SampleRecipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleRecipes.swift; sourceTree = "<group>"; };
+		10B1C0282C28C00100000001 /* DefaultRecipeRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRecipeRepositoryTests.swift; sourceTree = "<group>"; };
+		10B1C0292C28C00100000001 /* GenerateRecipeDraftUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeDraftUseCaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +134,7 @@
 				10B1B0542C28B00100000001 /* Data */,
 				10B1B0572C28B00100000001 /* Services */,
 				10B1A0632C28A00100000001 /* Features */,
+				10B1C0502C28C00100000001 /* PreviewSupport */,
 				10B1A0642C28A00100000001 /* Resources */,
 			);
 			path = CookLog;
@@ -156,6 +177,8 @@
 			children = (
 				10B1A0122C28A00100000001 /* CookLogTests.swift */,
 				10B1B0472C28B00100000001 /* AddStepPreviewUseCaseTests.swift */,
+				10B1C0282C28C00100000001 /* DefaultRecipeRepositoryTests.swift */,
+				10B1C0292C28C00100000001 /* GenerateRecipeDraftUseCaseTests.swift */,
 			);
 			path = CookLogTests;
 			sourceTree = "<group>";
@@ -213,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				10B1B0552C28B00100000001 /* DataSources */,
+				10B1C0522C28C00100000001 /* Repositories */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -220,10 +244,21 @@
 		10B1B0552C28B00100000001 /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
+				10B1C0222C28C00100000001 /* InMemoryRecipeLocalDataSource.swift */,
+				10B1C0232C28C00100000001 /* MockRecipeAIDataSource.swift */,
 				10B1B03C2C28B00100000001 /* RecipeAIDataSource.swift */,
 				10B1B03B2C28B00100000001 /* RecipeLocalDataSource.swift */,
 			);
 			path = DataSources;
+			sourceTree = "<group>";
+		};
+		10B1C0522C28C00100000001 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				10B1C0212C28C00100000001 /* DefaultRecipeGenerationRepository.swift */,
+				10B1C0202C28C00100000001 /* DefaultRecipeRepository.swift */,
+			);
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		10B1B0572C28B00100000001 /* Services */ = {
@@ -240,6 +275,7 @@
 			children = (
 				10B1B03D2C28B00100000001 /* SpeechAuthorizationStatus.swift */,
 				10B1B03E2C28B00100000001 /* SpeechRecognitionService.swift */,
+				10B1C0242C28C00100000001 /* MockSpeechRecognitionService.swift */,
 			);
 			path = Speech;
 			sourceTree = "<group>";
@@ -248,8 +284,18 @@
 			isa = PBXGroup;
 			children = (
 				10B1B03F2C28B00100000001 /* AudioGuideService.swift */,
+				10B1C0252C28C00100000001 /* MockAudioGuideService.swift */,
 			);
 			path = AudioGuide;
+			sourceTree = "<group>";
+		};
+		10B1C0502C28C00100000001 /* PreviewSupport */ = {
+			isa = PBXGroup;
+			children = (
+				10B1C0272C28C00100000001 /* SampleRecipes.swift */,
+				10B1C0262C28C00100000001 /* SampleStepPreviews.swift */,
+			);
+			path = PreviewSupport;
 			sourceTree = "<group>";
 		};
 		10B1A0902C28A00100000001 /* Products */ = {
@@ -362,27 +408,35 @@
 				10B1B0152C28B00100000001 /* AddStepPreviewUseCase.swift in Sources */,
 				10B1B0062C28B00100000001 /* CookingLogSession.swift in Sources */,
 				10B1B0142C28B00100000001 /* DeleteRecipeUseCase.swift in Sources */,
+				10B1C0062C28C00100000001 /* MockAudioGuideService.swift in Sources */,
 				10B1B00E2C28B00100000001 /* SpeechAuthorizationStatus.swift in Sources */,
 				10B1A0012C28A00100000001 /* CookLogApp.swift in Sources */,
 				10B1B00A2C28B00100000001 /* RecipeRepository.swift in Sources */,
 				10B1B0162C28B00100000001 /* GenerateRecipeDraftUseCase.swift in Sources */,
 				10B1B0032C28B00100000001 /* Ingredient.swift in Sources */,
+				10B1C0082C28C00100000001 /* SampleRecipes.swift in Sources */,
 				10B1B0082C28B00100000001 /* RecipeDraft.swift in Sources */,
+				10B1C0012C28C00100000001 /* DefaultRecipeRepository.swift in Sources */,
 				10B1B00B2C28B00100000001 /* RecipeGenerationRepository.swift in Sources */,
+				10B1C0032C28C00100000001 /* InMemoryRecipeLocalDataSource.swift in Sources */,
 				10B1B00F2C28B00100000001 /* SpeechRecognitionService.swift in Sources */,
+				10B1C0022C28C00100000001 /* DefaultRecipeGenerationRepository.swift in Sources */,
 				10B1B0052C28B00100000001 /* StepPreview.swift in Sources */,
 				10B1B00C2C28B00100000001 /* RecipeLocalDataSource.swift in Sources */,
 				10B1A0022C28A00100000001 /* ContentView.swift in Sources */,
 				10B1B0092C28B00100000001 /* RecipeGenerationInput.swift in Sources */,
 				10B1B0132C28B00100000001 /* SaveRecipeUseCase.swift in Sources */,
+				10B1C0052C28C00100000001 /* MockSpeechRecognitionService.swift in Sources */,
 				10B1B0012C28B00100000001 /* RecipeSource.swift in Sources */,
 				10B1B0102C28B00100000001 /* AudioGuideService.swift in Sources */,
 				10B1B0172C28B00100000001 /* PlayRecipeStepUseCase.swift in Sources */,
 				10B1B0122C28B00100000001 /* FetchRecipeUseCase.swift in Sources */,
 				10B1B0112C28B00100000001 /* FetchRecipesUseCase.swift in Sources */,
 				10B1B0022C28B00100000001 /* SyncStatus.swift in Sources */,
+				10B1C0072C28C00100000001 /* SampleStepPreviews.swift in Sources */,
 				10B1B0042C28B00100000001 /* RecipeStep.swift in Sources */,
 				10B1B0072C28B00100000001 /* Recipe.swift in Sources */,
+				10B1C0042C28C00100000001 /* MockRecipeAIDataSource.swift in Sources */,
 				10B1B00D2C28B00100000001 /* RecipeAIDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,6 +447,8 @@
 			files = (
 				10B1A0032C28A00100000001 /* CookLogTests.swift in Sources */,
 				10B1B0182C28B00100000001 /* AddStepPreviewUseCaseTests.swift in Sources */,
+				10B1C0092C28C00100000001 /* DefaultRecipeRepositoryTests.swift in Sources */,
+				10B1C00A2C28C00100000001 /* GenerateRecipeDraftUseCaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,20 +4,20 @@
 
 ## 현재 상태
 
-- 상태: M1 도메인 모델과 서비스 경계 일부 완료
+- 상태: M1 도메인 모델과 서비스 경계 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M1. 도메인 모델과 서비스 경계 진행 중
+- 현재 이정표: M2. Home과 레시피 조회 착수 준비
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. M1-C Mock 구현 작성
-2. `PreviewSupport/` 샘플 Recipe와 StepPreview 작성
-3. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
-4. M2 Home 화면과 샘플 레시피 목록 착수 준비
+1. M2-A Home 화면과 샘플 레시피 목록 착수
+2. `AppEnvironment`에서 Mock Repository/UseCase 조립
+3. `AppRoute`와 기본 `NavigationStack` 연결
+4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
 
 ## 최근 작업
 
@@ -55,6 +55,11 @@
 - M1 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
 - M1 변경 후 `xcodebuild test`는 기존과 동일하게 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 - 테스트 타겟이 앱 소스를 직접 포함하지 않고 `@testable import CookLog`로 앱 모듈을 참조하도록 프로젝트 설정을 정리했습니다.
+- M1-C Mock 구현 `DefaultRecipeRepository`, `DefaultRecipeGenerationRepository`, `InMemoryRecipeLocalDataSource`, `MockRecipeAIDataSource`, `MockSpeechRecognitionService`, `MockAudioGuideService`를 추가했습니다.
+- `PreviewSupport/SampleRecipes.swift`, `PreviewSupport/SampleStepPreviews.swift`에 SwiftUI Preview와 M2 화면 개발용 샘플 데이터를 추가했습니다.
+- `DefaultRecipeRepositoryTests`, `GenerateRecipeDraftUseCaseTests`를 추가해 저장/조회/삭제와 Mock AI 기반 RecipeDraft 생성을 검증할 수 있게 했습니다.
+- M1-C 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- M1-C 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 
 ## 열린 질문
 
