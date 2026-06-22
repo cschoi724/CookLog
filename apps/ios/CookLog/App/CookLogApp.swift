@@ -7,6 +7,7 @@ struct CookLogApp: App {
     private let environment: AppEnvironment
     @State private var path: [AppRoute] = []
     @State private var aiReviewStepPreviews: [StepPreview] = []
+    @State private var homeRefreshToken = 0
 
     @MainActor
     init() {
@@ -28,6 +29,7 @@ struct CookLogApp: App {
             NavigationStack(path: $path) {
                 HomeView(
                     viewModel: HomeViewModel(fetchRecipesUseCase: environment.fetchRecipesUseCase),
+                    refreshToken: homeRefreshToken,
                     onStartCooking: {
                         path.append(.cookingLog)
                     },
@@ -56,7 +58,8 @@ struct CookLogApp: App {
                                 saveRecipeUseCase: environment.saveRecipeUseCase
                             ),
                             onSaved: { recipe in
-                                path.append(.recipeDetail(recipe.id))
+                                homeRefreshToken += 1
+                                path = [.recipeDetail(recipe.id)]
                             }
                         )
                     case .recipeDetail(let recipeID):

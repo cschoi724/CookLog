@@ -2,15 +2,18 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel: HomeViewModel
+    private let refreshToken: Int
     private let onStartCooking: () -> Void
     private let onSelectRecipe: (Recipe) -> Void
 
     init(
         viewModel: HomeViewModel,
+        refreshToken: Int = 0,
         onStartCooking: @escaping () -> Void,
         onSelectRecipe: @escaping (Recipe) -> Void
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.refreshToken = refreshToken
         self.onStartCooking = onStartCooking
         self.onSelectRecipe = onSelectRecipe
     }
@@ -28,7 +31,7 @@ struct HomeView: View {
         }
         .background(Color(.systemGroupedBackground))
         .navigationTitle("CookLog")
-        .task {
+        .task(id: refreshToken) {
             await viewModel.loadRecipes()
         }
         .refreshable {

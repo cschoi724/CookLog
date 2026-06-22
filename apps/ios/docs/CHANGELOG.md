@@ -4,6 +4,12 @@
 
 ## 2026-06-22
 
+- M8 점검 중 AI Review 저장 성공 후 navigation path를 Home 기준 Recipe Detail로 정리했습니다.
+- Home에 refresh token을 추가해 저장 후 Home 복귀 시 저장된 Recipe 목록을 다시 읽도록 보강했습니다.
+- `README.md`를 추가해 iOS 빌드, 테스트 빌드, 테스트 실행 이슈, 수동 확인 흐름을 정리했습니다.
+- M8 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- 부팅된 iPhone 15 iOS 17.2 시뮬레이터에 앱 설치와 실행을 확인했습니다.
+- M8 변경 후 `xcodebuild test`의 XCTest runner 대기 현상을 재확인하고 `TESTING.md`에 기록했습니다.
 - M7 `PersistentRecipe`, `PersistentIngredient`, `PersistentRecipeStep` SwiftData 저장 모델을 추가했습니다.
 - `RecipePersistenceMapper`를 추가해 도메인 모델과 SwiftData 모델 변환을 분리했습니다.
 - `SwiftDataRecipeLocalDataSource`를 추가해 Recipe 저장, 목록 조회, 단건 조회, 삭제를 구현했습니다.

@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: M7 SwiftData 기반 로컬 영구 저장 완료
+- 상태: M8 MVP 흐름 검증과 마무리 정리 진행
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
 - scheme: `CookLog`
@@ -452,8 +452,20 @@ M7 검증 결과:
 - [ ] 작은 화면에서 레이아웃 확인
 - [ ] 다크 모드 필요 여부 확인
 - [ ] 앱 아이콘 또는 임시 아이콘 결정
-- [ ] README 또는 실행 방법 문서 업데이트
+- [x] README 또는 실행 방법 문서 업데이트
+- [x] 저장 후 Home refresh/navigation path 보정
 - [ ] 남은 이슈 정리
+
+M8 검증 결과:
+
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet`: 성공
+- `xcrun simctl install booted .../CookLog.app`: 성공
+- `xcrun simctl launch booted app.cooklog.CookLog`: 성공, process id `42163`
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test`: XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_17-06-55-+0900.xcresult`
+- 테스트 중단 후 시뮬레이터가 종료되어 스크린샷 기반 화면 확인은 완료하지 못했습니다.
+- 전체 터치 흐름, 앱 재실행 후 저장 유지, 작은 화면/다크 모드 확인은 후속 수동 검증 항목으로 남깁니다.
 
 완료 기준:
 
@@ -538,6 +550,10 @@ M7 검증 결과:
 - `RecipePersistenceMapperTests`, `SwiftDataRecipeLocalDataSourceTests`를 추가했습니다.
 - M7 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
 - M7 변경 후 `xcodebuild test`는 XCTest runner 대기 현상으로 수동 중단했습니다.
+- M8 점검 중 저장 후 navigation path를 Home 기준 Recipe Detail로 정리하고 Home refresh token을 보강했습니다.
+- `README.md`를 추가해 iOS 빌드/테스트/수동 확인 흐름을 정리했습니다.
+- M8 변경 후 `xcodebuild build -quiet`, `xcodebuild build-for-testing -quiet`, 시뮬레이터 설치/실행 성공을 확인했습니다.
+- M8 변경 후 `xcodebuild test`는 XCTest runner 대기 현상으로 수동 중단했습니다.
 
 ### 2026-06-19
 

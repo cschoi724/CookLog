@@ -48,6 +48,7 @@
 - M5-A: RecipeDetailViewModel recipeID 조회, notFound 상태, 조회 실패 상태 테스트
 - M6-A: AudioPlayerViewModel 초기 로드, 단계 이동, 경계 상태, play/replay/stop 호출, 빈 step, 조회 실패 상태 테스트
 - M7: RecipePersistenceMapper 변환 테스트, SwiftDataRecipeLocalDataSource 저장/조회/정렬/삭제 테스트
+- M8: 전체 MVP 흐름 수동 검증, 저장 후 Home refresh/navigation path 확인, 시뮬레이터 설치/실행 확인
 
 ## 5. 빌드 확인
 
@@ -422,3 +423,55 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
 - 2026-06-22 M7 변경 후에는 약 60초 대기 후 수동 중단했습니다.
 - 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_16-55-39-+0900.xcresult`
+
+## 13. M8 검증 기록
+
+M8 MVP 흐름 점검 중 저장 후 navigation path와 Home refresh 보정, README 추가 후 다음을 확인했습니다.
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 성공
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 성공
+
+시뮬레이터 설치/실행:
+
+```bash
+xcrun simctl boot 'iPhone 15'
+xcrun simctl bootstatus booted
+xcrun simctl install booted /Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Build/Products/Debug-iphonesimulator/CookLog.app
+xcrun simctl launch booted app.cooklog.CookLog
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- iPhone 15 iOS 17.2 boot 성공
+- 앱 install 성공
+- 앱 launch 성공, process id `42163`
+
+테스트 실행:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+```
+
+현재 결과:
+
+- M8 변경 후에도 테스트 실행 단계에서 기존과 동일하게 대기합니다.
+- `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
+- 2026-06-22 M8 변경 후에는 약 57초 대기 후 수동 중단했습니다.
+- 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_17-06-55-+0900.xcresult`
+- 테스트 중단 후 시뮬레이터가 종료되어 `simctl io booted screenshot` 기반 화면 확인은 완료하지 못했습니다.

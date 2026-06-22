@@ -4,21 +4,21 @@
 
 ## 현재 상태
 
-- 상태: M7 SwiftData 기반 로컬 영구 저장 완료
+- 상태: M8 MVP 흐름 검증과 마무리 정리 진행
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M8. MVP 정리와 검증 착수 준비
+- 현재 이정표: M8. MVP 정리와 검증
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. M8 전체 MVP 흐름 수동 검증 착수
-2. Home -> Cooking Log -> AI Review -> 저장 -> Recipe Detail -> Audio Player 흐름 확인
-3. 앱 재실행 후 저장된 Recipe 유지 여부 확인
-4. 빈 상태와 에러 상태, 작은 화면 레이아웃 확인
-5. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
+1. 실제 기기 또는 Xcode UI에서 전체 MVP 흐름 터치 검증
+2. 앱 재실행 후 SwiftData 저장 Recipe 유지 여부 수동 확인
+3. 작은 화면, 다크 모드, TextEditor/TextField 레이아웃 수동 확인
+4. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
+5. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
 
 ## 최근 작업
 
@@ -111,6 +111,13 @@
 - `RecipePersistenceMapperTests`, `SwiftDataRecipeLocalDataSourceTests`를 추가했습니다.
 - M7 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
 - M7 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
+- M8 점검 중 저장 성공 후 navigation path를 Home 기준 Recipe Detail로 정리했습니다.
+- AI Review 저장 성공 시 Home refresh token을 증가시켜 Home 복귀 후 저장된 Recipe 목록을 다시 읽도록 보강했습니다.
+- `README.md`를 추가해 iOS 빌드, 테스트 빌드, 테스트 실행 이슈, 수동 확인 흐름을 정리했습니다.
+- M8 변경 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- 부팅된 iPhone 15 iOS 17.2 시뮬레이터에 앱 설치와 실행을 확인했습니다.
+- M8 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
+- 테스트 중단 후 시뮬레이터가 종료되어 스크린샷 기반 화면 확인은 완료하지 못했습니다.
 
 ## 열린 질문
 
