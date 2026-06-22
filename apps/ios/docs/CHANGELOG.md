@@ -4,6 +4,15 @@
 
 ## 2026-06-22
 
+- `apps/ios/` 안에 SwiftUI 기반 `CookLog.xcodeproj`를 생성했습니다.
+- 앱 타겟 `CookLog`와 Unit Test 타겟 `CookLogTests`를 추가했습니다.
+- `CookLog/App`, `Domain`, `Data`, `Services`, `Features`, `Support`, `PreviewSupport`, `Resources` 기본 폴더 구조를 추가했습니다.
+- `CookLogApp.swift`, 임시 `ContentView.swift`, 앱 `Info.plist`, 기본 `CookLogTests.swift`를 추가했습니다.
+- 공유 scheme `CookLog`를 추가했습니다.
+- iOS 17.0 이상 deployment target을 프로젝트 설정에 반영했습니다.
+- `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- 부팅된 iPhone 15 iOS 17.2 시뮬레이터에 앱 설치와 실행을 확인했습니다.
+- `xcodebuild test`가 현재 로컬 XCTest runner 실행 단계에서 대기하는 현상을 `TESTING.md`에 기록했습니다.
 - iOS 개발 문서를 `apps/ios/docs/` 구조로 이동했습니다.
 - `DEVELOPMENT_PLAN.md`를 PRD v2 기준으로 업데이트했습니다.
 - `DEVELOPMENT_SPEC.md`에 10초 음성 기록, STEP Preview, A-Lite Strategy, 확장 가능한 Repository/DataSource/Service 경계를 반영했습니다.

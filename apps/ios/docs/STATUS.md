@@ -4,21 +4,20 @@
 
 ## 현재 상태
 
-- 상태: iOS 프로젝트 생성 준비 완료
+- 상태: iOS 프로젝트 골격 생성 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
-- iOS 프로젝트: 아직 생성 전
+- iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M0. 개발 기반 준비
+- 현재 이정표: M0. 개발 기반 준비 완료, M1 착수 대기
+- scheme: `CookLog`
+- 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. `apps/ios/` 안에 SwiftUI iOS 프로젝트 생성
-2. Unit Test 타겟 포함 여부 확인
-3. Deployment Target iOS 17 이상 확인
-4. 기본 빌드 성공 확인
-5. 기본 시뮬레이터 실행 확인
-6. 실제 scheme, destination, 빌드 명령 기록
-7. 실제 프로젝트 구조를 `apps/ios/agents.md`, `apps/ios/docs/DEVELOPMENT_PLAN.md`, `apps/ios/docs/TESTING.md`에 반영
+1. M1-A 도메인 모델 작성
+2. M1-B Repository/DataSource/Service 프로토콜 작성
+3. M1-C UseCase와 Mock 구현 작성
+4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 재확인
 
 ## 최근 작업
 
@@ -41,10 +40,18 @@
 - 비대해질 수 있는 iOS 개발 스펙을 역할별 문서로 분리했습니다.
 - `ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md`를 추가했습니다.
 - iOS 개발 세션이 바로 착수할 수 있도록 `DEVELOPMENT_PLAN.md`의 M0-M7 실행 순서와 체크리스트를 구체화했습니다.
+- `apps/ios/` 안에 SwiftUI 기반 `CookLog.xcodeproj`를 생성했습니다.
+- 앱 타겟 `CookLog`와 Unit Test 타겟 `CookLogTests`를 추가했습니다.
+- `CookLog/App`, `Domain`, `Data`, `Services`, `Features`, `Support`, `PreviewSupport`, `Resources` 폴더 구조를 생성했습니다.
+- 기본 시작 화면은 `CookLog/Features/Home/ContentView.swift`에 임시 화면으로 두었습니다.
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build` 성공을 확인했습니다.
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing` 성공을 확인했습니다.
+- `xcrun simctl install booted .../CookLog.app`와 `xcrun simctl launch booted app.cooklog.CookLog`로 시뮬레이터 설치/실행을 확인했습니다.
+- `xcodebuild test`는 테스트 번들 빌드 후 시뮬레이터 XCTest runner 설치/실행 단계에서 대기해 수동 중단했습니다.
 
 ## 열린 질문
 
-- 현재 열린 질문 없음
+- `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
 
 ## 세션 시작 체크리스트
 

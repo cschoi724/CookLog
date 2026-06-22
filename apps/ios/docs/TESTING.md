@@ -45,11 +45,56 @@
 
 ## 5. 빌드 확인
 
-프로젝트 생성 후에는 가능한 경우 다음을 확인합니다.
+M0 기준 실제 scheme과 destination은 다음과 같습니다.
 
-```text
-xcodebuild build
-xcodebuild test
+- scheme: `CookLog`
+- destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
+- bundle id: `app.cooklog.CookLog`
+
+기본 빌드:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build
 ```
 
-정확한 scheme, destination은 프로젝트 생성 후 이 문서에 갱신합니다.
+결과:
+
+- 2026-06-22 확인 완료
+- `** BUILD SUCCEEDED **`
+
+테스트 번들 빌드:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- `** TEST BUILD SUCCEEDED **`
+
+테스트 실행:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+```
+
+현재 결과:
+
+- 테스트 번들 빌드까지는 진행됩니다.
+- 시뮬레이터 XCTest runner 설치/실행 단계에서 결과 없이 대기합니다.
+- `waiting for workers to materialize`, `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
+- 2026-06-22에는 장시간 대기 후 수동 중단했습니다.
+
+시뮬레이터 수동 실행 확인:
+
+```bash
+xcrun simctl install booted /Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Build/Products/Debug-iphonesimulator/CookLog.app
+xcrun simctl launch booted app.cooklog.CookLog
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- 설치 성공
+- 실행 성공, process id `7842` 확인

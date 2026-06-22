@@ -8,9 +8,11 @@
 
 ## 현재 상태 요약
 
-- 상태: PRD v2 반영 완료, 개발 준비 단계
-- iOS 프로젝트: 아직 생성 전
+- 상태: M0 개발 기반 준비 완료, M1 착수 대기
+- iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
+- scheme: `CookLog`
+- 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - 권장 구현: SwiftUI + Feature 중심 MVVM + UseCase + Repository/DataSource + 로컬 저장 + STT 기반 STEP Preview + AI 정리 시점 호출
 - 우선 참고 문서: `../../../docs/product/CookLog_PRD_v2.md`
 
@@ -21,13 +23,11 @@
 1. `git status -sb`로 작업트리 상태를 확인합니다.
 2. `docs/GIT_WORKFLOW.md`를 확인합니다.
 3. `apps/ios/agents.md`를 확인합니다.
-4. 이 문서의 `현재 진행 위치`와 `M0. 개발 기반 준비`를 확인합니다.
+4. 이 문서의 `현재 상태 요약`과 `M1. 도메인 모델과 서비스 경계`를 확인합니다.
 5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
-6. `apps/ios/` 안에 Xcode SwiftUI 프로젝트를 생성합니다.
-7. 기본 빌드와 시뮬레이터 실행을 확인합니다.
+6. M1-A 도메인 모델 작성부터 시작합니다.
+7. 변경 후 기본 빌드와 가능한 테스트를 확인합니다.
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
-
-처음 개발 세션의 목표는 기능 구현이 아니라 **빌드 가능한 iOS 프로젝트 골격을 만드는 것**입니다.
 
 ## 개발 원칙
 
@@ -96,22 +96,31 @@ MVP 초반에는 실제 Apple Speech, SwiftData, 실제 AI API보다 Mock 흐름
 
 - [x] Xcode 버전 기준 확정
 - [x] 최소 iOS 버전 확정
-- [ ] `apps/ios/` 안에 iOS 프로젝트 생성
-- [ ] SwiftUI App 템플릿 적용
-- [ ] Unit Test 타겟 포함
-- [ ] 앱 이름 `CookLog` 확인
-- [ ] Deployment Target iOS 17 이상 확인
-- [ ] `CookLog/` 기본 앱 타겟 폴더 확인
-- [ ] `CookLogTests/` 테스트 타겟 폴더 확인
-- [ ] `App/`, `Domain/`, `Data/`, `Services/`, `Features/`, `Support/`, `PreviewSupport/`, `Resources/` 폴더 생성
-- [ ] 기본 `CookLogApp.swift` 위치 정리
-- [ ] 기본 `ContentView` 또는 임시 시작 화면 정리
-- [ ] 기본 빌드 성공
-- [ ] 기본 시뮬레이터 실행 성공
-- [ ] 프로젝트 구조 정리
-- [ ] `apps/ios/agents.md`에 실제 프로젝트 구조 반영
-- [ ] `apps/ios/docs/TESTING.md`에 실제 빌드/테스트 명령 기록
-- [ ] `apps/ios/docs/STATUS.md`에 프로젝트 생성 결과 기록
+- [x] `apps/ios/` 안에 iOS 프로젝트 생성
+- [x] SwiftUI App 템플릿 적용
+- [x] Unit Test 타겟 포함
+- [x] 앱 이름 `CookLog` 확인
+- [x] Deployment Target iOS 17 이상 확인
+- [x] `CookLog/` 기본 앱 타겟 폴더 확인
+- [x] `CookLogTests/` 테스트 타겟 폴더 확인
+- [x] `App/`, `Domain/`, `Data/`, `Services/`, `Features/`, `Support/`, `PreviewSupport/`, `Resources/` 폴더 생성
+- [x] 기본 `CookLogApp.swift` 위치 정리
+- [x] 기본 `ContentView` 또는 임시 시작 화면 정리
+- [x] 기본 빌드 성공
+- [x] 기본 시뮬레이터 실행 성공
+- [x] 프로젝트 구조 정리
+- [x] `apps/ios/agents.md`에 실제 프로젝트 구조 반영
+- [x] `apps/ios/docs/TESTING.md`에 실제 빌드/테스트 명령 기록
+- [x] `apps/ios/docs/STATUS.md`에 프로젝트 생성 결과 기록
+
+M0 검증 결과:
+
+- scheme: `CookLog`
+- destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
+- 기본 빌드: 성공
+- 테스트 번들 빌드: 성공
+- 시뮬레이터 설치/실행: 성공
+- `xcodebuild test`: 테스트 번들 빌드 후 XCTest runner 설치/실행 단계에서 대기해 수동 중단
 
 완료 기준:
 
