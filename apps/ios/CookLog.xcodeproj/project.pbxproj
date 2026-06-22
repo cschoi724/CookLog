@@ -10,6 +10,30 @@
 		10B1A0012C28A00100000001 /* CookLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1A0102C28A00100000001 /* CookLogApp.swift */; };
 		10B1A0022C28A00100000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1A0112C28A00100000001 /* ContentView.swift */; };
 		10B1A0032C28A00100000001 /* CookLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1A0122C28A00100000001 /* CookLogTests.swift */; };
+		10B1B0012C28B00100000001 /* RecipeSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0302C28B00100000001 /* RecipeSource.swift */; };
+		10B1B0022C28B00100000001 /* SyncStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0312C28B00100000001 /* SyncStatus.swift */; };
+		10B1B0032C28B00100000001 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0322C28B00100000001 /* Ingredient.swift */; };
+		10B1B0042C28B00100000001 /* RecipeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0332C28B00100000001 /* RecipeStep.swift */; };
+		10B1B0052C28B00100000001 /* StepPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0342C28B00100000001 /* StepPreview.swift */; };
+		10B1B0062C28B00100000001 /* CookingLogSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0352C28B00100000001 /* CookingLogSession.swift */; };
+		10B1B0072C28B00100000001 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0362C28B00100000001 /* Recipe.swift */; };
+		10B1B0082C28B00100000001 /* RecipeDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0372C28B00100000001 /* RecipeDraft.swift */; };
+		10B1B0092C28B00100000001 /* RecipeGenerationInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0382C28B00100000001 /* RecipeGenerationInput.swift */; };
+		10B1B00A2C28B00100000001 /* RecipeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0392C28B00100000001 /* RecipeRepository.swift */; };
+		10B1B00B2C28B00100000001 /* RecipeGenerationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B03A2C28B00100000001 /* RecipeGenerationRepository.swift */; };
+		10B1B00C2C28B00100000001 /* RecipeLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B03B2C28B00100000001 /* RecipeLocalDataSource.swift */; };
+		10B1B00D2C28B00100000001 /* RecipeAIDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B03C2C28B00100000001 /* RecipeAIDataSource.swift */; };
+		10B1B00E2C28B00100000001 /* SpeechAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B03D2C28B00100000001 /* SpeechAuthorizationStatus.swift */; };
+		10B1B00F2C28B00100000001 /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B03E2C28B00100000001 /* SpeechRecognitionService.swift */; };
+		10B1B0102C28B00100000001 /* AudioGuideService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B03F2C28B00100000001 /* AudioGuideService.swift */; };
+		10B1B0112C28B00100000001 /* FetchRecipesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0402C28B00100000001 /* FetchRecipesUseCase.swift */; };
+		10B1B0122C28B00100000001 /* FetchRecipeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0412C28B00100000001 /* FetchRecipeUseCase.swift */; };
+		10B1B0132C28B00100000001 /* SaveRecipeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0422C28B00100000001 /* SaveRecipeUseCase.swift */; };
+		10B1B0142C28B00100000001 /* DeleteRecipeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0432C28B00100000001 /* DeleteRecipeUseCase.swift */; };
+		10B1B0152C28B00100000001 /* AddStepPreviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0442C28B00100000001 /* AddStepPreviewUseCase.swift */; };
+		10B1B0162C28B00100000001 /* GenerateRecipeDraftUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0452C28B00100000001 /* GenerateRecipeDraftUseCase.swift */; };
+		10B1B0172C28B00100000001 /* PlayRecipeStepUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0462C28B00100000001 /* PlayRecipeStepUseCase.swift */; };
+		10B1B0182C28B00100000001 /* AddStepPreviewUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B1B0472C28B00100000001 /* AddStepPreviewUseCaseTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +53,30 @@
 		10B1A0132C28A00100000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10B1A0142C28A00100000001 /* CookLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10B1A0152C28A00100000001 /* CookLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CookLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		10B1B0302C28B00100000001 /* RecipeSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeSource.swift; sourceTree = "<group>"; };
+		10B1B0312C28B00100000001 /* SyncStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatus.swift; sourceTree = "<group>"; };
+		10B1B0322C28B00100000001 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
+		10B1B0332C28B00100000001 /* RecipeStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStep.swift; sourceTree = "<group>"; };
+		10B1B0342C28B00100000001 /* StepPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepPreview.swift; sourceTree = "<group>"; };
+		10B1B0352C28B00100000001 /* CookingLogSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingLogSession.swift; sourceTree = "<group>"; };
+		10B1B0362C28B00100000001 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		10B1B0372C28B00100000001 /* RecipeDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDraft.swift; sourceTree = "<group>"; };
+		10B1B0382C28B00100000001 /* RecipeGenerationInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGenerationInput.swift; sourceTree = "<group>"; };
+		10B1B0392C28B00100000001 /* RecipeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRepository.swift; sourceTree = "<group>"; };
+		10B1B03A2C28B00100000001 /* RecipeGenerationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGenerationRepository.swift; sourceTree = "<group>"; };
+		10B1B03B2C28B00100000001 /* RecipeLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeLocalDataSource.swift; sourceTree = "<group>"; };
+		10B1B03C2C28B00100000001 /* RecipeAIDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAIDataSource.swift; sourceTree = "<group>"; };
+		10B1B03D2C28B00100000001 /* SpeechAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechAuthorizationStatus.swift; sourceTree = "<group>"; };
+		10B1B03E2C28B00100000001 /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
+		10B1B03F2C28B00100000001 /* AudioGuideService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioGuideService.swift; sourceTree = "<group>"; };
+		10B1B0402C28B00100000001 /* FetchRecipesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRecipesUseCase.swift; sourceTree = "<group>"; };
+		10B1B0412C28B00100000001 /* FetchRecipeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRecipeUseCase.swift; sourceTree = "<group>"; };
+		10B1B0422C28B00100000001 /* SaveRecipeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRecipeUseCase.swift; sourceTree = "<group>"; };
+		10B1B0432C28B00100000001 /* DeleteRecipeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRecipeUseCase.swift; sourceTree = "<group>"; };
+		10B1B0442C28B00100000001 /* AddStepPreviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStepPreviewUseCase.swift; sourceTree = "<group>"; };
+		10B1B0452C28B00100000001 /* GenerateRecipeDraftUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeDraftUseCase.swift; sourceTree = "<group>"; };
+		10B1B0462C28B00100000001 /* PlayRecipeStepUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayRecipeStepUseCase.swift; sourceTree = "<group>"; };
+		10B1B0472C28B00100000001 /* AddStepPreviewUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStepPreviewUseCaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +110,9 @@
 			isa = PBXGroup;
 			children = (
 				10B1A0622C28A00100000001 /* App */,
+				10B1B0502C28B00100000001 /* Domain */,
+				10B1B0542C28B00100000001 /* Data */,
+				10B1B0572C28B00100000001 /* Services */,
 				10B1A0632C28A00100000001 /* Features */,
 				10B1A0642C28A00100000001 /* Resources */,
 			);
@@ -104,8 +155,101 @@
 			isa = PBXGroup;
 			children = (
 				10B1A0122C28A00100000001 /* CookLogTests.swift */,
+				10B1B0472C28B00100000001 /* AddStepPreviewUseCaseTests.swift */,
 			);
 			path = CookLogTests;
+			sourceTree = "<group>";
+		};
+		10B1B0502C28B00100000001 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B0512C28B00100000001 /* Models */,
+				10B1B0522C28B00100000001 /* Repositories */,
+				10B1B0532C28B00100000001 /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		10B1B0512C28B00100000001 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B0352C28B00100000001 /* CookingLogSession.swift */,
+				10B1B0322C28B00100000001 /* Ingredient.swift */,
+				10B1B0362C28B00100000001 /* Recipe.swift */,
+				10B1B0372C28B00100000001 /* RecipeDraft.swift */,
+				10B1B0382C28B00100000001 /* RecipeGenerationInput.swift */,
+				10B1B0302C28B00100000001 /* RecipeSource.swift */,
+				10B1B0332C28B00100000001 /* RecipeStep.swift */,
+				10B1B0342C28B00100000001 /* StepPreview.swift */,
+				10B1B0312C28B00100000001 /* SyncStatus.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		10B1B0522C28B00100000001 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B03A2C28B00100000001 /* RecipeGenerationRepository.swift */,
+				10B1B0392C28B00100000001 /* RecipeRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		10B1B0532C28B00100000001 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B0442C28B00100000001 /* AddStepPreviewUseCase.swift */,
+				10B1B0432C28B00100000001 /* DeleteRecipeUseCase.swift */,
+				10B1B0412C28B00100000001 /* FetchRecipeUseCase.swift */,
+				10B1B0402C28B00100000001 /* FetchRecipesUseCase.swift */,
+				10B1B0452C28B00100000001 /* GenerateRecipeDraftUseCase.swift */,
+				10B1B0462C28B00100000001 /* PlayRecipeStepUseCase.swift */,
+				10B1B0422C28B00100000001 /* SaveRecipeUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		10B1B0542C28B00100000001 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B0552C28B00100000001 /* DataSources */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		10B1B0552C28B00100000001 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B03C2C28B00100000001 /* RecipeAIDataSource.swift */,
+				10B1B03B2C28B00100000001 /* RecipeLocalDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		10B1B0572C28B00100000001 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B0592C28B00100000001 /* AudioGuide */,
+				10B1B0582C28B00100000001 /* Speech */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		10B1B0582C28B00100000001 /* Speech */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B03D2C28B00100000001 /* SpeechAuthorizationStatus.swift */,
+				10B1B03E2C28B00100000001 /* SpeechRecognitionService.swift */,
+			);
+			path = Speech;
+			sourceTree = "<group>";
+		};
+		10B1B0592C28B00100000001 /* AudioGuide */ = {
+			isa = PBXGroup;
+			children = (
+				10B1B03F2C28B00100000001 /* AudioGuideService.swift */,
+			);
+			path = AudioGuide;
 			sourceTree = "<group>";
 		};
 		10B1A0902C28A00100000001 /* Products */ = {
@@ -215,8 +359,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10B1B0152C28B00100000001 /* AddStepPreviewUseCase.swift in Sources */,
+				10B1B0062C28B00100000001 /* CookingLogSession.swift in Sources */,
+				10B1B0142C28B00100000001 /* DeleteRecipeUseCase.swift in Sources */,
+				10B1B00E2C28B00100000001 /* SpeechAuthorizationStatus.swift in Sources */,
 				10B1A0012C28A00100000001 /* CookLogApp.swift in Sources */,
+				10B1B00A2C28B00100000001 /* RecipeRepository.swift in Sources */,
+				10B1B0162C28B00100000001 /* GenerateRecipeDraftUseCase.swift in Sources */,
+				10B1B0032C28B00100000001 /* Ingredient.swift in Sources */,
+				10B1B0082C28B00100000001 /* RecipeDraft.swift in Sources */,
+				10B1B00B2C28B00100000001 /* RecipeGenerationRepository.swift in Sources */,
+				10B1B00F2C28B00100000001 /* SpeechRecognitionService.swift in Sources */,
+				10B1B0052C28B00100000001 /* StepPreview.swift in Sources */,
+				10B1B00C2C28B00100000001 /* RecipeLocalDataSource.swift in Sources */,
 				10B1A0022C28A00100000001 /* ContentView.swift in Sources */,
+				10B1B0092C28B00100000001 /* RecipeGenerationInput.swift in Sources */,
+				10B1B0132C28B00100000001 /* SaveRecipeUseCase.swift in Sources */,
+				10B1B0012C28B00100000001 /* RecipeSource.swift in Sources */,
+				10B1B0102C28B00100000001 /* AudioGuideService.swift in Sources */,
+				10B1B0172C28B00100000001 /* PlayRecipeStepUseCase.swift in Sources */,
+				10B1B0122C28B00100000001 /* FetchRecipeUseCase.swift in Sources */,
+				10B1B0112C28B00100000001 /* FetchRecipesUseCase.swift in Sources */,
+				10B1B0022C28B00100000001 /* SyncStatus.swift in Sources */,
+				10B1B0042C28B00100000001 /* RecipeStep.swift in Sources */,
+				10B1B0072C28B00100000001 /* Recipe.swift in Sources */,
+				10B1B00D2C28B00100000001 /* RecipeAIDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				10B1A0032C28A00100000001 /* CookLogTests.swift in Sources */,
+				10B1B0182C28B00100000001 /* AddStepPreviewUseCaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +578,7 @@
 		10B1A1342C28A00100000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -425,12 +594,14 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CookLog.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CookLog";
 			};
 			name = Debug;
 		};
 		10B1A1352C28A00100000001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -446,6 +617,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CookLog.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CookLog";
 			};
 			name = Release;
 		};

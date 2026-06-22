@@ -4,6 +4,13 @@
 
 ## 2026-06-22
 
+- M1-A 도메인 모델 `CookingLogSession`, `StepPreview`, `Recipe`, `Ingredient`, `RecipeStep`, `RecipeDraft`, `RecipeGenerationInput`, `RecipeSource`, `SyncStatus`를 추가했습니다.
+- M1-B Repository/DataSource/Service 경계 프로토콜을 추가했습니다.
+- M1-C 기본 UseCase `FetchRecipesUseCase`, `FetchRecipeUseCase`, `SaveRecipeUseCase`, `DeleteRecipeUseCase`, `AddStepPreviewUseCase`, `GenerateRecipeDraftUseCase`, `PlayRecipeStepUseCase`를 추가했습니다.
+- STEP Preview 누적 로직을 확인하는 `AddStepPreviewUseCaseTests`를 추가했습니다.
+- M1 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- M1 변경 후 `xcodebuild test`의 XCTest runner 대기 현상을 재확인하고 `TESTING.md`에 기록했습니다.
+- 테스트 타겟이 앱 소스를 직접 포함하지 않고 `@testable import CookLog`로 앱 모듈을 참조하도록 정리했습니다.
 - `apps/ios/` 안에 SwiftUI 기반 `CookLog.xcodeproj`를 생성했습니다.
 - 앱 타겟 `CookLog`와 Unit Test 타겟 `CookLogTests`를 추가했습니다.
 - `CookLog/App`, `Domain`, `Data`, `Services`, `Features`, `Support`, `PreviewSupport`, `Resources` 기본 폴더 구조를 추가했습니다.

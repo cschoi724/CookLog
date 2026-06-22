@@ -82,6 +82,7 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 현재 결과:
 
 - 테스트 번들 빌드까지는 진행됩니다.
+- 테스트 타겟은 `@testable import CookLog`로 앱 모듈을 참조합니다.
 - 시뮬레이터 XCTest runner 설치/실행 단계에서 결과 없이 대기합니다.
 - `waiting for workers to materialize`, `_IDEInstalliPhoneSimulatorWorker`, `IDELaunchiPhoneSimulatorLauncher` 대기 상태를 확인했습니다.
 - 2026-06-22에는 장시간 대기 후 수동 중단했습니다.
@@ -98,3 +99,44 @@ xcrun simctl launch booted app.cooklog.CookLog
 - 2026-06-22 확인 완료
 - 설치 성공
 - 실행 성공, process id `7842` 확인
+
+## 6. M1 검증 기록
+
+M1 도메인 모델, 경계 프로토콜, UseCase 추가 후 다음을 확인했습니다.
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- `** BUILD SUCCEEDED **`
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing
+```
+
+결과:
+
+- 2026-06-22 확인 완료
+- `** TEST BUILD SUCCEEDED **`
+- 테스트 타겟은 앱 소스를 직접 포함하지 않고 앱 모듈을 테스트 호스트로 참조합니다.
+
+추가한 테스트:
+
+- `AddStepPreviewUseCaseTests`
+- STEP Preview가 비어 있는 세션에서 order 1로 추가되는지 확인
+- 기존 STEP Preview가 있는 세션에서 다음 order로 추가되고 `updatedAt`이 갱신되는지 확인
+
+테스트 실행:
+
+```bash
+xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+```
+
+현재 결과:
+
+- M1 변경 후에도 테스트 실행 단계에서 기존과 동일하게 대기합니다.
+- `com.apple.dt.xctest.target-runner`가 `waiting for workers to materialize` 상태로 멈춥니다.
+- 2026-06-22에는 30초 이상 대기 후 수동 중단했습니다.

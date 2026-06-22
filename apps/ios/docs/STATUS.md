@@ -4,20 +4,20 @@
 
 ## 현재 상태
 
-- 상태: iOS 프로젝트 골격 생성 완료
+- 상태: M1 도메인 모델과 서비스 경계 일부 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
-- 현재 이정표: M0. 개발 기반 준비 완료, M1 착수 대기
+- 현재 이정표: M1. 도메인 모델과 서비스 경계 진행 중
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
 ## 다음 작업
 
-1. M1-A 도메인 모델 작성
-2. M1-B Repository/DataSource/Service 프로토콜 작성
-3. M1-C UseCase와 Mock 구현 작성
-4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 재확인
+1. M1-C Mock 구현 작성
+2. `PreviewSupport/` 샘플 Recipe와 StepPreview 작성
+3. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 현상 추가 확인
+4. M2 Home 화면과 샘플 레시피 목록 착수 준비
 
 ## 최근 작업
 
@@ -48,6 +48,13 @@
 - `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing` 성공을 확인했습니다.
 - `xcrun simctl install booted .../CookLog.app`와 `xcrun simctl launch booted app.cooklog.CookLog`로 시뮬레이터 설치/실행을 확인했습니다.
 - `xcodebuild test`는 테스트 번들 빌드 후 시뮬레이터 XCTest runner 설치/실행 단계에서 대기해 수동 중단했습니다.
+- M1-A 도메인 모델 `CookingLogSession`, `StepPreview`, `Recipe`, `Ingredient`, `RecipeStep`, `RecipeDraft`, `RecipeGenerationInput`, `RecipeSource`, `SyncStatus`를 추가했습니다.
+- M1-B Repository/DataSource/Service 프로토콜 `RecipeRepository`, `RecipeGenerationRepository`, `RecipeLocalDataSource`, `RecipeAIDataSource`, `SpeechRecognitionService`, `AudioGuideService`를 추가했습니다.
+- M1-C 기본 UseCase `FetchRecipesUseCase`, `FetchRecipeUseCase`, `SaveRecipeUseCase`, `DeleteRecipeUseCase`, `AddStepPreviewUseCase`, `GenerateRecipeDraftUseCase`, `PlayRecipeStepUseCase`를 추가했습니다.
+- STEP Preview 누적 로직을 검증하는 `AddStepPreviewUseCaseTests`를 추가했습니다.
+- M1 변경 후 `xcodebuild build`와 `xcodebuild build-for-testing` 성공을 확인했습니다.
+- M1 변경 후 `xcodebuild test`는 기존과 동일하게 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
+- 테스트 타겟이 앱 소스를 직접 포함하지 않고 `@testable import CookLog`로 앱 모듈을 참조하도록 프로젝트 설정을 정리했습니다.
 
 ## 열린 질문
 

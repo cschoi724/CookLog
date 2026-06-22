@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: M0 개발 기반 준비 완료, M1 착수 대기
+- 상태: M1 도메인 모델과 서비스 경계 진행 중
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 로컬 Xcode: 15.2
 - scheme: `CookLog`
@@ -25,7 +25,7 @@
 3. `apps/ios/agents.md`를 확인합니다.
 4. 이 문서의 `현재 상태 요약`과 `M1. 도메인 모델과 서비스 경계`를 확인합니다.
 5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
-6. M1-A 도메인 모델 작성부터 시작합니다.
+6. M1-C Mock 구현 또는 M2-A Home 준비 작업부터 시작합니다.
 7. 변경 후 기본 빌드와 가능한 테스트를 확인합니다.
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
 
@@ -144,34 +144,41 @@ M0 검증 결과:
 
 체크리스트:
 
-- [ ] `CookingLogSession` 모델 작성
-- [ ] `StepPreview` 모델 작성
-- [ ] `Recipe` 모델 작성
-- [ ] `Ingredient` 모델 작성
-- [ ] `RecipeStep` 모델 작성
-- [ ] `RecipeDraft` 모델 작성
-- [ ] `RecipeGenerationInput` 모델 작성
-- [ ] `RecipeSource` 모델 작성
-- [ ] `SyncStatus` 모델 작성
-- [ ] `SpeechRecognitionService` 프로토콜 작성
-- [ ] `RecipeGenerationRepository` 프로토콜 작성
-- [ ] `RecipeRepository` 프로토콜 작성
-- [ ] `RecipeLocalDataSource` 프로토콜 작성
-- [ ] `RecipeAIDataSource` 프로토콜 작성
-- [ ] `AudioGuideService` 프로토콜 작성
-- [ ] `FetchRecipesUseCase` 작성
-- [ ] `FetchRecipeUseCase` 작성
-- [ ] `SaveRecipeUseCase` 작성
-- [ ] `DeleteRecipeUseCase` 작성
-- [ ] `AddStepPreviewUseCase` 작성
-- [ ] `GenerateRecipeDraftUseCase` 작성
-- [ ] `PlayRecipeStepUseCase` 작성
+- [x] `CookingLogSession` 모델 작성
+- [x] `StepPreview` 모델 작성
+- [x] `Recipe` 모델 작성
+- [x] `Ingredient` 모델 작성
+- [x] `RecipeStep` 모델 작성
+- [x] `RecipeDraft` 모델 작성
+- [x] `RecipeGenerationInput` 모델 작성
+- [x] `RecipeSource` 모델 작성
+- [x] `SyncStatus` 모델 작성
+- [x] `SpeechRecognitionService` 프로토콜 작성
+- [x] `RecipeGenerationRepository` 프로토콜 작성
+- [x] `RecipeRepository` 프로토콜 작성
+- [x] `RecipeLocalDataSource` 프로토콜 작성
+- [x] `RecipeAIDataSource` 프로토콜 작성
+- [x] `AudioGuideService` 프로토콜 작성
+- [x] `FetchRecipesUseCase` 작성
+- [x] `FetchRecipeUseCase` 작성
+- [x] `SaveRecipeUseCase` 작성
+- [x] `DeleteRecipeUseCase` 작성
+- [x] `AddStepPreviewUseCase` 작성
+- [x] `GenerateRecipeDraftUseCase` 작성
+- [x] `PlayRecipeStepUseCase` 작성
 - [ ] `MockSpeechRecognitionService` 작성
 - [ ] `MockRecipeAIDataSource` 작성
 - [ ] `InMemoryRecipeLocalDataSource` 또는 Mock 저장소 작성
 - [ ] `MockAudioGuideService` 작성
 - [ ] 샘플 STEP Preview와 샘플 Recipe 데이터 작성
-- [ ] STEP Preview 추가 로직 단위 테스트 작성
+- [x] STEP Preview 추가 로직 단위 테스트 작성
+
+M1 검증 결과:
+
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing`: 성공
+- `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test`: XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단
+- 테스트 타겟은 앱 소스를 직접 포함하지 않고 `@testable import CookLog`로 앱 모듈을 참조합니다.
 
 완료 기준:
 
