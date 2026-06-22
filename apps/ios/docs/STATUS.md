@@ -14,7 +14,7 @@
 
 ## 다음 작업
 
-1. 실제 기기 또는 Xcode UI에서 전체 MVP 흐름 터치 검증
+1. `MANUAL_QA_CHECKLIST.md` 기준으로 실제 기기 또는 Xcode UI에서 전체 MVP 흐름 터치 검증
 2. 앱 재실행 후 SwiftData 저장 Recipe 유지 여부 수동 확인
 3. 작은 화면, 다크 모드, TextEditor/TextField 레이아웃 수동 확인
 4. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정

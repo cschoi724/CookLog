@@ -31,6 +31,8 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 
 ## 수동 확인 흐름
 
+상세 체크리스트는 `docs/MANUAL_QA_CHECKLIST.md`를 기준으로 합니다.
+
 1. Home에서 요리 기록 시작
 2. 10초 기록을 반복해 STEP Preview 누적
 3. AI 정리하기

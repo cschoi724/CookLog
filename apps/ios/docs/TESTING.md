@@ -50,6 +50,8 @@
 - M7: RecipePersistenceMapper 변환 테스트, SwiftDataRecipeLocalDataSource 저장/조회/정렬/삭제 테스트
 - M8: 전체 MVP 흐름 수동 검증, 저장 후 Home refresh/navigation path 확인, 시뮬레이터 설치/실행 확인
 
+사용자 수동 검증은 `MANUAL_QA_CHECKLIST.md`를 기준으로 진행합니다. 체크 완료 후 발견 이슈와 최종 판정을 루트 관리 에이전트에게 전달합니다.
+
 ## 5. 빌드 확인
 
 M0 기준 실제 scheme과 destination은 다음과 같습니다.
