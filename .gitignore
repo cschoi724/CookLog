@@ -107,3 +107,6 @@ design/exports/tmp/
 # Tooling scratch space
 tmp/
 .tmp/
+
+# AI Agent Ops template checkout
+.ai/

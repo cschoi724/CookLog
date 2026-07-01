@@ -1,6 +1,6 @@
 # CookLog iOS Status
 
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-07-01
 
 ## 현재 상태
 
@@ -14,11 +14,10 @@
 
 ## 다음 작업
 
-1. `MANUAL_QA_CHECKLIST.md` 기준으로 실제 기기 또는 Xcode UI에서 전체 MVP 흐름 터치 검증
-2. 앱 재실행 후 SwiftData 저장 Recipe 유지 여부 수동 확인
-3. 작은 화면, 다크 모드, TextEditor/TextField 레이아웃 수동 확인
-4. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
-5. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
+1. 사람이 직접 Simulator 또는 실제 기기에서 AI Review 저장 버튼 이후 Recipe Detail, Audio Player, SwiftData 저장 유지 흐름 재검증
+2. 작은 화면, 다크 모드, TextEditor/TextField 하단 레이아웃 수동 확인
+3. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
+4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
 
 ## 최근 작업
 
@@ -118,6 +117,25 @@
 - 부팅된 iPhone 15 iOS 17.2 시뮬레이터에 앱 설치와 실행을 확인했습니다.
 - M8 변경 후 `xcodebuild test`는 XCTest runner 단계에서 `waiting for workers to materialize` 상태로 대기해 수동 중단했습니다.
 - 테스트 중단 후 시뮬레이터가 종료되어 스크린샷 기반 화면 확인은 완료하지 못했습니다.
+- 2026-07-01 QA Agent가 `T-20260701-002` 기준 수동 QA를 시도했습니다.
+- `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- iPhone SE (3rd generation) iOS 17.2 시뮬레이터에서 앱 설치/실행, Home 화면, 작은 화면 Home, 다크 모드 Home 가독성을 확인했습니다.
+- iPhone 15 iOS 17.2 시뮬레이터는 Apple ID Verification 시스템 팝업으로 앱 화면 확인이 차단되었습니다.
+- macOS `System Events` 보조 접근 권한 미허용으로 Simulator 터치 자동화가 차단되어 Home 이후 Cooking Log, AI Review, Recipe Detail, Audio Player, SwiftData 저장 유지 검증은 완료하지 못했습니다.
+- QA 상세 보고서는 `../../../.ai_project/qa/T-20260701-002_qa-report.md`에 기록했습니다.
+- 2026-07-01 Product Owner 재개 승인 후 QA Agent가 iPhone SE (3rd generation) iOS 17.2 시뮬레이터에서 새 설치 기준 수동 QA를 재개했습니다.
+- Home, Cooking Log 진입, 10초 기록, STEP Preview 1개 생성, `AI 정리하기` 버튼 표시까지 확인했습니다.
+- Cooking Log에 STEP Preview 1개가 표시된 상태에서 `AI 정리하기`를 누르면 AI Review가 레시피 초안 대신 `정리할 STEP Preview가 없습니다.` 오류를 표시하는 핵심 흐름 결함을 확인했습니다.
+- 이 결함으로 AI Review 저장, Recipe Detail, Audio Player, SwiftData 저장 유지 검증은 완료하지 못했고, `T-20260701-002`를 `rework_requested`로 전환했습니다.
+- `AI 정리하기` route가 STEP Preview 배열을 직접 들고 AI Review로 이동하도록 수정해, 전역 임시 상태가 비어 AI Review에 빈 배열이 전달될 수 있는 경로를 제거했습니다.
+- 수정 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- `xcodebuild ... -only-testing:CookLogTests/AIReviewViewModelTests test -quiet`로 AI Review ViewModel 테스트 4개 통과를 확인했습니다.
+- 수정 후 iPhone SE (3rd generation) iOS 17.2 시뮬레이터에서 새 설치 기준 Home -> Cooking Log -> 10초 기록 2회 -> STEP Preview 2개 누적 -> AI Review 초안 표시까지 재검증했습니다.
+- 기존 `정리할 STEP Preview가 없습니다.` 오류는 재현되지 않았습니다.
+- AI Review 하단 저장 버튼까지의 스크롤 자동화가 안정적으로 전달되지 않아 저장 이후 터치 검증은 후속 수동 확인으로 남겼습니다.
+- `AIReviewViewModelTests`, `RecipeDetailViewModelTests`, `AudioPlayerViewModelTests`, `SwiftDataRecipeLocalDataSourceTests` 선별 실행으로 총 18개 테스트 통과를 확인했습니다.
+- QA Agent가 `T-20260701-003` ready_for_qa를 재검증했고, STEP Preview 1개 생성 후 AI Review 초안 표시를 확인해 `QA-HIGH-001` 수정 통과로 판정했습니다.
+- QA 재검증 중 STEP Preview 2개 누적까지 확인했으나, Simulator 종료로 2개 누적 상태의 AI Review 재진입 스크린샷은 확보하지 못했습니다.
 
 ## 열린 질문
 

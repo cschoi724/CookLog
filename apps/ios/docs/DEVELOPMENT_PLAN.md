@@ -445,10 +445,10 @@ M7 검증 결과:
 체크리스트:
 
 - [ ] 전체 기록 흐름 수동 테스트
-- [ ] 10초 기록 반복 흐름 수동 테스트
+- [x] 10초 기록 반복 흐름 수동 테스트
 - [ ] AI Review 수정/저장 수동 테스트
 - [ ] 전체 다시 요리 흐름 수동 테스트
-- [ ] 주요 단위 테스트 실행
+- [x] 주요 단위 테스트 실행
 - [ ] 빈 상태와 에러 상태 확인
 - [ ] 권한 거부 상태 확인
 - [ ] 작은 화면에서 레이아웃 확인
@@ -468,6 +468,14 @@ M8 검증 결과:
 - 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_17-06-55-+0900.xcresult`
 - 테스트 중단 후 시뮬레이터가 종료되어 스크린샷 기반 화면 확인은 완료하지 못했습니다.
 - 전체 터치 흐름, 앱 재실행 후 저장 유지, 작은 화면/다크 모드 확인은 후속 수동 검증 항목으로 남깁니다.
+- 2026-07-01 QA에서 Cooking Log의 STEP Preview 1개가 AI Review에 빈 입력으로 전달되는 결함을 확인했습니다.
+- 2026-07-01 `AppRoute.aiReview`가 `[StepPreview]`를 직접 포함하도록 수정해 AI Review 입력 전달 경로를 보정했습니다.
+- 수정 후 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build -quiet`: 성공
+- 수정 후 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet`: 성공
+- 수정 후 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' -only-testing:CookLogTests/AIReviewViewModelTests test -quiet`: 성공, 4개 테스트 통과
+- 수정 후 iPhone SE (3rd generation) iOS 17.2 시뮬레이터에서 Home -> Cooking Log -> 10초 기록 2회 -> STEP Preview 2개 누적 -> AI Review 초안 표시까지 확인했습니다.
+- 수정 후 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' -only-testing:CookLogTests/AIReviewViewModelTests -only-testing:CookLogTests/RecipeDetailViewModelTests -only-testing:CookLogTests/AudioPlayerViewModelTests -only-testing:CookLogTests/SwiftDataRecipeLocalDataSourceTests test -quiet`: 성공, 18개 테스트 통과
+- AI Review 하단 저장 버튼까지의 스크롤 자동화가 안정적으로 전달되지 않아 저장 이후 터치 검증은 후속 수동 확인으로 남겼습니다.
 
 완료 기준:
 
@@ -503,13 +511,24 @@ M8 검증 결과:
 
 다음 작업:
 
-1. 전체 기록 흐름 수동 테스트
-2. AI Review 수정/저장 후 Recipe Detail 조회 확인
-3. 앱 재실행 후 저장된 Recipe 유지 확인
-4. Audio Player 진입과 단계 이동 확인
-5. 빈 상태, 에러 상태, 작은 화면 레이아웃 확인
+1. 사람이 직접 Simulator 또는 실제 기기에서 AI Review 저장 후 Recipe Detail 조회 확인
+2. 앱 재실행 후 저장된 Recipe 유지 확인
+3. Audio Player 진입과 단계 이동 확인
+4. AI Review 하단, Recipe Detail, Audio Player 작은 화면 레이아웃 확인
+5. 빈 상태, 에러 상태, 다크 모드 추가 확인
 
 ## 최근 작업 로그
+
+### 2026-07-01
+
+- QA에서 `AI 정리하기` 후 AI Review가 `정리할 STEP Preview가 없습니다.` 오류를 표시하는 결함을 확인했습니다.
+- `AppRoute.aiReview`가 `[StepPreview]`를 직접 포함하도록 변경해 Cooking Log에서 생성한 STEP Preview 배열이 AI Review 생성자까지 직접 전달되게 했습니다.
+- `StepPreview`에 `Hashable` 준수를 추가했습니다.
+- 수정 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- `AIReviewViewModelTests` 선별 실행으로 4개 테스트 통과를 확인했습니다.
+- iPhone SE 시뮬레이터에서 STEP Preview 2개 누적과 AI Review 초안 표시를 확인했습니다.
+- AI Review, Recipe Detail, Audio Player, SwiftData 저장소 선별 테스트 18개 통과를 확인했습니다.
+- AI Review 저장 이후 터치 흐름은 자동화 스크롤 한계로 후속 수동 검증이 필요합니다.
 
 ### 2026-06-22
 

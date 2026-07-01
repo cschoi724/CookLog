@@ -2,6 +2,17 @@
 
 이 문서는 iOS 앱 개발 변경 기록을 관리합니다.
 
+## 2026-07-01
+
+- QA에서 확인된 `AI 정리하기` 후 STEP Preview가 AI Review에 비어 전달되는 결함을 수정했습니다.
+- `AppRoute.aiReview`가 `[StepPreview]`를 직접 포함하도록 변경해 Cooking Log에서 AI Review로 이동할 때 입력 배열을 route payload로 전달합니다.
+- `StepPreview`에 `Hashable` 준수를 추가했습니다.
+- 수정 후 `xcodebuild build -quiet`와 `xcodebuild build-for-testing -quiet` 성공을 확인했습니다.
+- `AIReviewViewModelTests` 선별 실행으로 4개 테스트 통과를 확인했습니다.
+- iPhone SE 시뮬레이터에서 STEP Preview 2개 누적과 AI Review 초안 표시를 재검증했습니다.
+- AI Review, Recipe Detail, Audio Player, SwiftData 저장소 선별 테스트 18개 통과를 확인했습니다.
+- AI Review 저장 이후 터치 흐름은 자동화 스크롤 한계로 후속 수동 QA 대상으로 남겼습니다.
+
 ## 2026-06-22
 
 - M8 점검 중 AI Review 저장 성공 후 navigation path를 Home 기준 Recipe Detail로 정리했습니다.

@@ -1,6 +1,6 @@
 import Foundation
 
-struct StepPreview: Identifiable, Equatable {
+struct StepPreview: Identifiable, Equatable, Hashable {
     let id: UUID
     var order: Int
     var transcript: String

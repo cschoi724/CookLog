@@ -1,13 +1,14 @@
 # CookLog Project Status
 
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-07-01
 
 ## 현재 상태
 
-- 전체 상태: PRD v2 확정, iOS MVP 개발 착수 준비
+- 전체 상태: PRD v2 확정, iOS MVP 흐름 구현 후 검증과 마무리 정리 진행
 - 현재 우선 플랫폼: iOS
 - Android 상태: 개발 대기
-- iOS 프로젝트: 아직 생성 전
+- iOS 프로젝트: `apps/ios/CookLog.xcodeproj` 생성 완료
+- iOS 현재 이정표: M8. MVP 정리와 검증
 - 기준 제품 문서: `docs/product/CookLog_PRD_v2.md`
 
 ## 현재 제품 기준
@@ -20,15 +21,31 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 
 - PRD v2 기준 문서 정리 완료
 - 플랫폼별 개발 에이전트 운영 구조 정리 완료
-- iOS MVP 개발 준비 단계
+- iOS MVP 핵심 흐름 구현 후 문서/검증 정리 단계
+- AI Agent 운영 마이그레이션 초기화 완료
+- 첫 파일럿 Task로 루트 프로젝트 상태 문서 동기화 진행
+- iOS QA에서 발견된 AI Review STEP Preview 입력 전달 결함 수정 완료, AI Review 초안 표시 재검증 완료
 
 ### iOS
 
-- 현재 이정표: M0. 개발 기반 준비
+- 현재 이정표: M8. MVP 정리와 검증
+- 현재 상태:
+  - SwiftUI 기반 `CookLog.xcodeproj` 생성 완료
+  - Home, Cooking Log, AI Review, Recipe Detail, Audio Player 기본 흐름 구현
+  - 도메인 모델, UseCase, Repository/DataSource, Mock 서비스 구성 완료
+  - SwiftData 기반 로컬 Recipe 저장 경로 연결 완료
+  - `AI 정리하기` route가 STEP Preview 배열을 직접 전달하도록 보정 완료
+  - iPhone SE 시뮬레이터에서 STEP Preview 2개 누적 후 AI Review 초안 표시 확인
+  - `xcodebuild build`와 `xcodebuild build-for-testing` 성공 이력 있음
+  - AI Review, Recipe Detail, Audio Player, SwiftData 저장소 선별 테스트 18개 통과
+  - `xcodebuild test`는 로컬 시뮬레이터 XCTest runner 단계 대기 이슈가 남아 있음
 - 다음 작업:
-  1. `apps/ios/`에 SwiftUI iOS 프로젝트 생성
-  2. 기본 빌드와 시뮬레이터 실행 확인
-  3. 실제 프로젝트 구조를 `apps/ios/agents.md`와 `apps/ios/docs/` 문서에 반영
+  1. 사람이 직접 Simulator 또는 실제 기기에서 AI Review 저장 이후 전체 MVP 흐름 터치 재검증
+  2. 앱 재실행 후 SwiftData 저장 Recipe 유지 여부 수동 확인
+  3. 작은 화면, 다크 모드, TextEditor/TextField 레이아웃 수동 확인
+  4. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
+  5. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
+- 상세 상태 기준: `apps/ios/docs/STATUS.md`
 
 ### Android
 
@@ -44,7 +61,7 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 
 ## 열린 질문
 
-- 현재 열린 질문 없음
+- iOS `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
 
 ## 다음 세션 시작 기준
 

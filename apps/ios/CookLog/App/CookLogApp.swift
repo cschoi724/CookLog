@@ -6,7 +6,6 @@ struct CookLogApp: App {
     private let modelContainer: ModelContainer
     private let environment: AppEnvironment
     @State private var path: [AppRoute] = []
-    @State private var aiReviewStepPreviews: [StepPreview] = []
     @State private var homeRefreshToken = 0
 
     @MainActor
@@ -46,14 +45,13 @@ struct CookLogApp: App {
                                 addStepPreviewUseCase: environment.addStepPreviewUseCase
                             ),
                             onGenerateRecipeDraft: { stepPreviews in
-                                aiReviewStepPreviews = stepPreviews
-                                path.append(.aiReview)
+                                path.append(.aiReview(stepPreviews))
                             }
                         )
-                    case .aiReview:
+                    case .aiReview(let stepPreviews):
                         AIReviewView(
                             viewModel: AIReviewViewModel(
-                                stepPreviews: aiReviewStepPreviews,
+                                stepPreviews: stepPreviews,
                                 generateRecipeDraftUseCase: environment.generateRecipeDraftUseCase,
                                 saveRecipeUseCase: environment.saveRecipeUseCase
                             ),
