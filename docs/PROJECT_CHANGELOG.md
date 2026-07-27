@@ -2,6 +2,13 @@
 
 이 문서는 플랫폼과 무관한 전체 프로젝트 변경 기록을 관리합니다.
 
+## 2026-07-27
+
+- `T-20260701-002` iOS MVP 수동 QA를 조건부 통과로 완료했습니다.
+- iPhone SE 시뮬레이터에서 Home, Cooking Log, AI Review 저장, Recipe Detail, Audio Player, 앱 재실행 후 저장 유지 흐름을 확인했습니다.
+- 핵심 선별 XCTest 18개 통과와 신규 P1 제품 결함 없음 상태를 기록했습니다.
+- 새 클론 환경에서 이어갈 수 있도록 `.ai_project/new_clone_handoff.md` 인수인계 문서를 추가했습니다.
+
 ## 2026-07-01
 
 - AI Agent 운영 마이그레이션 초기화 후 첫 파일럿 Task로 루트 프로젝트 상태 문서 동기화를 등록했습니다.

@@ -20,9 +20,9 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `ready_for_qa` | 0 |
 | `qa_in_progress` | 0 |
 | `qa_passed` | 0 |
-| `rework_requested` | 1 |
+| `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 2 |
+| `done` | 3 |
 | `cancelled` | 0 |
 
 ## 3. Active Tasks
@@ -31,10 +31,15 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 4. Next Candidates
 
-| Task ID | 제목 | 상태 | 우선순위 | 담당 | 비고 |
-|---|---|---|---|---|---|
-| `T-20260701-002` | iOS MVP 수동 QA 체크리스트 수행 | `rework_requested` | `P1` | Development Agent | STEP Preview가 AI Review에 전달되지 않는 핵심 흐름 결함 수정 필요 |
-| `T-20260701-003` | AI Review에 STEP Preview가 전달되지 않는 문제 수정 | `done` | `P1` | PM Agent | `QA-HIGH-001` 수정 완료 |
+현재 승인 또는 실행 대기 중인 Task가 없습니다.
+
+완료된 주요 Task:
+
+| Task ID | 제목 | 상태 | 비고 |
+|---|---|---|---|
+| `T-20260701-001` | 루트 프로젝트 상태 문서 동기화 | `done` | 루트/iOS 상태 문서 동기화 완료 |
+| `T-20260701-002` | iOS MVP 수동 QA 체크리스트 수행 | `done` | iOS MVP Core Loop 조건부 통과 완료 |
+| `T-20260701-003` | AI Review에 STEP Preview가 전달되지 않는 문제 수정 | `done` | `QA-HIGH-001` 수정 완료 |
 
 ## 5. Backlog Candidates
 
@@ -45,6 +50,8 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | 후보 | 이유 | 비고 |
 |---|---|---|
 | `xcodebuild test` 대기 이슈 조사 | iOS 열린 질문으로 기록됨 | 개발/QA 협업 후보 |
+| AI Review 문자열 편집과 키보드 가림 확인 | 자동 입력 한계로 사람 손 최종 확인 필요 | QA/UX 후보 |
+| 2단계 이상 Audio Player 이동 확인 | 1단계 데이터로는 실제 이전/다음 이동 미검증 | QA 후보 |
 
 ## 6. 변경 이력
 
@@ -67,3 +74,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | 2026-07-01 | `T-20260701-003` 개발 수정 및 검증 완료, ready_for_qa 전환 |
 | 2026-07-01 | `T-20260701-003` QA 통과 반영 |
 | 2026-07-01 | `T-20260701-003` PM 완료 확정 |
+| 2026-07-14 | `T-20260701-002` 재개 승인 반영 |
+| 2026-07-14 | QA Agent가 재검증을 시작하고 Task 잠금을 획득 |
+| 2026-07-27 | QA Agent가 저장 이후 전체 MVP 흐름과 선별 테스트 18개를 확인하고 qa_passed 전환 |
+| 2026-07-27 | PM Agent가 `T-20260701-002` 완료 확정 |

@@ -1,6 +1,7 @@
 # Current Agent Context
 
 작성일: 2026-07-01  
+최종 업데이트: 2026-07-27
 프로젝트: CookLog  
 상태: Draft
 
@@ -14,19 +15,20 @@
 
 | 항목 | 값 |
 |---|---|
-| 현재 운영 모드 | AI Agent 운영 마이그레이션 초기화 |
+| 현재 운영 모드 | 새 클론 운영 환경 전환 준비 |
 | 활성 Agent | PM Agent, Development Agent, QA Agent, AI Ops Agent |
 | 현재 우선 Task | 없음 |
-| 다음 확인 위치 | `.ai_project/ops_migration_plan.md`, `.ai_project/source_of_truth.md`, `.ai_project/tasks/` |
+| 다음 확인 위치 | `.ai_project/new_clone_handoff.md`, `.ai_project/source_of_truth.md`, `.ai_project/task_board.md` |
 | Lock timeout | 240분 |
 
 ## 3. 현재 주의사항
 
 - AI Ops Agent는 제품 Task 실행 라인에 참여하지 않고, 운영 프로세스 문제를 `.ai_project/ops_issues.md`에 기록합니다.
 - CookLog의 기존 루트/플랫폼별 문서는 삭제하거나 대체하지 않고 source of truth로 연결합니다.
-- 현재 `.ai_project/tasks/`에는 실행 가능한 제품 Task가 없습니다.
-- PM Agent가 첫 제품 Task를 만들기 전까지 Development Agent와 QA Agent는 임의로 구현/검증 Task를 시작하지 않습니다.
-- 루트 `docs/PROJECT_STATUS.md`와 `apps/ios/docs/STATUS.md` 사이에 현재 iOS 진행 상태 차이가 있으므로 PM Agent의 상태 동기화가 필요합니다.
+- `T-20260701-001`, `T-20260701-002`, `T-20260701-003`은 모두 `done`입니다.
+- iOS MVP Core Loop는 조건부 통과 상태입니다.
+- 새 클론 환경으로 이어가려면 로컬 커밋과 `.ai_project/new_clone_handoff.md`를 원격에 push해야 합니다.
+- 남은 제품 작업은 후속 P2/P3 Task로 분리합니다.
 
 ## 4. 세션 시작 체크
 
@@ -43,3 +45,4 @@
 | 날짜 | 변경 내용 |
 |---|---|
 | 2026-07-01 | 현재 Agent 컨텍스트 문서 초기화 |
+| 2026-07-27 | iOS MVP Core Loop 조건부 통과와 새 클론 전환 준비 상태 반영 |

@@ -1,6 +1,6 @@
 # CookLog iOS Status
 
-최종 업데이트: 2026-07-01
+최종 업데이트: 2026-07-27
 
 ## 현재 상태
 
@@ -14,10 +14,10 @@
 
 ## 다음 작업
 
-1. 사람이 직접 Simulator 또는 실제 기기에서 AI Review 저장 버튼 이후 Recipe Detail, Audio Player, SwiftData 저장 유지 흐름 재검증
-2. 작은 화면, 다크 모드, TextEditor/TextField 하단 레이아웃 수동 확인
+1. 실제 기기 또는 사람 손 입력으로 AI Review의 재료명/양, STEP 본문, 예상 시간, 메모 문자열 수정과 키보드 가림을 최종 확인
+2. 2단계 이상 저장 레시피에서 Audio Player 이전/다음 단계 이동을 수동 확인
 3. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
-4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
+4. 전체 `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
 
 ## 최근 작업
 
@@ -136,6 +136,12 @@
 - `AIReviewViewModelTests`, `RecipeDetailViewModelTests`, `AudioPlayerViewModelTests`, `SwiftDataRecipeLocalDataSourceTests` 선별 실행으로 총 18개 테스트 통과를 확인했습니다.
 - QA Agent가 `T-20260701-003` ready_for_qa를 재검증했고, STEP Preview 1개 생성 후 AI Review 초안 표시를 확인해 `QA-HIGH-001` 수정 통과로 판정했습니다.
 - QA 재검증 중 STEP Preview 2개 누적까지 확인했으나, Simulator 종료로 2개 누적 상태의 AI Review 재진입 스크린샷은 확보하지 못했습니다.
+- 2026-07-27 QA Agent가 `T-20260701-002` 저장 이후 MVP 흐름을 iPhone SE (3rd generation), iOS 17.2 시뮬레이터에서 재검증했습니다.
+- AI Review 저장, Recipe Detail, Audio Player 재생/정지/다시 듣기, 앱 종료·재실행 후 SwiftData 레시피 유지와 재진입을 실제 터치로 확인했습니다.
+- iPhone SE 작은 화면과 Home, Cooking Log, AI Review, Recipe Detail, Audio Player의 다크 모드 가독성을 확인했습니다.
+- AI Review의 재료 행과 STEP 추가·삭제를 확인했고, 문자열 편집 전체와 2단계 이전/다음 이동은 후속 사람 손 입력 확인으로 남겼습니다.
+- `xcodebuild build -quiet`, `xcodebuild build-for-testing -quiet` 성공과 핵심 선별 XCTest 18개 통과를 확인했습니다.
+- 신규 제품 결함은 없으며 `T-20260701-002`를 조건부 통과와 `qa_passed`로 판정했습니다.
 
 ## 열린 질문
 

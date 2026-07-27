@@ -23,6 +23,13 @@
   - 수정 후 iPhone SE (3rd generation), iOS 17.2 시뮬레이터에서 새 설치 기준으로 Home -> Cooking Log -> 10초 기록 2회 -> STEP Preview 2개 누적 -> AI Review 초안 표시까지 재검증했다.
   - AI Review 하단 저장 버튼까지의 스크롤 자동화가 안정적으로 전달되지 않아 저장 이후 터치 검증은 완료하지 못했다.
   - 저장, Recipe Detail, Audio Player, SwiftData 저장소 경로는 선별 XCTest 18개 통과로 코드 레벨 검증했다.
+- 2026-07-27 최종 재검증:
+  - iPhone SE (3rd generation), iOS 17.2 시뮬레이터에서 새 설치부터 저장 후 앱 재실행까지 실제 터치 검증했다.
+  - Home -> Cooking Log -> 10초 기록 -> STEP Preview -> AI Review -> 저장 -> Recipe Detail -> Audio Player 흐름을 확인했다.
+  - 앱 종료·재실행 후 Home 목록, Recipe Detail, Audio Player 재진입과 저장 내용 유지를 확인했다.
+  - 작은 화면과 Home, Cooking Log, AI Review, Recipe Detail, Audio Player 다크 모드를 확인했다.
+  - AI Review 재료 행과 STEP 추가·삭제를 확인했다.
+  - 핵심 선별 XCTest 18개를 현재 코드 기준으로 다시 실행해 모두 통과했다.
 - 증거 스크린샷:
   - `/private/tmp/cooklog-se-after-console-launch.png`
   - `/private/tmp/cooklog-se-home-dark-2.png`
@@ -37,6 +44,16 @@
   - `/private/tmp/cooklog-reqa-recording-immediate.png`
   - `/private/tmp/cooklog-reqa-after-drag-step.png`
   - `/private/tmp/cooklog-reqa-ai-review-fixed-2.png`
+  - `/private/tmp/cooklog-qa-20260727-final-home.png`
+  - `/private/tmp/cooklog-qa-20260727-ai-review-scroll1.png`
+  - `/private/tmp/cooklog-qa-20260727-recipe-detail.png`
+  - `/private/tmp/cooklog-qa-20260727-audio-player.png`
+  - `/private/tmp/cooklog-qa-20260727-home-persisted.png`
+  - `/private/tmp/cooklog-qa-20260727-home-dark-persisted.png`
+  - `/private/tmp/cooklog-qa-20260727-cookinglog-dark.png`
+  - `/private/tmp/cooklog-qa-20260727-ai-review-dark.png`
+  - `/private/tmp/cooklog-qa-20260727-detail-dark-final.png`
+  - `/private/tmp/cooklog-qa-20260727-audio-dark.png`
 
 ## 1. 검증 전 준비
 
@@ -52,7 +69,7 @@
 기존 저장 데이터가 검증에 방해되면 시뮬레이터에서 앱을 삭제한 뒤 다시 실행한다.
 
 - [x] 새 설치 상태로 검증했다.
-- [ ] 기존 저장 데이터가 있는 상태로 검증했다.
+- [x] 기존 저장 데이터가 있는 상태로 검증했다.
 
 ## 2. 핵심 MVP 흐름
 
@@ -61,8 +78,8 @@
 - [x] 앱 실행 시 Home 화면이 표시된다.
 - [x] `요리 기록 시작` 버튼이 보인다.
 - [x] 저장된 레시피가 없을 때 빈 상태 문구가 자연스럽다.
-- [ ] 저장된 레시피가 있을 때 목록에 표시된다.
-- [ ] 저장된 레시피 행을 누르면 Recipe Detail로 이동한다.
+- [x] 저장된 레시피가 있을 때 목록에 표시된다.
+- [x] 저장된 레시피 행을 누르면 Recipe Detail로 이동한다.
 
 메모:
 
@@ -92,23 +109,27 @@ QA Agent 2026-07-01:
 
 개발 에이전트 2026-07-01 재검증:
 - 수정 후 새 설치 상태에서 10초 기록을 2회 실행했고 STEP Preview가 `1`, `2` 순서로 누적되는 것을 확인했다.
+
+QA Agent 2026-07-27:
+- 새 설치 상태에서 10초 기록 후 STEP Preview 1개와 활성 `AI 정리하기` 버튼을 확인했다.
+- 이전 재검증의 STEP Preview 2개 누적 결과와 현재 1개 생성 결과가 모두 유지된다.
 ```
 
 ### AI Review
 
 - [x] `AI 정리하기`를 누르면 AI Review 화면으로 이동한다.
 - [x] 로딩 후 레시피 초안이 표시된다.
-- [ ] 제목을 수정할 수 있다.
+- [x] 제목을 수정할 수 있다.
 - [ ] 재료 이름과 양을 수정할 수 있다.
-- [ ] 재료를 추가할 수 있다.
-- [ ] 재료를 삭제할 수 있다.
+- [x] 재료를 추가할 수 있다.
+- [x] 재료를 삭제할 수 있다.
 - [ ] 조리 순서를 수정할 수 있다.
-- [ ] 조리 순서를 추가할 수 있다.
-- [ ] 조리 순서를 삭제할 수 있다.
+- [x] 조리 순서를 추가할 수 있다.
+- [x] 조리 순서를 삭제할 수 있다.
 - [ ] 예상 시간을 수정할 수 있다.
 - [ ] 메모를 수정할 수 있다.
-- [ ] 필수 정보가 있을 때 저장 버튼이 활성화된다.
-- [ ] 저장을 누르면 Recipe Detail로 이동한다.
+- [x] 필수 정보가 있을 때 저장 버튼이 활성화된다.
+- [x] 저장을 누르면 Recipe Detail로 이동한다.
 
 메모:
 
@@ -122,18 +143,26 @@ QA Agent 2026-07-01:
 - 수정 후 STEP Preview 2개가 있는 상태에서 `AI 정리하기`를 눌렀고 AI Review가 오류 대신 레시피 초안을 표시하는 것을 확인했다.
 - 제목 `나의 요리 기록`, 재료 `기록한 재료`, 조리 순서 STEP 1 `삼겹살을 넣고 볶았어`가 표시됐다.
 - AI Review 하단 저장 버튼까지의 스크롤 자동화가 안정적으로 전달되지 않아 저장 터치 검증은 완료하지 못했다.
+
+QA Agent 2026-07-27:
+- AI Review 하단까지 스크롤해 예상 시간, 메모, 활성 저장 버튼을 확인하고 저장을 눌렀다.
+- 저장 후 Recipe Detail로 정상 이동했다.
+- 제목 필드 포커스와 값 변경 후 저장 반영을 확인했다.
+- 재료 행과 STEP을 각각 추가한 뒤 삭제해 동적 편집 동작을 확인했다.
+- macOS 이벤트 기반 한글 입력 전달 한계로 재료명/양, STEP 본문, 예상 시간, 메모의 실제 문자열 변경은 끝까지 확인하지 못했다.
+- 편집 상태는 `AIReviewViewModelTests.testEditableDraftStateIsReflected()` 통과로 보완했다.
 ```
 
 ### Recipe Detail
 
-- [ ] 저장 후 Recipe Detail 화면이 표시된다.
-- [ ] 제목이 표시된다.
-- [ ] 재료 목록이 표시된다.
-- [ ] 조리 순서가 표시된다.
-- [ ] 예상 시간이 표시된다.
-- [ ] 메모가 표시된다.
-- [ ] `오디오 가이드 시작` 버튼이 보인다.
-- [ ] 조리 순서가 있을 때 `오디오 가이드 시작` 버튼이 활성화된다.
+- [x] 저장 후 Recipe Detail 화면이 표시된다.
+- [x] 제목이 표시된다.
+- [x] 재료 목록이 표시된다.
+- [x] 조리 순서가 표시된다.
+- [x] 예상 시간이 표시된다.
+- [x] 메모가 표시된다.
+- [x] `오디오 가이드 시작` 버튼이 보인다.
+- [x] 조리 순서가 있을 때 `오디오 가이드 시작` 버튼이 활성화된다.
 
 메모:
 
@@ -145,20 +174,25 @@ QA Agent 2026-07-01:
 개발 에이전트 2026-07-01:
 - 저장 후 Recipe Detail 터치 검증은 AI Review 하단 스크롤 자동화 한계로 완료하지 못했다.
 - `RecipeDetailViewModelTests` 3개 통과로 Recipe Detail 조회, 없음, 실패 상태를 코드 레벨에서 재확인했다.
+
+QA Agent 2026-07-27:
+- 저장 직후와 앱 재실행 후 저장 레시피 행 선택 경로에서 Recipe Detail 표시를 확인했다.
+- 제목, 예상 시간 10분, 재료, STEP 1, 메모가 저장 전 초안과 일치했다.
+- 작은 화면에서도 `오디오 가이드 시작` 버튼까지 스크롤할 수 있고 잘리지 않았다.
 ```
 
 ### Audio Player
 
-- [ ] `오디오 가이드 시작`을 누르면 Audio Player 화면으로 이동한다.
-- [ ] 레시피 제목이 표시된다.
-- [ ] 현재 단계 번호가 표시된다.
-- [ ] 현재 단계 본문이 표시된다.
-- [ ] 첫 단계에서는 이전 버튼이 비활성화된다.
-- [ ] 재생 버튼을 누를 수 있다.
-- [ ] 정지 버튼을 누를 수 있다.
-- [ ] 다시 듣기 버튼을 누를 수 있다.
+- [x] `오디오 가이드 시작`을 누르면 Audio Player 화면으로 이동한다.
+- [x] 레시피 제목이 표시된다.
+- [x] 현재 단계 번호가 표시된다.
+- [x] 현재 단계 본문이 표시된다.
+- [x] 첫 단계에서는 이전 버튼이 비활성화된다.
+- [x] 재생 버튼을 누를 수 있다.
+- [x] 정지 버튼을 누를 수 있다.
+- [x] 다시 듣기 버튼을 누를 수 있다.
 - [ ] 다음 버튼을 누르면 다음 단계로 이동한다.
-- [ ] 마지막 단계에서는 다음 버튼이 비활성화된다.
+- [x] 마지막 단계에서는 다음 버튼이 비활성화된다.
 - [ ] 이전 버튼을 누르면 이전 단계로 이동한다.
 
 메모:
@@ -171,16 +205,22 @@ QA Agent 2026-07-01:
 개발 에이전트 2026-07-01:
 - Audio Player 터치 검증은 저장 이후 화면 진입을 완료하지 못해 진행하지 못했다.
 - `AudioPlayerViewModelTests` 8개 통과로 초기 로드, 단계 이동, 경계 상태, 재생/다시 듣기/정지 호출, 빈 step, 조회 실패 상태를 코드 레벨에서 재확인했다.
+
+QA Agent 2026-07-27:
+- 1단계 저장 레시피로 Audio Player에 진입해 제목, `STEP 1 / 1`, 현재 단계 본문을 확인했다.
+- 이전/다음 버튼 비활성화, 재생에서 정지 아이콘으로 전환, 정지 후 재생 아이콘 복귀, 다시 듣기 후 정지 상태 전환을 확인했다.
+- 앱 재실행 후에도 저장 레시피에서 Audio Player에 다시 진입했다.
+- 저장 데이터가 1단계라 실제 다음/이전 단계 이동은 수동 수행하지 못했고, `AudioPlayerViewModelTests`의 이동 테스트 통과로 보완했다.
 ```
 
 ## 3. 저장 유지 검증
 
-- [ ] Recipe Detail 또는 Home까지 이동한 상태에서 앱을 종료한다.
-- [ ] 앱을 다시 실행한다.
-- [ ] Home에 방금 저장한 레시피가 표시된다.
-- [ ] 저장된 레시피를 눌러 Recipe Detail로 이동할 수 있다.
-- [ ] Recipe Detail 내용이 저장 전 입력한 내용과 일치한다.
-- [ ] Audio Player에 다시 진입할 수 있다.
+- [x] Recipe Detail 또는 Home까지 이동한 상태에서 앱을 종료한다.
+- [x] 앱을 다시 실행한다.
+- [x] Home에 방금 저장한 레시피가 표시된다.
+- [x] 저장된 레시피를 눌러 Recipe Detail로 이동할 수 있다.
+- [x] Recipe Detail 내용이 저장 전 입력한 내용과 일치한다.
+- [x] Audio Player에 다시 진입할 수 있다.
 
 메모:
 
@@ -192,6 +232,11 @@ QA Agent 2026-07-01:
 개발 에이전트 2026-07-01:
 - SwiftData 저장 유지 터치 검증은 저장 버튼 터치 자동화 한계로 완료하지 못했다.
 - `SwiftDataRecipeLocalDataSourceTests` 3개 통과로 저장/조회, 목록 정렬, 삭제 경로를 코드 레벨에서 재확인했다.
+
+QA Agent 2026-07-27:
+- 저장 후 앱 프로세스를 종료하고 다시 실행했을 때 Home에 `나의 요리 기록1` 행이 유지되는 것을 확인했다.
+- 저장 레시피 행에서 Recipe Detail과 Audio Player에 다시 진입했다.
+- 시뮬레이터를 다시 부팅한 뒤에도 최종 Home에 저장 레시피가 남아 있는 것을 확인했다.
 ```
 
 ## 4. 화면과 사용성 확인
@@ -201,7 +246,7 @@ QA Agent 2026-07-01:
 - [x] 버튼 문구가 이해하기 쉽다.
 - [x] 빈 상태 문구가 어색하지 않다.
 - [ ] 에러 문구가 어색하지 않다.
-- [ ] 화면 이동이 예상과 다르지 않다.
+- [x] 화면 이동이 예상과 다르지 않다.
 - [ ] 뒤로 가기 동작이 자연스럽다.
 
 ### 입력 화면
@@ -218,17 +263,17 @@ QA Agent 2026-07-01:
 
 - [x] Home에서 텍스트와 버튼이 겹치지 않는다.
 - [x] Cooking Log에서 타이머와 버튼이 겹치지 않는다.
-- [ ] AI Review에서 입력 필드가 지나치게 좁지 않다.
-- [ ] Recipe Detail에서 조리 순서가 읽기 좋다.
-- [ ] Audio Player 하단 컨트롤이 잘리지 않는다.
+- [x] AI Review에서 입력 필드가 지나치게 좁지 않다.
+- [x] Recipe Detail에서 조리 순서가 읽기 좋다.
+- [x] Audio Player 하단 컨트롤이 잘리지 않는다.
 
 ### 다크 모드
 
 - [x] Home 가독성이 괜찮다.
-- [ ] Cooking Log 가독성이 괜찮다.
-- [ ] AI Review 가독성이 괜찮다.
-- [ ] Recipe Detail 가독성이 괜찮다.
-- [ ] Audio Player 가독성이 괜찮다.
+- [x] Cooking Log 가독성이 괜찮다.
+- [x] AI Review 가독성이 괜찮다.
+- [x] Recipe Detail 가독성이 괜찮다.
+- [x] Audio Player 가독성이 괜찮다.
 
 메모:
 
@@ -242,6 +287,11 @@ QA Agent 2026-07-01:
 개발 에이전트 2026-07-01 재검증:
 - iPhone SE 작은 화면에서 AI Review 상단의 제목, 재료 입력 행, 조리 순서 STEP 1 표시가 겹치지 않는 것을 확인했다.
 - AI Review 전체 하단, Recipe Detail, Audio Player 레이아웃은 후속 수동 검증이 필요하다.
+
+QA Agent 2026-07-27:
+- iPhone SE 작은 화면에서 AI Review 하단 저장, Recipe Detail 오디오 버튼, Audio Player 하단 컨트롤까지 잘림 없이 확인했다.
+- Home, Cooking Log, AI Review, Recipe Detail, Audio Player를 다크 모드로 전환해 텍스트, 필드, 카드와 컨트롤 가독성을 확인했다.
+- 입력 필드 문자열 수정 전체와 소프트웨어 키보드 가림은 자동 입력 한계로 후속 사람 손 확인이 필요하다.
 ```
 
 ## 5. 발견 이슈 기록
@@ -270,6 +320,7 @@ AI Review가 STEP Preview를 입력으로 받아 레시피 초안을 표시해�
 
 비고:
 MVP 핵심 흐름인 AI 정리, 저장, Recipe Detail, Audio Player 진입을 모두 차단한다.
+2026-07-27 재검증에서는 재현되지 않았고 `QA-HIGH-001` 수정 통과 상태다.
 
 위치:
 QA 실행 환경 > Simulator 조작
@@ -317,7 +368,7 @@ AI Review 상단 초안 표시까지는 터치 검증했으나, macOS 이벤트 
 하나를 선택한다.
 
 - [ ] 통과: MVP 흐름을 그대로 다음 단계로 진행해도 된다.
-- [x] 조건부 통과: 작은 수정 후 진행해도 된다.
+- [x] 조건부 통과: 잔여 사람 손 확인 후 진행해도 된다.
 - [ ] 보류: 핵심 흐름 문제가 있어 수정 후 다시 검증해야 한다.
 
 최종 메모:
@@ -334,4 +385,14 @@ QA Agent 2026-07-01:
 - 저장 이후 터치 검증은 AI Review 하단 스크롤 자동화 한계로 완료하지 못했다.
 - AI Review 저장, Recipe Detail, Audio Player, SwiftData 저장소 선별 XCTest 18개는 통과했다.
 - 사람 손으로 Simulator 또는 실제 기기에서 저장 버튼 이후 흐름을 한 번 더 확인해야 한다.
+
+QA Agent 2026-07-27 최종 재검증:
+- 기존 `정리할 STEP Preview가 없습니다.` 결함은 재현되지 않았다.
+- AI Review 저장부터 Recipe Detail, Audio Player, 앱 재실행 후 SwiftData 저장 유지까지 실제 터치로 확인했다.
+- 작은 화면과 전체 MVP 화면의 다크 모드 가독성을 확인했다.
+- 재료 행 및 STEP 추가·삭제를 확인했다.
+- 현재 코드 기준 핵심 선별 XCTest 18개가 모두 통과했다.
+- 신규 제품 결함은 없다.
+- 문자열 편집 전체와 2단계 오디오 이전/다음 이동은 자동 입력과 1단계 저장 데이터 한계로 후속 사람 손 확인에 남긴다.
+- 핵심 MVP 흐름은 진행 가능하므로 조건부 통과 및 `qa_passed`로 판정한다.
 ```
