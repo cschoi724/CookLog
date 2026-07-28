@@ -17,11 +17,11 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `proposed` | 7 |
 | `scoped` | 0 |
 | `approved` | 0 |
-| `in_progress` | 1 |
+| `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
-| `completion_review` | 0 |
+| `completion_review` | 1 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
 | `done` | 5 |
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-현재 실행 중인 Task가 1건 있습니다.
+현재 Design Lead 완료 검토를 통과하고 `develop` 통합을 기다리는 Design Task가 1건 있습니다.
 
 Team별 요약:
 
@@ -44,12 +44,12 @@ Team별 요약:
 
 ## 4. Next Candidates
 
-`T-20260728-002`는 실행 중이며, `T-20260728-007`과 `T-20260728-019`는 완료했습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
+`T-20260728-002`는 기존 Design QA 결함과 `DQA-MEDIUM-005` 해소를 독립 재검증하고 Design Lead 완료 검토를 통과해 `completion_review`로 인계했습니다. Figma는 점진적 미러로 관리하며 `develop` merge 전에는 `done`으로 전환하지 않습니다. `T-20260728-007`과 `T-20260728-019`는 완료했습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
 | `T-20260728-001` | P0 | iOS M8 잔여 안정화와 최종 검증 | Development Lead Agent | `T-20260701-002`, `T-20260701-003` |
-| `T-20260728-002` | P0 | CookLog Figma 프로젝트 생성과 MVP UI/UX v1 설계 | UI/UX Design Agent | 없음 |
+| `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | Design Lead Agent | `completion_review`, develop 통합 대기 |
 | `T-20260728-003` | P1 | 승인된 Figma MVP UI/UX를 iOS 앱에 적용 | Development Lead Agent | `T-20260728-001`, `T-20260728-002` |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | Development Lead Agent | 없음 |
 | `T-20260728-005` | P1 | Backend AI 프록시 아키텍처와 API 계약 정의 | Development Lead Agent | 없음 |
@@ -111,3 +111,15 @@ Team별 요약:
 | 2026-07-28 | iOS QA Agent가 최신 `origin/main` 기준 재정렬과 patch 동등성을 확인하고 `QA-RISK-007-001` 해소 후 완료 검토로 인계 |
 | 2026-07-28 | `T-20260728-007` PR #3 squash merge와 완료 검토를 마치고 `done` 확정 |
 | 2026-07-28 | `T-20260728-019`에서 일반 Task의 `develop` 통합과 `main` 승격 정책을 확정 |
+| 2026-07-28 | `T-20260728-002` Figma 방향 선택과 Starter 별도 Light·Dark 구조 반영 후 MCP 월간 호출 한도로 blocked 전환 |
+| 2026-07-28 | `design/prototype/`을 UI Source of Truth로 확정하고 Figma를 점진적 미러로 재분류해 `T-20260728-002` 실행 재개 |
+| 2026-07-28 | `T-20260728-002` 로컬 UI 원본과 핸드오프를 완료하고 독립 Design QA 대기로 전환 |
+| 2026-07-28 | `T-20260728-002` 독립 Design QA에서 핵심 흐름·접근성·상태 결함을 확인하고 rework_requested로 전환 |
+| 2026-07-28 | `T-20260728-002` QA 결함 6건을 3개 순차 재작업 패키지로 조율하고 scoped로 전환 |
+| 2026-07-28 | Product Owner가 `T-20260728-002` 재작업을 승인하고 UI/UX Design Agent에 재라우팅 |
+| 2026-07-28 | UI/UX Design Agent가 `T-20260728-002` 재작업 lock을 획득하고 실행 시작 |
+| 2026-07-28 | UI/UX Design Agent가 `T-20260728-002` QA 결함 6건의 재작업과 자체 검증을 완료하고 독립 Design QA 대기로 전환 |
+| 2026-07-28 | 전용 worktree 인계 검토에서 `T-20260728-002` 잔여 대비·draft 보존·첫 Processing 번호를 보완하고 verification_ready 유지 |
+| 2026-07-28 | Design QA가 `T-20260728-002` 기존 결함 해소와 구현 핸드오프 Source of Truth 충돌을 확인해 rework_requested로 전환 |
+| 2026-07-28 | UI/UX Design Agent가 `DQA-MEDIUM-005`를 수정·자체 검증하고 Design QA 독립 재검증 대기로 전환 |
+| 2026-07-28 | Design QA Agent가 `DQA-MEDIUM-005` 해소를 독립 재검증하고 `T-20260728-002`를 verification_passed로 Design Lead Agent에 인계 |
