@@ -32,6 +32,10 @@
 - 신규 Task는 `standard_vnext`와 필수 `scoped` 단계를 사용합니다.
 - 기존 legacy Task의 상태 이력은 자동 변환하지 않습니다.
 - 구현과 독립 검증은 같은 세션이 연속 수행하지 않습니다.
+- Product Lead는 상위 제품 Task, Design Lead는 Design 하위 Task, Development Lead는 개발 하위 Task의 Completion Role만 담당합니다.
+- Verification Agent는 `verification_passed` 이후 Task의 `target_agent`를 해당 하위 Task의 Team Lead로 지정합니다.
+- Team Lead가 하위 Task를 `done`으로 전환한 뒤, 모든 `depends_on`이 해소된 상위 제품 Task만 Product Lead에게 `completion_review`로 인계합니다.
+- 별도 QA Lead는 활성화하지 않고 Design/iOS/Backend QA Agent를 Task별로 라우팅합니다.
 
 ## 4. 변경 이력
 
@@ -39,3 +43,4 @@
 |---|---|
 | 2026-07-01 | Workflow Overrides 문서 초기화 |
 | 2026-07-27 | 멀티팀 vNext 신규 Task 운영 메모 추가, override 없음 유지 |
+| 2026-07-28 | 상위/하위 Task Completion 라우팅과 도메인별 QA 병렬 운영 규칙 추가 |

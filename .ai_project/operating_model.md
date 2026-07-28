@@ -73,9 +73,9 @@ CookLog Organization
 | Team | Team ID | 상태 | Pattern | Lead | Team Context | 비고 |
 |---|---|---|---|---|---|---|
 | Product Team | `product` | active | product direction | Product Lead Agent | `.ai_project/teams/product/team_context.md` | 제품 방향과 완료 판단 |
-| Design Team | `design` | active | design domain | Design Agent | `.ai_project/teams/design/team_context.md` | UX/UI와 디자인 핸드오프 |
+| Design Team | `design` | active | design domain | Design Lead Agent | `.ai_project/teams/design/team_context.md` | UX/UI와 디자인 핸드오프 |
 | Core Development Team | `development` | active | platform workstreams | Development Lead Agent | `.ai_project/teams/development/team_context.md` | iOS 우선, Backend 기반 준비 |
-| Quality Team | `quality` | active | shared verification | QA Agent | `.ai_project/teams/quality/team_context.md` | 독립 검증 |
+| Quality Team | `quality` | active | shared verification pool | 별도 Lead 없음 | `.ai_project/teams/quality/team_context.md` | Task 라우팅 기반 독립 검증 |
 | AI Ops Team | `ai_ops` | active | ops governance | AI Ops Agent | `.ai_project/` | 제품 Task 실행 라인 제외 |
 
 Android Workstream은 iOS 우선 이정표 완료, Android 착수 범위 확정, 사용자 활성화 승인 후 활성화한다.
@@ -84,14 +84,17 @@ Android Workstream은 iOS 우선 이정표 완료, Android 착수 범위 확정,
 
 | Agent | Role | Capabilities | 비고 |
 |---|---|---|---|
-| Product Lead Agent | Direction Role, Completion Role | product_direction, priority_management, approval_preparation, completion_review | Product Owner 승인을 준비한다. |
+| Product Lead Agent | Direction Role, Completion Role | product_direction, priority_management, approval_preparation, parent_task_completion | 상위 제품 Task만 완료한다. |
 | Product Planning Agent | Execution Role | product_documentation, roadmap_management, task_reporting | Product Team의 승인된 문서 Task를 수행한다. |
-| Design Agent | Lead Role, Execution Role | ux_flow, ui_design, design_handoff, design_review | Design Team 내부 범위 |
-| Development Lead Agent | Lead Role | technical_planning, ownership_review, dependency_management, merge_coordination | iOS/Backend/Android 조율 |
+| Design Lead Agent | Lead Role, Completion Role | design_scoping, design_dependency_management, design_child_completion | Design Team 하위 Task만 완료한다. |
+| UI/UX Design Agent | Execution Role | ux_flow, ui_design, prototyping, design_handoff | 승인된 Design 하위 Task를 실행한다. |
+| Development Lead Agent | Lead Role, Completion Role | technical_planning, ownership_review, dependency_management, development_child_completion, merge_coordination | Development 하위 Task만 완료한다. |
 | iOS Agent | Execution Role | ios_implementation, developer_verification, task_reporting | `apps/ios/` 기본 소유 |
 | Backend Agent | Execution Role | backend_architecture, api_contract, backend_implementation | Backend 경로 확정 전 foundation phase |
 | Android Agent | Execution Role | android_implementation | deferred |
-| QA Agent | Verification Role | qa_review, pr_review, test_execution, risk_review, security_check | 구현 세션과 분리 |
+| Design QA Agent | Verification Role | design_qa, accessibility_review, design_handoff_review | Design 실행 세션과 분리 |
+| iOS QA Agent | Verification Role | ios_qa, regression_test, design_fidelity_review | iOS 실행 세션과 분리 |
+| Backend QA Agent | Verification Role | api_qa, contract_test, security_check, privacy_review | Backend 실행 세션과 분리 |
 | AI Ops Agent | Ops Governance Role | process_governance, workflow_governance, ops_migration | 제품 Task 상태와 QA 판정을 변경하지 않는다. |
 
 Product Owner는 사용자이며 Task 실행 승인, push, merge, 배포 승인 권한을 유지한다.
@@ -117,6 +120,39 @@ proposed
 ```
 
 예외 상태는 `blocked`, `rework_requested`, `cancelled`를 사용한다.
+
+### Parent / Child Task Completion
+
+```text
+Product Lead Agent
+  -> 상위 제품 Task 생성과 Team 목표 배정
+
+Design / Development Lead Agent
+  -> 상위 목표를 Team 하위 Task로 분해
+  -> Product Owner 승인 후 Execution Agent에 라우팅
+
+Execution Agent
+  -> 작업 완료 후 도메인 QA Agent에 verification_ready 인계
+
+Domain QA Agent
+  -> 공식 독립 검증
+  -> verification_passed 후 해당 Team Lead에 인계
+
+Team Lead
+  -> 자기 Team 하위 Task만 completion_review -> done
+
+Product Lead Agent
+  -> 필수 하위 Task가 모두 done인 상위 제품 Task만 완료
+```
+
+완료 권한은 전역 Role이 아니라 각 Task의 `team`, `target_agent`, `target_role`, `depends_on`, `blocks` 조합으로 제한한다.
+
+- Design 하위 Task의 `completion_review` 대상은 `Design Lead Agent`다.
+- Development 하위 Task의 `completion_review` 대상은 `Development Lead Agent`다.
+- 상위 제품 Task의 `completion_review` 대상은 `Product Lead Agent`다.
+- Team Lead는 자신이 `target_agent`가 아닌 상위 제품 Task를 전이하지 않는다.
+- 상위 제품 Task는 필수 하위 Task를 `depends_on`으로 연결하고 모두 `done`일 때만 완료 검토한다.
+- 단순 하위 Task 검증은 같은 Task의 Verification 상태로 처리하고, cross-team 통합 검증이 필요할 때만 별도 Quality Task를 만든다.
 
 ## 9. Ownership / Coordination Configuration
 
@@ -209,3 +245,4 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | 날짜 | 변경 내용 |
 |---|---|
 | 2026-07-27 | Guided Full Discovery 결정과 core 0.6.4 마이그레이션 기준으로 운영 모델 생성 |
+| 2026-07-28 | Design Lead/Execution 분리와 Team 하위 Task/제품 상위 Task 완료 권한 범위 추가 |
