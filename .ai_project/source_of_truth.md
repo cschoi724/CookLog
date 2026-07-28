@@ -39,7 +39,7 @@
 | 전체 현재 상태 | `docs/PROJECT_STATUS.md` | 플랫폼별 `apps/*/docs/STATUS.md` | 플랫폼 문서가 더 최신이면 PM Agent가 루트 상태 갱신 필요 |
 | 전체 결정사항 | `docs/PROJECT_DECISIONS.md` | 플랫폼별 `DECISIONS.md` | 공통 결정은 루트, 플랫폼 결정은 플랫폼 문서 우선 |
 | 전체 변경 이력 | `docs/PROJECT_CHANGELOG.md` | 플랫폼별 `CHANGELOG.md`, Git commit | 누락 시 PM Agent가 갱신 |
-| Branch / PR 운영 | `.ai_project/branch_pr_strategy.md` | `docs/GIT_WORKFLOW.md`, `.ai/policies/branch_pr_policy.md` | 현재 충돌은 `ops_issues.md`에 기록하고 동기화 전 사용자 승인 원칙을 우선 |
+| Branch / PR 운영 | `.ai_project/branch_pr_strategy.md` | `docs/GIT_WORKFLOW.md`, `.ai/policies/branch_pr_policy.md` | 전략 선택값은 `.ai_project/branch_pr_strategy.md`, 실제 작업 절차는 `docs/GIT_WORKFLOW.md`를 따르며 두 문서는 일치해야 함 |
 | iOS 세션 기준 | `apps/ios/agents.md` | 루트 `agents.md` | iOS 구현 판단은 iOS 문서 우선 |
 | iOS 현재 상태 | `apps/ios/docs/STATUS.md` | `apps/ios/docs/CHANGELOG.md`, 코드 상태 | 코드/검증 결과 확인 후 갱신 |
 | iOS 구현 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` | `apps/ios/docs/STATUS.md` | 계획 변경은 Product Lead Agent 또는 iOS Agent가 문서화 |
@@ -90,3 +90,4 @@ apps/android/docs/
 | 2026-07-01 | Source Of Truth 문서 초기화 |
 | 2026-07-27 | 멀티팀 운영, Branch/PR, Backend/Figma 미확정 기준과 Knowledge 경계 추가 |
 | 2026-07-28 | 멀티팀 역할 조정에 맞춰 iOS·Backend 실행/검증 담당을 도메인 Agent로 명시하고 Android 담당은 착수 시점에 확정하도록 변경 |
+| 2026-07-28 | `T-20260728-007`에 따라 Branch/PR 전략과 실제 Git 절차의 충돌을 해소하고 문서 책임 경계 확정 |

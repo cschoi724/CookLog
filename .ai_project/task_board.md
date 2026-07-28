@@ -16,12 +16,12 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 |---|---:|
 | `proposed` | 7 |
 | `scoped` | 0 |
-| `approved` | 1 |
+| `approved` | 0 |
 | `in_progress` | 1 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
-| `completion_review` | 0 |
+| `completion_review` | 1 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
 | `done` | 3 |
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-현재 실행 중인 Task가 1건 있으며, 실행 승인 후 대기 중인 Task가 1건 있습니다.
+현재 실행 중인 Task가 1건 있으며, 독립 검증 통과 후 완료 검토 중인 Task가 1건 있습니다.
 
 Team별 요약:
 
@@ -39,12 +39,12 @@ Team별 요약:
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
-| Core Development | 1 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
+| Core Development | 0 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 
 ## 4. Next Candidates
 
-`T-20260728-002`는 실행 중이며, `T-20260728-007`은 Lead scope와 Product Owner 승인을 완료하고 실행을 기다리고 있습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
+`T-20260728-002`는 실행 중이며, `T-20260728-007`은 재정렬 위험 해소와 독립 검증 통과 후 Development Lead Agent의 완료 검토 단계입니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
@@ -54,7 +54,7 @@ Team별 요약:
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | Development Lead Agent | 없음 |
 | `T-20260728-005` | P1 | Backend AI 프록시 아키텍처와 API 계약 정의 | Development Lead Agent | 없음 |
 | `T-20260728-006` | P1 | Backend AI 프록시 foundation 구현 | Development Lead Agent | `T-20260728-005` |
-| `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | 승인 완료 |
+| `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `PASS`, `QA-RISK-007-001` 해소, 완료 검토 |
 | `T-20260728-008` | P1 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` |
 | `T-20260728-009` | P1 | iOS 실서비스 전환 준비도와 릴리즈 게이트 정의 | Development Lead Agent | `T-20260728-001`, `T-20260728-002`, `T-20260728-005`, `T-20260728-007` |
 
@@ -102,3 +102,7 @@ Team별 요약:
 | 2026-07-28 | iOS M8, Figma UI/UX, Backend AI 프록시, Git/CI, 실서비스 준비 후보 Task 9개를 proposed로 등록 |
 | 2026-07-28 | `T-20260728-002` Design Lead scope와 Product Owner 승인을 반영하고 UI/UX Design Agent에 실행 라우팅 |
 | 2026-07-28 | `T-20260728-007` Development Lead scope와 Product Owner 승인을 반영하고 권장 Git·PR·CI 기준으로 실행 대기 전환 |
+| 2026-07-28 | `T-20260728-007` 전용 Task branch에서 정책 문서 단일화 실행 시작 |
+| 2026-07-28 | `T-20260728-007` 정책 문서와 보고서 작성을 완료하고 iOS QA 독립 검증 대기로 전환 |
+| 2026-07-28 | iOS QA Agent가 `T-20260728-007`을 `PASS_WITH_RISK`로 검증하고 브랜치 기준점 재정렬을 merge gate로 기록 |
+| 2026-07-28 | iOS QA Agent가 최신 `origin/main` 기준 재정렬과 patch 동등성을 확인하고 `QA-RISK-007-001` 해소 후 완료 검토로 인계 |

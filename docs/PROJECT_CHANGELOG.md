@@ -2,6 +2,14 @@
 
 이 문서는 플랫폼과 무관한 전체 프로젝트 변경 기록을 관리합니다.
 
+## 2026-07-28
+
+- `T-20260728-007`에 따라 `feature_branch_pr`를 공식 Git 전략으로 확정했습니다.
+- 코드, 설정, 디자인 산출물과 문서 변경에 Task branch와 Pull Request를 적용했습니다.
+- `main` 직접 push를 금지하고 독립 검증, squash merge, 브랜치 삭제와 사용자 승인 경계를 명시했습니다.
+- 초기 CI required check를 `ios-build`로 정하고 `ios-xctest`의 안정화 후 승격 조건을 기록했습니다.
+- `docs/GIT_WORKFLOW.md`, `.ai_project/branch_pr_strategy.md`, 운영 모델과 Source of Truth의 충돌을 해소했습니다.
+
 ## 2026-07-27
 
 - `T-20260701-002` iOS MVP 수동 QA를 조건부 통과로 완료했습니다.
