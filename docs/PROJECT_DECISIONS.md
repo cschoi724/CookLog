@@ -30,9 +30,19 @@
 - 이유: iOS MVP 착수 전에는 빈 디렉토리가 다음 개발 에이전트에게 불필요한 맥락을 줄 수 있습니다.
 - 영향: 공통 코드나 자동화 스크립트가 필요해지는 시점에 다시 생성합니다.
 
-## 2026-06-22 - 1인 개발 기준 Git 운영은 main 중심으로 단순화
+## 2026-07-28 - Task branch와 Pull Request를 공식 Git 전략으로 사용
 
 - 상태: 확정
+- 결정: CookLog의 모든 코드, 설정, 디자인 산출물과 추적 문서 변경은 `task/<task-id>-<slug>` 브랜치와 Pull Request를 거칩니다. `main` 직접 push는 금지하고, squash merge와 브랜치 삭제를 사용합니다.
+- CI: 초기 required check는 `ios-build`로 시작합니다. `ios-xctest`는 `T-20260728-004`의 XCTest 안정화와 `T-20260728-008`의 CI 구축 후 Product Owner 승인으로 승격합니다.
+- 승인 경계: push와 merge는 Product Owner 승인 후 수행합니다. 예외는 명시적 사전 승인과 사유 기록이 필요합니다.
+- 이유: 멀티팀 병렬 작업에서 변경 범위와 검증 근거를 분리하고, 사용자 변경 및 다른 Task와의 충돌을 방지하기 위해서입니다.
+- 영향: `docs/GIT_WORKFLOW.md`가 실제 절차를, `.ai_project/branch_pr_strategy.md`가 전략 선택값을 관리합니다. 2026-06-22의 `main` 직접 작업 결정은 이 결정으로 대체됩니다.
+
+## 2026-06-22 - 1인 개발 기준 Git 운영은 main 중심으로 단순화
+
+- 상태: 대체됨
 - 결정: Git 운영 기준은 `docs/GIT_WORKFLOW.md`에서 단일 관리합니다. 현재 기준은 `main` 직접 작업 중심이며, 큰 실험이나 파일 변화가 큰 작업만 `work/...` 임시 브랜치를 사용합니다.
 - 이유: 현재는 1인 개발이며 브랜치를 세세하게 나누는 비용보다 작은 커밋과 자주 push하는 운영이 더 적합합니다.
 - 영향: Git 전략이 바뀌면 `docs/GIT_WORKFLOW.md`를 우선 수정하고, 다른 문서는 해당 문서를 참조합니다.
+- 대체 결정: `2026-07-28 - Task branch와 Pull Request를 공식 Git 전략으로 사용`

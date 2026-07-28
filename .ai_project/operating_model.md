@@ -191,7 +191,10 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | task_branch_pattern | `task/<task-id>-<slug>` |
 | commit_owner | Execution Role |
 | push_allowed | 사용자 승인 후 |
+| pr_required | 코드, 설정, 디자인 산출물, 추적 문서 모두 필수 |
 | pr_reviewer | Verification Role |
+| initial_required_check | `ios-build` |
+| pending_required_check | `ios-xctest` (`T-20260728-004`, `T-20260728-008` 이후 승격) |
 | merge_owner | Development Lead Agent가 판단하고 사용자가 승인 |
 | team_override_allowed | 사용자 승인 후 |
 
@@ -234,11 +237,11 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 |---|---|---|
 | Figma 원본 링크 | unresolved | Design Team 첫 실행 전 |
 | Backend 코드 경로와 API 계약 문서 | to_create_candidate | Backend 구현 Task 승인 전 |
-| CI 구성과 필수 check | unresolved | 첫 코드 PR merge 전 |
+| CI 구성과 필수 check | `ios-build` 우선, `ios-xctest` 승격 대기 | `T-20260728-008` 구축 및 저장소 적용 승인 전 |
 | Android Workstream 활성화 | deferred | iOS 우선 이정표 완료 후 |
 | Release Role 활성화 | inactive | TestFlight 또는 운영 배포 준비 전 |
 | 기존 `agents.md`와 adapter 지침 병합 | needs_user_decision | 후속 운영 Task |
-| `docs/GIT_WORKFLOW.md`와 새 전략 동기화 | needs_user_decision | 후속 문서 Task |
+| `docs/GIT_WORKFLOW.md`와 새 전략 동기화 | resolved by `T-20260728-007` | - |
 
 ## 15. 변경 이력
 
@@ -246,3 +249,4 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 |---|---|
 | 2026-07-27 | Guided Full Discovery 결정과 core 0.6.4 마이그레이션 기준으로 운영 모델 생성 |
 | 2026-07-28 | Design Lead/Execution 분리와 Team 하위 Task/제품 상위 Task 완료 권한 범위 추가 |
+| 2026-07-28 | `T-20260728-007` 승인 기준으로 Task branch·PR·초기 CI check와 merge gate 확정 |
