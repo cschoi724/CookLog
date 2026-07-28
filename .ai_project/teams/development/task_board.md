@@ -15,5 +15,10 @@
 | `T-20260728-007` | `approved` | CI/Ops | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | 없음 | 정책 문서 단일화 실행 |
 | `T-20260728-008` | `proposed` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` | 선행 Task 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 실서비스 전환 준비도와 릴리즈 게이트 정의 | Development Lead Agent | 4개 선행 Task | 선행 기준 확정 후 scope |
+| `T-20260728-012` | `proposed` | Backend | 구독 entitlement와 AI quota Backend 계약 정의 | Development Lead Agent | Backend·정책 선행 Task | activation gate 대기 |
+| `T-20260728-014` | `proposed` | iOS | iOS StoreKit 2 CookLog Pro 구현 | Development Lead Agent | Figma·계약·상품 준비 | activation gate 대기 |
+| `T-20260728-015` | `proposed` | Backend | Backend 구독 검증과 AI quota 구현 | Development Lead Agent | Backend 계약·상품 준비 | activation gate 대기 |
+| `T-20260728-016` | `proposed` | Cross-platform | 수익화 이벤트와 AI 비용 관측성 구현 | Development Lead Agent | iOS·Backend 구독 구현 | activation gate 대기 |
+| `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | CI·구독·관측성 | activation gate 대기 |
 
 `T-20260728-007`은 Product Owner 승인을 받아 실행할 수 있습니다. 나머지 신규 후보는 아직 실행 대상이 아닙니다.

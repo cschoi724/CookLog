@@ -78,6 +78,7 @@ Git 운영 기준은 [docs/GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md)를 따릅니�
 - [CookLog USER FLOW v2](docs/product/CookLog_USER_FLOW.md)
 - [CookLog WIREFRAME v2](docs/product/CookLog_WIREFRAME.md)
 - [CookLog Roadmap v2](docs/product/CookLog_ROADMAP.md)
+- [CookLog 수익화 운영 지침](docs/product/CookLog_MONETIZATION.md)
 - [CookLog iOS 상태](apps/ios/docs/STATUS.md)
 - [CookLog iOS 개발 계획](apps/ios/docs/DEVELOPMENT_PLAN.md)
 - [CookLog Android 상태](apps/android/docs/STATUS.md)

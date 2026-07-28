@@ -14,11 +14,11 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 7 |
+| `proposed` | 16 |
 | `scoped` | 0 |
 | `approved` | 1 |
-| `in_progress` | 1 |
-| `verification_ready` | 0 |
+| `in_progress` | 0 |
+| `verification_ready` | 1 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
 | `completion_review` | 0 |
@@ -31,25 +31,25 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-현재 실행 중인 Task가 1건 있으며, 실행 승인 후 대기 중인 Task가 1건 있습니다.
+현재 독립 재검증 대기 중인 Design Task와 실행 승인 후 대기 중인 Development Task가 각각 1건 있습니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Design | 0 | 1 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 1 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 
 ## 4. Next Candidates
 
-`T-20260728-002`는 실행 중이며, `T-20260728-007`은 Lead scope와 Product Owner 승인을 완료하고 실행을 기다리고 있습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
+`T-20260728-002`는 독립 Design QA의 6개 결함을 대상으로 3개 순차 재작업 패키지와 자체 검증을 완료해 재검증을 기다립니다. Figma는 점진적 미러로 관리합니다. `T-20260728-007`은 Lead scope와 Product Owner 승인을 완료하고 실행을 기다리고 있습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
 | `T-20260728-001` | P0 | iOS M8 잔여 안정화와 최종 검증 | Development Lead Agent | `T-20260701-002`, `T-20260701-003` |
-| `T-20260728-002` | P0 | CookLog Figma 프로젝트 생성과 MVP UI/UX v1 설계 | UI/UX Design Agent | 없음 |
+| `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | UI/UX Design Agent | 재작업 승인 완료 |
 | `T-20260728-003` | P1 | 승인된 Figma MVP UI/UX를 iOS 앱에 적용 | Development Lead Agent | `T-20260728-001`, `T-20260728-002` |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | Development Lead Agent | 없음 |
 | `T-20260728-005` | P1 | Backend AI 프록시 아키텍처와 API 계약 정의 | Development Lead Agent | 없음 |
@@ -57,6 +57,15 @@ Team별 요약:
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | 승인 완료 |
 | `T-20260728-008` | P1 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` |
 | `T-20260728-009` | P1 | iOS 실서비스 전환 준비도와 릴리즈 게이트 정의 | Development Lead Agent | `T-20260728-001`, `T-20260728-002`, `T-20260728-005`, `T-20260728-007` |
+| `T-20260728-010` | P1 | 수익화 가격·원가와 출시 정책 확정 | Development Lead Agent | `T-20260728-006`, `T-20260728-009` |
+| `T-20260728-011` | P1 | Figma 구독·Paywall UX 설계 | Design Lead Agent | `T-20260728-002`, `T-20260728-010` |
+| `T-20260728-012` | P1 | 구독 entitlement와 AI quota Backend 계약 정의 | Development Lead Agent | `T-20260728-005`, `006`, `009`, `010` |
+| `T-20260728-013` | P1 | App Store 구독 상품과 법무·운영 정보 준비 | Development Lead Agent | `T-20260728-007`, `009`, `010` |
+| `T-20260728-014` | P1 | iOS StoreKit 2 CookLog Pro 구현 | Development Lead Agent | `T-20260728-003`, `011`, `012`, `013` |
+| `T-20260728-015` | P1 | Backend 구독 검증과 AI quota 구현 | Development Lead Agent | `T-20260728-006`, `012`, `013` |
+| `T-20260728-016` | P1 | 수익화 이벤트와 AI 비용 관측성 구현 | Development Lead Agent | `T-20260728-014`, `015` |
+| `T-20260728-017` | P1 | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014`, `015`, `016` |
+| `T-20260728-018` | P1 | 초기 실서비스 수익화 출시 준비 완료 판정 | Development Lead Agent | `T-20260728-017` |
 
 완료된 주요 Task:
 
@@ -102,3 +111,12 @@ Team별 요약:
 | 2026-07-28 | iOS M8, Figma UI/UX, Backend AI 프록시, Git/CI, 실서비스 준비 후보 Task 9개를 proposed로 등록 |
 | 2026-07-28 | `T-20260728-002` Design Lead scope와 Product Owner 승인을 반영하고 UI/UX Design Agent에 실행 라우팅 |
 | 2026-07-28 | `T-20260728-007` Development Lead scope와 Product Owner 승인을 반영하고 권장 Git·PR·CI 기준으로 실행 대기 전환 |
+| 2026-07-28 | `T-20260728-002` Figma 방향 선택과 Starter 별도 Light·Dark 구조 반영 후 MCP 월간 호출 한도로 blocked 전환 |
+| 2026-07-28 | `design/prototype/`을 UI Source of Truth로 확정하고 Figma를 점진적 미러로 재분류해 `T-20260728-002` 실행 재개 |
+| 2026-07-28 | `T-20260728-002` 로컬 UI 원본과 핸드오프를 완료하고 독립 Design QA 대기로 전환 |
+| 2026-07-28 | 초기 실서비스 준비도에 따라 실행할 수익화 Task `T-20260728-010`~`018`을 proposed로 등록 |
+| 2026-07-28 | `T-20260728-002` 독립 Design QA에서 핵심 흐름·접근성·상태 결함을 확인하고 rework_requested로 전환 |
+| 2026-07-28 | `T-20260728-002` QA 결함 6건을 3개 순차 재작업 패키지로 조율하고 scoped로 전환 |
+| 2026-07-28 | Product Owner가 `T-20260728-002` 재작업을 승인하고 UI/UX Design Agent에 재라우팅 |
+| 2026-07-28 | UI/UX Design Agent가 `T-20260728-002` 재작업 lock을 획득하고 실행 시작 |
+| 2026-07-28 | UI/UX Design Agent가 `T-20260728-002` QA 결함 6건의 재작업과 자체 검증을 완료하고 독립 Design QA 대기로 전환 |

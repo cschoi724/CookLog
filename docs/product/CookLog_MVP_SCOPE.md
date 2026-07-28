@@ -33,3 +33,17 @@
 - STEP Preview 단계에서는 실제 AI 레시피 구조화를 수행하지 않습니다.
 - AI는 사용자가 `AI 정리하기`를 선택한 시점에만 호출합니다.
 - 사용자는 레시피를 직접 작성하지 않고 음성으로만 요리 과정을 기록합니다.
+
+## 초기 실서비스 추가 범위
+
+Core MVP 검증 후 실제 서비스로 출시할 때 다음 수익화 기능을 추가합니다.
+
+- CookLog Free / Pro 구분
+- 월간·연간 자동 갱신 구독
+- StoreKit 2 구매와 복원
+- Free/Pro AI 정리 사용량
+- 구독 상태와 남은 사용량 표시
+- Paywall과 구독 관리
+- Backend entitlement와 AI quota 검증
+
+초기 수익화 기준은 `CookLog_MONETIZATION.md`를 따릅니다. 로그인과 서버 레시피 동기화는 계속 MVP 제외 범위로 유지합니다.

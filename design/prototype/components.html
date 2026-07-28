@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>CookLog Component States</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    body { min-height: 100vh; color: var(--text-primary); background: var(--bg-base); }
+    .component-board { width: 390px; min-height: 844px; padding: 34px 22px 56px; }
+    .component-board > header { margin-bottom: 28px; }
+    .component-board h1 { margin: 8px 0 0; font-size: 30px; line-height: 1.15; letter-spacing: -.05em; }
+    .component-section { margin-top: 30px; }
+    .component-section > h2 { margin: 0 0 13px; font-size: 18px; letter-spacing: -.03em; }
+    .state-grid { display: grid; gap: 10px; }
+    .state-caption { margin: 0 0 5px; color: var(--text-tertiary); font-size: 11px; line-height: 17px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .demo-pressed { border-color: var(--border-strong); background: var(--bg-subtle); box-shadow: none; transform: translateY(1px); }
+    .button.demo-pressed { color: var(--text-on-accent); border-color: transparent; background: var(--bg-accent-pressed); }
+    .focus-demo { border-color: var(--focus); outline: 3px solid color-mix(in srgb, var(--focus) 22%, transparent); }
+    .control-demo { display: grid; grid-template-columns: repeat(4, 52px); justify-content: space-between; align-items: center; }
+    .component-note { margin: 9px 0 0; color: var(--text-secondary); font-size: 12px; line-height: 18px; }
+  </style>
+</head>
+<body>
+  <main class="component-board">
+    <header>
+      <p class="eyebrow">IMPLEMENTATION STATES</p>
+      <h1>공통 컴포넌트 상태</h1>
+    </header>
+
+    <section class="component-section">
+      <h2>Button</h2>
+      <div class="state-grid">
+        <div><p class="state-caption">Default</p><button class="button button-primary">레시피 저장</button></div>
+        <div><p class="state-caption">Pressed</p><button class="button button-primary demo-pressed">레시피 저장</button></div>
+        <div><p class="state-caption">Disabled</p><button class="button button-primary" disabled>AI 정리하기</button></div>
+        <div><p class="state-caption">Loading</p><button class="button button-primary is-loading" disabled><span class="inline-loader" aria-hidden="true"></span><span>저장 중</span></button></div>
+      </div>
+    </section>
+
+    <section class="component-section">
+      <h2>Status Banner</h2>
+      <div class="banner banner-info"><strong aria-hidden="true">i</strong><div><strong>STEP Preview</strong><p>AI 정리 전 원문 기록입니다.</p></div></div>
+      <div class="banner banner-success"><strong aria-hidden="true">✓</strong><div><strong>저장 완료</strong><p>나의 레시피에 추가했어요.</p></div></div>
+      <div class="banner banner-error"><strong aria-hidden="true">!</strong><div><strong>저장 실패</strong><p>내용을 유지한 채 다시 시도할 수 있어요.</p></div></div>
+    </section>
+
+    <section class="component-section">
+      <h2>Form Field</h2>
+      <div class="state-grid">
+        <div class="field"><label for="demo-default">Default</label><input class="input" id="demo-default" value="달큰한 간장 삼겹살"></div>
+        <div class="field"><label for="demo-focus">Focused</label><input class="input focus-demo" id="demo-focus" value="25분"></div>
+        <div class="field has-error"><label for="demo-error">Error</label><input class="input" id="demo-error" value=""><p class="field-error">제목을 입력해주세요.</p></div>
+        <div class="field"><label for="demo-disabled">Disabled</label><input class="input" id="demo-disabled" value="저장 중에는 수정할 수 없어요" disabled></div>
+      </div>
+    </section>
+
+    <section class="component-section">
+      <h2>Recipe Card</h2>
+      <p class="state-caption">Default</p>
+      <button class="card recipe-card"><span class="meta">어제 · 약 25분</span><h4>달큰한 간장 삼겹살</h4><p>삼겹살 · 양파 · 간장 | 4단계</p><span class="recipe-arrow">→</span></button>
+      <p class="state-caption" style="margin-top:12px">Pressed</p>
+      <button class="card recipe-card demo-pressed"><span class="meta">어제 · 약 25분</span><h4>달큰한 간장 삼겹살</h4><p>삼겹살 · 양파 · 간장 | 4단계</p><span class="recipe-arrow">→</span></button>
+    </section>
+
+    <section class="component-section">
+      <h2>Player Controls</h2>
+      <div class="control-demo">
+        <button class="player-control" disabled aria-label="이전 단계 비활성">‹</button>
+        <button class="player-control" aria-label="현재 단계 다시 듣기">↺</button>
+        <button class="player-control main" aria-label="재생">▶</button>
+        <button class="player-control" aria-label="다음 단계">›</button>
+      </div>
+      <p class="component-note">비활성은 색상뿐 아니라 낮은 강조도와 조작 불가 상태를 함께 사용합니다.</p>
+    </section>
+  </main>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    document.body.dataset.theme = params.get("theme") === "dark" ? "dark" : "light";
+  </script>
+</body>
+</html>

@@ -2,6 +2,19 @@
 
 이 문서는 플랫폼과 무관한 전체 프로젝트 변경 기록을 관리합니다.
 
+## 2026-07-28
+
+- `design/prototype/`을 공식 UI Source of Truth로 확정하고 Figma를 점진적 버전 미러로 전환했습니다.
+- Warm Kitchen Journal 방향의 5개 MVP 화면, Light/Dark, 주요 상태와 핵심 흐름을 로컬 인터랙티브 프로토타입으로 구성했습니다.
+- Design QA 결함 6건에 대응해 기록 반복·저장 전이, 저장 오류 복구, Player 피드백, WCAG AA 색상, 375×667 실제 프레임과 공통 컴포넌트 상태 갤러리를 보완했습니다.
+- Figma 동기화를 위한 Manifest, 상태 ledger, 재개 Runbook과 Foundation 실행 스크립트를 `design/figma-build/`에 추가했습니다.
+- 초기 실서비스 BM을 Free + CookLog Pro 월간·연간 구독으로 정리했습니다.
+- `docs/product/CookLog_MONETIZATION.md`를 추가해 기능 경계, 가격·AI quota 가설, 원가 기준, Paywall, Apple 요건, 지표와 지속 관리 절차를 문서화했습니다.
+- MVP Scope와 Roadmap에 Core MVP 이후 초기 실서비스 수익화 범위를 연결했습니다.
+- 제품 준비도에 맞춰 실행할 수 있도록 수익화 정책, Figma, Backend 계약, StoreKit, quota, 관측성, 통합 QA와 출시 판정 Task `T-20260728-010`~`018`을 의존성 gate와 함께 등록했습니다.
+- 첫 배포를 내부 TestFlight로 시작하고 비공개 외부 TestFlight 검증 후 App Store에 공개하는 3단계 출시 순서를 확정했습니다.
+- 내부 TestFlight A에서는 실제 Core Loop를, TestFlight B에서는 Free/Pro 구독을 검증하도록 배포 범위를 분리했습니다.
+
 ## 2026-07-27
 
 - `T-20260701-002` iOS MVP 수동 QA를 조건부 통과로 완료했습니다.

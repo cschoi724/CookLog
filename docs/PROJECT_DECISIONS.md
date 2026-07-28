@@ -2,6 +2,47 @@
 
 이 문서는 플랫폼 공통 제품 및 저장소 운영 결정사항을 관리합니다. 플랫폼별 기술 결정은 각 앱 폴더의 `docs/DECISIONS.md`에 기록합니다.
 
+## 2026-07-28 - 내부 TestFlight는 Core Loop와 구독을 분리해 검증
+
+- 상태: 확정
+- 결정: 첫 내부 TestFlight A에서는 실제 Core Loop를 검증하고, 두 번째 내부 TestFlight B에서 Free/Pro 구독을 추가합니다.
+- TestFlight A 포함: 실제 10초 음성 기록·STT, Backend AI 정리, SwiftData 로컬 저장, 실제 TTS 오디오 가이드, 승인된 UI
+- TestFlight A 제외: Paywall, StoreKit 구매, Free/Pro quota
+- TestFlight B 포함: TestFlight A 통과 범위와 Free/Pro, StoreKit 2, Backend entitlement·quota, 구매 복원
+- 외부 베타 조건: TestFlight A와 B를 모두 통과한 뒤 비공개 외부 TestFlight로 전환합니다.
+- 이유: 음성·AI·저장·오디오 문제와 결제·구독 문제를 분리해 원인과 리스크를 명확히 검증하기 위함입니다.
+- 후속 결정: 내부 TestFlight A의 통과 기준
+
+## 2026-07-28 - 초기 실서비스는 3단계 검증 후 App Store에 공개
+
+- 상태: 확정
+- 결정: CookLog의 첫 배포는 내부 TestFlight로 진행하고, 통과 후 비공개 외부 TestFlight를 거쳐 App Store에 정식 공개합니다.
+- 순서: 내부 TestFlight -> 비공개 외부 TestFlight -> App Store 공개
+- 공개 조건: 외부 TestFlight의 제품·기술·수익화 검증을 통과하기 전에는 App Store에 공개하지 않습니다.
+- 이유: 실제 STT, AI proxy, 구독, 개인정보와 비용 리스크를 통제된 환경에서 단계적으로 확인하기 위함입니다.
+- 후속 결정: 내부 TestFlight에 포함할 기능 범위와 통과 기준
+
+## 2026-07-28 - 로컬 디자인 프로토타입을 UI Source of Truth로 사용
+
+- 상태: 확정
+- 결정: `design/prototype/`을 CookLog의 공식 UI Source of Truth로 사용합니다.
+- 보조 기준: 디자인 토큰·컴포넌트·상태 구조는 `design/figma-build/manifest.json`, 구현 핸드오프는 `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`를 사용합니다.
+- Figma 역할: [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn)은 버전 스냅샷과 형상 보존용 미러로 유지하며 호출 가능 시 점진적으로 동기화합니다.
+- 충돌 처리: 로컬 Prototype·Manifest와 Figma가 다르면 Product Owner가 승인한 최신 로컬 원본을 우선합니다.
+- 이유: 디자인 개발을 Figma Starter 플랜의 페이지·변수·MCP 호출 한도와 분리하고, Git 기반 이력과 실행 가능한 인터랙션을 유지하기 위해서입니다.
+- 영향: Design Task와 iOS 적용 Task는 Figma 완료를 기다리지 않고 승인된 로컬 원본과 Design QA를 기준으로 진행할 수 있습니다.
+
+## 2026-07-28 - 초기 실서비스는 Free + CookLog Pro 구독으로 수익화
+
+- 상태: 확정
+- 결정: 초기 실서비스는 광고 없는 Free + CookLog Pro 모델을 사용하고 Pro는 월간·연간 자동 갱신 구독으로 제공합니다.
+- 가격 가설: 월 4,900원, 연 39,000원
+- 사용량 가설: Free AI 정리 월 3회, Pro 월 30회
+- 제품 보호 원칙: 로컬 레시피 저장·조회와 기본 오디오 가이드는 Free에 유지하며 구독 만료 후에도 사용자 데이터를 잠그지 않습니다.
+- 제외: 초기 주간 구독, 평생 이용권, 광고, 소모성 AI 이용권
+- 기준 문서: `docs/product/CookLog_MONETIZATION.md`
+- 후속 작업: AI 원가 검증, 구독 UX, StoreKit 2, Backend entitlement·quota, App Store Connect와 구독 QA
+
 ## 2026-06-22 - PRD v2를 제품 기준으로 사용
 
 - 상태: 확정

@@ -1,6 +1,6 @@
 # CookLog Project Status
 
-최종 업데이트: 2026-07-27
+최종 업데이트: 2026-07-28
 
 ## 현재 상태
 
@@ -10,6 +10,7 @@
 - iOS 프로젝트: `apps/ios/CookLog.xcodeproj` 생성 완료
 - iOS 현재 이정표: M8. MVP 정리와 검증
 - 기준 제품 문서: `docs/product/CookLog_PRD_v2.md`
+- 기준 수익화 문서: `docs/product/CookLog_MONETIZATION.md`
 
 ## 현재 제품 기준
 
@@ -26,6 +27,14 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - 첫 파일럿 Task로 루트 프로젝트 상태 문서 동기화 진행
 - iOS QA에서 발견된 AI Review STEP Preview 입력 전달 결함 수정 완료
 - iOS MVP Core Loop 조건부 통과 완료
+- 초기 실서비스 BM을 Free + CookLog Pro 월간·연간 구독으로 확정
+- 가격과 AI 사용량은 원가·베타 검증 전 출시 가설로 관리
+- 수익화 적용 Task `T-20260728-010`~`018`을 선행 제품·기술 gate 기반 proposed 후보로 등록
+- Core MVP, Figma, Backend foundation, CI와 실서비스 준비도가 충족되기 전에는 수익화 구현을 시작하지 않음
+- 출시 순서를 내부 TestFlight -> 비공개 외부 TestFlight -> App Store 공개로 확정
+- 비공개 외부 TestFlight 검증 통과 전에는 App Store에 공개하지 않음
+- 내부 TestFlight A에서 실제 Core Loop를 먼저 검증하고 TestFlight B에서 Free/Pro 구독을 추가
+- TestFlight A와 B를 모두 통과한 뒤 비공개 외부 TestFlight로 전환
 
 ### iOS
 
@@ -63,6 +72,7 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 ## 열린 질문
 
 - iOS `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
+- AI provider와 model, 실제 호출 원가를 기준으로 월 4,900원·연 39,000원 가격과 Free 3회·Pro 30회 AI 한도를 검증해야 합니다.
 
 ## 다음 세션 시작 기준
 

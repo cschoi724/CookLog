@@ -40,6 +40,7 @@ CookLog는 사용자가 요리 중 또는 요리 후 남긴 짧은 기록을 AI�
 - `docs/product/CookLog_USER_FLOW.md`
 - `docs/product/CookLog_WIREFRAME.md`
 - `docs/product/CookLog_ROADMAP.md`
+- `docs/product/CookLog_MONETIZATION.md`
 - `docs/product/CookLog_Idea_v0.1.md`
 
 전체 프로젝트 진행 기준 문서는 `docs/` 루트에 둡니다.

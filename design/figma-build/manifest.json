@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "runId": "cooklog-mvp-v1-20260728",
+  "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
+  "direction": "A — Warm Kitchen Journal",
+  "brandScope": "wordmark-only",
+  "planConstraints": {
+    "plan": "starter",
+    "colorModeStrategy": "separate-semantic-collections",
+    "maxPages": 3
+  },
+  "pages": [
+    "00 — Direction Gate",
+    "01 — System & Handoff",
+    "02 — MVP Screens & Prototype"
+  ],
+  "collections": [
+    {
+      "name": "CookLog / Primitives",
+      "mode": "Value"
+    },
+    {
+      "name": "CookLog / Color Light",
+      "mode": "Light"
+    },
+    {
+      "name": "CookLog / Color Dark",
+      "mode": "Dark"
+    },
+    {
+      "name": "CookLog / Dimension",
+      "mode": "Value"
+    }
+  ],
+  "primitives": {
+    "cream/50": "#FFFDF8",
+    "cream/100": "#FAF3E7",
+    "cream/200": "#F2E3CE",
+    "orange/100": "#FFE1CF",
+    "orange/300": "#FF9A7A",
+    "orange/400": "#FF7A52",
+    "orange/500": "#C93610",
+    "orange/600": "#A92B0C",
+    "ink/500": "#847064",
+    "ink/700": "#5C4638",
+    "ink/900": "#2D1C14",
+    "dark/800": "#302C35",
+    "dark/900": "#222027",
+    "dark/950": "#18171B",
+    "white/1000": "#FFFFFF",
+    "green/300": "#7EE0B4",
+    "green/500": "#176B4A",
+    "red/300": "#FF8C84",
+    "red/500": "#B42318",
+    "violet/300": "#9B8AF0",
+    "violet/500": "#7057D9"
+  },
+  "semanticColors": {
+    "light": {
+      "color/bg/base": "cream/50",
+      "color/bg/subtle": "cream/100",
+      "color/bg/elevated": "white/1000",
+      "color/bg/accent": "orange/500",
+      "color/bg/accent-pressed": "orange/600",
+      "color/bg/accent-muted": "orange/100",
+      "color/text/primary": "ink/900",
+      "color/text/secondary": "ink/700",
+      "color/text/on-accent": "white/1000",
+      "color/border/default": "cream/200",
+      "color/border/strong": "ink/500",
+      "color/icon/primary": "ink/900",
+      "color/status/success": "green/500",
+      "color/status/error": "red/500",
+      "color/focus": "violet/500"
+    },
+    "dark": {
+      "color/bg/base": "dark/950",
+      "color/bg/subtle": "dark/900",
+      "color/bg/elevated": "dark/800",
+      "color/bg/accent": "orange/300",
+      "color/bg/accent-pressed": "orange/400",
+      "color/bg/accent-muted": "ink/700",
+      "color/text/primary": "white/1000",
+      "color/text/secondary": "cream/200",
+      "color/text/on-accent": "ink/900",
+      "color/border/default": "dark/800",
+      "color/border/strong": "ink/500",
+      "color/icon/primary": "cream/50",
+      "color/status/success": "green/300",
+      "color/status/error": "red/300",
+      "color/focus": "violet/300"
+    }
+  },
+  "dimensions": {
+    "spacing/2xs": 4,
+    "spacing/xs": 8,
+    "spacing/sm": 12,
+    "spacing/md": 16,
+    "spacing/lg": 24,
+    "spacing/xl": 32,
+    "spacing/2xl": 48,
+    "radius/xs": 8,
+    "radius/sm": 12,
+    "radius/md": 16,
+    "radius/lg": 24,
+    "radius/full": 999
+  },
+  "typography": {
+    "CookLog/Display": {
+      "font": "Inter",
+      "style": "Bold",
+      "size": 38,
+      "lineHeight": 46
+    },
+    "CookLog/Title": {
+      "font": "Inter",
+      "style": "Bold",
+      "size": 28,
+      "lineHeight": 34
+    },
+    "CookLog/Heading": {
+      "font": "Inter",
+      "style": "Bold",
+      "size": 20,
+      "lineHeight": 26
+    },
+    "CookLog/Body": {
+      "font": "Inter",
+      "style": "Regular",
+      "size": 16,
+      "lineHeight": 24
+    },
+    "CookLog/Label": {
+      "font": "Inter",
+      "style": "Semi Bold",
+      "size": 15,
+      "lineHeight": 20
+    },
+    "CookLog/Caption": {
+      "font": "Inter",
+      "style": "Semi Bold",
+      "size": 12,
+      "lineHeight": 18
+    }
+  },
+  "components": {
+    "Button": {
+      "properties": {
+        "Style": ["Primary", "Secondary"],
+        "State": ["Default", "Pressed", "Disabled", "Loading"]
+      },
+      "height": 56
+    },
+    "Record Control": {
+      "properties": {
+        "State": ["Idle", "Recording", "Processing", "Error"]
+      }
+    },
+    "Recipe Card": {
+      "properties": {
+        "State": ["Default", "Pressed"],
+        "Audio": ["Available", "Unavailable"]
+      }
+    },
+    "STEP Row": {
+      "properties": {
+        "State": ["Default", "Processing", "Error"]
+      }
+    },
+    "Status Banner": {
+      "properties": {
+        "Type": ["Info", "Success", "Error"]
+      }
+    },
+    "Form Field": {
+      "properties": {
+        "State": ["Default", "Focused", "Error", "Disabled"],
+        "Lines": ["Single", "Multiple"]
+      }
+    },
+    "Player Controls": {
+      "properties": {
+        "State": ["Paused", "Playing"],
+        "Previous": ["Enabled", "Disabled"],
+        "Next": ["Enabled", "Disabled"]
+      }
+    }
+  },
+  "screens": {
+    "Home": ["Content", "Empty", "Loading", "Error"],
+    "Cooking Log": ["Empty", "Recording", "Processing", "STEP Added", "Error"],
+    "AI Review": ["Processing", "Editable", "Generation Error", "Saving", "Save Error"],
+    "Recipe Detail": ["Content", "Loading", "Error", "Not Found"],
+    "Audio Player": ["Paused", "Playing", "Loading", "Error", "No Steps"]
+  },
+  "prototype": {
+    "recordFlow": [
+      "Home / Content",
+      "Cooking Log / Empty",
+      "Cooking Log / Recording",
+      "Cooking Log / Processing",
+      "Cooking Log / STEP Added",
+      "Cooking Log / Recording",
+      "Cooking Log / Processing",
+      "Cooking Log / STEP Added",
+      "AI Review / Processing",
+      "AI Review / Editable",
+      "AI Review / Saving",
+      "Recipe Detail / Content",
+      "Audio Player / Paused",
+      "Audio Player / Playing"
+    ],
+    "reuseFlow": [
+      "Home / Content",
+      "Recipe Detail / Content",
+      "Audio Player / Paused"
+    ]
+  },
+  "validation": {
+    "baseFrame": {
+      "width": 390,
+      "height": 844
+    },
+    "smallFrame": {
+      "width": 375,
+      "height": 667
+    },
+    "minimumTouchTarget": 44,
+    "normalTextContrast": 4.5,
+    "largeTextContrast": 3,
+    "verifiedPairs": {
+      "lightPrimaryCTA": { "pair": "#FFFFFF on #C93610", "ratio": 5.23 },
+      "lightAccentText": { "pair": "#C93610 on #FFFDF8", "ratio": 5.14 },
+      "lightSuccessText": { "pair": "#176B4A on #ECF3F1", "ratio": 5.76 },
+      "lightErrorText": { "pair": "#B42318 on #F9EDED", "ratio": 5.75 },
+      "darkPrimaryCTA": { "pair": "#2D1C14 on #FF9A7A", "ratio": 7.89 },
+      "darkSuccessText": { "pair": "#7EE0B4 on #363A3F", "ratio": 7.2 },
+      "darkErrorText": { "pair": "#FF8C84 on #41343B", "ratio": 5.25 }
+    }
+  }
+}
