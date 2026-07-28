@@ -11,18 +11,22 @@ Team: Quality Team
 |---|---|
 | Team ID | `quality` |
 | Parent Division | Quality Division |
-| Team Pattern | shared verification |
-| Lead | QA Agent |
+| Team Pattern | shared verification pool |
+| Lead | 별도 QA Lead Agent 없음 |
+| Queue Priority | Product Lead Agent |
+| Routing | 각 Task의 `target_agent`, `target_role`, `required_capabilities` |
 
 ## 2. Role / Agent Mapping
 
 | Role | Agent | 책임 |
 |---|---|---|
-| Lead Role | QA Agent | 검증 범위와 우선순위 조율 |
-| Verification Role | QA Agent | PASS, PASS_WITH_RISK, FAIL, BLOCKED 판정 |
-| Completion Role | Product Lead Agent | 검증 결과 수용과 완료 판단 |
+| Verification Role | Design QA Agent | 디자인 요구사항, 상태, 접근성, 핸드오프 검증 |
+| Verification Role | iOS QA Agent | 기능, 회귀, 디자인 구현 정합성 검증 |
+| Verification Role | Backend QA Agent | API 계약, 오류, 보안, 개인정보 검증 |
 
 같은 세션이 구현과 독립 검증을 연속 수행하지 않는다.
+
+Quality Team은 공식 검증만 담당하고 하위 Task 또는 상위 제품 Task를 `done`으로 전환하지 않는다.
 
 ## 3. Ownership
 
@@ -43,6 +47,17 @@ Team: Quality Team
 ## 5. Board / Escalation
 
 - Team board: `.ai_project/teams/quality/task_board.md`
-- 검증 실패: Lead Role에 `rework_requested`
+- 검증 우선순위 충돌: Product Lead Agent가 제품 우선순위만 조정
+- 검증 범위: Design/Development Lead가 각 하위 Task에 기록
+- 검증 실패: 해당 Team Lead에 `rework_requested`
 - 외부 차단: `blocked`
-- 완료 판단: Product Lead Agent에게 인계
+- Design 검증 통과: Design Lead Agent에게 `verification_passed` 인계
+- iOS/Backend 검증 통과: Development Lead Agent에게 `verification_passed` 인계
+- cross-team 통합 검증 통과: Product Lead Agent에게 인계
+
+## 6. Parallel Verification
+
+- 서로 다른 `verification_ready` Task는 Design/iOS/Backend QA Agent 세션에서 병렬 검증할 수 있다.
+- 각 QA 세션은 하나의 Task만 lock하고 별도 QA report를 작성한다.
+- QA Lead 전용 세션은 활성화하지 않는다.
+- 공용 환경 충돌, 검증 Queue 병목, release gate 조율이 반복될 때만 QA Lead 활성화를 재검토한다.

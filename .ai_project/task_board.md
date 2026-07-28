@@ -14,10 +14,10 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 0 |
+| `proposed` | 7 |
 | `scoped` | 0 |
-| `approved` | 0 |
-| `in_progress` | 0 |
+| `approved` | 1 |
+| `in_progress` | 1 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
@@ -31,20 +31,32 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-현재 실행 중인 Task가 없습니다.
+현재 실행 중인 Task가 1건 있으며, 실행 승인 후 대기 중인 Task가 1건 있습니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 0 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
-| Core Development | 0 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
+| Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Core Development | 1 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 
 ## 4. Next Candidates
 
-현재 승인 또는 실행 대기 중인 Task가 없습니다.
+`T-20260728-002`는 실행 중이며, `T-20260728-007`은 Lead scope와 Product Owner 승인을 완료하고 실행을 기다리고 있습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
+
+| Task ID | Priority | 제목 | 담당 Lead | 의존성 |
+|---|---|---|---|---|
+| `T-20260728-001` | P0 | iOS M8 잔여 안정화와 최종 검증 | Development Lead Agent | `T-20260701-002`, `T-20260701-003` |
+| `T-20260728-002` | P0 | CookLog Figma 프로젝트 생성과 MVP UI/UX v1 설계 | UI/UX Design Agent | 없음 |
+| `T-20260728-003` | P1 | 승인된 Figma MVP UI/UX를 iOS 앱에 적용 | Development Lead Agent | `T-20260728-001`, `T-20260728-002` |
+| `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | Development Lead Agent | 없음 |
+| `T-20260728-005` | P1 | Backend AI 프록시 아키텍처와 API 계약 정의 | Development Lead Agent | 없음 |
+| `T-20260728-006` | P1 | Backend AI 프록시 foundation 구현 | Development Lead Agent | `T-20260728-005` |
+| `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | 승인 완료 |
+| `T-20260728-008` | P1 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` |
+| `T-20260728-009` | P1 | iOS 실서비스 전환 준비도와 릴리즈 게이트 정의 | Development Lead Agent | `T-20260728-001`, `T-20260728-002`, `T-20260728-005`, `T-20260728-007` |
 
 완료된 주요 Task:
 
@@ -56,15 +68,10 @@ Team별 요약:
 
 ## 5. Backlog Candidates
 
-아래 후보는 아직 Task로 등록하지 않았습니다.
+기존 Backlog 후보는 다음 Task에 반영했습니다.
 
-권장 후보:
-
-| 후보 | 이유 | 비고 |
-|---|---|---|
-| `xcodebuild test` 대기 이슈 조사 | iOS 열린 질문으로 기록됨 | 개발/QA 협업 후보 |
-| AI Review 문자열 편집과 키보드 가림 확인 | 자동 입력 한계로 사람 손 최종 확인 필요 | QA/UX 후보 |
-| 2단계 이상 Audio Player 이동 확인 | 1단계 데이터로는 실제 이전/다음 이동 미검증 | QA 후보 |
+- AI Review 문자열 편집, 키보드 가림, 2단계 Audio Player 검증: `T-20260728-001`
+- `xcodebuild test` 대기 이슈: `T-20260728-004`
 
 ## 6. 변경 이력
 
@@ -92,3 +99,6 @@ Team별 요약:
 | 2026-07-27 | QA Agent가 저장 이후 전체 MVP 흐름과 선별 테스트 18개를 확인하고 qa_passed 전환 |
 | 2026-07-27 | PM Agent가 `T-20260701-002` 완료 확정 |
 | 2026-07-27 | 기존 완료 Task를 보존하고 신규 Task용 vNext 상태와 Team board 연결 추가 |
+| 2026-07-28 | iOS M8, Figma UI/UX, Backend AI 프록시, Git/CI, 실서비스 준비 후보 Task 9개를 proposed로 등록 |
+| 2026-07-28 | `T-20260728-002` Design Lead scope와 Product Owner 승인을 반영하고 UI/UX Design Agent에 실행 라우팅 |
+| 2026-07-28 | `T-20260728-007` Development Lead scope와 Product Owner 승인을 반영하고 권장 Git·PR·CI 기준으로 실행 대기 전환 |

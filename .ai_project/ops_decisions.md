@@ -67,3 +67,19 @@
 - 결정: 기존 완료 Task, reports, QA 결과와 제품 문서를 자동 변환하거나 삭제하지 않습니다.
 - 영향: 기존 Task는 legacy 위치와 상태 이력을 유지하고 신규 Task부터 vNext 디렉터리와 상태 체계를 사용합니다.
 - 승인: Product Owner, 2026-07-27
+
+## 2026-07-28 - 계층형 Task 완료 책임과 도메인 QA 분리
+
+- 상태: 적용
+- 결정:
+  - Product Lead Agent는 상위 제품 Task의 Direction/Completion을 담당합니다.
+  - Design Lead Agent는 Design 하위 Task의 Lead/Completion을 담당합니다.
+  - Development Lead Agent는 개발 하위 Task의 Lead/Completion을 담당합니다.
+  - UI/UX Design Agent는 Design Execution을 담당합니다.
+  - Design/iOS/Backend QA Agent는 각 도메인의 Verification을 담당합니다.
+  - 별도 QA Lead Agent는 활성화하지 않습니다.
+- 권한 제한:
+  - Completion 권한은 각 Task의 `team`, `target_agent`, `target_role`, `depends_on`, `blocks`로 제한합니다.
+  - Team Lead는 자신에게 라우팅된 자기 Team 하위 Task만 완료합니다.
+  - Product Lead만 필수 하위 Task가 모두 완료된 상위 제품 Task를 완료합니다.
+- 승인: Product Owner, 2026-07-28

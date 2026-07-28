@@ -7,6 +7,6 @@
 
 | Task ID | 상태 | 제목 | 담당 Role | 의존성 | 다음 조치 |
 |---|---|---|---|---|---|
-| 없음 | - | 활성 Task 없음 | - | - | Product 범위 승인 대기 |
+| `T-20260728-002` | `in_progress` | CookLog Figma 프로젝트 생성과 MVP UI/UX v1 설계 | UI/UX Design Agent | 없음 | Figma Foundation, 컴포넌트, MVP 화면과 프로토타입 설계 |
 
-후보: Figma 원본 등록, iOS 핵심 화면 디자인 기준 확정, 상태·오류 UX 정리.
+`T-20260728-002`는 Product Owner 승인을 받아 실행할 수 있습니다.

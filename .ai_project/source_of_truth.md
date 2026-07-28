@@ -42,9 +42,9 @@
 | Branch / PR 운영 | `.ai_project/branch_pr_strategy.md` | `docs/GIT_WORKFLOW.md`, `.ai/policies/branch_pr_policy.md` | 현재 충돌은 `ops_issues.md`에 기록하고 동기화 전 사용자 승인 원칙을 우선 |
 | iOS 세션 기준 | `apps/ios/agents.md` | 루트 `agents.md` | iOS 구현 판단은 iOS 문서 우선 |
 | iOS 현재 상태 | `apps/ios/docs/STATUS.md` | `apps/ios/docs/CHANGELOG.md`, 코드 상태 | 코드/검증 결과 확인 후 갱신 |
-| iOS 구현 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` | `apps/ios/docs/STATUS.md` | 계획 변경은 PM Agent 또는 iOS Development Agent가 문서화 |
+| iOS 구현 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` | `apps/ios/docs/STATUS.md` | 계획 변경은 Product Lead Agent 또는 iOS Agent가 문서화 |
 | iOS 기술 스펙 | `apps/ios/docs/DEVELOPMENT_SPEC.md` | `apps/ios/docs/ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md` | 세부 영역 문서와 실제 코드 모두 확인 |
-| iOS QA 기준 | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` | `apps/ios/docs/TESTING.md`, `.ai_project/qa/` | QA Agent가 리스크 분류 |
+| iOS QA 기준 | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` | `apps/ios/docs/TESTING.md`, `.ai_project/qa/` | iOS QA Agent가 리스크 분류 |
 | Backend 아키텍처 | `unresolved` | `.ai_project/operating_model.md`의 foundation 범위 | Backend 구현 Task 승인 전 생성 후보 확정 |
 | Backend API 계약 | `unresolved` | PRD v2, iOS service 문서 | iOS 연동 Task 전에 계약 문서 필요 |
 | Android 세션 기준 | `apps/android/agents.md` | 루트 `agents.md` | Android 착수 전 Android 문서 우선 |
@@ -68,12 +68,12 @@ apps/android/docs/
 
 | 목적 | 명령 또는 절차 | 실행 주체 |
 |---|---|---|
-| iOS 빌드 | `apps/ios/`에서 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build` | Development Agent |
-| iOS 테스트 빌드 | `apps/ios/`에서 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing` | Development Agent |
-| iOS 테스트 | `apps/ios/`에서 `xcodebuild test` 실행. 현재 로컬 XCTest runner 대기 이슈가 있어 별도 확인 필요 | Development Agent / QA Agent |
-| iOS 수동 QA | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` 기준 | QA Agent |
-| Backend 검증 | Backend 구조와 API 계약 확정 후 정의 | Backend Agent / QA Agent |
-| Android 검증 | Android 착수 후 확정 | Development Agent / QA Agent |
+| iOS 빌드 | `apps/ios/`에서 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build` | iOS Agent |
+| iOS 테스트 빌드 | `apps/ios/`에서 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing` | iOS Agent |
+| iOS 테스트 | `apps/ios/`에서 `xcodebuild test` 실행. 현재 로컬 XCTest runner 대기 이슈가 있어 별도 확인 필요 | iOS Agent / iOS QA Agent |
+| iOS 수동 QA | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` 기준 | iOS QA Agent |
+| Backend 검증 | Backend 구조와 API 계약 확정 후 정의 | Backend Agent / Backend QA Agent |
+| Android 검증 | Android 착수 후 확정 | Android 착수 후 Execution/Verification Agent 확정 |
 
 ## 6. 충돌 해결 원칙
 
@@ -89,3 +89,4 @@ apps/android/docs/
 |---|---|
 | 2026-07-01 | Source Of Truth 문서 초기화 |
 | 2026-07-27 | 멀티팀 운영, Branch/PR, Backend/Figma 미확정 기준과 Knowledge 경계 추가 |
+| 2026-07-28 | 멀티팀 역할 조정에 맞춰 iOS·Backend 실행/검증 담당을 도메인 Agent로 명시하고 Android 담당은 착수 시점에 확정하도록 변경 |
