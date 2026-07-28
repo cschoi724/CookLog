@@ -2,6 +2,16 @@
 
 이 문서는 플랫폼 공통 제품 및 저장소 운영 결정사항을 관리합니다. 플랫폼별 기술 결정은 각 앱 폴더의 `docs/DECISIONS.md`에 기록합니다.
 
+## 2026-07-28 - 로컬 디자인 프로토타입을 UI Source of Truth로 사용
+
+- 상태: 확정
+- 결정: `design/prototype/`을 CookLog의 공식 UI Source of Truth로 사용합니다.
+- 보조 기준: 디자인 토큰·컴포넌트·상태 구조는 `design/figma-build/manifest.json`, 구현 핸드오프는 `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`를 사용합니다.
+- Figma 역할: [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn)은 버전 스냅샷과 형상 보존용 미러로 유지하며 호출 가능 시 점진적으로 동기화합니다.
+- 충돌 처리: 로컬 Prototype·Manifest와 Figma가 다르면 Product Owner가 승인한 최신 로컬 원본을 우선합니다.
+- 이유: 디자인 개발을 Figma Starter 플랜의 페이지·변수·MCP 호출 한도와 분리하고, Git 기반 이력과 실행 가능한 인터랙션을 유지하기 위해서입니다.
+- 영향: Design Task와 iOS 적용 Task는 Figma 완료를 기다리지 않고 승인된 로컬 원본과 Design QA를 기준으로 진행할 수 있습니다.
+
 ## 2026-06-22 - PRD v2를 제품 기준으로 사용
 
 - 상태: 확정

@@ -1,0 +1,37 @@
+{
+  "runId": "cooklog-mvp-v1-20260728",
+  "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
+  "phase": "new-file-rate-limited",
+  "lastCompletedStep": "new-file-created-by-product-owner",
+  "entities": {
+    "pages": {},
+    "directionFrames": {},
+    "collections": {},
+    "primitiveVariables": {},
+    "components": {},
+    "screens": {}
+  },
+  "pending": [
+    "direction-gate",
+    "collections-and-core-primitives",
+    "primitive-colors-b",
+    "semantic-light-a",
+    "semantic-light-b",
+    "semantic-dark-a",
+    "semantic-dark-b",
+    "dimension-spacing",
+    "dimension-radius",
+    "text-and-effect-styles",
+    "system-page",
+    "components",
+    "screens",
+    "prototype",
+    "visual-qa"
+  ],
+  "validation": {
+    "directionGate": "local-source-passed-figma-pending",
+    "localManifest": "passed",
+    "localScriptsSyntax": "passed",
+    "generateFigmaDesignAttempt": "blocked-by-starter-mcp-limit"
+  }
+}

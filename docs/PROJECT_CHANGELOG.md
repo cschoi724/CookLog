@@ -4,6 +4,10 @@
 
 ## 2026-07-28
 
+- `design/prototype/`을 공식 UI Source of Truth로 확정하고 Figma를 점진적 버전 미러로 전환했습니다.
+- Warm Kitchen Journal 방향의 5개 MVP 화면, Light/Dark, 주요 상태와 핵심 흐름을 로컬 인터랙티브 프로토타입으로 구성했습니다.
+- Design QA 결함 6건에 대응해 기록 반복·저장 전이, 저장 오류 복구, Player 피드백, WCAG AA 색상, 375×667 실제 프레임과 공통 컴포넌트 상태 갤러리를 보완했습니다.
+- Figma 동기화를 위한 Manifest, 상태 ledger, 재개 Runbook과 Foundation 실행 스크립트를 `design/figma-build/`에 추가했습니다.
 - `T-20260728-019`에 따라 일반 Task를 `develop`에서 통합하고 릴리즈 가능한 상태만 `main`에 승격하도록 Git 흐름을 전환했습니다.
 - `main`과 `develop` 직접 push를 금지하고 `develop -> main` 통합 QA·제품 수용·사용자 승인 기준을 추가했습니다.
 - 긴급 수정은 `hotfix/* -> main` 후 `develop`에 필수 backport하도록 기록했습니다.

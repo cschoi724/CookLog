@@ -7,6 +7,6 @@
 
 | Task ID | 상태 | 제목 | 담당 Role | 의존성 | 다음 조치 |
 |---|---|---|---|---|---|
-| `T-20260728-002` | `in_progress` | CookLog Figma 프로젝트 생성과 MVP UI/UX v1 설계 | UI/UX Design Agent | 없음 | Figma Foundation, 컴포넌트, MVP 화면과 프로토타입 설계 |
+| `T-20260728-002` | `completion_review` | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | Design Lead Agent | 없음 | Product Owner 승인에 따른 commit·push·PR과 develop 통합 대기 |
 
-`T-20260728-002`는 Product Owner 승인을 받아 실행할 수 있습니다.
+`T-20260728-002`의 기존 결함과 `DQA-MEDIUM-005` 해소를 Design QA Agent가 독립 재검증했고 Design Lead 완료 검토도 통과했습니다. Task는 `completion_review`이며 `develop` merge 전에는 `done`으로 전환하지 않습니다.
