@@ -1,13 +1,13 @@
 # Quality Team Board
 
-작성일: 2026-07-27
+작성일: 2026-07-28
 상태: Active
 
 실제 검증 지시는 `.ai_project/tasks/`의 `verification_ready` Task가 기준이다.
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
-| `T-20260728-002` | `completion_review` | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | 구현 Source of Truth 우선순위 | Design Lead 검토 통과, develop 통합 대기 |
+| 없음 | - | 검증 대기 Task 없음 | - | Verification Role이 Queue 확인 |
 
 향후 검증 예정 proposed Task:
 
@@ -20,4 +20,4 @@
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
 
-`T-20260728-002`의 `DQA-MEDIUM-005` 수정본을 독립 재검증했고 Design Lead 완료 검토도 통과했습니다. Task는 `completion_review`이며 추가 Design QA는 필요하지 않습니다.
+`T-20260728-002`는 최종 `verification_passed` 후 PR #6으로 `develop`에 병합되어 `done`으로 확정했습니다. 추가 Design QA는 필요하지 않습니다.

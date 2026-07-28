@@ -1,7 +1,7 @@
 ---
 id: T-20260728-002
 title: CookLog MVP UI/UX v1 설계와 Figma 버전 미러
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 승인된 디자인 원본이 없어 이후 UI 구현과 Visual QA의 기준을 먼저 만들어야 한다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
   - ux_flow
   - ui_design
@@ -137,7 +137,7 @@ Design Lead Agent가 다음 기준으로 ownership과 의존성을 조율했으�
   - Safari Light Home, Dark Audio Player, 전체 갤러리, 375×667 저장 오류, Dark 컴포넌트 상태 시각 검증
 - 로컬 디자인 핸드오프: `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`
 - Figma 미러 제한: 젤리공방 Starter의 Figma MCP 월간 호출 한도 도달
-- Task 상태: Design Lead 완료 검토 통과, `develop` 통합 대기
+- Task 상태: PR #6을 `develop`에 squash merge하고 `done` 확정
 
 ## Figma 미러 제한
 
@@ -256,9 +256,9 @@ Design Lead Agent가 Design QA의 6개 결함을 아래 순차 작업 패키지�
 - 경로 준수: 전용 Task worktree의 변경이 Task `allowed_paths` 안에 있음을 확인했다.
 - Figma 제한: Product Owner가 승인한 `design/prototype/`과 Manifest를 Source of Truth로 사용하고 Figma를 점진적 미러로 유지하므로 비차단 리스크로 수용했다.
 - 핸드오프: `design/prototype/` → Manifest → 동기화된 Figma 미러 순서와 미동기화·충돌 처리 기준이 iOS 구현에 충분히 명시됐다.
-- 완료 판단: Design 산출물은 완료 기준을 충족했으며 `verification_passed -> completion_review` 인계가 가능하다.
-- 통합 제한: Product Owner 승인에 따른 commit, push, PR과 `develop` merge 전에는 `done`으로 전환하지 않는다.
-- 후속 차단: `T-20260728-003`, `T-20260728-009`는 이 Task가 `done`이 될 때까지 차단을 유지한다.
+- 완료 판단: Design 산출물은 완료 기준을 충족했고 PR #6이 `develop`에 squash merge되어 `completion_review -> done` 전환 조건을 충족했다.
+- 통합 결과: PR #6, squash merge SHA `fda56acb6ded34c7121394760a3c23407bba3721`.
+- 후속 차단: `T-20260728-003`, `T-20260728-009`에 대한 T-002 의존성은 해소됐다. 각 Task의 나머지 선행 조건은 유지한다.
 
 ## 상태 전이 기록
 
@@ -286,3 +286,4 @@ Design Lead Agent가 Design QA의 6개 결함을 아래 순차 작업 패키지�
 - 2026-07-28: UI/UX Design Agent가 핸드오프의 구현 Source of Truth 우선순위를 통일하고 자체 검증을 완료한 뒤 lock을 해제해 `in_progress -> verification_ready`로 전환하고 Design QA Agent에 인계했다.
 - 2026-07-28: Design QA Agent가 `DQA-MEDIUM-005`의 구현 우선순위, 미동기화·충돌 규칙과 iOS 경고가 일관된 것을 독립 재검증해 `verification_ready -> verification_passed`로 전환하고 Design Lead Agent에 인계했다.
 - 2026-07-28: Design Lead Agent가 성공 기준, 최종 QA, allowed paths, Figma 비차단 근거와 iOS 핸드오프 완전성을 확인해 `verification_passed -> completion_review`로 인계했다. `develop` merge 전이므로 `done` 전환과 후속 Task 차단 해제는 보류했다.
+- 2026-07-28: Product Owner 승인에 따라 PR #6을 `develop`에 squash merge했고, merge SHA `fda56acb6ded34c7121394760a3c23407bba3721`을 확인해 `completion_review -> done`으로 전환했다.

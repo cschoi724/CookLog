@@ -2,7 +2,7 @@
 
 작성일: 2026-07-28
 작성자: UI/UX Design Agent
-판정: `verification_ready`
+판정: `done`
 
 ## 완료한 작업
 
@@ -139,3 +139,12 @@ Design QA 재검증에서 남은 2건과 신규 1건을 전용 worktree에서 �
 재개 시 Foundation 나머지 토큰부터 이어서 만들고, 로컬 UI 원본의 커밋 시점과 대응되는 Figma 버전 설명을 남긴다.
 
 구체적인 실행 순서는 `design/figma-build/RUNBOOK.md`를 따른다.
+
+## 완료 확정
+
+- Design QA 최종 판정: `verification_passed`
+- Design Lead 완료 검토: 통과
+- 통합 PR: [#6](https://github.com/cschoi724/CookLog/pull/6)
+- squash merge SHA: `fda56acb6ded34c7121394760a3c23407bba3721`
+- 최종 상태: `done`
+- 후속 영향: T-003의 T-002 의존성은 충족됐으며 T-001 의존성은 유지한다.

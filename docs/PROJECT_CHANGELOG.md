@@ -4,6 +4,8 @@
 
 ## 2026-07-28
 
+- `T-20260728-002` 디자인 변경을 PR #6으로 `develop`에 squash merge하고 Task를 `done`으로 확정했습니다.
+- T-003 iOS UI 적용의 T-002 디자인 의존성을 충족 처리했으며, T-001 완료 전 실행 대기는 유지했습니다.
 - `design/prototype/`을 공식 UI Source of Truth로 확정하고 Figma를 점진적 버전 미러로 전환했습니다.
 - Warm Kitchen Journal 방향의 5개 MVP 화면, Light/Dark, 주요 상태와 핵심 흐름을 로컬 인터랙티브 프로토타입으로 구성했습니다.
 - Design QA 결함 6건에 대응해 기록 반복·저장 전이, 저장 오류 복구, Player 피드백, WCAG AA 색상, 375×667 실제 프레임과 공통 컴포넌트 상태 갤러리를 보완했습니다.
