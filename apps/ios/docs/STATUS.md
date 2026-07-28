@@ -1,13 +1,14 @@
 # CookLog iOS Status
 
-최종 업데이트: 2026-07-27
+최종 업데이트: 2026-07-28
 
 ## 현재 상태
 
 - 상태: M8 MVP 흐름 검증과 마무리 정리 진행
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
-- 현재 로컬 Xcode: 15.2
+- 프로젝트 기준 Xcode: 15.2
+- 현재 설치/검증 Xcode: 26.6
 - 현재 이정표: M8. MVP 정리와 검증
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
@@ -17,10 +18,17 @@
 1. 실제 기기 또는 사람 손 입력으로 AI Review의 재료명/양, STEP 본문, 예상 시간, 메모 문자열 수정과 키보드 가림을 최종 확인
 2. 2단계 이상 저장 레시피에서 Audio Player 이전/다음 단계 이동을 수동 확인
 3. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
-4. 전체 `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
+4. T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정하고 `Scripts/run-xctest.sh`를 재검증
 
 ## 최근 작업
 
+- T-20260728-004에서 공유 scheme의 XCTest 병렬 실행을 비활성화했습니다.
+- `Scripts/run-xctest.sh`를 추가해 단일 worker, 600초 제한, 로그와 `xcresult` 보존을 표준화했습니다.
+- unmanaged SwiftData relationship 접근으로 crash하던 `RecipePersistenceMapperTests`를 in-memory `ModelContainer` 조건으로 수정했습니다.
+- Xcode 26.6, iPhone 15 iOS 17.2 Simulator에서 전체 XCTest 33개를 3회 연속 통과했습니다.
+- `build`, `build-for-testing`, scheme 직렬 실행과 timeout 종료 코드 124를 확인했습니다.
+- iOS QA Agent가 전체 XCTest 33개, timeout 124, 로그와 `xcresult`, build 회귀를 독립 재현해 `PASS_WITH_RISK`로 판정했습니다.
+- Product Owner가 Xcode 15.2 동일 환경 미검증 위험을 수용하고 Xcode·Simulator 고정 검증을 T-20260728-008로 인계했습니다.
 - PRD v2 기준으로 iOS 개발 계획을 업데이트했습니다.
 - iOS 개발 문서를 `apps/ios/docs/`로 이동했습니다.
 - iOS 전담 개발 세션 기준을 `apps/ios/agents.md`에 정리했습니다.
@@ -145,7 +153,8 @@
 
 ## 열린 질문
 
-- `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
+- T-20260728-008에서 CI가 사용할 Xcode와 Simulator 버전을 명시하고 표준 XCTest 스크립트와 artifact 생성 절차를 재검증해야 합니다.
+- Xcode 15.2 설치본 부재 위험은 Product Owner가 수용했으며 Xcode 15.2 호환성을 보장하지 않습니다.
 
 ## 세션 시작 체크리스트
 

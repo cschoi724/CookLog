@@ -10,7 +10,8 @@
 
 - 상태: M8 MVP 흐름 검증과 마무리 정리 진행
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
-- 현재 로컬 Xcode: 15.2
+- 프로젝트 기준 Xcode: 15.2
+- 현재 설치/검증 Xcode: 26.6
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - 권장 구현: SwiftUI + Feature 중심 MVVM + UseCase + Repository/DataSource + 로컬 저장 + STT 기반 STEP Preview + AI 정리 시점 호출
@@ -449,6 +450,7 @@ M7 검증 결과:
 - [ ] AI Review 수정/저장 수동 테스트
 - [ ] 전체 다시 요리 흐름 수동 테스트
 - [x] 주요 단위 테스트 실행
+- [x] 전체 XCTest 3회 연속 실행
 - [ ] 빈 상태와 에러 상태 확인
 - [ ] 권한 거부 상태 확인
 - [ ] 작은 화면에서 레이아웃 확인
@@ -476,6 +478,9 @@ M8 검증 결과:
 - 수정 후 iPhone SE (3rd generation) iOS 17.2 시뮬레이터에서 Home -> Cooking Log -> 10초 기록 2회 -> STEP Preview 2개 누적 -> AI Review 초안 표시까지 확인했습니다.
 - 수정 후 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' -only-testing:CookLogTests/AIReviewViewModelTests -only-testing:CookLogTests/RecipeDetailViewModelTests -only-testing:CookLogTests/AudioPlayerViewModelTests -only-testing:CookLogTests/SwiftDataRecipeLocalDataSourceTests test -quiet`: 성공, 18개 테스트 통과
 - AI Review 하단 저장 버튼까지의 스크롤 자동화가 안정적으로 전달되지 않아 저장 이후 터치 검증은 후속 수동 확인으로 남겼습니다.
+- 2026-07-28 T-20260728-004에서 XCTest 병렬 worker를 비활성화하고 timeout, 로그, `xcresult`를 보존하는 `Scripts/run-xctest.sh`를 추가했습니다.
+- `RecipePersistenceMapperTests`가 SwiftData 모델을 in-memory `ModelContainer`에 삽입한 뒤 relationship을 검증하도록 수정했습니다.
+- Xcode 26.6, iPhone 15 iOS 17.2 Simulator에서 전체 XCTest 33개를 3회 연속 통과했습니다.
 
 완료 기준:
 
@@ -585,7 +590,8 @@ M8 검증 결과:
 
 ## 열린 질문
 
-- `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
+- iOS QA Agent가 현재 표준 XCTest 실행 절차를 독립 재현해 `PASS_WITH_RISK`로 판정했습니다.
+- Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했으며, T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정하고 동일 절차를 재검증합니다.
 
 ## 관련 문서
 

@@ -1,20 +1,25 @@
+import SwiftData
 import XCTest
 @testable import CookLog
 
 @MainActor
 final class RecipePersistenceMapperTests: XCTestCase {
-    func testMapsDomainToPersistentAndBackToDomain() {
+    func testMapsDomainToPersistentAndBackToDomain() throws {
         let recipe = makeRecipe()
 
         let persistentRecipe = RecipePersistenceMapper.makePersistentRecipe(from: recipe)
+        let modelContainer = try makeModelContainer()
+        modelContainer.mainContext.insert(persistentRecipe)
         let mappedRecipe = RecipePersistenceMapper.makeRecipe(from: persistentRecipe)
 
         XCTAssertEqual(mappedRecipe, recipe)
     }
 
-    func testMapsPersistentChildrenByStoredOrder() {
+    func testMapsPersistentChildrenByStoredOrder() throws {
         let recipe = makeRecipe()
         let persistentRecipe = RecipePersistenceMapper.makePersistentRecipe(from: recipe)
+        let modelContainer = try makeModelContainer()
+        modelContainer.mainContext.insert(persistentRecipe)
         persistentRecipe.ingredients = persistentRecipe.ingredients.reversed()
         persistentRecipe.steps = persistentRecipe.steps.reversed()
 
@@ -22,6 +27,16 @@ final class RecipePersistenceMapperTests: XCTestCase {
 
         XCTAssertEqual(mappedRecipe.ingredients, recipe.ingredients)
         XCTAssertEqual(mappedRecipe.steps, recipe.steps)
+    }
+
+    private func makeModelContainer() throws -> ModelContainer {
+        let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+        return try ModelContainer(
+            for: PersistentRecipe.self,
+            PersistentIngredient.self,
+            PersistentRecipeStep.self,
+            configurations: configuration
+        )
     }
 
     private func makeRecipe() -> Recipe {

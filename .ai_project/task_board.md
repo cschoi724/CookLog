@@ -14,14 +14,14 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 7 |
+| `proposed` | 6 |
 | `scoped` | 0 |
 | `approved` | 0 |
 | `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
-| `completion_review` | 0 |
+| `completion_review` | 1 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
 | `done` | 6 |
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-현재 실행 또는 검증 중인 Task가 없습니다.
+현재 Product Owner의 QA 위험 수용 후 Development Lead Agent가 최종 완료 준비 중인 Task가 1건 있습니다.
 
 Team별 요약:
 
@@ -44,14 +44,14 @@ Team별 요약:
 
 ## 4. Next Candidates
 
-`T-20260728-002`는 Design QA와 Design Lead 완료 검토 후 PR #6으로 `develop`에 squash merge되어 `done`으로 확정했습니다. `T-20260728-003`의 T-002 의존성은 충족됐지만 T-001 완료는 계속 필요합니다. `T-20260728-007`과 `T-20260728-019`도 완료했습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
+`T-20260728-004`는 iOS QA 독립 재현을 `PASS_WITH_RISK`로 통과하고 Product Owner가 `QA-RISK-004-001`을 수용해 최종 완료 준비 중입니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`는 `done`이므로 T-003의 디자인 의존성은 충족됐지만 T-001 완료는 계속 필요합니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
 | `T-20260728-001` | P0 | iOS M8 잔여 안정화와 최종 검증 | Development Lead Agent | `T-20260701-002`, `T-20260701-003` |
 | `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | `done` |
 | `T-20260728-003` | P1 | 승인된 Figma MVP UI/UX를 iOS 앱에 적용 | Development Lead Agent | `T-20260728-001` 대기, `T-20260728-002` 완료 |
-| `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | Development Lead Agent | 없음 |
+| `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | Development Lead Agent | `completion_review`, 위험 수용·T-008 인계 완료 |
 | `T-20260728-005` | P1 | Backend AI 프록시 아키텍처와 API 계약 정의 | Development Lead Agent | 없음 |
 | `T-20260728-006` | P1 | Backend AI 프록시 foundation 구현 | Development Lead Agent | `T-20260728-005` |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
@@ -125,3 +125,9 @@ Team별 요약:
 | 2026-07-28 | UI/UX Design Agent가 `DQA-MEDIUM-005`를 수정·자체 검증하고 Design QA 독립 재검증 대기로 전환 |
 | 2026-07-28 | Design QA Agent가 `DQA-MEDIUM-005` 해소를 독립 재검증하고 `T-20260728-002`를 verification_passed로 Design Lead Agent에 인계 |
 | 2026-07-28 | `T-20260728-002` PR #6 squash merge를 확인하고 `done` 확정, T-003의 T-002 의존성 충족 반영 |
+| 2026-07-28 | `T-20260728-004` 진단·안정화·반복 검증 패키지를 scope하고 Product Owner 실행 승인 대기로 전환 |
+| 2026-07-28 | Product Owner가 `T-20260728-004` 실행을 승인하고 iOS Agent에 WP-1 시작 라우팅 |
+| 2026-07-28 | iOS Agent가 `T-20260728-004` 전용 worktree에서 lock을 획득하고 WP-1 진단 시작 |
+| 2026-07-28 | iOS XCTest 33개 3회 연속 통과와 artifact 절차 확정 후 `verification_ready`로 iOS QA Agent에 인계 |
+| 2026-07-28 | iOS QA Agent가 전체 XCTest 33개, timeout 124, artifact와 build 회귀를 독립 재현하고 `PASS_WITH_RISK`로 Development Lead Agent에 인계 |
+| 2026-07-28 | Product Owner가 `QA-RISK-004-001`을 수용하고 Xcode·Simulator 고정 검증을 T-008로 인계해 T-004를 `completion_review`로 전환 |

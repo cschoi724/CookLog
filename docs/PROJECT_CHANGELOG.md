@@ -4,6 +4,10 @@
 
 ## 2026-07-28
 
+- `T-20260728-004`에서 iOS XCTest 병렬 worker를 비활성화하고 단일 worker, 600초 timeout, 로그와 `xcresult` 보존 절차를 확정했습니다.
+- SwiftData mapper 테스트를 실제 저장 조건과 맞추고 전체 XCTest 33개를 3회 연속 통과했습니다.
+- iOS QA 독립 재현을 `PASS_WITH_RISK`로 통과했고 Product Owner가 Xcode 15.2 동일 환경 미검증 위험을 수용했습니다.
+- 후속 `T-20260728-008`이 `Scripts/run-xctest.sh`를 `ios-xctest` check에 연결할 수 있도록 destination과 artifact 기준을 인계했습니다.
 - `T-20260728-002` 디자인 변경을 PR #6으로 `develop`에 squash merge하고 Task를 `done`으로 확정했습니다.
 - T-003 iOS UI 적용의 T-002 디자인 의존성을 충족 처리했으며, T-001 완료 전 실행 대기는 유지했습니다.
 - `design/prototype/`을 공식 UI Source of Truth로 확정하고 Figma를 점진적 버전 미러로 전환했습니다.

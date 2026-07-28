@@ -42,13 +42,15 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
   - iPhone SE 시뮬레이터에서 Home -> 기록 -> AI Review -> 저장 -> Recipe Detail -> Audio Player -> 앱 재실행 저장 유지 흐름 확인
   - `xcodebuild build`와 `xcodebuild build-for-testing` 성공 이력 있음
   - AI Review, Recipe Detail, Audio Player, SwiftData 저장소 선별 테스트 18개 통과
+  - 전체 XCTest 직렬 실행, 600초 timeout, 로그와 `xcresult` 보존 절차 확정
+  - Xcode 26.6, iPhone 15 iOS 17.2 Simulator에서 전체 XCTest 33개 3회 연속 통과
   - 신규 P1 제품 결함 없음
-  - `xcodebuild test`는 로컬 시뮬레이터 XCTest runner 단계 대기 이슈가 남아 있음
+  - Xcode 15.2 설치본 부재로 과거 worker 대기 현상의 동일 toolchain 재현은 잔여 위험
 - 다음 작업:
   1. 실제 기기 또는 사람 손 입력으로 AI Review의 재료명/양, STEP 본문, 예상 시간, 메모 문자열 수정과 키보드 가림 최종 확인
   2. 2단계 이상 저장 레시피에서 Audio Player 이전/다음 단계 이동 수동 확인
   3. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
-  4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
+  4. T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정하고 표준 XCTest 스크립트와 artifact 보존 절차 재검증
 - 상세 상태 기준: `apps/ios/docs/STATUS.md`
 
 ### Android
@@ -67,7 +69,8 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 
 ## 열린 질문
 
-- iOS `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
+- iOS QA Agent가 현재 지원 toolchain에서 `Scripts/run-xctest.sh`, timeout과 artifact 절차를 독립 재현해 `PASS_WITH_RISK`로 판정했습니다.
+- Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했으며 T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정해 재검증합니다.
 
 ## 다음 세션 시작 기준
 
