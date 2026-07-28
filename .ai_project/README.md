@@ -1,8 +1,8 @@
 # CookLog AI Project Workspace
 
-작성일: 2026-07-01  
-프로젝트: CookLog  
-상태: Draft
+작성일: 2026-07-01
+프로젝트: CookLog
+상태: Active
 
 ## 1. 목적
 
@@ -14,10 +14,13 @@
 
 | 문서/폴더 | 역할 |
 |---|---|
+| `.ai_project/operating_model.md` | CookLog의 실제 운영 모드, Team, Role, workflow 선택값 |
 | `.ai_project/agent_registry.md` | CookLog에서 활성화된 Agent 구성 |
 | `.ai_project/current_context.md` | 세션 시작 시 확인할 현재 운영 컨텍스트 |
 | `.ai_project/tasks/` | Agent 실행 Task Queue |
 | `.ai_project/task_board.md` | Task Queue 요약 보드 |
+| `.ai_project/teams/` | Product, Design, Development, Quality Team context와 board |
+| `.ai_project/branch_pr_strategy.md` | branch, PR, review, merge 전략 |
 | `.ai_project/source_of_truth.md` | CookLog 기준 문서와 충돌 처리 기준 |
 | `.ai_project/ops_decisions.md` | Agent 운영 결정 기록 |
 | `.ai_project/ops_issues.md` | AI Agent 운영 프로세스 이슈와 개선 제안 |
@@ -35,9 +38,12 @@
 - Agent 실행 지시는 `.ai_project/tasks/`의 Task 파일을 우선합니다.
 - 제품, 기술, 플랫폼별 상태는 `.ai_project/source_of_truth.md`에 지정된 기존 CookLog 문서를 우선합니다.
 - AI Ops Agent는 제품 Task 실행 라인에 참여하지 않고 운영 프로세스 문제를 `.ai_project/ops_issues.md`에 기록합니다.
+- 신규 Task는 `tasks/active/` 또는 `tasks/backlog/`에 생성하고 기존 루트 Task 파일은 legacy 기록으로 보존합니다.
+- `.ai_knowledge/`는 Agent 온보딩용 Wiki이며 source of truth가 아닙니다.
 
 ## 4. 변경 이력
 
 | 날짜 | 변경 내용 |
 |---|---|
 | 2026-07-01 | `.ai_project/` 초기화 |
+| 2026-07-27 | core 0.6.4 Guided Full 멀티팀 운영 구조로 마이그레이션 |

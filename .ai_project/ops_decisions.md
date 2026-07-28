@@ -1,7 +1,7 @@
 # Ops Decisions
 
-작성일: 2026-07-01  
-프로젝트: CookLog  
+작성일: 2026-07-01
+프로젝트: CookLog
 상태: Draft
 
 ## 1. 목적
@@ -41,3 +41,29 @@
 | 날짜 | 변경 내용 |
 |---|---|
 | 2026-07-01 | Ops Decisions 문서 초기화 |
+
+## Migration Decision - 2026-07-27
+
+| 결정 | 값 |
+|---|---|
+| core_version | 0.6.4 |
+| apply_scope | safe_auto_fix only |
+| manual_only | product code, product Docs, Task status, Role mapping, branch/PR, commit/push/deploy |
+
+## 2026-07-27 - Guided Full 멀티팀 운영 구성 승인
+
+- 상태: 적용
+- 결정: Product, Design, Core Development, Quality, AI Ops Team을 활성화하고 iOS를 최우선, Backend를 foundation phase, Android를 deferred로 운영합니다.
+- Workflow: `standard_vnext`, 모든 신규 Task에 `scoped` 필수
+- Ownership / Coordination: `path_plus_domain`, `lead_coordinated_parallel`
+- Board: project board와 Product/Design/Development/Quality Team board
+- Branch / PR: `feature_branch_pr`, push·merge는 사용자 승인 필요
+- Knowledge: `full`, 원본 문서를 대체하지 않음
+- 승인: Product Owner, 2026-07-27
+
+## 2026-07-27 - 기존 운영 기록 보존
+
+- 상태: 적용
+- 결정: 기존 완료 Task, reports, QA 결과와 제품 문서를 자동 변환하거나 삭제하지 않습니다.
+- 영향: 기존 Task는 legacy 위치와 상태 이력을 유지하고 신규 Task부터 vNext 디렉터리와 상태 체계를 사용합니다.
+- 승인: Product Owner, 2026-07-27

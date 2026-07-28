@@ -1,8 +1,8 @@
 # AI Ops Migration Plan
 
-작성일: 2026-07-01  
-프로젝트: CookLog  
-상태: Draft
+작성일: 2026-07-01
+프로젝트: CookLog
+상태: Applied with follow-up decisions
 
 ## 1. 목적
 
@@ -147,3 +147,51 @@ CookLog/
 | 날짜 | 변경 내용 |
 |---|---|
 | 2026-07-01 | AI Ops Migration Plan 초기화 |
+
+## Migration Record - 2026-07-27
+
+| 항목 | 값 |
+|---|---|
+| core_version | 0.6.4 |
+| core_source | homebrew |
+| apply_scope | safe_auto_fix |
+
+## vNext Guided Full Migration - 2026-07-27
+
+위 2026-07-01 계획과 이력은 보존합니다. 현재 마이그레이션 상태는 아래 기록을 우선합니다.
+
+| 항목 | 값 |
+|---|---|
+| current_core_version | `0.6.4` |
+| project_recorded_core_version | `0.6.4` |
+| bootstrap_mode | `guided_full` |
+| migration_status | applied |
+| operating_mode | `multi_team` |
+| knowledge_mode | `full` |
+| validation | migration verification passed, doctor strict completed_with_warnings |
+
+### 적용 결과
+
+- `.ai_project/operating_model.md` 생성
+- `tasks/active`, `tasks/backlog`, `tasks/archive` 구조 추가
+- Product, Design, Core Development, Quality Team context와 board 추가
+- `feature_branch_pr` 전략 문서 추가
+- Full Knowledge workspace 추가
+- 기존 완료 Task, reports, QA 기록 보존
+- 제품 코드와 제품 문서 미변경
+- Knowledge lint 통과
+- strict doctor 경고: adapter drift 1건, legacy Task `target_role` 누락 3건
+
+### 후속 사용자 결정
+
+| 항목 | 상태 | 처리 |
+|---|---|---|
+| `AGENTS.md` adapter 정합성 | needs_user_decision | 후속 운영 Task |
+| `docs/GIT_WORKFLOW.md` 동기화 | needs_user_decision | 후속 제품 문서 Task |
+| Backend source of truth | unresolved | Backend 구현 승인 전 |
+| Figma 원본 링크 | unresolved | Design Team 첫 실행 전 |
+| CI merge gate | unresolved | 첫 코드 PR merge 전 |
+
+### 롤백
+
+이번 변경은 `ops/aiops-vnext-migration` branch에 한정합니다. merge 전에는 branch 폐기로 롤백할 수 있고, merge 후에는 해당 migration commit revert로 운영 문서만 되돌릴 수 있습니다.

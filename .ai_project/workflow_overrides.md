@@ -1,8 +1,8 @@
 # Workflow Overrides
 
-작성일: 2026-07-01  
-프로젝트: CookLog  
-상태: Draft
+작성일: 2026-07-01
+프로젝트: CookLog
+상태: Active
 
 ## 1. 목적
 
@@ -25,12 +25,17 @@
 ## 3. CookLog 운영 메모
 
 - iOS 구현 Task는 기본적으로 `apps/ios/`로 `allowed_paths`를 제한합니다.
-- Android 구현 Task는 Android 착수 전까지 생성하지 않습니다.
+- Backend 구현 Task는 코드 경로와 API 계약 source of truth를 확정한 뒤 승인합니다.
+- Android 구현 Task는 Android Workstream 활성화에 대한 사용자 승인 전까지 생성하지 않습니다.
 - 제품 공통 문서 Task는 `docs/`와 루트 `agents.md`를 대상으로 합니다.
 - `.ai/` 수정은 사용자 승인 없이 하지 않습니다.
+- 신규 Task는 `standard_vnext`와 필수 `scoped` 단계를 사용합니다.
+- 기존 legacy Task의 상태 이력은 자동 변환하지 않습니다.
+- 구현과 독립 검증은 같은 세션이 연속 수행하지 않습니다.
 
 ## 4. 변경 이력
 
 | 날짜 | 변경 내용 |
 |---|---|
 | 2026-07-01 | Workflow Overrides 문서 초기화 |
+| 2026-07-27 | 멀티팀 vNext 신규 Task 운영 메모 추가, override 없음 유지 |
