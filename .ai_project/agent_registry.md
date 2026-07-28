@@ -1,46 +1,52 @@
 # CookLog Project Agent Registry
 
-작성일: 2026-07-01  
+작성일: 2026-07-01
+최종 업데이트: 2026-07-27
 프로젝트: CookLog
 
 ## 1. 목적
 
 이 문서는 CookLog에서 실제로 활성화된 Agent 구성을 기록합니다.
 
-사용 가능한 Agent와 기본 역할 정의는 `.ai/agent_registry.md`와 `.ai/agents/`를 따릅니다.
+사용 가능한 Agent와 기본 역할 정의는 `.ai/models/agent_registry.md`, `.ai/models/role_model.md`, `.ai/models/capabilities.md`를 따릅니다.
+
+프로젝트별 실제 구성은 `.ai_project/operating_model.md`를 기준으로 합니다.
 
 ## 2. Active Agents
 
-| Agent | 상태 | 역할 문서 | 비고 |
-|---|---|---|---|
-| PM Agent | `enabled` | `.ai/agents/pm_agent.md` | 제품/일정 영향, Task 생성과 승인 관리 |
-| Development Agent | `enabled` | `.ai/agents/development_agent.md` | 승인된 구현 Task 수행 |
-| QA Agent | `enabled` | `.ai/agents/qa_agent.md` | 검증, 리스크, 재작업 요청 |
-| AI Ops Agent | `enabled` | `.ai/agents/ai_ops_agent.md` | 독립 운영 프로세스 점검, 제품 Task 실행 라인 제외 |
+| Agent | 상태 | Team | 기본 Role | 비고 |
+|---|---|---|---|---|
+| Product Lead Agent | `enabled` | Product Team | Direction Role, Completion Role | 제품 방향, 우선순위, 완료 판단 |
+| Product Planning Agent | `enabled` | Product Team | Execution Role | 승인된 제품 문서 Task 수행 |
+| Design Agent | `enabled` | Design Team | Lead Role, Execution Role | UX/UI와 개발 핸드오프 |
+| Development Lead Agent | `enabled` | Core Development Team | Lead Role | 기술 계획, 의존성, 병렬 작업, merge 판단 |
+| iOS Agent | `enabled` | Core Development Team | Execution Role | iOS 최우선 구현 |
+| Backend Agent | `enabled` | Core Development Team | Execution Role | Backend foundation과 API 계약 |
+| Android Agent | `deferred` | Core Development Team | Execution Role | 사용자 활성화 승인 전 실행하지 않음 |
+| QA Agent | `enabled` | Quality Team | Verification Role | 구현 세션과 분리된 독립 검증 |
+| AI Ops Agent | `enabled` | AI Ops Team | Ops Governance Role | 제품 Task 실행 라인 제외 |
 
 ## 3. Delegated Capabilities
 
 | Capability | 현재 담당 | 비고 |
 |---|---|---|
-| `planning` | PM Agent | 제품/일정 관점 작업 정의 |
-| `task_routing` | PM Agent | Task 담당 Agent 지정 |
-| `task_queue_management` | PM Agent | `.ai_project/tasks/` 관리 |
-| `approval_management` | PM Agent | 사용자 승인 기록 |
-| `documentation` | PM Agent | 제품/운영 문서 정리, 후속 분리 가능 |
-| `release_planning` | PM Agent | 후속 분리 가능 |
-| `technical_review` | PM Agent | 필요 시 Development Agent 검토 연결 |
-| `implementation` | Development Agent | 앱 코드와 개발 문서 변경 |
-| `developer_verification` | Development Agent | 빌드/테스트/개발 검증 |
-| `dev_reporting` | Development Agent | `.ai_project/reports/` 보고 |
-| `qa_review` | QA Agent | QA 검증 |
-| `risk_review` | QA Agent | 위험도 검토 |
-| `security_check` | QA Agent | 개인정보/로그/권한 관점 |
-| `release_check` | QA Agent | 릴리즈 전 검증 |
-| `rework_request` | QA Agent | 재작업 요청 |
-| `ops_audit` | AI Ops Agent | 운영 문서와 실제 운영 상태 충돌 점검 |
-| `process_governance` | AI Ops Agent | Task Queue, 승인, lock, report, QA 흐름 점검 |
-| `agent_boundary_review` | AI Ops Agent | Agent 역할/권한 경계 점검 |
-| `ops_migration` | AI Ops Agent | AI Agent 운영 체계 도입 |
+| `product_direction` | Product Lead Agent | 제품 목표와 성공 기준 |
+| `priority_management` | Product Lead Agent | Product Owner 승인 준비 |
+| `completion_review` | Product Lead Agent | 검증 결과 수용과 완료 판단 |
+| `product_documentation` | Product Planning Agent | PRD, 로드맵, 상태 문서 Task |
+| `ux_flow`, `ui_design` | Design Agent | 디자인 원본과 핸드오프 |
+| `technical_planning` | Development Lead Agent | 기술 범위와 작업 분해 |
+| `dependency_management` | Development Lead Agent | cross-team/플랫폼 의존성 |
+| `merge_coordination` | Development Lead Agent | 사용자 merge 승인 전 판단 |
+| `ios_implementation` | iOS Agent | `apps/ios/` |
+| `backend_architecture`, `api_contract` | Backend Agent | Backend 경로 확정 전 foundation |
+| `android_implementation` | Android Agent | deferred |
+| `developer_verification` | 각 Execution Agent | 최종 PASS 판정 아님 |
+| `qa_review`, `pr_review`, `test_execution` | QA Agent | 독립 검증 |
+| `risk_review`, `security_check` | QA Agent | 개인정보·권한·운영 위험 포함 |
+| `rework_request` | QA Agent | Lead Role 재조율 요청 |
+| `ops_audit`, `process_governance` | AI Ops Agent | 제품 실행 흐름 밖에서 점검 |
+| `workflow_governance`, `ops_migration` | AI Ops Agent | core 0.6.4 운영 기준 |
 
 ## 4. Agent 변경 기록
 
@@ -48,3 +54,4 @@
 |---|---|---|
 | 2026-07-01 | PM/Development/QA 기본 실행 Agent 활성화 | Product Owner 요청 기반 |
 | 2026-07-01 | AI Ops Agent를 독립 운영 점검 Agent로 활성화 | Product Owner 요청 기반 |
+| 2026-07-27 | Product/Design/Core Development/Quality/AI Ops 멀티팀 Role 매핑으로 확장 | Product Owner 승인 |

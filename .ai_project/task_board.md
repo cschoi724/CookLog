@@ -1,8 +1,8 @@
 # Task Board
 
-작성일: 2026-07-01  
-프로젝트: CookLog  
-상태: Draft
+작성일: 2026-07-01
+프로젝트: CookLog
+상태: Active
 
 ## 1. 목적
 
@@ -15,19 +15,32 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | 상태 | 개수 |
 |---|---:|
 | `proposed` | 0 |
+| `scoped` | 0 |
 | `approved` | 0 |
 | `in_progress` | 0 |
-| `ready_for_qa` | 0 |
-| `qa_in_progress` | 0 |
-| `qa_passed` | 0 |
+| `verification_ready` | 0 |
+| `verification_in_progress` | 0 |
+| `verification_passed` | 0 |
+| `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
 | `done` | 3 |
 | `cancelled` | 0 |
 
+기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
+
 ## 3. Active Tasks
 
 현재 실행 중인 Task가 없습니다.
+
+Team별 요약:
+
+| Team | Active | In Verification | Blocked | Board |
+|---|---:|---:|---:|---|
+| Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
+| Design | 0 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Core Development | 0 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
+| Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 
 ## 4. Next Candidates
 
@@ -78,3 +91,4 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | 2026-07-14 | QA Agent가 재검증을 시작하고 Task 잠금을 획득 |
 | 2026-07-27 | QA Agent가 저장 이후 전체 MVP 흐름과 선별 테스트 18개를 확인하고 qa_passed 전환 |
 | 2026-07-27 | PM Agent가 `T-20260701-002` 완료 확정 |
+| 2026-07-27 | 기존 완료 Task를 보존하고 신규 Task용 vNext 상태와 Team board 연결 추가 |
