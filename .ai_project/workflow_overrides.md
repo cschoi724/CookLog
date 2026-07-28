@@ -36,6 +36,9 @@
 - Verification Agent는 `verification_passed` 이후 Task의 `target_agent`를 해당 하위 Task의 Team Lead로 지정합니다.
 - Team Lead가 하위 Task를 `done`으로 전환한 뒤, 모든 `depends_on`이 해소된 상위 제품 Task만 Product Lead에게 `completion_review`로 인계합니다.
 - 별도 QA Lead는 활성화하지 않고 Design/iOS/Backend QA Agent를 Task별로 라우팅합니다.
+- 일반 Task 브랜치는 최신 `develop`에서 생성하고 `develop` 대상 PR로 병합합니다.
+- `main` 대상 PR은 통합 QA와 Product Lead 수용 검토를 통과한 `develop -> main` 승격 또는 승인된 `hotfix/*`로 제한합니다.
+- hotfix를 `main`에 병합하면 같은 변경을 `develop`에 backport합니다.
 
 ## 4. 변경 이력
 
@@ -44,3 +47,4 @@
 | 2026-07-01 | Workflow Overrides 문서 초기화 |
 | 2026-07-27 | 멀티팀 vNext 신규 Task 운영 메모 추가, override 없음 유지 |
 | 2026-07-28 | 상위/하위 Task Completion 라우팅과 도메인별 QA 병렬 운영 규칙 추가 |
+| 2026-07-28 | `develop` Task 통합, `main` 승격과 hotfix backport 라우팅 추가 |

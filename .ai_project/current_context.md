@@ -1,7 +1,7 @@
 # Current Agent Context
 
 작성일: 2026-07-01
-최종 업데이트: 2026-07-27
+최종 업데이트: 2026-07-28
 프로젝트: CookLog
 상태: Active
 
@@ -20,7 +20,9 @@
 | 활성 개발 영역 | iOS 최우선, Backend foundation |
 | 보류 영역 | Android, Release Role |
 | 활성 Agent | Product Lead, Product Planning, Design Lead, UI/UX Design, Development Lead, iOS, Backend, Design QA, iOS QA, Backend QA, AI Ops |
-| 현재 우선 Task | 없음 |
+| 현재 우선 Task | 진행 중인 Design Task 보존 후 `develop` 기준 재배치 |
+| 기본 작업 브랜치 | `develop` |
+| 안정·릴리즈 브랜치 | `main` |
 | 다음 확인 위치 | `.ai_project/operating_model.md`, `.ai_project/source_of_truth.md`, `.ai_project/task_board.md` |
 | Lock timeout | 240분 |
 
@@ -36,7 +38,9 @@
 - Design/Development Lead는 자기 Team 하위 Task만 완료하고 Product Lead는 상위 제품 Task만 완료합니다.
 - Quality Team은 별도 QA Lead 없이 도메인별 Verification Agent 세션을 Task 라우팅으로 병렬 운영합니다.
 - push, merge, 배포는 사용자 승인 후 진행합니다.
-- `docs/GIT_WORKFLOW.md`와 신규 Branch/PR 전략, 기존 `agents.md`와 adapter 지침의 동기화는 후속 운영 결정입니다.
+- 일반 Task는 최신 `develop`에서 시작하고 `develop` 대상 PR로 병합합니다.
+- `main`은 통합 QA와 Product Lead 수용 검토를 거친 `develop -> main` 승격 또는 승인된 hotfix만 받습니다.
+- 기존 `agents.md`와 adapter 지침의 동기화는 후속 운영 결정입니다.
 
 ## 4. 세션 시작 체크
 
@@ -56,3 +60,4 @@
 | 2026-07-27 | iOS MVP Core Loop 조건부 통과와 새 클론 전환 준비 상태 반영 |
 | 2026-07-27 | core 0.6.4 멀티팀 운영과 Role 기반 세션 시작 기준 반영 |
 | 2026-07-28 | 계층형 Task 완료 권한과 도메인별 병렬 QA 세션 기준 반영 |
+| 2026-07-28 | `develop` 통합과 `main` 안정·릴리즈 승격 기준 반영 |

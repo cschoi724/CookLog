@@ -4,6 +4,9 @@
 
 ## 2026-07-28
 
+- `T-20260728-019`에 따라 일반 Task를 `develop`에서 통합하고 릴리즈 가능한 상태만 `main`에 승격하도록 Git 흐름을 전환했습니다.
+- `main`과 `develop` 직접 push를 금지하고 `develop -> main` 통합 QA·제품 수용·사용자 승인 기준을 추가했습니다.
+- 긴급 수정은 `hotfix/* -> main` 후 `develop`에 필수 backport하도록 기록했습니다.
 - `T-20260728-007`에 따라 `feature_branch_pr`를 공식 Git 전략으로 확정했습니다.
 - 코드, 설정, 디자인 산출물과 문서 변경에 Task branch와 Pull Request를 적용했습니다.
 - `main` 직접 push를 금지하고 독립 검증, squash merge, 브랜치 삭제와 사용자 승인 경계를 명시했습니다.

@@ -18,7 +18,8 @@
 | 개발 대상 | iOS 우선, Backend foundation, Android deferred |
 | 주 기술스택 | SwiftUI, SwiftData, iOS 17+, Backend/Android 추후 결정 |
 | 저장소 | `https://github.com/cschoi724/CookLog.git` |
-| 기본 브랜치 | `main` |
+| 기본 작업 브랜치 | `develop` |
+| 안정·릴리즈 브랜치 | `main` |
 | 배포 대상 | iOS 실서비스 우선, Backend 연동 후속, Android 보류 |
 
 ## 3. Source Of Truth 매트릭스
@@ -91,3 +92,4 @@ apps/android/docs/
 | 2026-07-27 | 멀티팀 운영, Branch/PR, Backend/Figma 미확정 기준과 Knowledge 경계 추가 |
 | 2026-07-28 | 멀티팀 역할 조정에 맞춰 iOS·Backend 실행/검증 담당을 도메인 Agent로 명시하고 Android 담당은 착수 시점에 확정하도록 변경 |
 | 2026-07-28 | `T-20260728-007`에 따라 Branch/PR 전략과 실제 Git 절차의 충돌을 해소하고 문서 책임 경계 확정 |
+| 2026-07-28 | `T-20260728-019`에 따라 기본 작업 브랜치를 `develop`, 안정·릴리즈 브랜치를 `main`으로 분리 |
