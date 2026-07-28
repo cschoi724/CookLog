@@ -89,3 +89,5 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 
 - Development Lead Agent가 화면 또는 컴포넌트 단위 하위 작업 분할 여부를 판단한다.
 - 디자인 변경이 필요하면 iOS Agent가 임의 수정하지 않고 Design Lead Agent에게 재조율을 요청한다.
+- `T-20260728-002`는 Design QA 통과 후 PR #6으로 `develop`에 병합되어 완료됐다.
+- `T-20260728-001`은 아직 `proposed`이므로 T-003의 실행 차단은 유지한다.
