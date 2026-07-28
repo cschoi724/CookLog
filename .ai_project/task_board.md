@@ -24,7 +24,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 4 |
+| `done` | 5 |
 | `cancelled` | 0 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
@@ -44,7 +44,7 @@ Team별 요약:
 
 ## 4. Next Candidates
 
-`T-20260728-002`는 실행 중이며, `T-20260728-007`은 독립 검증과 merge를 완료했습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
+`T-20260728-002`는 실행 중이며, `T-20260728-007`과 `T-20260728-019`는 완료했습니다. 나머지 신규 후보는 `proposed` 상태이며 각 Lead scope와 Product Owner 승인이 필요합니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
@@ -55,6 +55,7 @@ Team별 요약:
 | `T-20260728-005` | P1 | Backend AI 프록시 아키텍처와 API 계약 정의 | Development Lead Agent | 없음 |
 | `T-20260728-006` | P1 | Backend AI 프록시 foundation 구현 | Development Lead Agent | `T-20260728-005` |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
+| `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
 | `T-20260728-008` | P1 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` |
 | `T-20260728-009` | P1 | iOS 실서비스 전환 준비도와 릴리즈 게이트 정의 | Development Lead Agent | `T-20260728-001`, `T-20260728-002`, `T-20260728-005`, `T-20260728-007` |
 
@@ -66,6 +67,7 @@ Team별 요약:
 | `T-20260701-002` | iOS MVP 수동 QA 체크리스트 수행 | `done` | iOS MVP Core Loop 조건부 통과 완료 |
 | `T-20260701-003` | AI Review에 STEP Preview가 전달되지 않는 문제 수정 | `done` | `QA-HIGH-001` 수정 완료 |
 | `T-20260728-007` | Git·PR·CI 운영 기준 단일화 | `done` | QA `PASS`, PR #3 squash merge 완료 |
+| `T-20260728-019` | develop 통합 브랜치 기반 Git 운영 전환 | `done` | `develop` 통합과 `main` 승격 정책 전환 |
 
 ## 5. Backlog Candidates
 
@@ -108,3 +110,4 @@ Team별 요약:
 | 2026-07-28 | iOS QA Agent가 `T-20260728-007`을 `PASS_WITH_RISK`로 검증하고 브랜치 기준점 재정렬을 merge gate로 기록 |
 | 2026-07-28 | iOS QA Agent가 최신 `origin/main` 기준 재정렬과 patch 동등성을 확인하고 `QA-RISK-007-001` 해소 후 완료 검토로 인계 |
 | 2026-07-28 | `T-20260728-007` PR #3 squash merge와 완료 검토를 마치고 `done` 확정 |
+| 2026-07-28 | `T-20260728-019`에서 일반 Task의 `develop` 통합과 `main` 승격 정책을 확정 |

@@ -186,16 +186,24 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | 항목 | 선택값 |
 |---|---|
 | branch_pr_strategy | `.ai_project/branch_pr_strategy.md` |
-| model | `feature_branch_pr` |
-| base_branch | `main` |
+| model | `develop_integration_pr` |
+| default_branch | `develop` |
+| task_base_branch | `develop` |
+| task_pr_target | `develop` |
+| stable_branch | `main` |
+| promotion_flow | `develop -> main` |
 | task_branch_pattern | `task/<task-id>-<slug>` |
+| hotfix_branch_pattern | `hotfix/<task-id>-<slug>` |
 | commit_owner | Execution Role |
 | push_allowed | 사용자 승인 후 |
 | pr_required | 코드, 설정, 디자인 산출물, 추적 문서 모두 필수 |
 | pr_reviewer | Verification Role |
 | initial_required_check | `ios-build` |
 | pending_required_check | `ios-xctest` (`T-20260728-004`, `T-20260728-008` 이후 승격) |
-| merge_owner | Development Lead Agent가 판단하고 사용자가 승인 |
+| task_merge_owner | Development Lead Agent가 판단하고 사용자가 승인 |
+| main_promotion_owner | Product Lead Agent가 수용 판단하고 사용자가 승인 |
+| direct_push | `main`, `develop` 모두 금지 |
+| hotfix_backport | `main` 병합 후 `develop`에 필수 역반영 |
 | team_override_allowed | 사용자 승인 후 |
 
 ## 12. Source of Truth
@@ -228,7 +236,7 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | Workflow | `standard_vnext` | Product Owner | 2026-07-27 |
 | Ownership / Coordination | `path_plus_domain`, `lead_coordinated_parallel` | Product Owner | 2026-07-27 |
 | Board 모델 | `project_plus_team_board` | Product Owner | 2026-07-27 |
-| Branch / PR 전략 | `feature_branch_pr` | Product Owner | 2026-07-27 |
+| Branch / PR 전략 | `develop_integration_pr` | Product Owner | 2026-07-28 |
 | Knowledge | `full` | Product Owner | 2026-07-27 |
 
 ## 14. Open Configuration Questions
@@ -249,4 +257,5 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 |---|---|
 | 2026-07-27 | Guided Full Discovery 결정과 core 0.6.4 마이그레이션 기준으로 운영 모델 생성 |
 | 2026-07-28 | Design Lead/Execution 분리와 Team 하위 Task/제품 상위 Task 완료 권한 범위 추가 |
+| 2026-07-28 | 일반 Task는 `develop`, 안정·릴리즈 승격은 `main`을 사용하는 통합 브랜치 운영으로 전환 |
 | 2026-07-28 | `T-20260728-007` 승인 기준으로 Task branch·PR·초기 CI check와 merge gate 확정 |

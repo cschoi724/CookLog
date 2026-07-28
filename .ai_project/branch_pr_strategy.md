@@ -8,9 +8,14 @@
 
 ```yaml
 branch_strategy:
-  model: feature_branch_pr
-  base_branch: main
+  model: develop_integration_pr
+  default_branch: develop
+  task_base_branch: develop
+  task_pr_base: develop
+  stable_branch: main
+  promotion_flow: "develop -> main"
   task_branch_pattern: "task/<task-id>-<slug>"
+  hotfix_branch_pattern: "hotfix/<task-id>-<slug>"
 ```
 
 ## 2. Role Permissions
@@ -22,7 +27,8 @@ permissions:
   push_policy: with_user_approval
   pr_creator: Execution Role
   pr_reviewer: Verification Role
-  merge_recommender: Development Lead Agent
+  task_merge_recommender: Development Lead Agent
+  main_promotion_acceptance: Product Lead Agent
   merge_approval: Product Owner
 ```
 
@@ -34,6 +40,11 @@ pull_request:
   docs_included: true
   review_required: true
   self_approval_allowed: false
+  task_target: develop
+  promotion_target: main
+  main_allowed_sources:
+    - develop
+    - hotfix/*
   ci_required:
     - ios-build
   ci_pending_promotion:
@@ -47,16 +58,24 @@ pull_request:
 ```yaml
 merge:
   method: squash
-  delete_branch_after_merge: true
-  default_branch_direct_push: false
+  delete_task_and_hotfix_branch_after_merge: true
+  keep_develop_branch: true
+  protected_long_lived_branches:
+    - develop
+    - main
+  direct_push: false
   user_approval_required: true
   automatic_merge: false
   force_push: false
+  hotfix_backport_to_develop: required
 ```
 
 ## 5. Exception Rules
 
 - 코드, 설정, 디자인 산출물과 추적되는 문서 변경은 모두 Task branch와 PR을 사용한다.
+- 일반 Task는 `develop`에서 분기해 `develop`로 PR을 보낸다.
+- `main` 대상 PR은 `develop -> main` 승격 또는 승인된 `hotfix/*`로 제한한다.
+- hotfix는 `main` 병합 직후 `develop`에 backport한다.
 - 긴급 수정 등 예외는 Product Owner의 명시적 사전 승인과 사유 기록이 필요하다.
 - 예외 상황에서도 독립 검증과 사후 기록은 유지한다.
 
@@ -70,3 +89,4 @@ merge:
 |---|---|
 | 2026-07-27 | 멀티팀 병렬 운영을 위한 `feature_branch_pr` 전략 기록 |
 | 2026-07-28 | `T-20260728-007` 승인에 따라 문서 PR, 초기 `ios-build`, `ios-xctest` 승격 조건과 예외 기준 확정 |
+| 2026-07-28 | `T-20260728-019` 승인에 따라 `develop_integration_pr`와 `develop -> main` 승격·hotfix backport 기준 적용 |

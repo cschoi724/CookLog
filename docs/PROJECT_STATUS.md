@@ -1,6 +1,6 @@
 # CookLog Project Status
 
-최종 업데이트: 2026-07-27
+최종 업데이트: 2026-07-28
 
 ## 현재 상태
 
@@ -10,6 +10,8 @@
 - iOS 프로젝트: `apps/ios/CookLog.xcodeproj` 생성 완료
 - iOS 현재 이정표: M8. MVP 정리와 검증
 - 기준 제품 문서: `docs/product/CookLog_PRD_v2.md`
+- 기본 작업 브랜치: `develop`
+- 안정·릴리즈 브랜치: `main`
 
 ## 현재 제품 기준
 
@@ -26,6 +28,7 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - 첫 파일럿 Task로 루트 프로젝트 상태 문서 동기화 진행
 - iOS QA에서 발견된 AI Review STEP Preview 입력 전달 결함 수정 완료
 - iOS MVP Core Loop 조건부 통과 완료
+- 멀티팀 일반 Task는 `develop`에서 통합하고 릴리즈 가능한 상태만 `main`에 승격
 
 ### iOS
 
@@ -59,6 +62,8 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - 전체 프로젝트 상태, 변경 기록, 결정사항은 `docs/PROJECT_*` 문서에서 관리합니다.
 - iOS 개발 상태, 계획, 스펙, 결정, 변경 기록은 `apps/ios/docs/`에서 관리합니다.
 - Android 개발 상태, 계획, 스펙, 결정, 변경 기록은 `apps/android/docs/`에서 관리합니다.
+- 모든 일반 Task 브랜치는 최신 `develop`에서 생성하고 `develop` 대상 PR을 사용합니다.
+- `main`은 cross-team 통합 QA와 Product Lead 수용 검토를 통과한 승격 변경만 반영합니다.
 
 ## 열린 질문
 

@@ -16,4 +16,4 @@
 | `T-20260728-008` | `proposed` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` | 선행 Task 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 실서비스 전환 준비도와 릴리즈 게이트 정의 | Development Lead Agent | 4개 선행 Task | 선행 기준 확정 후 scope |
 
-`T-20260728-007`은 QA `PASS`와 PR #3 squash merge 후 완료 확정했습니다. 나머지 신규 후보는 아직 실행 대상이 아닙니다.
+`T-20260728-007`은 QA `PASS`와 PR #3 squash merge 후 완료 확정했습니다. `T-20260728-019` 전환 이후 일반 개발 Task는 최신 `develop`에서 분기하고 `develop` 대상 PR을 사용합니다. 나머지 신규 후보는 아직 실행 대상이 아닙니다.

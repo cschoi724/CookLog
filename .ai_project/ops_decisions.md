@@ -83,3 +83,15 @@
   - Team Lead는 자신에게 라우팅된 자기 Team 하위 Task만 완료합니다.
   - Product Lead만 필수 하위 Task가 모두 완료된 상위 제품 Task를 완료합니다.
 - 승인: Product Owner, 2026-07-28
+
+## 2026-07-28 - develop 통합 브랜치와 main 승격 분리
+
+- 상태: 적용
+- 결정:
+  - 일반 Task의 기준 브랜치와 PR 대상은 `develop`입니다.
+  - `main`은 릴리즈 가능한 안정 상태만 유지합니다.
+  - `develop -> main`은 cross-team 통합 QA, Product Lead 수용 검토와 Product Owner 승인을 거칩니다.
+  - `hotfix/*`는 `main`에서 시작해 `main`에 병합하고 `develop`에 필수 backport합니다.
+  - `main`과 `develop` 모두 직접 commit, push와 force push를 금지합니다.
+- 전환: 기존 정책 아래 생성한 `T-20260728-019` PR을 `main`에 병합한 뒤 해당 커밋에서 `develop`을 생성합니다.
+- 승인: Product Owner, 2026-07-28
