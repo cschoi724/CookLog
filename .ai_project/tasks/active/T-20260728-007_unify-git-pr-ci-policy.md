@@ -1,7 +1,7 @@
 ---
 id: T-20260728-007
 title: Git·PR·CI 운영 기준 단일화
-status: completion_review
+status: done
 type: docs
 priority: P0
 priority_reason: main 직접 작업과 feature branch PR 전략이 충돌해 첫 신규 코드 Task 전에 기준 확정이 필요하다.
@@ -9,10 +9,9 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Development Lead Agent
-target_role: Completion Role
-required_capabilities:
-  - development_child_completion
+target_agent:
+target_role:
+required_capabilities: []
 depends_on: []
 blocks:
   - T-20260728-008
@@ -101,3 +100,4 @@ Development Lead Agent가 ownership, 실행 경로와 의존성을 확인했으�
 - 2026-07-28: iOS QA Agent가 독립 검증을 위해 lock을 획득하고 `verification_ready -> verification_in_progress`로 전환했다.
 - 2026-07-28: iOS QA Agent가 정책 문서 정합성 검증을 `PASS_WITH_RISK`로 완료하고 `verification_in_progress -> verification_passed`로 전환했다. `b406b74` 선반영 또는 최신 `main` 기준 재정렬을 PR·merge 전 필수 조건으로 기록하고 Development Lead Agent에 인계했다.
 - 2026-07-28: 최신 `origin/main` `aa500bd` 위로 재정렬된 `c69f131`, `0731f9e`의 patch 동등성과 11개 변경 경로의 `allowed_paths` 준수를 iOS QA Agent가 재검증했다. `QA-RISK-007-001` 해소를 확인하고 `verification_passed -> completion_review`로 Development Lead Agent에 인계했다.
+- 2026-07-28: Development Lead Agent가 QA `PASS`, 위험 해소와 PR #3 squash merge(`ca1bb7d`)를 확인하고 `completion_review -> done`으로 완료 확정했다.
