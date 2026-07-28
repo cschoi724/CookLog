@@ -3,7 +3,26 @@
 작성일: 2026-07-28
 작성자: iOS QA Agent
 대상 Task: `T-20260728-007`
-판정: `PASS_WITH_RISK`
+판정: `PASS`
+
+## 0. 브랜치 재정렬 재검증
+
+2026-07-28 최신 `origin/main` 기준 재정렬 결과를 다시 검증했다.
+
+- 최신 `origin/main`: `aa500bd`
+- 재정렬된 구현 커밋: `c69f131`
+- 재정렬된 QA 커밋: `0731f9e`
+- `merge-base origin/main HEAD`: `aa500bd`
+- `c69f131`의 부모: `aa500bd`
+- `0731f9e`의 부모: `c69f131`
+- 기존 구현 커밋 `d52d168`과 `c69f131`의 stable patch-id: `1e628dec6eed9c82abd90074eef4539c323fca41`
+- 기존 QA 커밋 `ac50258`과 `0731f9e`의 stable patch-id: `5bdec7d98754bcbfaf62c1da3a024fb42d487e8a`
+- `origin/main...HEAD` 변경 파일: 11개
+- 변경 파일 11개 모두 Task의 `allowed_paths` 안에 있음
+- `git diff --check origin/main...HEAD`: 통과
+- push, PR, merge: 수행하지 않음
+
+기존 구현과 QA patch는 변경 없이 최신 `origin/main` 위로 재정렬됐으며 `QA-RISK-007-001`은 해소됐다.
 
 ## 1. 검증 대상
 
@@ -51,7 +70,7 @@
 - 긴급 수정 예외에는 명시적 사전 승인과 사유 기록이 필요하다.
 - 예외 상황에서도 독립 검증과 사후 기록을 유지한다.
 
-## 3. 발견 위험
+## 3. 초기 발견 위험과 해소
 
 ### QA-RISK-007-001: Task 브랜치 기준점이 `main`이 아님
 
@@ -70,7 +89,17 @@
 2. `d52d168`의 Task 고유 변경과 QA 결과를 최신 `main` 기반 브랜치로 재정렬한다.
 3. PR 생성 전 `origin/main...HEAD` 변경 경로가 Task의 `allowed_paths` 안에 있는지 다시 확인한다.
 
-이 조건이 충족되기 전에는 Task PR 생성과 merge를 진행하면 안 된다.
+초기 검증 당시에는 이 조건이 충족되기 전 Task PR 생성과 merge를 진행하면 안 되는 상태였다.
+
+### 해소 확인
+
+- `aa500bd`가 최신 `origin/main`이며 기존 운영 정비 변경을 포함한다.
+- Task 구현 커밋 `c69f131`은 `aa500bd`를 직접 부모로 가진다.
+- QA 커밋 `0731f9e`은 `c69f131`을 직접 부모로 가진다.
+- 기존 커밋과 새 커밋의 stable patch-id가 각각 일치한다.
+- `origin/main...HEAD`의 11개 변경 경로가 모두 `allowed_paths` 안에 있다.
+
+따라서 Task 외 운영 변경이 PR diff에 섞이던 원인은 제거됐고 `QA-RISK-007-001`을 `resolved`로 판정한다.
 
 ## 4. 검증 제외
 
@@ -82,21 +111,22 @@
 
 ## 5. 최종 판정
 
-`PASS_WITH_RISK`.
+`PASS`.
 
-정책 문서 단일화, 기존 결정 대체, check 명칭과 승격 조건, 사용자 승인 경계는 성공 기준을 충족한다. 다만 Task 브랜치가 아직 `main`에 없는 운영 정비 커밋 위에 있으므로, 위 재정렬 조건을 merge gate로 적용해야 한다.
+정책 문서 단일화, 기존 결정 대체, check 명칭과 승격 조건, 사용자 승인 경계는 성공 기준을 충족한다. 최신 `origin/main` 기준 재정렬과 patch 동등성, 변경 경로 범위를 재검증했으며 `QA-RISK-007-001`은 해소됐다.
 
 ## 6. 다음 Agent에게 전달할 말
 
 ```text
 Task: T-20260728-007
-현재 상태: verification_passed
-검증 판정: PASS_WITH_RISK
+현재 상태: completion_review
+검증 판정: PASS
 다음 담당: Development Lead Agent / Completion Role
-필수 확인:
-- b406b74를 main에 먼저 반영하거나 Task 변경을 최신 main 기반으로 재정렬
-- PR 생성 전 origin/main...HEAD 변경 경로 재검증
-- QA-RISK-007-001이 해소되기 전 push/PR/merge 금지
+확인 결과:
+- 최신 origin/main aa500bd 기준 재정렬 확인
+- 기존/신규 구현 및 QA 커밋 stable patch-id 일치
+- origin/main...HEAD 변경 파일 11개 모두 allowed_paths 준수
+- QA-RISK-007-001 resolved
 QA 보고서:
 - .ai_project/qa/T-20260728-007_unify-git-pr-ci-policy-qa.md
 ```
