@@ -73,6 +73,24 @@ Task: iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화
 - 현재 검증은 Xcode 26.6과 iOS 17.2 Simulator 조합이다.
 - 공식 toolchain 변경 여부는 이 Task에서 결정하지 않았으며 별도 승인 대상이다.
 
+## 최신 develop 통합 재검증
+
+2026-07-29 최신 `origin/develop` `abfdcf0`을 기존 T-004 브랜치에 merge했다.
+
+- 최신 제품 출시 계획과 T-004 구현·독립 QA·위험 수용 기록을 함께 보존했다.
+- T-004의 선행 조건에 완료된 `T-20260729-001`을, 차단 대상에 `T-20260728-009`를 추가했다.
+- T-004는 PR merge 전이므로 `completion_review`를 유지했다.
+- Task 20개의 YAML front matter, ID 중복, 누락 의존성·차단 참조와 순환을 검사해 통과했다.
+- `git diff --check`, `bash -n Scripts/run-xctest.sh`를 통과했다.
+- 전체 XCTest 33개를 1회 재실행해 33개 통과, 0개 실패와 종료 코드 0을 확인했다.
+
+재검증 artifact:
+
+- `/private/tmp/cooklog-t004-merge-validation/20260729-155629-64488/xcodebuild.log`
+- `/private/tmp/cooklog-t004-merge-validation/20260729-155629-64488/CookLogTests.xcresult`
+
+프로젝트 전체 strict validator는 T-004 밖의 기존 운영 문서 front matter와 archive Task schema 누락을 보고했다. `.ai_project/tasks` 디렉터리 검사와 별도 Task graph 검사는 통과했으며 이 기존 운영 문서 이슈는 T-004 구현·QA 판정을 변경하지 않는다.
+
 ## 다음 Agent에게 전달할 말
 
 ```text

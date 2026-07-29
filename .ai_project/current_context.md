@@ -20,7 +20,7 @@
 | 활성 개발 영역 | iOS 최우선, Backend foundation |
 | 보류 영역 | Android, Release Role |
 | 활성 Agent | Product Lead, Product Planning, Design Lead, UI/UX Design, Development Lead, iOS, Backend, Design QA, iOS QA, Backend QA, AI Ops |
-| 현재 우선 Task | 진행 중인 Design Task 보존 후 `develop` 기준 재배치 |
+| 현재 우선 Task | Product Owner 승인 후 Design·XCTest·Backend Contract 병렬 Foundation scope |
 | 기본 작업 브랜치 | `develop` |
 | 안정·릴리즈 브랜치 | `main` |
 | 다음 확인 위치 | `.ai_project/operating_model.md`, `.ai_project/source_of_truth.md`, `.ai_project/task_board.md` |
@@ -32,6 +32,13 @@
 - CookLog의 기존 루트/플랫폼별 문서는 삭제하거나 대체하지 않고 source of truth로 연결합니다.
 - `T-20260701-001`, `T-20260701-002`, `T-20260701-003`은 모두 `done`입니다.
 - iOS MVP Core Loop는 조건부 통과 상태입니다.
+- 구형 Mock UI 잔여 검증 `T-20260728-001`은 최종 제품 구현·출시 게이트와 중복되어 `cancelled`입니다.
+- 첫 공개 출시 Critical Path는 `docs/product/CookLog_ROADMAP.md`를 따릅니다.
+- `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
+- 현재 실행 중인 제품·개발 Task는 없으며 나머지 출시 Task는 Lead scope·Product Owner 승인 전 `proposed`입니다.
+- 다음 병렬 Wave는 Design `T-20260729-002`, XCTest `T-20260728-004`, Backend Contract `T-20260728-005`입니다.
+- Product QA Agent registry·운영 모델·루트 안내 동기화는 AI Ops 후속 `T-20260729-007`입니다.
+- 수익화 문서와 `T-20260728-010~018` 동결 후보는 Core v1 출시선과 분리합니다.
 - 기존 완료 Task는 legacy 위치에 보존하고 신규 실행 후보는 `tasks/active/` 또는 `tasks/backlog/`에 생성합니다.
 - 모든 신규 실행 Task는 `standard_vnext`와 `scoped` 단계를 사용합니다.
 - Task 병렬 가능 여부는 Development Lead Agent가 ownership과 dependency를 확인합니다.
@@ -61,3 +68,4 @@
 | 2026-07-27 | core 0.6.4 멀티팀 운영과 Role 기반 세션 시작 기준 반영 |
 | 2026-07-28 | 계층형 Task 완료 권한과 도메인별 병렬 QA 세션 기준 반영 |
 | 2026-07-28 | `develop` 통합과 `main` 안정·릴리즈 승격 기준 반영 |
+| 2026-07-29 | 확정 제품 정책과 첫 공개 출시 Roadmap, 병렬 Foundation과 Critical Path 반영 |

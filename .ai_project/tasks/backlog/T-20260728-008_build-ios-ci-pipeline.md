@@ -3,7 +3,7 @@ id: T-20260728-008
 title: iOS CI 기본 파이프라인 구축
 status: proposed
 type: feature
-priority: P1
+priority: P0
 priority_reason: PR 기반 개발에서 재현 가능한 build와 test 검증을 자동화해야 한다.
 org_unit: Development Division
 team: Core Development Team
@@ -42,7 +42,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-28
+updated_at: 2026-07-29
 report_to: .ai_project/reports/T-20260728-008_build-ios-ci-pipeline-report.md
 qa_to: .ai_project/qa/T-20260728-008_build-ios-ci-pipeline-qa.md
 ---
@@ -86,3 +86,11 @@ qa_to: .ai_project/qa/T-20260728-008_build-ios-ci-pipeline-qa.md
 - GitHub Actions를 공식 CI로 사용할지
 - 사용할 Xcode/macOS runner 버전
 - 실제 repository required check와 branch protection 적용 승인
+
+## Development Lead 하위 Task 분해 요구
+
+1. build·build-for-testing workflow
+2. 승인된 XCTest 명령·timeout·xcresult artifact
+3. 실패 진단·동시 실행 취소·최소 cache
+4. PR dry run과 iOS QA 실패 감지 검증
+5. Product Owner 승인 후 required check 외부 설정

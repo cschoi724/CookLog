@@ -13,9 +13,11 @@ target_agent: Development Lead Agent
 target_role: Completion Role
 required_capabilities:
   - development_child_completion
-depends_on: []
+depends_on:
+  - T-20260729-001
 blocks:
   - T-20260728-008
+  - T-20260728-009
 parallel_group: ios-m8-and-foundations
 allowed_paths:
   - apps/ios/
@@ -39,7 +41,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-28
+updated_at: 2026-07-29
 report_to: .ai_project/reports/T-20260728-004_stabilize-ios-xctest-runner-report.md
 qa_to: .ai_project/qa/T-20260728-004_stabilize-ios-xctest-runner-qa.md
 ---
@@ -154,3 +156,4 @@ Development Lead Agent가 다음 기준으로 ownership, 의존성과 실행 순
 - 2026-07-28: iOS QA Agent가 전용 worktree에서 독립 재현 lock을 획득하고 `verification_ready -> verification_in_progress`로 전환했다.
 - 2026-07-28: iOS QA Agent가 전체 33개 XCTest, 정상 artifact, timeout 124와 build 회귀를 독립 재현했다. Xcode 15.2 동일 환경 미검증 위험을 기록하고 `verification_in_progress -> verification_passed`로 Development Lead Agent에 인계했다.
 - 2026-07-28: Product Owner가 `QA-RISK-004-001`을 수용하고 Xcode·Simulator 고정 검증을 T-008로 인계했다. Development Lead Agent가 문서 정합성을 검토하고 `verification_passed -> completion_review`로 전환했다.
+- 2026-07-29: 최신 `origin/develop`의 제품 출시 문서와 기존 구현·QA 근거를 병합하고 전체 XCTest 33개를 다시 통과했다. PR merge 전까지 `completion_review`를 유지한다.
