@@ -1,21 +1,24 @@
 # CookLog Project Status
 
-최종 업데이트: 2026-07-28
+최종 업데이트: 2026-07-29
 
 ## 현재 상태
 
-- 전체 상태: PRD v2 확정, iOS MVP Core Loop 조건부 통과 후 마무리 안정화 단계
+- 전체 상태: 제품 정책·첫 공개 출시 Roadmap 확정 중, iOS Mock Core Loop 조건부 통과
 - 현재 우선 플랫폼: iOS
 - Android 상태: 개발 대기
 - iOS 프로젝트: `apps/ios/CookLog.xcodeproj` 생성 완료
-- iOS 현재 이정표: M8. MVP 정리와 검증
+- iOS 현재 이정표: Core v1 출시 Foundation 진입 준비
 - 기준 제품 문서: `docs/product/CookLog_PRD_v2.md`
 - 기본 작업 브랜치: `develop`
 - 안정·릴리즈 브랜치: `main`
+- 제품 UX 상태: 기록·초안·AI Review·Audio Guide·개인정보·운영 정책 확정, 출시 Task 재구성 완료
 
 ## 현재 제품 기준
 
 CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 STT 결과를 STEP Preview로 축적하고, `AI 정리하기` 시점에 레시피로 변환한 뒤 저장된 레시피를 오디오 가이드로 다시 소비하게 해주는 개인 레시피 저장소입니다.
+
+음성은 STT 입력 도구로만 사용하고 보존되는 기록은 텍스트입니다. STEP Preview와 AI Review는 진행 상태로 복구할 수 있으며, 첫 App Store 공개 출시에서는 버튼 조작과 핸즈프리 음성 명령을 함께 제공하는 Audio Guide를 필수 범위로 둡니다. 첫 출시는 계정 없이 기기 내부에만 저장하며 CookLog 자체 백업·복구는 제공하지 않습니다. 음성·레시피 콘텐츠는 처리와 짧은 결과 복구에 필요한 기간만 서버에서 사용하고 운영·분석 로그에 남기지 않습니다.
 
 ## 현재 이정표
 
@@ -29,10 +32,27 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - iOS QA에서 발견된 AI Review STEP Preview 입력 전달 결함 수정 완료
 - iOS MVP Core Loop 조건부 통과 완료
 - 멀티팀 일반 Task는 `develop`에서 통합하고 릴리즈 가능한 상태만 `main`에 승격
+- 10초 기록, STEP Preview, AI Review 임시 저장, 여러 진행 레시피와 완료 레시피 생명주기 정책 확정
+- 첫 App Store 공개 출시의 핸즈프리 Audio Guide 필수 범위 확정
+- 첫 출시의 로컬 저장 범위와 백업·복구 제외 정책 확정
+- 음성·STT·AI 콘텐츠의 서버 임시 보관, 운영 메타데이터와 외부 제공업체 개인정보 원칙 확정
+- 외부 테스터 없이 내부 1인·실기기 1대로 수행하는 첫 공개 출시 최소 품질 게이트 확정
+- 온라인 장애 시 로컬 기능 유지, 사용자 재실행과 최소 지원 채널 정책 확정
+- Product Charter·PRD·Scope·Flow·Wireframe와 첫 공개 출시 Roadmap 역할 재구성
+- 구형 Mock M8 잔여 검증 Task 폐기, 유효 항목을 제품 구현·최종 출시 게이트에 통합
+- Design, XCTest·CI, Backend Contract·Foundation, iOS 실서비스와 최종 Release 상위 Task 등록
+- T-20260729-001 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토 후 `done`
+
+### 첫 공개 출시 실행 순서
+
+1. 완료: `T-20260729-001` 제품 문서와 Task 정합성 검증
+2. 다음 승인 후보: `T-20260729-002` Design, `T-20260728-004` XCTest, `T-20260728-005` Backend Contract 병렬 Foundation
+3. 이후: iOS 로컬 제품 상태, Backend foundation·production gateway와 iOS 실제 STT·AI·Audio Guide 구현
+4. 최종: `T-20260728-009` TestFlight 통합, 최소 품질 게이트와 App Store 제출 준비
 
 ### iOS
 
-- 현재 이정표: M8. MVP 정리와 검증
+- 현재 이정표: Mock Core Loop 보존, 확정 제품 UX·실서비스 전환 대기
 - 현재 상태:
   - SwiftUI 기반 `CookLog.xcodeproj` 생성 완료
   - Home, Cooking Log, AI Review, Recipe Detail, Audio Player 기본 흐름 구현
@@ -45,10 +65,10 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
   - 신규 P1 제품 결함 없음
   - `xcodebuild test`는 로컬 시뮬레이터 XCTest runner 단계 대기 이슈가 남아 있음
 - 다음 작업:
-  1. 실제 기기 또는 사람 손 입력으로 AI Review의 재료명/양, STEP 본문, 예상 시간, 메모 문자열 수정과 키보드 가림 최종 확인
-  2. 2단계 이상 저장 레시피에서 Audio Player 이전/다음 단계 이동 수동 확인
-  3. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
-  4. `xcodebuild test`의 시뮬레이터 XCTest runner 대기 원인 추가 확인
+  1. `T-20260728-004`에서 XCTest runner 종료 기준 확정
+  2. `T-20260729-002` 완료 후 `T-20260728-003`을 로컬 상태·화면 하위 Task로 분해
+  3. Backend 계약·환경 이후 실제 STT·AI client 연동
+  4. 로컬 TTS·핸즈프리 구현과 최종 실제 기기 검증
 - 상세 상태 기준: `apps/ios/docs/STATUS.md`
 
 ### Android
@@ -68,6 +88,9 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 ## 열린 질문
 
 - iOS `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
+- Backend runtime·배포 환경, STT·AI provider·model과 초기 비용 상한은 `T-20260728-005`에서 추천안을 준비해 Product Owner가 승인해야 합니다.
+- 핸즈프리 Apple framework 조합과 지원 기기 범위는 `T-20260729-006`의 기술 spike 후 승인해야 합니다.
+- 개인정보처리방침·이용약관 URL, 문의 이메일과 App Store metadata 실제 값은 `T-20260728-009`에서 확정해야 합니다.
 
 ## 다음 세션 시작 기준
 

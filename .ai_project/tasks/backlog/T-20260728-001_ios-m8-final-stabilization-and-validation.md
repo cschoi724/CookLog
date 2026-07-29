@@ -1,7 +1,7 @@
 ---
 id: T-20260728-001
 title: iOS M8 잔여 안정화와 최종 검증
-status: proposed
+status: cancelled
 type: feature
 priority: P0
 priority_reason: iOS MVP Core Loop의 조건부 통과를 최종 완료 판정으로 닫기 위한 잔여 검증이다.
@@ -17,9 +17,7 @@ required_capabilities:
 depends_on:
   - T-20260701-002
   - T-20260701-003
-blocks:
-  - T-20260728-003
-  - T-20260728-009
+blocks: []
 parallel_group: ios-m8-and-foundations
 allowed_paths:
   - apps/ios/
@@ -45,7 +43,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-28
+updated_at: 2026-07-29
 report_to: .ai_project/reports/T-20260728-001_ios-m8-final-stabilization-and-validation-report.md
 qa_to: .ai_project/qa/T-20260728-001_ios-m8-final-stabilization-and-validation-qa.md
 ---
@@ -90,3 +88,10 @@ qa_to: .ai_project/qa/T-20260728-001_ios-m8-final-stabilization-and-validation-q
 
 - Development Lead Agent가 iOS Agent의 준비/보정 범위와 iOS QA Agent의 독립 검증 범위를 분리한다.
 - Figma 설계 Task와는 병렬 가능하지만, Figma 적용 Task는 이 Task 완료 후 시작한다.
+
+## 폐기 결정
+
+- 2026-07-29 Product Owner의 출시 계획 재구성 요청에 따라 `cancelled`로 전환했습니다.
+- 이 Task가 검증하려던 구형 Mock UI와 제한된 Audio Player 동작은 확정 제품 UX 적용으로 대체됩니다.
+- 유효한 편집·작은 화면·다단계 Audio Guide 검증 항목은 `T-20260728-003` 구현 검증과 `T-20260728-009` 최종 출시 게이트에 통합합니다.
+- 기존 iOS MVP Core Loop 조건부 통과 이력은 삭제하지 않고 프로젝트 상태와 완료 QA 기록에 보존합니다.
