@@ -4,6 +4,7 @@
 
 ## 2026-07-29
 
+- T-20260728-004를 PR #8로 `develop`에 squash merge하고 merge SHA `58403a0`을 확인해 `done`으로 확정했습니다.
 - Product Charter, PRD, MVP Scope, User Flow, Wireframe와 Roadmap의 역할을 재정의하고 첫 공개 출시 기준으로 최신화했습니다.
 - Roadmap을 제품 기준 고정, 병렬 Foundation, 제품 기능 구현, TestFlight·App Store 통합의 네 단계 실행 계획으로 재구성했습니다.
 - 구형 Mock M8 잔여 검증 `T-20260728-001`을 취소하고 유효 검증 항목을 iOS 제품 구현과 최종 출시 게이트에 통합했습니다.

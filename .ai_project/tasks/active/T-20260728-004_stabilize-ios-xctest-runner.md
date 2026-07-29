@@ -1,7 +1,7 @@
 ---
 id: T-20260728-004
 title: iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화
-status: completion_review
+status: done
 type: bugfix
 priority: P0
 priority_reason: 전체 XCTest가 종료되지 않아 회귀 검증과 CI required check 구성이 차단된다.
@@ -157,3 +157,4 @@ Development Lead Agent가 다음 기준으로 ownership, 의존성과 실행 순
 - 2026-07-28: iOS QA Agent가 전체 33개 XCTest, 정상 artifact, timeout 124와 build 회귀를 독립 재현했다. Xcode 15.2 동일 환경 미검증 위험을 기록하고 `verification_in_progress -> verification_passed`로 Development Lead Agent에 인계했다.
 - 2026-07-28: Product Owner가 `QA-RISK-004-001`을 수용하고 Xcode·Simulator 고정 검증을 T-008로 인계했다. Development Lead Agent가 문서 정합성을 검토하고 `verification_passed -> completion_review`로 전환했다.
 - 2026-07-29: 최신 `origin/develop`의 제품 출시 문서와 기존 구현·QA 근거를 병합하고 전체 XCTest 33개를 다시 통과했다. PR merge 전까지 `completion_review`를 유지한다.
+- 2026-07-29: Product Owner 승인에 따라 PR #8을 `develop`에 squash merge했고, merge SHA `58403a098cb9363b5f5abf3031577d08fd3378d0`을 확인해 `completion_review -> done`으로 전환했다.
