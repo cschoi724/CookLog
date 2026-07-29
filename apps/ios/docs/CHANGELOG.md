@@ -2,6 +2,14 @@
 
 이 문서는 iOS 앱 개발 변경 기록을 관리합니다.
 
+## 2026-07-28
+
+- T-20260728-004에서 `CookLogTests`의 scheme 병렬 실행을 비활성화했습니다.
+- 전체 XCTest에 단일 worker, 600초 timeout, 로그와 `xcresult` 보존을 적용하는 `Scripts/run-xctest.sh`를 추가했습니다.
+- `RecipePersistenceMapperTests`가 unmanaged SwiftData relationship을 읽으며 crash하던 문제를 in-memory `ModelContainer` 삽입 조건으로 수정했습니다.
+- Xcode 26.6, iPhone 15 iOS 17.2 Simulator에서 전체 XCTest 33개를 3회 연속 통과했습니다.
+- `build`, `build-for-testing`, scheme 직렬 실행과 timeout 종료 코드 124를 확인했습니다.
+
 ## 2026-07-01
 
 - QA에서 확인된 `AI 정리하기` 후 STEP Preview가 AI Review에 비어 전달되는 결함을 수정했습니다.

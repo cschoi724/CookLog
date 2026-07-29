@@ -46,7 +46,7 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 ### 첫 공개 출시 실행 순서
 
 1. 완료: `T-20260729-001` 제품 문서와 Task 정합성 검증
-2. 다음 승인 후보: `T-20260729-002` Design, `T-20260728-004` XCTest, `T-20260728-005` Backend Contract 병렬 Foundation
+2. 진행: `T-20260729-002` Design, `T-20260728-004` XCTest 완료 검토와 `T-20260728-005` Backend Contract 병렬 Foundation
 3. 이후: iOS 로컬 제품 상태, Backend foundation·production gateway와 iOS 실제 STT·AI·Audio Guide 구현
 4. 최종: `T-20260728-009` TestFlight 통합, 최소 품질 게이트와 App Store 제출 준비
 
@@ -62,10 +62,12 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
   - iPhone SE 시뮬레이터에서 Home -> 기록 -> AI Review -> 저장 -> Recipe Detail -> Audio Player -> 앱 재실행 저장 유지 흐름 확인
   - `xcodebuild build`와 `xcodebuild build-for-testing` 성공 이력 있음
   - AI Review, Recipe Detail, Audio Player, SwiftData 저장소 선별 테스트 18개 통과
+  - 전체 XCTest 직렬 실행, 600초 timeout, 로그와 `xcresult` 보존 절차 확정
+  - Xcode 26.6, iPhone 15 iOS 17.2 Simulator에서 전체 XCTest 33개 3회 연속 통과
   - 신규 P1 제품 결함 없음
-  - `xcodebuild test`는 로컬 시뮬레이터 XCTest runner 단계 대기 이슈가 남아 있음
+  - Xcode 15.2 설치본 부재로 과거 worker 대기 현상의 동일 toolchain 재현은 잔여 위험
 - 다음 작업:
-  1. `T-20260728-004`에서 XCTest runner 종료 기준 확정
+  1. `T-20260728-008`에서 CI의 Xcode·Simulator 버전을 고정하고 표준 XCTest 스크립트와 artifact 보존 절차 재검증
   2. `T-20260729-002` 완료 후 `T-20260728-003`을 로컬 상태·화면 하위 Task로 분해
   3. Backend 계약·환경 이후 실제 STT·AI client 연동
   4. 로컬 TTS·핸즈프리 구현과 최종 실제 기기 검증
@@ -87,7 +89,8 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 
 ## 열린 질문
 
-- iOS `xcodebuild test`가 현재 로컬 시뮬레이터의 XCTest runner 설치/실행 단계에서 대기하는 원인을 추가 확인해야 합니다.
+- iOS QA Agent가 현재 지원 toolchain에서 `Scripts/run-xctest.sh`, timeout과 artifact 절차를 독립 재현해 `PASS_WITH_RISK`로 판정했습니다.
+- Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했으며 T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정해 재검증합니다.
 - Backend runtime·배포 환경, STT·AI provider·model과 초기 비용 상한은 `T-20260728-005`에서 추천안을 준비해 Product Owner가 승인해야 합니다.
 - 핸즈프리 Apple framework 조합과 지원 기기 범위는 `T-20260729-006`의 기술 spike 후 승인해야 합니다.
 - 개인정보처리방침·이용약관 URL, 문의 이메일과 App Store metadata 실제 값은 `T-20260728-009`에서 확정해야 합니다.

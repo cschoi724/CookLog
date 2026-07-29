@@ -2,7 +2,7 @@
 
 이 문서는 CookLog iOS 앱의 테스트 기준을 관리합니다.
 
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-07-28
 상태: 확정
 
 ## 1. 테스트 원칙
@@ -477,3 +477,79 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 - 2026-06-22 M8 변경 후에는 약 57초 대기 후 수동 중단했습니다.
 - 결과 번들: `/Users/annyeongjelly/Library/Developer/Xcode/DerivedData/CookLog-fioakfrksuvtmzamofbkooesugqt/Logs/Test/Test-CookLog-2026.06.22_17-06-55-+0900.xcresult`
 - 테스트 중단 후 시뮬레이터가 종료되어 `simctl io booted screenshot` 기반 화면 확인은 완료하지 못했습니다.
+
+## 14. T-20260728-004 XCTest 실행 안정화
+
+### 진단 결과
+
+- 2026-06-22 Xcode 15.2에서는 병렬 XCTest worker가 `waiting for workers to materialize` 상태에서 종료되지 않았습니다.
+- 2026-07-28 현재 Mac에는 Xcode 26.6만 설치되어 있어 Xcode 15.2의 정확한 재현은 불가능했습니다.
+- 공유 scheme의 `CookLogTests`가 `parallelizable = YES`였고, 현재 환경의 기본 전체 실행도 여러 Simulator clone worker를 생성했습니다.
+- 현재 Xcode 26.6에서는 기본 전체 실행이 종료됐지만, unmanaged SwiftData relationship을 읽던 `RecipePersistenceMapperTests` 2건이 `SIGTRAP`으로 crash했습니다.
+- crash stack은 `PersistentRecipe.ingredients.getter`를 가리켰고, production 저장 경로와 달리 테스트가 모델을 `ModelContext`에 삽입하지 않은 상태였습니다.
+- Test Host, Bundle Loader, simulator ad-hoc signing, 앱/테스트 bundle identifier에는 실행을 막는 설정 오류가 없었습니다.
+
+### 적용 내용
+
+- 공유 scheme에서 `CookLogTests` 병렬 실행을 비활성화했습니다.
+- `RecipePersistenceMapperTests`가 in-memory `ModelContainer`에 모델을 삽입한 뒤 relationship을 검증하도록 실제 저장 조건과 맞췄습니다.
+- `Scripts/run-xctest.sh`를 표준 실행 경로로 추가했습니다.
+- 스크립트는 단일 worker, 기본 600초 제한, 로그와 `xcresult` 보존을 적용합니다.
+- 제한 시간 초과 시 종료 코드 `124`와 `TIMED_OUT` marker를 남깁니다.
+
+### 표준 명령
+
+`apps/ios/`에서 실행합니다.
+
+```bash
+Scripts/run-xctest.sh
+```
+
+기본값:
+
+- destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
+- timeout: 600초
+- artifact root: `${TMPDIR:-/tmp}/CookLog-XCTest`
+- parallel testing: 비활성
+- maximum parallel workers: 1
+
+환경별 override:
+
+```bash
+COOKLOG_XCTEST_DESTINATION='platform=iOS Simulator,name=<사용 가능한 기기>,OS=<runtime>' \
+COOKLOG_XCTEST_TIMEOUT_SECONDS=600 \
+COOKLOG_XCTEST_ARTIFACT_ROOT=<artifact 경로> \
+Scripts/run-xctest.sh
+```
+
+### 개발자 반복 검증
+
+검증 환경:
+
+- Xcode 26.6 (`17F113`)
+- iPhone 15 Simulator
+- iOS 17.2 (`21C62`)
+- 전체 테스트 수: 33
+
+결과:
+
+| 실행 | 결과 | 통과/실패 | xcresult 기준 소요 시간 |
+|---|---|---:|---:|
+| 1 | 성공, 종료 코드 0 | 33/0 | 22.493초 |
+| 2 | 성공, 종료 코드 0 | 33/0 | 20.917초 |
+| 3 | 성공, 종료 코드 0 | 33/0 | 20.781초 |
+
+추가 확인:
+
+- scheme 직렬 설정만 적용한 `test-without-building`: 성공, 종료 코드 0
+- `build`: 성공, 종료 코드 0
+- `build-for-testing`: 성공, 종료 코드 0
+- timeout smoke test: 1초 제한에서 종료 코드 124와 로그 보존 확인
+
+### CI 인계 기준
+
+- `T-20260728-008`은 `Scripts/run-xctest.sh`를 `ios-xctest` check의 실행 명령으로 사용합니다.
+- Hosted Runner에 설치된 Simulator에 맞게 `COOKLOG_XCTEST_DESTINATION`만 지정합니다.
+- workflow job timeout은 스크립트 제한보다 긴 15분을 권장합니다.
+- 성공/실패와 무관하게 `xcodebuild.log`, `CookLogTests.xcresult`, `TIMED_OUT` marker가 있으면 artifact로 보존합니다.
+- Xcode 15.2 설치본에서의 독립 재현이 불가능하므로 QA는 현재 지원 toolchain과 사용 가능한 iOS Simulator 조합을 함께 기록합니다.

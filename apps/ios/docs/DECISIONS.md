@@ -3,7 +3,7 @@
 이 문서는 iOS 개발 중 내려진 기술적, 제품적 결정을 기록합니다. 결정이 바뀌면 기존 내용을 삭제하기보다 새 항목을 추가해 변경 이유를 남깁니다.
 
 작성일: 2026-06-19
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-07-28
 
 ## 기록 방식
 
@@ -18,6 +18,14 @@
 - 영향:
 - 후속 작업:
 ```
+
+## 2026-07-28 - XCTest는 단일 Simulator worker와 제한 시간으로 실행
+
+- 상태: 확정
+- 결정: CookLog의 전체 XCTest는 병렬 worker를 사용하지 않고 `Scripts/run-xctest.sh`를 통해 단일 worker, 기본 600초 제한, 로그와 `xcresult` 보존 조건으로 실행합니다.
+- 이유: Xcode 15.2 환경에서 병렬 worker materialization이 종료되지 않은 이력이 있고, 현재 toolchain에서도 병렬 실행은 불필요한 Simulator clone과 진단 변동성을 만듭니다.
+- 영향: 로컬과 CI의 `ios-xctest`는 같은 스크립트를 사용하며 timeout은 종료 코드 124로 구분합니다.
+- 후속 작업: iOS QA Agent가 절차를 독립 재현하고, T-20260728-008이 Hosted Runner destination과 artifact upload를 연결합니다.
 
 ## 2026-06-19 - iOS MVP를 네이티브 SwiftUI 앱으로 시작
 

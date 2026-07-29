@@ -4,7 +4,8 @@ CookLog iOS 앱은 SwiftUI 기반 MVP입니다. 현재 앱 실행 경로는 Swif
 
 ## 개발 환경
 
-- Xcode: 15.2
+- 프로젝트 기준 Xcode: 15.2
+- 2026-07-28 XCTest 안정화 검증 환경: Xcode 26.6
 - iOS Deployment Target: 17.0 이상
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
@@ -21,13 +22,26 @@ xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS
 xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing -quiet
 ```
 
-## 테스트 실행 참고
+## 전체 테스트
 
 ```bash
-xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' test
+Scripts/run-xctest.sh
 ```
 
-현재 로컬 환경에서는 테스트 번들 빌드 후 XCTest runner가 `waiting for workers to materialize` 상태로 대기하는 현상이 반복되어, `build-for-testing` 성공 여부를 주요 자동 검증으로 기록합니다.
+이 스크립트는 XCTest를 직렬 실행하고 기본 600초 제한을 적용하며 실행별 로그와 `xcresult`를 임시 artifact 폴더에 보존합니다.
+
+환경에 맞게 다음 값을 바꿀 수 있습니다.
+
+```bash
+COOKLOG_XCTEST_DESTINATION='platform=iOS Simulator,name=iPhone 15,OS=17.2' \
+COOKLOG_XCTEST_TIMEOUT_SECONDS=600 \
+COOKLOG_XCTEST_ARTIFACT_ROOT=/tmp/CookLog-XCTest \
+Scripts/run-xctest.sh
+```
+
+- 성공: `0`
+- 테스트 실패: `xcodebuild` 종료 코드
+- 제한 시간 초과: `124`
 
 ## 수동 확인 흐름
 

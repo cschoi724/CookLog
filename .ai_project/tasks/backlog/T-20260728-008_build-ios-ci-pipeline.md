@@ -58,14 +58,25 @@ qa_to: .ai_project/qa/T-20260728-008_build-ios-ci-pipeline-qa.md
 - GitHub Actions 기반 iOS workflow 후보
 - 프로젝트 build와 build-for-testing
 - 전체 또는 승인된 XCTest 실행
+- CI가 사용할 Xcode, macOS runner와 iOS Simulator 버전 명시
+- `Scripts/run-xctest.sh`를 사용한 고정 환경 반복 검증
 - timeout, 로그, `xcresult` artifact 보존
 - 캐시와 동시 실행 취소 기준
 - required check 적용 전 검증
 
+## T-004 인계 조건
+
+- Product Owner가 `QA-RISK-004-001`을 수용했으므로 Xcode 15.2 호환성을 전제하지 않는다.
+- T-004 검증 환경은 Xcode 26.6, iPhone 15, iOS 17.2이며 CI 환경은 T-008 scope 단계에서 지원 가능한 조합으로 명시한다.
+- 고정한 Xcode와 Simulator 조합에서 `Scripts/run-xctest.sh`를 실행해 전체 XCTest 종료, timeout 124, 로그와 `xcresult` 보존을 다시 확인한다.
+- CI 반복 결과가 확보되기 전에는 Xcode 15.2에서 worker 대기 현상이 해소됐다고 표현하지 않는다.
+
 ## 성공 기준
 
 - PR 또는 지정 브랜치 이벤트에서 CI가 자동 실행된다.
+- workflow에 Xcode, macOS runner와 Simulator 버전이 명시된다.
 - build와 승인된 test command가 명확한 성공·실패 결과를 반환한다.
+- 고정한 환경에서 `Scripts/run-xctest.sh`의 전체 XCTest와 timeout 동작이 재현된다.
 - 실패 시 진단 가능한 로그와 결과물이 남는다.
 - secret이 workflow와 로그에 노출되지 않는다.
 - iOS QA Agent가 실패 감지와 회귀 검증 기준을 확인한다.
