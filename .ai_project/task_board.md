@@ -21,17 +21,17 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
-| `completion_review` | 1 |
+| `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 7 |
+| `done` | 8 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-현재 Product Owner의 QA 위험 수용 후 Development Lead Agent가 최종 완료 준비 중인 Task가 1건 있습니다.
+현재 실행, 검증 또는 완료 검토 중인 Task가 없습니다.
 
 Team별 요약:
 
@@ -44,14 +44,14 @@ Team별 요약:
 
 ## 4. Next Candidates
 
-출시 Critical Path는 `T-20260729-001` 제품 기준 고정 후 Design, XCTest와 Backend Contract를 병렬 진행하고, iOS 로컬 제품·Backend production·실서비스 연동을 거쳐 `T-20260728-009`에서 통합합니다. `T-20260728-004`는 iOS QA `PASS_WITH_RISK`와 Product Owner의 `QA-RISK-004-001` 수용을 거쳐 최종 완료 검토 중이며 Xcode·Simulator 고정 검증은 T-008로 인계했습니다. 구형 Mock UI 잔여 검증 `T-20260728-001`은 중복으로 폐기했습니다. 나머지 신규 후보는 각 Lead의 하위 Task 분해와 Product Owner 승인이 필요합니다.
+출시 Critical Path는 `T-20260729-001` 제품 기준 고정 후 Design, XCTest와 Backend Contract를 병렬 진행하고, iOS 로컬 제품·Backend production·실서비스 연동을 거쳐 `T-20260728-009`에서 통합합니다. `T-20260728-004`는 PR #8 squash merge와 완료 검토를 마쳐 `done`이며 Xcode·Simulator 고정 검증은 T-008로 인계했습니다. 구형 Mock UI 잔여 검증 `T-20260728-001`은 중복으로 폐기했습니다. 나머지 신규 후보는 각 Lead의 하위 Task 분해와 Product Owner 승인이 필요합니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
 | `T-20260728-001` | - | iOS M8 잔여 안정화와 최종 검증 | - | `cancelled`, 유효 항목은 T-003/T-009로 통합 |
 | `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | `done` |
 | `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` |
-| `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | Development Lead Agent | `completion_review`, T-20260729-001 완료·위험 수용·T-008 인계 완료 |
+| `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend STT·AI gateway 아키텍처와 API 계약 정의 | Development Lead Agent | `T-20260729-001` |
 | `T-20260728-006` | P0 | Backend STT·AI gateway foundation 구현 | Development Lead Agent | `T-20260728-005` |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
@@ -76,6 +76,7 @@ Team별 요약:
 | `T-20260728-007` | Git·PR·CI 운영 기준 단일화 | `done` | QA `PASS`, PR #3 squash merge 완료 |
 | `T-20260728-019` | develop 통합 브랜치 기반 Git 운영 전환 | `done` | `develop` 통합과 `main` 승격 정책 전환 |
 | `T-20260728-002` | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | `done` | Design QA 통과, PR #6 squash merge 완료 |
+| `T-20260728-004` | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | `done` | iOS QA 통과, 위험 수용, PR #8 squash merge 완료 |
 
 ## 5. Backlog Candidates
 
@@ -147,3 +148,4 @@ Team별 요약:
 | 2026-07-29 | Product QA PASS_WITH_RISK와 Product Lead Completion Review 후 T-20260729-001 done 확정 |
 | 2026-07-29 | Product QA registry·운영 모델·루트 agents.md 동기화 후속 T-20260729-007 proposed 등록 |
 | 2026-07-29 | Product QA Agent가 T-20260729-001을 `PASS_WITH_RISK`로 검증하고 Product Lead 완료 검토로 인계 |
+| 2026-07-29 | `T-20260728-004` PR #8 squash merge SHA `58403a0`을 확인하고 `completion_review -> done` 완료 확정 |

@@ -46,7 +46,7 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 ### 첫 공개 출시 실행 순서
 
 1. 완료: `T-20260729-001` 제품 문서와 Task 정합성 검증
-2. 진행: `T-20260729-002` Design, `T-20260728-004` XCTest 완료 검토와 `T-20260728-005` Backend Contract 병렬 Foundation
+2. 진행: `T-20260729-002` Design과 `T-20260728-005` Backend Contract 병렬 Foundation, `T-20260728-004` XCTest 안정화 완료
 3. 이후: iOS 로컬 제품 상태, Backend foundation·production gateway와 iOS 실제 STT·AI·Audio Guide 구현
 4. 최종: `T-20260728-009` TestFlight 통합, 최소 품질 게이트와 App Store 제출 준비
 
