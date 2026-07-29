@@ -14,9 +14,11 @@ target_role: Lead Role
 required_capabilities:
   - technical_planning
   - dependency_management
-depends_on: []
+depends_on:
+  - T-20260729-001
 blocks:
   - T-20260728-008
+  - T-20260728-009
 parallel_group: ios-m8-and-foundations
 allowed_paths:
   - apps/ios/
@@ -40,7 +42,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-28
+updated_at: 2026-07-29
 report_to: .ai_project/reports/T-20260728-004_stabilize-ios-xctest-runner-report.md
 qa_to: .ai_project/qa/T-20260728-004_stabilize-ios-xctest-runner-qa.md
 ---
