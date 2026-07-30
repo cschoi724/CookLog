@@ -13,7 +13,7 @@
 | `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | 각 하위 Task 실행 승인 대기 |
 | `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` | 선행 Task 대기 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
-| `T-20260728-008` | `proposed` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` 완료 | 별도 승인 전 자동 시작 금지 |
+| `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | 각 하위 Task 실행 승인 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
 | `T-20260729-003` | `proposed` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` | AI provider 승인 후 하위 패키지 |
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
@@ -27,3 +27,12 @@
 | `T-20260729-025` | `proposed` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | 선행·승인 대기 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-020`과 `021`은 승인 후 병렬 실행 가능하며 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 모든 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+
+| `T-20260730-001` | `proposed` | CI | 환경·명령·check 계약 | iOS Agent | `T-004`, `T-007` 완료 | 실행 승인 대기 |
+| `T-20260730-002` | `proposed` | CI | ios-build workflow | iOS Agent | `T-20260730-001` | 선행·승인 대기 |
+| `T-20260730-003` | `proposed` | CI | ios-xctest workflow | iOS Agent | `T-20260730-001` | 선행·승인 대기 |
+| `T-20260730-004` | `proposed` | CI | concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` | 선행·승인 대기 |
+| `T-20260730-005` | `proposed` | CI | PR dry run·실패 감지 검증 | iOS Agent | `T-20260730-004` | 선행·승인 대기 |
+| `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
+
+`T-20260728-008`은 6개 하위 Task까지 scope했습니다. `T-20260730-002`와 `003`은 환경 계약 완료 후 병렬 실행할 수 있고, required check 외부 설정 `006`은 dry run·iOS QA와 별도 Product Owner 승인 후에만 수행합니다. 모든 하위 Task는 별도 승인 전 실행하지 않습니다.

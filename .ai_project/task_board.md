@@ -14,8 +14,8 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 21 |
-| `scoped` | 1 |
+| `proposed` | 26 |
+| `scoped` | 2 |
 | `approved` | 0 |
 | `in_progress` | 1 |
 | `verification_ready` | 0 |
@@ -39,7 +39,7 @@ Team별 요약:
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
-| Core Development | 1 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
+| Core Development | 2 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 
 ## 4. Next Candidates
@@ -56,7 +56,7 @@ Team별 요약:
 | `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
-| `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` |
+| `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `scoped`, 하위 `T-20260730-001~006` 승인 대기 |
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
 | `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | Design Lead Agent | `in_progress`, `T-20260729-026`, 하위 `T-20260729-008~014` |
@@ -89,6 +89,17 @@ Backend `T-20260728-005` 하위 실행 후보:
 | `T-20260729-023` | P0 | AI 레시피 job·상태 조회·결과 복구 계약 정의 | Backend Agent | `T-20260729-020`, `021` |
 | `T-20260729-024` | P0 | Backend 보안·개인정보·관측성·비용 guardrail 정의 | Backend Agent | `T-20260729-020`, `021` |
 | `T-20260729-025` | P0 | iOS·Backend 공용 fixture와 계약 테스트 기준 정의 | Backend Agent | `T-20260729-021~024` |
+
+CI `T-20260728-008` 하위 실행 후보:
+
+| Task ID | Priority | 제목 | 담당 Agent | 의존성 |
+|---|---|---|---|---|
+| `T-20260730-001` | P0 | iOS CI 환경·명령·check 계약 확정 | iOS Agent | `T-20260728-004`, `007` 완료 |
+| `T-20260730-002` | P0 | ios-build·build-for-testing workflow 구현 | iOS Agent | `T-20260730-001` |
+| `T-20260730-003` | P0 | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | iOS Agent | `T-20260730-001` |
+| `T-20260730-004` | P1 | iOS CI concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` |
+| `T-20260730-005` | P0 | iOS CI PR dry run·실패 감지·회귀 검증 | iOS Agent | `T-20260730-004` |
+| `T-20260730-006` | P0 | ios-build·ios-xctest required check 외부 설정 | AI Ops Agent | `T-20260730-005`, 별도 승인 |
 
 완료된 주요 Task:
 
@@ -187,3 +198,4 @@ Backend `T-20260728-005` 하위 실행 후보:
 | 2026-07-30 | Design Lead Agent가 `T-20260729-008` 완료 검토를 통과시켜 completion_review로 인계하고 develop 통합 전 done 전환을 보류 |
 | 2026-07-30 | Product Owner 승인으로 `T-20260729-008` PR #11을 develop에 squash merge하고 merge SHA `5de6a93` 확인 후 done 확정 |
 | 2026-07-30 | Development Lead Agent가 T-20260728-005를 최신 기기 내 STT 정책 기준으로 scope하고 하위 T-20260729-020~025를 proposed 등록 |
+| 2026-07-30 | Development Lead Agent가 T-20260728-008을 scope하고 CI 구현·검증·required check 설정 하위 T-20260730-001~006을 proposed 등록 |
