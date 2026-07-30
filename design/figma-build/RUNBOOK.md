@@ -25,9 +25,9 @@
 검증:
 
 - 컬렉션 4개
-- Primitive 21개
-- Light Semantic 15개
-- Dark Semantic 15개
+- Primitive 22개
+- Light Semantic 17개
+- Dark Semantic 17개
 - Spacing 7개
 - Radius 5개
 - Text Style 6개
@@ -54,7 +54,11 @@ Starter 페이지 한도를 지킵니다.
 4. STEP Row
 5. Status Banner
 6. Form Field
-7. Player Controls
+7. Step Edit Card
+8. Toast
+9. Alert
+10. Player Controls
+11. Handsfree Control
 
 각 컴포넌트는 다음을 만족해야 합니다.
 

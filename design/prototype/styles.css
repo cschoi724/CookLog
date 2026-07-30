@@ -18,6 +18,8 @@
   --border-strong: #b99f8d;
   --success: #176b4a;
   --error: #b42318;
+  --warning: #a92b0c;
+  --info: #7057d9;
   --focus: #7057d9;
   --shadow: 0 30px 80px rgba(45, 28, 20, .18);
   --card-shadow: 0 12px 30px rgba(45, 28, 20, .08);
@@ -42,6 +44,8 @@ body[data-theme="dark"] {
   --border-strong: #847064;
   --success: #7ee0b4;
   --error: #ff8c84;
+  --warning: #ff9a7a;
+  --info: #aa9cf7;
   --focus: #9b8af0;
   --shadow: 0 32px 90px rgba(0, 0, 0, .48);
   --card-shadow: 0 12px 30px rgba(0, 0, 0, .22);
@@ -228,6 +232,8 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
 .button-primary { color: var(--text-on-accent); background: var(--bg-accent); box-shadow: 0 8px 20px color-mix(in srgb, var(--bg-accent) 22%, transparent); }
 .button-primary:active { background: var(--bg-accent-pressed); transform: translateY(1px); }
 .button-secondary { color: var(--text-primary); background: var(--bg-subtle); border: 1px solid var(--border); }
+.button-destructive { color: var(--text-on-accent); background: var(--error); }
+.button-fallback { color: var(--text-primary); background: var(--bg-elevated); border: 1px solid var(--border-strong); box-shadow: none; }
 .button:disabled { cursor: not-allowed; color: var(--text-tertiary); background: var(--bg-subtle); box-shadow: none; opacity: .7; }
 .inline-loader { width: 18px; height: 18px; border: 2px solid color-mix(in srgb, currentColor 34%, transparent); border-top-color: currentColor; border-radius: 50%; animation: spin .8s linear infinite; }
 .button-dot { width: 11px; height: 11px; border-radius: 50%; background: currentColor; opacity: .85; }
@@ -245,7 +251,33 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
 button.card { width: 100%; color: inherit; text-align: left; }
 .recipe-card { display: grid; gap: 9px; }
 .recipe-card:active, .recipe-card.is-pressed { border-color: var(--border-strong); background: var(--bg-subtle); box-shadow: none; transform: translateY(1px); }
+.recipe-card-status { grid-template-columns: 1fr auto; align-items: start; }
+.recipe-card-status > * { grid-column: 1 / -1; }
+.recipe-card-status .recipe-state { grid-column: 1; }
+.recipe-card-status .recipe-arrow { grid-column: 2; grid-row: 1; margin: 0; }
+.recipe-state {
+  width: fit-content;
+  min-height: 28px;
+  padding: 5px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 800;
+}
+.recipe-state-symbol { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: var(--text-tertiary); }
+.recipe-state.is-recording .recipe-state-symbol { background: var(--bg-accent); }
+.recipe-state.is-organizing .recipe-state-symbol { background: var(--info); animation: pulse-dot 1.2s ease-in-out infinite alternate; }
+.recipe-state.is-review .recipe-state-symbol { border-radius: 2px; background: var(--warning); }
+.recipe-state.is-complete .recipe-state-symbol { background: var(--success); }
+@keyframes pulse-dot { to { opacity: .35; transform: scale(.72); } }
 .meta { color: var(--bg-accent); font-size: 12px; line-height: 18px; font-weight: 800; letter-spacing: .015em; }
+.variant-label { display: block; margin: 0 0 8px; color: var(--text-tertiary); font-size: 12px; line-height: 18px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
 .recipe-card h4 { margin: 0; font-size: 20px; line-height: 26px; letter-spacing: -.035em; }
 .recipe-card p { margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 20px; }
 .recipe-card .recipe-arrow { justify-self: end; margin-top: -28px; color: var(--text-tertiary); font-size: 19px; }
@@ -280,10 +312,21 @@ button.card { width: 100%; color: inherit; text-align: left; }
 .record-core { position: relative; z-index: 2; text-align: center; }
 .record-time { display: block; font-size: 50px; line-height: 1; font-weight: 850; letter-spacing: -.06em; }
 .record-label { display: block; margin-top: 10px; color: var(--text-secondary); font-size: 13px; font-weight: 750; }
+.record-control-demo { min-height: 68px; padding: 12px 14px; display: grid; grid-template-columns: 42px 1fr auto; gap: 11px; align-items: center; border: 1px solid var(--border); border-radius: 18px; background: var(--bg-elevated); }
+.record-control-demo.is-recording { border-color: var(--bg-accent); }
+.record-control-demo.is-processing { border-color: var(--info); }
+.record-control-demo.is-error { border-color: var(--error); }
+.record-control-symbol { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; color: var(--text-on-accent); background: var(--bg-accent); font-size: 13px; font-weight: 850; }
+.record-control-demo.is-processing .record-control-symbol { color: var(--text-primary); background: var(--bg-subtle); }
+.record-control-demo.is-error .record-control-symbol { color: var(--error); background: color-mix(in srgb, var(--error) 9%, var(--bg-elevated)); }
+.record-control-copy strong { display: block; font-size: 14px; line-height: 19px; }
+.record-control-copy span { display: block; margin-top: 2px; color: var(--text-secondary); font-size: 12px; line-height: 17px; }
+.record-control-action { min-width: 44px; min-height: 44px; padding: 0 8px; border: 0; border-radius: 12px; color: var(--text-primary); background: var(--bg-subtle); font-size: 11px; font-weight: 800; }
 @keyframes pulse { 0% { transform: scale(.92); opacity: 1; } 100% { transform: scale(1.26); opacity: 0; } }
 
 .step-list { display: grid; gap: 10px; }
 .step-row { display: grid; grid-template-columns: 38px 1fr; gap: 12px; align-items: start; padding: 14px; border: 1px solid var(--border); border-radius: 17px; background: var(--bg-elevated); }
+.step-row.is-error { border-color: var(--error); }
 .step-number { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 13px; color: var(--bg-accent); background: var(--bg-subtle); font-size: 13px; font-weight: 850; }
 .step-row p { margin: 3px 0 0; color: var(--text-secondary); font-size: 14px; line-height: 21px; }
 .processing-line { position: relative; overflow: hidden; color: var(--text-secondary); }
@@ -294,6 +337,7 @@ button.card { width: 100%; color: inherit; text-align: left; }
 .banner { margin: 16px 0; padding: 14px 15px; display: grid; grid-template-columns: 24px 1fr; gap: 10px; border: 1px solid currentColor; border-radius: 16px; color: var(--error); background: color-mix(in srgb, var(--error) 8%, var(--bg-elevated)); }
 .banner-info { color: var(--text-secondary); background: var(--bg-subtle); }
 .banner-success { color: var(--success); background: color-mix(in srgb, var(--success) 8%, var(--bg-elevated)); }
+.banner-warning { color: var(--warning); background: color-mix(in srgb, var(--warning) 8%, var(--bg-elevated)); }
 .banner-error { color: var(--error); background: color-mix(in srgb, var(--error) 8%, var(--bg-elevated)); }
 .banner strong { display: block; font-size: 14px; }
 .banner p { margin: 3px 0 0; font-size: 12px; line-height: 18px; }
@@ -321,11 +365,73 @@ button.card { width: 100%; color: inherit; text-align: left; }
 .input:focus, .textarea:focus { border-color: var(--focus); outline: 3px solid color-mix(in srgb, var(--focus) 22%, transparent); }
 .field.has-error .input, .field.has-error .textarea { border-color: var(--error); }
 .field-error { margin: 0; color: var(--error); font-size: 12px; line-height: 18px; font-weight: 700; }
+.field.is-estimated .input, .field.is-estimated .textarea { border-color: var(--warning); background: color-mix(in srgb, var(--warning) 6%, var(--bg-elevated)); }
+.field.is-missing .input, .field.is-missing .textarea { border-style: dashed; border-color: var(--error); }
+.field-support { margin: 0; color: var(--text-secondary); font-size: 12px; line-height: 18px; }
+.field-support.is-estimated { color: var(--warning); font-weight: 750; }
+.field-support.is-missing { color: var(--error); font-weight: 750; }
+.field-state-label { width: fit-content; padding: 3px 7px; border-radius: 999px; color: var(--text-primary); background: var(--bg-subtle); font-size: 11px; line-height: 16px; font-weight: 800; }
 .input:disabled, .textarea:disabled { cursor: not-allowed; color: var(--text-tertiary); background: var(--bg-subtle); opacity: 1; }
 .ingredient-row { display: grid; grid-template-columns: 1fr 96px 44px; gap: 8px; }
 .remove-button { width: 44px; height: 50px; border: 1px solid var(--border); border-radius: 14px; color: var(--error); background: var(--bg-elevated); }
 .remove-button:disabled, .subtle-add:disabled { cursor: not-allowed; color: var(--text-tertiary); background: var(--bg-subtle); opacity: .7; }
 .subtle-add { min-height: 44px; border: 1px dashed var(--border-strong); border-radius: 14px; color: var(--text-secondary); background: transparent; font-size: 13px; font-weight: 800; }
+
+.step-edit-card { padding: 15px; display: grid; grid-template-columns: 34px 1fr 44px; gap: 10px; align-items: start; border: 1px solid var(--border); border-radius: 18px; background: var(--bg-elevated); }
+.step-edit-card.is-focused { border-color: var(--focus); outline: 3px solid color-mix(in srgb, var(--focus) 22%, transparent); }
+.step-edit-card.is-estimated { border-color: var(--warning); background: color-mix(in srgb, var(--warning) 6%, var(--bg-elevated)); }
+.step-edit-card.is-error { border-color: var(--error); background: color-mix(in srgb, var(--error) 6%, var(--bg-elevated)); }
+.step-edit-card.is-missing { border-style: dashed; border-color: var(--error); }
+.step-edit-card.is-disabled { color: var(--text-tertiary); background: var(--bg-subtle); opacity: .72; }
+.step-edit-number { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; color: var(--bg-accent); background: var(--bg-subtle); font-size: 12px; font-weight: 850; }
+.step-edit-content { min-width: 0; }
+.step-edit-content strong { display: block; font-size: 13px; line-height: 18px; }
+.step-edit-content p { margin: 4px 0 0; color: var(--text-secondary); font-size: 13px; line-height: 19px; }
+.step-edit-handle { width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 13px; color: var(--text-secondary); background: var(--bg-subtle); font-size: 18px; }
+
+.toast {
+  min-height: 56px;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  box-shadow: var(--card-shadow);
+}
+.toast p { margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 19px; }
+.toast.is-info { border-color: var(--info); }
+.toast.is-error { border-color: var(--error); }
+.toast-action { min-width: 44px; min-height: 44px; padding: 0 6px; border: 0; color: var(--bg-accent); background: transparent; font-size: 13px; font-weight: 850; }
+
+.alert-card { padding: 17px; border: 1px solid var(--border); border-radius: 20px; background: var(--bg-elevated); box-shadow: var(--card-shadow); }
+.alert-card.is-warning { border-color: var(--warning); }
+.alert-card.is-error { border-color: var(--error); }
+.alert-heading { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; }
+.alert-icon { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 11px; color: var(--text-primary); background: var(--bg-subtle); font-weight: 850; }
+.alert-heading h3 { margin: 0; font-size: 16px; line-height: 21px; }
+.alert-heading p { margin: 4px 0 0; color: var(--text-secondary); font-size: 13px; line-height: 19px; }
+.alert-actions { margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.alert-actions.is-single { grid-template-columns: minmax(0, 1fr); }
+.alert-actions .button { min-height: 48px; padding: 10px 12px; font-size: 14px; border-radius: 14px; }
+
+.handsfree-card { padding: 18px; display: grid; gap: 14px; border: 1px solid var(--border); border-radius: 22px; background: var(--bg-elevated); }
+.handsfree-status { display: flex; align-items: center; gap: 10px; }
+.handsfree-orb { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; color: var(--text-on-accent); background: var(--bg-accent); font-weight: 850; }
+.handsfree-card.is-listening .handsfree-orb { box-shadow: 0 0 0 7px color-mix(in srgb, var(--bg-accent) 18%, transparent); animation: pulse-dot 1s ease-in-out infinite alternate; }
+.handsfree-card.is-inactive { background: var(--bg-subtle); }
+.handsfree-card.is-inactive .handsfree-orb { color: var(--text-secondary); background: var(--border); }
+.handsfree-card.is-interrupted { border-color: var(--warning); }
+.handsfree-card.is-interrupted .handsfree-orb { color: var(--warning); background: color-mix(in srgb, var(--warning) 9%, var(--bg-elevated)); }
+.handsfree-card.is-failed { border-color: var(--error); }
+.handsfree-card.is-failed .handsfree-orb { color: var(--error); background: color-mix(in srgb, var(--error) 9%, var(--bg-elevated)); box-shadow: none; animation: none; }
+.handsfree-copy strong { display: block; font-size: 15px; line-height: 20px; }
+.handsfree-copy p { margin: 3px 0 0; color: var(--text-secondary); font-size: 12px; line-height: 18px; }
+.handsfree-fallback { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.handsfree-fallback button { min-height: 44px; padding: 8px 5px; border: 1px solid var(--border); border-radius: 13px; color: var(--text-primary); background: var(--bg-subtle); font-size: 12px; font-weight: 800; }
 
 .detail-hero { margin-bottom: 24px; }
 .detail-hero h2 { margin: 8px 0 12px; font-size: 32px; line-height: 1.18; letter-spacing: -.05em; }
@@ -410,6 +516,13 @@ body[data-viewport="small"] .form { gap: 16px; }
 body[data-viewport="small"] .player-progress { margin-bottom: 18px; }
 body[data-viewport="small"] .player-controls { padding-bottom: 20px; }
 body[data-viewport="small"] .sticky-action { bottom: -14px; margin-bottom: -12px; padding-bottom: 12px; }
+body[data-text-scale="accessibility"] .component-board { font-size: 1.18em; }
+body[data-text-scale="accessibility"] .alert-actions,
+body[data-text-scale="accessibility"] .handsfree-fallback { grid-template-columns: 1fr; }
+body[data-text-scale="accessibility"] .button,
+body[data-text-scale="accessibility"] .toast,
+body[data-text-scale="accessibility"] .record-control-demo,
+body[data-text-scale="accessibility"] .handsfree-card { height: auto; min-height: 56px; }
 @media (max-width: 390px) {
   .review-bar { min-width: 375px; }
   .review-stage { min-width: 375px; }

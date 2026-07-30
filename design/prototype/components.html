@@ -20,51 +20,136 @@
     .focus-demo { border-color: var(--focus); outline: 3px solid color-mix(in srgb, var(--focus) 22%, transparent); }
     .control-demo { display: grid; grid-template-columns: repeat(4, 52px); justify-content: space-between; align-items: center; }
     .component-note { margin: 9px 0 0; color: var(--text-secondary); font-size: 12px; line-height: 18px; }
+    .foundation-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    .token-card { min-height: 72px; padding: 12px; display: grid; align-content: space-between; border: 1px solid var(--border); border-radius: 16px; background: var(--bg-elevated); }
+    .token-card i { width: 28px; height: 12px; display: block; border-radius: 999px; background: var(--token-color); }
+    .token-card strong { margin-top: 10px; font-size: 12px; }
+    .token-card span { color: var(--text-secondary); font-size: 10px; }
+    .section-intro { margin: -5px 0 14px; color: var(--text-secondary); font-size: 12px; line-height: 18px; }
+    .demo-stack { display: grid; gap: 10px; }
+    .component-rule { margin: 14px 0 0; padding: 11px 12px; border-radius: 14px; color: var(--text-secondary); background: var(--bg-subtle); font-size: 12px; line-height: 18px; }
   </style>
 </head>
 <body>
   <main class="component-board">
     <header>
-      <p class="eyebrow">IMPLEMENTATION STATES</p>
-      <h1>공통 컴포넌트 상태</h1>
+      <p class="eyebrow">FOUNDATION REFRESH · T-20260729-008</p>
+      <h1>확정 UX 공통 컴포넌트</h1>
+      <p class="component-note">상태는 색상뿐 아니라 아이콘, 명시적 문구, 다음 행동으로 구분합니다.</p>
     </header>
 
-    <section class="component-section">
+    <section class="component-section" data-component="Foundation">
+      <h2>Semantic Foundation</h2>
+      <p class="section-intro">Light·Dark에서 동일한 역할 이름을 사용합니다.</p>
+      <div class="foundation-grid">
+        <div class="token-card" style="--token-color:var(--bg-accent)"><i></i><strong>Accent</strong><span>핵심 행동</span></div>
+        <div class="token-card" style="--token-color:var(--success)"><i></i><strong>Success</strong><span>완료·저장</span></div>
+        <div class="token-card" style="--token-color:var(--warning)"><i></i><strong>Warning</strong><span>AI 추정·주의</span></div>
+        <div class="token-card" style="--token-color:var(--error)"><i></i><strong>Error</strong><span>실패·누락</span></div>
+        <div class="token-card" style="--token-color:var(--info)"><i></i><strong>Info</strong><span>처리·안내</span></div>
+        <div class="token-card" style="--token-color:var(--focus)"><i></i><strong>Focus</strong><span>키보드 포커스</span></div>
+      </div>
+    </section>
+
+    <section class="component-section" data-component="Button">
       <h2>Button</h2>
       <div class="state-grid">
         <div><p class="state-caption">Default</p><button class="button button-primary">레시피 저장</button></div>
         <div><p class="state-caption">Pressed</p><button class="button button-primary demo-pressed">레시피 저장</button></div>
         <div><p class="state-caption">Disabled</p><button class="button button-primary" disabled>AI 정리하기</button></div>
         <div><p class="state-caption">Loading</p><button class="button button-primary is-loading" disabled><span class="inline-loader" aria-hidden="true"></span><span>저장 중</span></button></div>
+        <div><p class="state-caption">Destructive</p><button class="button button-destructive">레시피 영구 삭제</button></div>
+        <div><p class="state-caption">Always-available fallback</p><button class="button button-fallback">버튼으로 계속하기</button></div>
       </div>
+      <p class="component-rule">처리 중에는 중복 실행 버튼만 비활성화합니다. 실패해도 로컬 조회와 버튼 기반 fallback은 계속 사용할 수 있습니다.</p>
     </section>
 
-    <section class="component-section">
+    <section class="component-section" data-component="Status Banner">
       <h2>Status Banner</h2>
       <div class="banner banner-info"><strong aria-hidden="true">i</strong><div><strong>STEP Preview</strong><p>AI 정리 전 원문 기록입니다.</p></div></div>
       <div class="banner banner-success"><strong aria-hidden="true">✓</strong><div><strong>저장 완료</strong><p>나의 레시피에 추가했어요.</p></div></div>
-      <div class="banner banner-error"><strong aria-hidden="true">!</strong><div><strong>저장 실패</strong><p>내용을 유지한 채 다시 시도할 수 있어요.</p></div></div>
+      <div class="banner banner-warning"><strong aria-hidden="true">⌛</strong><div><strong>AI 정리가 계속되고 있어요</strong><p>다른 화면을 이용해도 처리는 계속됩니다.</p></div></div>
+      <div class="banner banner-error"><strong aria-hidden="true">!</strong><div><strong>저장 실패</strong><p>내용을 유지한 채 다시 시도할 수 있어요.</p><button class="banner-action">저장 다시 시도</button></div></div>
     </section>
 
-    <section class="component-section">
+    <section class="component-section" data-component="Record Control">
+      <h2>Record Control</h2>
+      <div class="demo-stack">
+        <div class="record-control-demo"><span class="record-control-symbol">10</span><div class="record-control-copy"><strong>Idle</strong><span>10초 기록을 시작할 수 있어요.</span></div><button class="record-control-action">시작</button></div>
+        <div class="record-control-demo is-recording"><span class="record-control-symbol">07</span><div class="record-control-copy"><strong>Recording</strong><span>지금 한 일을 편하게 말해주세요.</span></div><button class="record-control-action">완료</button></div>
+        <div class="record-control-demo is-processing"><span class="record-control-symbol">···</span><div class="record-control-copy"><strong>Processing</strong><span>음성을 STEP으로 바꾸고 있어요.</span></div><button class="record-control-action" disabled>처리 중</button></div>
+        <div class="record-control-demo is-error"><span class="record-control-symbol">!</span><div class="record-control-copy"><strong>Error · 녹음 실패</strong><span>기존 STEP은 보존했습니다.</span></div><button class="record-control-action">다시 기록</button></div>
+      </div>
+    </section>
+
+    <section class="component-section" data-component="STEP Row">
+      <h2>STEP Row</h2>
+      <div class="step-list">
+        <div class="step-row"><span class="step-number">1</span><p><strong>Default</strong><br>삼겹살을 팬에 넣고 볶았어.</p></div>
+        <div class="step-row is-processing"><span class="step-number">2</span><p class="processing-line"><strong>Processing</strong><br>방금 말한 기록을 변환하고 있어요.</p></div>
+        <div class="step-row is-error"><span class="step-number">!</span><p><strong>Error · 변환 실패</strong><br>새 STEP을 만들지 않았어요. 다시 기록해주세요.</p></div>
+      </div>
+    </section>
+
+    <section class="component-section" data-component="Form Field">
       <h2>Form Field</h2>
       <div class="state-grid">
         <div class="field"><label for="demo-default">Default</label><input class="input" id="demo-default" value="달큰한 간장 삼겹살"></div>
         <div class="field"><label for="demo-focus">Focused</label><input class="input focus-demo" id="demo-focus" value="25분"></div>
         <div class="field has-error"><label for="demo-error">Error</label><input class="input" id="demo-error" value=""><p class="field-error">제목을 입력해주세요.</p></div>
+        <div class="field is-estimated"><span class="field-state-label">AI 추정 · 확인 필요</span><label for="demo-estimated">예상 시간</label><input class="input" id="demo-estimated" value="약 25분"><p class="field-support is-estimated">기록의 조리 순서를 근거로 추정했어요.</p></div>
+        <div class="field is-missing"><span class="field-state-label">누락 · 입력 필요</span><label for="demo-missing">가열 온도</label><input class="input" id="demo-missing" placeholder="기록에 근거가 없어요"><p class="field-support is-missing">안전과 관련된 값은 임의로 채우지 않습니다.</p></div>
         <div class="field"><label for="demo-disabled">Disabled</label><input class="input" id="demo-disabled" value="저장 중에는 수정할 수 없어요" disabled></div>
+        <div class="field" data-lines="Multiple"><span class="variant-label">Lines · Multiple</span><label for="demo-multiple">메모</label><textarea class="textarea" id="demo-multiple" rows="3">다음에는 양파를 조금 더 오래 볶아 단맛을 내기.</textarea></div>
       </div>
     </section>
 
-    <section class="component-section">
-      <h2>Recipe Card</h2>
-      <p class="state-caption">Default</p>
-      <button class="card recipe-card"><span class="meta">어제 · 약 25분</span><h4>달큰한 간장 삼겹살</h4><p>삼겹살 · 양파 · 간장 | 4단계</p><span class="recipe-arrow">→</span></button>
-      <p class="state-caption" style="margin-top:12px">Pressed</p>
-      <button class="card recipe-card demo-pressed"><span class="meta">어제 · 약 25분</span><h4>달큰한 간장 삼겹살</h4><p>삼겹살 · 양파 · 간장 | 4단계</p><span class="recipe-arrow">→</span></button>
+    <section class="component-section" data-component="Step Edit Card">
+      <h2>Step Edit Card</h2>
+      <p class="section-intro">단계는 독립 카드로 추가·삭제·재배열합니다.</p>
+      <div class="demo-stack">
+        <div class="step-edit-card"><span class="step-edit-number">1</span><div class="step-edit-content"><strong>Default</strong><p>삼겹살을 노릇하게 볶아요.</p></div><button class="step-edit-handle" aria-label="1단계 재배열">⠿</button></div>
+        <div class="step-edit-card is-focused"><span class="step-edit-number">2</span><div class="step-edit-content"><strong>Focused</strong><p>양파와 간장을 넣고 볶아요.</p></div><button class="step-edit-handle" aria-label="2단계 재배열">⠿</button></div>
+        <div class="step-edit-card is-error"><span class="step-edit-number">3</span><div class="step-edit-content"><strong>Error · 수정 필요</strong><p>단계 내용을 입력해주세요.</p></div><button class="step-edit-handle" aria-label="3단계 재배열">⠿</button></div>
+        <div class="step-edit-card is-estimated"><span class="step-edit-number">4</span><div class="step-edit-content"><strong>AI 추정 · 확인 필요</strong><p>불을 줄여 약 3분 더 익혀요.</p></div><button class="step-edit-handle" aria-label="4단계 재배열">⠿</button></div>
+        <div class="step-edit-card is-missing"><span class="step-edit-number">5</span><div class="step-edit-content"><strong>누락 · 입력 필요</strong><p>안전한 가열 기준을 확인해주세요.</p></div><button class="step-edit-handle" aria-label="5단계 재배열">⠿</button></div>
+        <div class="step-edit-card is-disabled" aria-disabled="true"><span class="step-edit-number">6</span><div class="step-edit-content"><strong>Disabled</strong><p>AI 처리 중에는 snapshot을 수정할 수 없어요.</p></div><button class="step-edit-handle" disabled aria-label="재배열 비활성">⠿</button></div>
+      </div>
     </section>
 
-    <section class="component-section">
+    <section class="component-section" data-component="Recipe Card">
+      <h2>Recipe Card · Progress</h2>
+      <div class="demo-stack">
+        <button class="card recipe-card recipe-card-status"><span class="recipe-state is-recording"><i class="recipe-state-symbol"></i>기록 중 · STEP 2개</span><span class="recipe-arrow">→</span><h4>오늘 저녁 기록</h4><p>마지막 활동 방금 전 · STEP Preview로 이동</p></button>
+        <button class="card recipe-card recipe-card-status"><span class="recipe-state is-organizing"><i class="recipe-state-symbol"></i>AI 정리 중 · STEP 4개</span><span class="recipe-arrow">→</span><h4>삼겹살 요리 기록</h4><p>다른 화면을 사용해도 정리는 계속돼요.</p></button>
+        <button class="card recipe-card recipe-card-status demo-pressed" aria-pressed="true"><span class="recipe-state is-review"><i class="recipe-state-symbol"></i>검토 필요 · Pressed</span><span class="recipe-arrow">→</span><h4>달큰한 간장 삼겹살</h4><p>삼겹살 · 양파 · 간장 · AI Review로 이동</p></button>
+        <button class="card recipe-card" data-content-state="Complete"><span class="meta">어제 · 약 25분</span><span class="recipe-arrow">→</span><h4>달큰한 간장 삼겹살</h4><p>삼겹살 · 양파 · 간장 · 4단계</p></button>
+      </div>
+      <p class="component-note">완료 카드는 별도 “완료” 배지를 사용하지 않고 콘텐츠 메타데이터로 구분합니다.</p>
+    </section>
+
+    <section class="component-section" data-component="Toast">
+      <h2>Toast · Undo</h2>
+      <div class="demo-stack">
+        <div class="toast is-info" role="status"><strong aria-hidden="true">i</strong><p>AI 정리가 완료되어 검토할 수 있어요.</p><button class="toast-action">검토</button></div>
+        <div class="toast" role="status"><strong aria-hidden="true">✓</strong><p>AI Review를 임시 저장했어요.</p><span></span></div>
+        <div class="toast" role="status"><strong aria-hidden="true">↶</strong><p>STEP 2를 삭제했어요.</p><button class="toast-action">되돌리기</button></div>
+        <div class="toast is-error" role="alert"><strong aria-hidden="true">!</strong><p>임시 저장하지 못했어요.</p><button class="toast-action">다시 시도</button></div>
+      </div>
+    </section>
+
+    <section class="component-section" data-component="Alert">
+      <h2>Alert · Recovery</h2>
+      <div class="demo-stack">
+        <div class="alert-card is-warning"><div class="alert-heading"><span class="alert-icon">◉</span><div><h3>마이크 권한이 필요해요</h3><p>기존 레시피와 Audio Guide는 계속 사용할 수 있습니다.</p></div></div><div class="alert-actions"><button class="button button-secondary">나중에</button><button class="button button-primary">설정으로 이동</button></div></div>
+        <div class="alert-card"><div class="alert-heading"><span class="alert-icon">⌁</span><div><h3>인터넷 연결을 확인해주세요</h3><p>새 녹음과 AI 정리만 사용할 수 없어요. 로컬 기록은 그대로입니다.</p></div></div><div class="alert-actions"><button class="button button-fallback">기록 보기</button><button class="button button-primary">다시 시도</button></div></div>
+        <div class="alert-card is-error"><div class="alert-heading"><span class="alert-icon">!</span><div><h3>AI 서비스를 사용할 수 없어요</h3><p>STEP Preview는 보존했습니다. 실패한 정리만 다시 실행합니다.</p></div></div><div class="alert-actions"><button class="button button-fallback">기록으로 돌아가기</button><button class="button button-primary">다시 정리하기</button></div></div>
+        <div class="alert-card is-warning" data-actions="Single"><span class="variant-label">Actions · Single</span><div class="alert-heading"><span class="alert-icon">⌛</span><div><h3>AI 정리가 오래 걸리고 있어요</h3><p>다른 화면을 사용해도 처리는 계속되며 취소하지 않습니다.</p></div></div><div class="alert-actions is-single"><button class="button button-fallback">기록 보기</button></div></div>
+        <div class="alert-card is-error"><div class="alert-heading"><span class="alert-icon">×</span><div><h3>레시피를 영구 삭제할까요?</h3><p>첫 출시에서는 삭제한 완료 레시피를 복구할 수 없습니다.</p></div></div><div class="alert-actions"><button class="button button-secondary">취소</button><button class="button button-destructive">영구 삭제</button></div></div>
+      </div>
+    </section>
+
+    <section class="component-section" data-component="Player Controls">
       <h2>Player Controls</h2>
       <div class="control-demo">
         <button class="player-control" disabled aria-label="이전 단계 비활성">‹</button>
@@ -72,12 +157,32 @@
         <button class="player-control main" aria-label="재생">▶</button>
         <button class="player-control" aria-label="다음 단계">›</button>
       </div>
+      <p class="state-caption" style="margin-top:14px">Playing</p>
+      <div class="control-demo">
+        <button class="player-control" aria-label="이전 단계">‹</button>
+        <button class="player-control" aria-label="현재 단계 다시 듣기">↺</button>
+        <button class="player-control main" aria-label="일시정지">Ⅱ</button>
+        <button class="player-control" disabled aria-label="다음 단계 비활성">›</button>
+      </div>
       <p class="component-note">비활성은 색상뿐 아니라 낮은 강조도와 조작 불가 상태를 함께 사용합니다.</p>
+    </section>
+
+    <section class="component-section" data-component="Handsfree Control">
+      <h2>Handsfree · Button fallback</h2>
+      <div class="demo-stack">
+        <div class="handsfree-card is-inactive"><div class="handsfree-status"><span class="handsfree-orb">○</span><div class="handsfree-copy"><strong>핸즈프리 비활성</strong><p>버튼 기반 Audio Guide는 바로 사용할 수 있어요.</p></div></div><button class="button button-secondary">핸즈프리 시작</button></div>
+        <div class="handsfree-card"><div class="handsfree-status"><span class="handsfree-orb">◎</span><div class="handsfree-copy"><strong>핸즈프리 활성</strong><p>“다음”, “이전”, “다시 들려줘”라고 말해보세요.</p></div></div><div class="handsfree-fallback"><button>이전</button><button>다시 듣기</button><button>다음</button></div></div>
+        <div class="handsfree-card is-listening"><div class="handsfree-status"><span class="handsfree-orb">●</span><div class="handsfree-copy"><strong>듣고 있어요</strong><p>버튼도 항상 사용할 수 있습니다.</p></div></div><div class="handsfree-fallback"><button>일시정지</button><button>재생</button><button>종료</button></div></div>
+        <div class="handsfree-card is-interrupted"><div class="handsfree-status"><span class="handsfree-orb">Ⅱ</span><div class="handsfree-copy"><strong>오디오가 중단됐어요</strong><p>현재 위치에서 멈췄습니다. 자동 재생하지 않아요.</p></div></div><div class="handsfree-fallback"><button>이전</button><button>재생</button><button>종료</button></div></div>
+        <div class="handsfree-card is-failed"><div class="handsfree-status"><span class="handsfree-orb">!</span><div class="handsfree-copy"><strong>음성 명령을 듣지 못했어요</strong><p>현재 재생 위치를 유지했습니다. 버튼으로 계속 진행하세요.</p></div></div><div class="handsfree-fallback"><button>이전</button><button>다시 듣기</button><button>다음</button></div></div>
+      </div>
+      <p class="component-rule">Dynamic Type에서 텍스트 영역은 높이를 확장하고, 공간이 부족하면 행동 버튼을 세로로 쌓으며 콘텐츠를 자르지 않고 스크롤합니다.</p>
     </section>
   </main>
   <script>
     const params = new URLSearchParams(window.location.search);
     document.body.dataset.theme = params.get("theme") === "dark" ? "dark" : "light";
+    if (params.get("text") === "accessibility") document.body.dataset.textScale = "accessibility";
   </script>
 </body>
 </html>

@@ -21,6 +21,7 @@ const source = [
   ["green/500", "#176B4A"],
   ["red/300", "#FF8C84"],
   ["red/500", "#B42318"],
+  ["violet/200", "#AA9CF7"],
   ["violet/300", "#9B8AF0"],
   ["violet/500", "#7057D9"]
 ];

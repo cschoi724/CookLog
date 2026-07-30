@@ -23,3 +23,5 @@
 `T-20260729-001`은 Product QA `PASS_WITH_RISK` 후 Product Lead 완료 검토를 통과해 `done`으로 확정했습니다.
 
 `T-20260729-026`은 기존 Product QA `FAIL` 3건을 모두 해소해 재검증 `PASS`를 받고 Product Owner 최종 승인 후 `done`으로 확정했습니다.
+
+`T-20260729-008`은 완료 Recipe Card badge와 Manifest–Gallery variant 누락 해소 및 무회귀 독립 재검증, Design Lead 완료 검토를 통과했습니다. PR #11로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
