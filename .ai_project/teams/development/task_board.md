@@ -10,13 +10,13 @@
 | `T-20260728-001` | `cancelled` | iOS | iOS M8 잔여 안정화와 최종 검증 | - | - | 유효 항목 T-003/T-009 통합 |
 | `T-20260728-003` | `proposed` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` | 7개 iOS 하위 패키지 scope |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
-| `T-20260728-005` | `proposed` | Backend | Backend STT·AI gateway 아키텍처와 API 계약 정의 | Development Lead Agent | `T-20260729-001` | 기술 추천안·하위 Task scope |
-| `T-20260728-006` | `proposed` | Backend | Backend STT·AI gateway foundation 구현 | Development Lead Agent | `T-20260728-005` | 선행 Task 대기 |
+| `T-20260728-005` | `proposed` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | `T-20260729-001`, `T-20260729-026` | AI 기술 추천안·하위 Task scope |
+| `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` | 선행 Task 대기 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
 | `T-20260728-008` | `proposed` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` 완료 | 별도 승인 전 자동 시작 금지 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
-| `T-20260729-003` | `proposed` | Backend | 실제 STT·AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` | provider 승인 후 7개 하위 패키지 |
-| `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·온라인 STT 연동 | Development Lead Agent | `T-20260728-003`, `005`, `T-20260729-003` | 선행 계약·환경 대기 |
+| `T-20260729-003` | `proposed` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` | AI provider 승인 후 하위 패키지 |
+| `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
 | `T-20260729-005` | `proposed` | iOS | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `005`, `T-20260729-003` | 선행 계약·환경 대기 |
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
 

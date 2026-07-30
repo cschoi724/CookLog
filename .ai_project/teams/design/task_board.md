@@ -8,7 +8,7 @@
 | Task ID | 상태 | 제목 | 담당 Role | 의존성 | 다음 조치 |
 |---|---|---|---|---|---|
 | `T-20260728-002` | `done` | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | 없음 | 완료 |
-| `T-20260729-002` | `in_progress` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | Design Lead Agent | `T-20260729-001`, `T-20260729-008~014` | T-009 별도 실행 승인 대기 |
+| `T-20260729-002` | `in_progress` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | Design Lead Agent | `T-20260729-001`, `T-20260729-026`, `T-20260729-008~014` | T-009 별도 실행 승인 대기 |
 | `T-20260729-008` | `done` | 확정 UX용 디자인 Foundation·공통 컴포넌트 갱신 | - | 없음 | 완료 |
 | `T-20260729-009` | `proposed` | Home·전체 보기·검색·레시피 상태 routing 디자인 | UI/UX Design Agent | `T-20260729-008` | 선행 Task 완료 후 실행 |
 | `T-20260729-010` | `proposed` | Cooking Log·STEP Preview·권한·STT 오류 디자인 | UI/UX Design Agent | `T-20260729-009` | 선행 Task 완료 후 실행 |

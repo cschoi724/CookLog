@@ -79,7 +79,7 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 
 - 디자인 승인 전 임의 구현
 - 디자인 자동 생성 코드를 제품 코드로 그대로 반영
-- Backend, 실제 STT/AI/TTS 구현
+- Apple 기기 내 STT, Backend AI와 TTS 실제 구현
 - 실제 핸즈프리 음성 인식 엔진
 - App Store 설정과 외부 URL 생성
 

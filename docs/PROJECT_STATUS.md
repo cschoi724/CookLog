@@ -1,6 +1,6 @@
 # CookLog Project Status
 
-최종 업데이트: 2026-07-29
+최종 업데이트: 2026-07-30
 
 ## 현재 상태
 
@@ -12,13 +12,13 @@
 - 기준 제품 문서: `docs/product/CookLog_PRD_v2.md`
 - 기본 작업 브랜치: `develop`
 - 안정·릴리즈 브랜치: `main`
-- 제품 UX 상태: 기록·초안·AI Review·Audio Guide·개인정보·운영 정책 확정, 출시 Task 재구성 완료
+- 제품 UX 상태: 기록·초안·AI Review·Audio Guide·개인정보·운영 정책과 첫 출시 STT 기본 경로 확정
 
 ## 현재 제품 기준
 
 CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 STT 결과를 STEP Preview로 축적하고, `AI 정리하기` 시점에 레시피로 변환한 뒤 저장된 레시피를 오디오 가이드로 다시 소비하게 해주는 개인 레시피 저장소입니다.
 
-음성은 STT 입력 도구로만 사용하고 보존되는 기록은 텍스트입니다. STEP Preview와 AI Review는 진행 상태로 복구할 수 있으며, 첫 App Store 공개 출시에서는 버튼 조작과 핸즈프리 음성 명령을 함께 제공하는 Audio Guide를 필수 범위로 둡니다. 첫 출시는 계정 없이 기기 내부에만 저장하며 CookLog 자체 백업·복구는 제공하지 않습니다. 음성·레시피 콘텐츠는 처리와 짧은 결과 복구에 필요한 기간만 서버에서 사용하고 운영·분석 로그에 남기지 않습니다.
+음성은 STT 입력 도구로만 사용하고 보존되는 기록은 텍스트입니다. 첫 출시 STT는 Apple 기기 내 처리를 기본으로 하고 원격 STT adapter는 비활성 상태로 유지하며 자동 fallback하지 않습니다. AI 정리는 계속 Backend를 사용하는 온라인 기능입니다. STEP Preview와 AI Review는 진행 상태로 복구할 수 있으며, 첫 App Store 공개 출시에서는 버튼 조작과 핸즈프리 음성 명령을 함께 제공하는 Audio Guide를 필수 범위로 둡니다. 첫 출시는 계정 없이 기기 내부에만 저장하며 CookLog 자체 백업·복구는 제공하지 않습니다.
 
 ## 현재 이정표
 
@@ -35,9 +35,10 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - 10초 기록, STEP Preview, AI Review 임시 저장, 여러 진행 레시피와 완료 레시피 생명주기 정책 확정
 - 첫 App Store 공개 출시의 핸즈프리 Audio Guide 필수 범위 확정
 - 첫 출시의 로컬 저장 범위와 백업·복구 제외 정책 확정
-- 음성·STT·AI 콘텐츠의 서버 임시 보관, 운영 메타데이터와 외부 제공업체 개인정보 원칙 확정
+- 기기 내 STT 음성의 로컬 임시 처리와 온라인 AI 콘텐츠의 서버 임시 보관, 운영 메타데이터와 외부 제공업체 개인정보 원칙 확정
 - 외부 테스터 없이 내부 1인·실기기 1대로 수행하는 첫 공개 출시 최소 품질 게이트 확정
-- 온라인 장애 시 로컬 기능 유지, 사용자 재실행과 최소 지원 채널 정책 확정
+- 온라인 AI 장애 시 로컬 STT·로컬 기능 유지, 사용자 재실행과 최소 지원 채널 정책 확정
+- 정책 검토용 사용량·단가·환율 가정에서 원격 STT 단독 월 약 10만 원으로 추정되어 첫 출시 기본 STT를 Apple 기기 내 처리로 변경하고 원격 adapter 자동 fallback을 제외하는 `T-20260729-026` 완료
 - Product Charter·PRD·Scope·Flow·Wireframe와 첫 공개 출시 Roadmap 역할 재구성
 - 구형 Mock M8 잔여 검증 Task 폐기, 유효 항목을 제품 구현·최종 출시 게이트에 통합
 - Design, XCTest·CI, Backend Contract·Foundation, iOS 실서비스와 최종 Release 상위 Task 등록
@@ -45,9 +46,9 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 
 ### 첫 공개 출시 실행 순서
 
-1. 완료: `T-20260729-001` 제품 문서와 Task 정합성 검증
+1. 완료: `T-20260729-001` 제품 문서와 Task 정합성 검증, `T-20260729-026` 첫 출시 STT 정책 변경
 2. 진행: `T-20260729-002` Design과 `T-20260728-005` Backend Contract 병렬 Foundation, `T-20260728-004` XCTest 안정화 완료
-3. 이후: iOS 로컬 제품 상태, Backend foundation·production gateway와 iOS 실제 STT·AI·Audio Guide 구현
+3. 이후: iOS 로컬 제품 상태, Apple 기기 내 STT, Backend AI foundation·production gateway와 iOS AI·Audio Guide 구현
 4. 최종: `T-20260728-009` TestFlight 통합, 최소 품질 게이트와 App Store 제출 준비
 
 ### iOS
@@ -69,8 +70,9 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - 다음 작업:
   1. `T-20260728-008`에서 CI의 Xcode·Simulator 버전을 고정하고 표준 XCTest 스크립트와 artifact 보존 절차 재검증
   2. `T-20260729-002` 완료 후 `T-20260728-003`을 로컬 상태·화면 하위 Task로 분해
-  3. Backend 계약·환경 이후 실제 STT·AI client 연동
-  4. 로컬 TTS·핸즈프리 구현과 최종 실제 기기 검증
+  3. Apple 기기 내 STT 구현과 지원 기기·한국어 품질 검증
+  4. Backend AI 계약·환경 이후 실제 AI client 연동
+  5. 로컬 TTS·핸즈프리 구현과 최종 실제 기기 검증
 - 상세 상태 기준: `apps/ios/docs/STATUS.md`
 
 ### Android
@@ -91,7 +93,9 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 
 - iOS QA Agent가 현재 지원 toolchain에서 `Scripts/run-xctest.sh`, timeout과 artifact 절차를 독립 재현해 `PASS_WITH_RISK`로 판정했습니다.
 - Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했으며 T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정해 재검증합니다.
-- Backend runtime·배포 환경, STT·AI provider·model과 초기 비용 상한은 `T-20260728-005`에서 추천안을 준비해 Product Owner가 승인해야 합니다.
+- Backend runtime·배포 환경, AI provider·model과 초기 비용 상한은 `T-20260728-005`에서 추천안을 준비해 Product Owner가 승인해야 합니다.
+- 원격 STT provider와 비용 비교 결과는 후속 adapter 활성화 참고자료이며 첫 출시 기본 경로를 변경하지 않습니다.
+- Apple 기기 내 STT의 지원 기기·OS·한국어 품질과 구현 안정성이 최소 출시 기준을 충족하지 못하면 Product Owner가 지원 범위 조정, 출시 연기 또는 원격 adapter 도입을 별도로 결정해야 합니다.
 - 핸즈프리 Apple framework 조합과 지원 기기 범위는 `T-20260729-006`의 기술 spike 후 승인해야 합니다.
 - 개인정보처리방침·이용약관 URL, 문의 이메일과 App Store metadata 실제 값은 `T-20260728-009`에서 확정해야 합니다.
 

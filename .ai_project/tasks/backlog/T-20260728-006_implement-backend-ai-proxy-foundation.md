@@ -1,6 +1,6 @@
 ---
 id: T-20260728-006
-title: Backend STT·AI gateway foundation 구현
+title: Backend AI gateway와 비활성 원격 STT adapter foundation 구현
 status: proposed
 type: feature
 priority: P0
@@ -46,17 +46,18 @@ report_to: .ai_project/reports/T-20260728-006_implement-backend-ai-proxy-foundat
 qa_to: .ai_project/qa/T-20260728-006_implement-backend-ai-proxy-foundation-qa.md
 ---
 
-# Backend STT·AI gateway foundation 구현
+# Backend AI gateway와 비활성 원격 STT adapter foundation 구현
 
 ## 목적
 
-승인된 아키텍처와 API 계약을 기준으로 실제 provider 연결 전에도 STT와 AI 정리를 실행·테스트할 수 있는 Backend foundation을 만든다.
+승인된 아키텍처와 API 계약을 기준으로 실제 provider 연결 전에도 AI 정리를 실행·테스트할 수 있는 Backend foundation을 만든다. 원격 STT는 기본 비활성 adapter 경계와 계약 테스트만 유지한다.
 
 ## 제안 범위
 
 - 서버 프로젝트 scaffold와 환경별 설정
-- health endpoint, speech transcription endpoint와 recipe generation·status endpoint
-- STT·AI provider abstraction과 Mock provider
+- health endpoint와 recipe generation·status endpoint
+- AI provider abstraction과 Mock provider
+- 원격 STT adapter 확장 지점과 무승인 활성화 방지 설정
 - schema validation과 공통 오류 응답
 - 환경변수 기반 secret 주입
 - 구조화 로그와 민감정보 redaction
@@ -66,6 +67,7 @@ qa_to: .ai_project/qa/T-20260728-006_implement-backend-ai-proxy-foundation-qa.md
 ## 제외 범위
 
 - 승인되지 않은 AI provider 실서비스 연결
+- 원격 STT endpoint, Mock STT provider와 음성 임시 저장·삭제 구현
 - iOS 원격 DataSource 연결
 - 사용자 계정과 레시피 서버 저장
 - 배포와 운영 트래픽 전환
@@ -73,7 +75,8 @@ qa_to: .ai_project/qa/T-20260728-006_implement-backend-ai-proxy-foundation-qa.md
 ## 성공 기준
 
 - 새 클론에서 문서화된 명령으로 서버가 실행된다.
-- health와 Mock STT·AI endpoint가 계약대로 응답한다.
+- health와 Mock AI endpoint가 계약대로 응답한다.
+- 원격 STT endpoint가 존재하지 않거나 명시적인 비활성 상태이며 첫 출시 설정으로 활성화할 수 없다.
 - 정상·오류 계약 테스트가 통과한다.
 - secret이 코드와 로그에 노출되지 않는다.
 - Backend QA Agent가 계약·보안·개인정보 검증을 통과시킨다.
@@ -86,7 +89,7 @@ qa_to: .ai_project/qa/T-20260728-006_implement-backend-ai-proxy-foundation-qa.md
 
 1. 서버 scaffold·환경 설정·health
 2. 공통 오류·인증·rate limit·idempotency middleware
-3. Mock STT endpoint와 음성 임시 저장·삭제
-4. Mock AI generation·status endpoint와 결과 복구 캐시
+3. Mock AI generation·status endpoint와 결과 복구 캐시
+4. 원격 STT 확장 지점·비활성 설정과 무승인 활성화 방지 테스트
 5. redacted logging·사용량 계측·TTL cleanup
 6. 단위·계약·보안 테스트와 로컬 실행 문서

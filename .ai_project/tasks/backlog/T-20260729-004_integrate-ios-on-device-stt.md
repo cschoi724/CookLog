@@ -1,6 +1,6 @@
 ---
 id: T-20260729-004
-title: iOS 10초 녹음·권한·온라인 STT 연동
+title: iOS 10초 녹음·권한·Apple 기기 내 STT 연동
 status: proposed
 type: feature
 priority: P0
@@ -16,8 +16,7 @@ required_capabilities:
   - dependency_management
 depends_on:
   - T-20260728-003
-  - T-20260728-005
-  - T-20260729-003
+  - T-20260729-026
 blocks:
   - T-20260728-009
 parallel_group: release-r2-ios-services
@@ -35,8 +34,6 @@ source_of_truth:
   - docs/product/CookLog_PRD_v2.md
   - docs/product/CookLog_USER_FLOW.md
   - docs/product/CookLog_WIREFRAME.md
-  - T-20260728-005에서 승인된 STT API 계약
-  - T-20260729-003에서 검증된 Backend 환경
   - apps/ios/docs/SERVICES.md
 created_by: Product Lead Agent
 approved_by:
@@ -46,26 +43,26 @@ lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-29
 updated_at: 2026-07-29
-report_to: .ai_project/reports/T-20260729-004_integrate-ios-online-stt-report.md
-qa_to: .ai_project/qa/T-20260729-004_integrate-ios-online-stt-qa.md
+report_to: .ai_project/reports/T-20260729-004_integrate-ios-on-device-stt-report.md
+qa_to: .ai_project/qa/T-20260729-004_integrate-ios-on-device-stt-qa.md
 ---
 
-# iOS 10초 녹음·권한·온라인 STT 연동
+# iOS 10초 녹음·권한·Apple 기기 내 STT 연동
 
 ## 목적
 
-Mock Speech를 실제 10초 녹음과 Backend 온라인 STT로 교체하고, 실패해도 기존 진행 기록을 손상하지 않는 기록 경험을 완성한다.
+Mock Speech를 실제 10초 녹음과 Apple 기기 내 STT로 교체하고, 실패해도 원격 STT로 자동 전환하거나 기존 진행 기록을 손상하지 않는 기록 경험을 완성한다.
 
 ## 제안 범위
 
 - 첫 기록 시점의 마이크 권한 설명·요청·거부·설정 이동
 - 정확히 10초인 녹음과 자동 종료, 남은 시간·처리 중 상태
-- 인터넷 사전 확인과 Backend 음성 업로드
-- 복구 가능한 네트워크·업로드·STT 오류의 1회 자동 재처리
+- 지원 기기·OS·한국어 기기 내 인식 가능 여부 확인
+- 복구 가능한 기기 내 STT 오류의 같은 adapter 1회 자동 재처리
 - STT 성공 시 원문 중심 STEP Preview 1개 생성·자동 저장
 - 성공·최종 실패·재처리 종료 후 로컬 임시 음성 즉시 삭제
 - 최종 실패 원인 안내, 기존 STEP 보존과 `다시 기록하기`
-- 오프라인 음성 queue와 자동 on-device fallback 미지원
+- 원격 STT adapter 기본 비활성, 음성 Backend 전송과 자동 fallback 금지
 - background·audio session·temporary file cleanup 경계
 - 단위·integration·실기기 권한·소음 환경 검증
 
@@ -73,7 +70,7 @@ Mock Speech를 실제 10초 녹음과 Backend 온라인 STT로 교체하고, 실
 
 - 조기 종료, 시간 연장과 녹음 일시정지·재개
 - 텍스트 직접 입력과 STT 취소·수동 재처리
-- 오프라인 음성 보관과 자동 로컬 STT
+- 오프라인 음성 장기 보관과 원격 STT 자동 fallback
 - AI 정리와 핸즈프리 명령
 
 ## 성공 기준
@@ -87,14 +84,14 @@ Mock Speech를 실제 10초 녹음과 Backend 온라인 STT로 교체하고, 실
 
 ## 사용자 결정 필요 항목
 
-- 실제 Backend 개발·스테이징 endpoint와 인증 설정 승인
 - 마이크 권한 시스템 문구의 최종 배포 문자열
+- 기기 내 STT 지원 기기·OS 범위가 출시 대상을 제한할 경우 지원 범위 승인
 
 ## Development Lead 하위 Task 분해 요구
 
 1. AVAudioSession·10초 recorder·temporary file lifecycle
-2. 마이크 권한·설정 이동·오프라인 preflight
-3. STT API client·인증·upload·1회 retry
+2. 마이크 권한·설정 이동·기기 내 STT 지원 여부 확인
+3. Apple 기기 내 STT adapter·같은 adapter 1회 retry
 4. error mapping·STEP 저장·중복 방지
 5. background·cleanup·단위·integration test
-6. 실제 iPhone 권한·일반 실내·조리 소음 QA
+6. 실제 지원 iPhone 권한·오프라인·일반 실내·조리 소음 QA
