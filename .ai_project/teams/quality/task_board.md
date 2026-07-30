@@ -17,6 +17,12 @@
 | `T-20260728-005` | Backend | Backend QA Agent | API 계약, 보안, 개인정보 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
+| `T-20260729-020` | Backend | Backend QA Agent | 공식 출처·비용 산식·지역·보관·결정표 |
+| `T-20260729-021` | Backend | Backend QA Agent | 인증·제한·idempotency·오류 계약 |
+| `T-20260729-022` | Backend | Backend QA Agent | 기본 비활성·무승인 업로드 방지·조건부 TTL |
+| `T-20260729-023` | Backend | Backend QA Agent | AI 상태·복구·schema·timeout |
+| `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
+| `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
 
