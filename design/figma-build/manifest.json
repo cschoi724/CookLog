@@ -1,6 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "runId": "cooklog-mvp-v1-20260728",
+  "revision": "foundation-components-20260729",
   "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
   "direction": "A — Warm Kitchen Journal",
   "brandScope": "wordmark-only",
@@ -52,6 +53,7 @@
     "green/500": "#176B4A",
     "red/300": "#FF8C84",
     "red/500": "#B42318",
+    "violet/200": "#AA9CF7",
     "violet/300": "#9B8AF0",
     "violet/500": "#7057D9"
   },
@@ -70,6 +72,8 @@
       "color/border/strong": "ink/500",
       "color/icon/primary": "ink/900",
       "color/status/success": "green/500",
+      "color/status/warning": "orange/600",
+      "color/status/info": "violet/500",
       "color/status/error": "red/500",
       "color/focus": "violet/500"
     },
@@ -87,6 +91,8 @@
       "color/border/strong": "ink/500",
       "color/icon/primary": "cream/50",
       "color/status/success": "green/300",
+      "color/status/warning": "orange/300",
+      "color/status/info": "violet/200",
       "color/status/error": "red/300",
       "color/focus": "violet/300"
     }
@@ -146,10 +152,11 @@
   "components": {
     "Button": {
       "properties": {
-        "Style": ["Primary", "Secondary"],
+        "Style": ["Primary", "Secondary", "Destructive", "Fallback"],
         "State": ["Default", "Pressed", "Disabled", "Loading"]
       },
-      "height": 56
+      "minimumHeight": 56,
+      "rule": "Disable only the duplicated action; preserve a button fallback for recoverable failures."
     },
     "Record Control": {
       "properties": {
@@ -158,9 +165,13 @@
     },
     "Recipe Card": {
       "properties": {
-        "State": ["Default", "Pressed"],
-        "Audio": ["Available", "Unavailable"]
-      }
+        "Content State": ["Recording", "Organizing", "Review Required", "Complete"],
+        "Interaction": ["Default", "Pressed"]
+      },
+      "rules": [
+        "State uses symbol, explicit text, and supporting metadata.",
+        "Complete cards do not use a completion badge."
+      ]
     },
     "STEP Row": {
       "properties": {
@@ -169,22 +180,67 @@
     },
     "Status Banner": {
       "properties": {
-        "Type": ["Info", "Success", "Error"]
-      }
+        "Type": ["Info", "Success", "Warning", "Error"],
+        "Action": ["Hidden", "Visible"]
+      },
+      "minimumTouchTarget": 44
     },
     "Form Field": {
       "properties": {
-        "State": ["Default", "Focused", "Error", "Disabled"],
+        "State": ["Default", "Focused", "Error", "AI Estimated", "Missing", "Disabled"],
         "Lines": ["Single", "Multiple"]
-      }
+      },
+      "rule": "AI Estimated explains its evidence; Missing is not treated as a technical error."
+    },
+    "Step Edit Card": {
+      "properties": {
+        "State": ["Default", "Focused", "Error", "AI Estimated", "Missing", "Disabled"],
+        "Reorder": ["Enabled", "Disabled"]
+      },
+      "minimumTouchTarget": 44
+    },
+    "Toast": {
+      "properties": {
+        "Type": ["Info", "Success", "Undo", "Error"],
+        "Action": ["Hidden", "Visible"]
+      },
+      "minimumHeight": 56
+    },
+    "Alert": {
+      "properties": {
+        "Category": ["Permission", "Offline", "Service", "Delete Confirmation", "Long Processing"],
+        "Actions": ["Single", "Dual"]
+      },
+      "rule": "Name the cause category, preserved data, and the user's next action."
     },
     "Player Controls": {
       "properties": {
         "State": ["Paused", "Playing"],
         "Previous": ["Enabled", "Disabled"],
         "Next": ["Enabled", "Disabled"]
-      }
+      },
+      "minimumTouchTarget": 44
+    },
+    "Handsfree Control": {
+      "properties": {
+        "State": ["Inactive", "Active", "Listening", "Failed", "Interrupted"],
+        "Button Fallback": ["Always Available"]
+      },
+      "rule": "Voice failure preserves playback state and never removes button controls."
     }
+  },
+  "accessibility": {
+    "minimumTouchTarget": 44,
+    "normalTextContrast": 4.5,
+    "largeTextContrast": 3,
+    "statusEncoding": ["Symbol", "Explicit Text", "Shape"],
+    "dynamicType": {
+      "textBearingComponentsUseMinimumHeight": true,
+      "actionsStackWhenSpaceIsInsufficient": true,
+      "contentMayScrollWithoutClipping": true
+    },
+    "reducedMotion": "Pulse, shimmer, and listening animations collapse to a static state.",
+    "fallbackRule": "Permission, network, service, and voice-command failures keep unaffected local actions available."
   },
   "screens": {
     "Home": ["Content", "Empty", "Loading", "Error"],
@@ -234,10 +290,14 @@
       "lightStepText": { "pair": "#C93610 on #FAF3E7", "ratio": 4.74 },
       "lightSuccessText": { "pair": "#176B4A on #ECF3F1", "ratio": 5.76 },
       "lightErrorText": { "pair": "#B42318 on #F9EDED", "ratio": 5.75 },
+      "lightWarningText": { "pair": "#A92B0C on #F8EEEC", "ratio": 6.07 },
+      "lightInfoText": { "pair": "#7057D9 on #F4F2FC", "ratio": 4.67 },
       "darkPrimaryCTA": { "pair": "#2D1C14 on #FF9A7A", "ratio": 7.89 },
       "darkStepText": { "pair": "#FF9A7A on #222027", "ratio": 7.79 },
       "darkSuccessText": { "pair": "#7EE0B4 on #363A3F", "ratio": 7.2 },
-      "darkErrorText": { "pair": "#FF8C84 on #41343B", "ratio": 5.25 }
+      "darkErrorText": { "pair": "#FF8C84 on #41343B", "ratio": 5.25 },
+      "darkWarningText": { "pair": "#FF9A7A on #41353B", "ratio": 5.65 },
+      "darkInfoText": { "pair": "#AA9CF7 on #3A3545", "ratio": 4.96 }
     }
   }
 }

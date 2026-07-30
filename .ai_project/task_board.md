@@ -14,14 +14,14 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 11 |
+| `proposed` | 17 |
 | `scoped` | 0 |
 | `approved` | 0 |
-| `in_progress` | 0 |
+| `in_progress` | 1 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
-| `completion_review` | 0 |
+| `completion_review` | 1 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
 | `done` | 8 |
@@ -31,20 +31,20 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-현재 실행, 검증 또는 완료 검토 중인 Task가 없습니다.
+제품 정책·출시 계획 통합이 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 통과했습니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 첫 실행 하위 Task `T-20260729-008`은 Design Lead 완료 검토를 통과해 develop 통합 대기인 `completion_review` 상태입니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 0 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Design | 2 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 0 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 
 ## 4. Next Candidates
 
-출시 Critical Path는 `T-20260729-001` 제품 기준 고정 후 Design, XCTest와 Backend Contract를 병렬 진행하고, iOS 로컬 제품·Backend production·실서비스 연동을 거쳐 `T-20260728-009`에서 통합합니다. `T-20260728-004`는 PR #8 squash merge와 완료 검토를 마쳐 `done`이며 Xcode·Simulator 고정 검증은 T-008로 인계했습니다. 구형 Mock UI 잔여 검증 `T-20260728-001`은 중복으로 폐기했습니다. 나머지 신규 후보는 각 Lead의 하위 Task 분해와 Product Owner 승인이 필요합니다.
+출시 Critical Path는 `T-20260729-001` 제품 기준 고정 후 Design, XCTest와 Backend Contract를 병렬 진행하고, iOS 로컬 제품·Backend production·실서비스 연동을 거쳐 `T-20260728-009`에서 통합합니다. `T-20260728-004`는 PR #8 squash merge와 완료 검토를 마쳐 `done`이며 Xcode·Simulator 고정 검증은 T-008로 인계했습니다. 구형 Mock UI 잔여 검증 `T-20260728-001`은 중복으로 폐기했습니다. `T-20260729-008`은 Design Lead 완료 검토를 통과해 develop 통합 대기이며 나머지 신규 후보는 `proposed` 상태입니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
@@ -59,12 +59,24 @@ Team별 요약:
 | `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `T-20260728-004`, `T-20260728-007` |
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
-| `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | Design Lead Agent | `T-20260729-001` |
+| `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | Design Lead Agent | `in_progress`, 하위 `T-20260729-008~014` |
 | `T-20260729-003` | P0 | 실제 STT·AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `T-20260728-006` |
 | `T-20260729-004` | P0 | iOS 10초 녹음·권한·온라인 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
 | `T-20260729-005` | P0 | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
 | `T-20260729-006` | P0 | iOS 로컬 TTS·오디오 중단·핸즈프리 Audio Guide 구현 | Development Lead Agent | `T-20260728-003` |
 | `T-20260729-007` | P1 | Product QA Agent 운영 등록과 루트 제품 안내 동기화 | AI Ops Agent | `T-20260729-001` |
+
+Design `T-20260729-002` 하위 실행 후보:
+
+| Task ID | Priority | 제목 | 담당 Agent | 의존성 |
+|---|---|---|---|---|
+| `T-20260729-008` | P0 | 확정 UX용 디자인 Foundation·공통 컴포넌트 갱신 | Design Lead Agent | `completion_review`, develop 통합 대기 |
+| `T-20260729-009` | P0 | Home·전체 보기·검색·레시피 상태 routing 디자인 | UI/UX Design Agent | `T-20260729-008` |
+| `T-20260729-010` | P0 | Cooking Log·STEP Preview·권한·STT 오류 디자인 | UI/UX Design Agent | `T-20260729-009` |
+| `T-20260729-011` | P0 | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | UI/UX Design Agent | `T-20260729-010` |
+| `T-20260729-012` | P0 | Audio Guide·핸즈프리·오디오 중단 상태 디자인 | UI/UX Design Agent | `T-20260729-011` |
+| `T-20260729-013` | P0 | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | UI/UX Design Agent | `T-20260729-012` |
+| `T-20260729-014` | P0 | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | UI/UX Design Agent | `T-20260729-013` |
 
 완료된 주요 Task:
 
@@ -149,3 +161,11 @@ Team별 요약:
 | 2026-07-29 | Product QA registry·운영 모델·루트 agents.md 동기화 후속 T-20260729-007 proposed 등록 |
 | 2026-07-29 | Product QA Agent가 T-20260729-001을 `PASS_WITH_RISK`로 검증하고 Product Lead 완료 검토로 인계 |
 | 2026-07-29 | `T-20260728-004` PR #8 squash merge SHA `58403a0`을 확인하고 `completion_review -> done` 완료 확정 |
+| 2026-07-29 | Product Owner 승인으로 T-20260729-002 Design Lead scope를 시작하고 순차 실행 하위 Task T-20260729-008~014를 proposed 등록 |
+| 2026-07-29 | Product Owner가 첫 Design 하위 Task `T-20260729-008` 실행을 승인하고 UI/UX Design Agent 전용 worktree를 준비 |
+| 2026-07-29 | UI/UX Design Agent가 `T-20260729-008` Foundation·공통 컴포넌트 갱신과 자체 검증을 완료하고 Design QA 대기로 전환 |
+| 2026-07-29 | Design QA Agent가 `T-20260729-008`의 완료 카드 badge와 Manifest–Gallery variant 누락을 확인해 rework_requested로 전환 |
+| 2026-07-29 | Product Owner가 `T-20260729-008` Design QA 결함 2건 재작업을 승인하고 UI/UX Design Agent에 재라우팅 |
+| 2026-07-29 | UI/UX Design Agent가 `T-20260729-008` 결함 2건 재작업과 자체 검증을 완료하고 Design QA 독립 재검증 대기로 전환 |
+| 2026-07-30 | Design QA Agent가 `T-20260729-008` 결함 2건 해소와 회귀 없음을 확인해 verification_passed로 Design Lead Agent에 인계 |
+| 2026-07-30 | Design Lead Agent가 `T-20260729-008` 완료 검토를 통과시켜 completion_review로 인계하고 develop 통합 전 done 전환을 보류 |

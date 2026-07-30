@@ -1,7 +1,7 @@
 ---
 id: T-20260729-002
 title: 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신
-status: proposed
+status: in_progress
 type: feature
 priority: P0
 priority_reason: 완료된 T-20260728-002 이후 기록·초안·AI Review·핸즈프리 요구가 추가 확정되어 iOS 디자인 적용 전에 새 상태와 흐름을 반영해야 한다.
@@ -16,6 +16,13 @@ required_capabilities:
   - design_dependency_management
 depends_on:
   - T-20260729-001
+  - T-20260729-008
+  - T-20260729-009
+  - T-20260729-010
+  - T-20260729-011
+  - T-20260729-012
+  - T-20260729-013
+  - T-20260729-014
 blocks:
   - T-20260728-003
 parallel_group:
@@ -23,6 +30,7 @@ allowed_paths:
   - design/prototype/
   - design/figma-build/
   - design/exports/
+  - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
   - docs/product/CookLog_USER_FLOW.md
   - docs/product/CookLog_WIREFRAME.md
   - .ai_project/tasks/
@@ -37,10 +45,10 @@ source_of_truth:
   - docs/product/CookLog_WIREFRAME.md
   - design/prototype/
 created_by: Product Lead Agent
-approved_by:
-locked_by:
-locked_at:
-lock_session:
+approved_by: Product Owner
+locked_by: Design Lead Agent
+locked_at: 2026-07-29T15:52:00+09:00
+lock_session: /root/design_lead_t002
 lock_timeout_minutes: 240
 created_at: 2026-07-29
 updated_at: 2026-07-29
@@ -85,11 +93,6 @@ qa_to: .ai_project/qa/T-20260729-002_refresh-design-for-approved-product-ux-qa.m
 - 로컬 저장과 복구 경계, 문의·법적 문서가 앱 정보에서 확인 가능하다.
 - 독립 Design QA가 핵심 흐름, 오류 상태, 접근성과 핸드오프 정합성을 통과시킨다.
 
-## 사용자 결정 필요 항목
-
-- Product 문서화 Task 완료 후 Design Lead scope 승인
-- Figma MCP 사용 가능 여부는 실행 차단 조건이 아니며 로컬 Prototype과 Manifest를 우선한다.
-
 ## Coordination 메모
 
 - `T-20260728-002`는 완료 상태를 유지하고 본 Task가 후속 변경을 담당한다.
@@ -106,3 +109,37 @@ qa_to: .ai_project/qa/T-20260729-002_refresh-design-for-approved-product-ux-qa.m
 7. Light·Dark·작은 화면·Dynamic Type·접근성 및 구현 핸드오프
 
 각 하위 Task는 Prototype 상태, Manifest 변경과 Design QA 확인 항목을 함께 가져야 한다. Figma 미러는 호출 가능할 때 같은 결과를 동기화하되 완료 판정을 차단하지 않는다.
+
+## 확정 실행 구조
+
+Product Owner가 2026-07-29 상위 Task 착수를 승인했고 Design Lead Agent가 공용 Prototype 파일의 ownership 충돌을 검토해 아래 7개 Design 하위 Task로 분해했다.
+
+| 순서 | Task | 실행 패키지 | 선행 Task |
+|---:|---|---|---|
+| 1 | `T-20260729-008` | Foundation·공통 컴포넌트·상태 variant | 없음 |
+| 2 | `T-20260729-009` | Home·전체 보기·검색·상태별 카드와 routing | `T-20260729-008` |
+| 3 | `T-20260729-010` | Cooking Log·STEP Preview·권한·STT 오류 | `T-20260729-009` |
+| 4 | `T-20260729-011` | AI 처리·AI Review·완료 레시피 편집·삭제 | `T-20260729-010` |
+| 5 | `T-20260729-012` | Audio Guide·핸즈프리·오디오 중단·버튼 fallback | `T-20260729-011` |
+| 6 | `T-20260729-013` | 앱 정보·법적 문서·데이터 보관·서비스 장애 | `T-20260729-012` |
+| 7 | `T-20260729-014` | Light·Dark·작은 화면·Dynamic Type·접근성·통합 핸드오프 | `T-20260729-013` |
+
+`design/prototype/index.html`, `app.js`, `styles.css`와 `design/figma-build/manifest.json`을 여러 패키지가 공유하므로 한 UI/UX Design Agent가 위 순서대로 실행하는 것을 기본으로 한다. 선행 Task가 `done`이 되기 전 후속 Task를 구현하지 않는다.
+
+각 하위 Task는 `proposed`로 등록한다. Product Owner가 하위 범위와 순서를 승인한 뒤에만 `scoped -> approved -> in_progress`로 전환하며, 각 Task는 실행 세션과 분리된 Design QA Agent의 검증을 거쳐 Design Lead Agent가 완료한다.
+
+## 사용자 결정 필요 항목
+
+- `T-20260729-008`: Product Owner 실행 승인 완료
+- `T-20260729-009~014`: 각 선행 Task 완료 후 순차 실행 승인 필요
+
+Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료 여부는 승인 결정이나 로컬 디자인 완료를 차단하지 않는다. 확정 제품 정책을 변경해야 하는 발견이 생기면 해당 하위 Task를 진행하지 않고 Product Lead Agent에 에스컬레이션한다.
+
+## 상태 전이 기록
+
+- 2026-07-29: Product Owner가 상위 Design Task 착수를 승인했다.
+- 2026-07-29: Design Lead Agent가 Source of Truth, 기존 UI v1과 공용 파일 ownership을 확인하고 `proposed -> scoped`로 전환했다.
+- 2026-07-29: Product Owner의 상위 Task 착수 승인을 반영해 `scoped -> approved`로 전환했다.
+- 2026-07-29: Design Lead Agent가 전용 worktree lock을 획득하고 7개 하위 Task scope와 의존성을 등록해 `approved -> in_progress`로 전환했다. 하위 Task 실행은 별도 Product Owner 승인 대기다.
+- 2026-07-29: Product Owner가 첫 하위 Task `T-20260729-008` 실행을 승인했으며 Design Lead Agent가 전용 worktree와 UI/UX Design Agent 라우팅을 준비했다.
+- 2026-07-29: Product Owner가 `T-20260729-008` Design QA 결함 2건의 재작업을 승인했으며 후속 Task 차단은 유지한다.

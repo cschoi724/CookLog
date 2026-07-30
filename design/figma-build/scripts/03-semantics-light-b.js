@@ -21,6 +21,8 @@ const source = [
   ["color/border/strong", "ink/500", ["STROKE_COLOR"]],
   ["color/icon/primary", "ink/900", ["SHAPE_FILL", "STROKE_COLOR"]],
   ["color/status/success", "green/500", ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL"]],
+  ["color/status/warning", "orange/600", ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL"]],
+  ["color/status/info", "violet/500", ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL"]],
   ["color/status/error", "red/500", ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL"]],
   ["color/focus", "violet/500", ["STROKE_COLOR"]]
 ];
