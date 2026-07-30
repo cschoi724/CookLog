@@ -2,7 +2,7 @@
 
 작성일: 2026-07-30
 작성자: iOS Agent
-상태: `completion_review`
+상태: `done`
 
 ## 결과
 
@@ -109,3 +109,15 @@ timeout·artifact 경계를 독립 재검증한다.
 충족했다. Development Lead Agent가
 `verification_passed -> completion_review`로 수용하며, `develop` 대상 PR이
 병합된 뒤 `done`으로 확정한다.
+
+## 완료
+
+- PR: [#20](https://github.com/cschoi724/CookLog/pull/20)
+- 대상 브랜치: `develop`
+- 병합 방식: squash merge
+- merge SHA: `0b438ea367acf951b00d168936fcb2522617643e`
+- 완료 판정: `done`
+
+PR 통합과 merge SHA를 확인해 Development Lead Agent가 CI 계약 하위 Task
+완료를 확정했다. 이에 따라 `T-20260730-002`, `T-20260730-003`의 선행
+의존성은 해소됐으며, 각 Task 실행은 Product Owner의 별도 승인을 기다린다.

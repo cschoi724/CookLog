@@ -9,7 +9,7 @@
 |---|---|---|---|---|
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |
 | `T-20260730-007` | `done` | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | iOS 26.5·17.2 전체 33/33, QA-HIGH-007-001 해소 | PR #18 squash merge·완료 확정 |
-| `T-20260730-001` | `completion_review` | iOS CI 환경·명령·check 계약 확정 | 전체 XCTest 33/33, QA-HIGH-001·timeout·artifact·build 경계 확인 | 완료 검토 통과, develop PR 통합 대기 |
+| `T-20260730-001` | `done` | iOS CI 환경·명령·check 계약 확정 | 전체 XCTest 33/33, QA-HIGH-001·timeout·artifact·build 경계 확인 | PR #20 squash merge·완료 확정 |
 
 향후 검증 예정 Task:
 
@@ -25,7 +25,6 @@
 | `T-20260729-023` | Backend | Backend QA Agent | AI 상태·복구·schema·timeout |
 | `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
-| `T-20260730-001` | CI | iOS QA Agent | runner·Xcode·Simulator·명령 계약 |
 | `T-20260730-002` | CI | iOS QA Agent | ios-build 성공·컴파일 실패 감지 |
 | `T-20260730-003` | CI | iOS QA Agent | XCTest 성공·실패·timeout artifact |
 | `T-20260730-004` | CI | iOS QA Agent | concurrency·cache 회귀·진단 가능성 |
