@@ -35,17 +35,24 @@ http://127.0.0.1:8765/?screen=log&state=recording
 http://127.0.0.1:8765/?screen=player&state=playing&theme=dark
 http://127.0.0.1:8765/?screen=review&state=save-error
 http://127.0.0.1:8765/?screen=home&state=content&viewport=small
+http://127.0.0.1:8765/?screen=home&state=delete-confirm
+http://127.0.0.1:8765/?screen=library&state=all
+http://127.0.0.1:8765/?screen=library&state=search-title
+http://127.0.0.1:8765/?screen=library&state=no-results&theme=dark
 ```
 
 ## 포함
 
 - Home
+- 전체 보기·로컬 검색
 - Cooking Log
 - AI Review
 - Recipe Detail
 - Audio Player
 - Light / Dark
 - 주요 빈 상태, 로딩, 녹음, 처리, 오류, 비활성, 재생 상태
+- 최근 활동순 혼합 목록, 진행 상태별 routing, 진행 기록 영구 삭제 확인
+- 제목·재료명 즉시 검색, 제목 일치 우선, 검색어 지우기와 결과 없음
 - 기록 흐름과 다시 요리 흐름의 기본 인터랙션
 - 390×844와 실제 375×667 레이아웃
 - Button, Status Banner, Form Field, Recipe Card, Player Control 상태 보드

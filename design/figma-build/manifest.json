@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "runId": "cooklog-mvp-v1-20260728",
-  "revision": "foundation-components-20260729",
+  "revision": "home-search-routing-20260730",
   "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
   "direction": "A — Warm Kitchen Journal",
   "brandScope": "wordmark-only",
@@ -243,15 +243,53 @@
     "fallbackRule": "Permission, network, service, and voice-command failures keep unaffected local actions available."
   },
   "screens": {
-    "Home": ["Content", "Empty", "Loading", "Error"],
+    "Home": ["Mixed Recent", "Multiple Drafts", "Record Menu", "Delete Confirmation", "Empty", "Loading", "Error"],
+    "All Recipes": ["Recent Activity", "Title Search", "Ingredient Search", "No Results", "Empty"],
     "Cooking Log": ["Empty", "Recording", "Processing", "STEP Added", "Error"],
     "AI Review": ["Processing", "Editable", "Generation Error", "Saving", "Save Error"],
     "Recipe Detail": ["Content", "Loading", "Error", "Not Found"],
     "Audio Player": ["Paused", "Playing", "Loading", "Error", "No Steps"]
   },
   "prototype": {
+    "homeRules": {
+      "ordering": "Last activity descending",
+      "orderingSource": "lastActivityAt timestamp",
+      "visibleLimit": 3,
+      "deletionBackfill": "Re-sort remaining records and fill up to the visible limit",
+      "mixedStates": ["Recording", "Organizing", "Review Required", "Complete"],
+      "untitledDraft": "작성 중인 요리 + date and time",
+      "newRecordingPreservesExistingDrafts": true,
+      "progressDeletion": "More menu + irreversible confirmation",
+      "completeDeletionLocation": "Recipe Detail only"
+    },
+    "cardRouting": {
+      "Recording": "Cooking Log / STEP Added",
+      "Organizing": "AI Review / Processing",
+      "Review Required": "AI Review / Editable",
+      "Complete": "Recipe Detail / Content"
+    },
+    "localSearch": {
+      "entry": "Home / 전체 보기",
+      "scope": ["AI Review title", "AI Review ingredient", "Complete title", "Complete ingredient"],
+      "excluded": ["Untitled STEP Preview", "Cooking steps", "Memo"],
+      "networkTransmission": false,
+      "update": "As the user types",
+      "ranking": ["Title match", "Ingredient match", "Last activity descending"],
+      "statePolicy": {
+        "Title Search": "At least one result matches the title; mixed title and ingredient results stay in Title Search.",
+        "Ingredient Search": "Results match ingredients only and no result matches the title.",
+        "No Results": "No title or ingredient result matches."
+      },
+      "controls": ["Clear query", "No results"],
+      "filters": false
+    },
+    "keyboardFocus": {
+      "recordMenu": ["Move focus to the menu item on open", "Escape closes and returns focus to the trigger"],
+      "deleteDialog": ["Initial focus on Cancel", "Tab and Shift+Tab remain inside", "Escape cancels", "Cancel returns focus to the menu trigger"],
+      "deleteConfirmation": "After the deleted trigger is removed, focus moves to the primary Home action or Library search."
+    },
     "recordFlow": [
-      "Home / Content",
+      "Home / Mixed Recent",
       "Cooking Log / Empty",
       "Cooking Log / Recording",
       "Cooking Log / Processing",
@@ -267,9 +305,17 @@
       "Audio Player / Playing"
     ],
     "reuseFlow": [
-      "Home / Content",
+      "Home / Mixed Recent",
       "Recipe Detail / Content",
       "Audio Player / Paused"
+    ],
+    "searchFlow": [
+      "Home / Mixed Recent",
+      "All Recipes / Recent Activity",
+      "All Recipes / Title Search",
+      "All Recipes / Ingredient Search",
+      "All Recipes / No Results",
+      "All Recipes / Recent Activity"
     ]
   },
   "validation": {

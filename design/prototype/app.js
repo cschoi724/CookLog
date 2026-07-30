@@ -3,11 +3,15 @@ const icons = {
   book: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>`,
   mic: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg>`,
   sparkles: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.2 3.8L7 8l3.8 1.2L12 13l1.2-3.8L17 8l-3.8-1.2L12 3Z"/><path d="m5 14-.8 2.2L2 17l2.2.8L5 20l.8-2.2L8 17l-2.2-.8L5 14ZM19 13l-.8 2.2-2.2.8 2.2.8L19 19l.8-2.2 2.2-.8-2.2-.8L19 13Z"/></svg>`,
-  play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>`
+  play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>`,
+  search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>`,
+  close: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>`,
+  more: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>`
 };
 
 const screenStates = {
-  home: ["content", "empty", "loading", "error"],
+  home: ["content", "multiple", "menu-open", "delete-confirm", "empty", "loading", "error"],
+  library: ["all", "search-title", "search-ingredient", "no-results", "empty"],
   log: ["empty", "recording", "processing", "steps", "error"],
   review: ["processing", "editable", "error", "saving", "save-error"],
   detail: ["content", "loading", "error", "not-found"],
@@ -15,7 +19,9 @@ const screenStates = {
 };
 
 const stateLabels = {
-  content: "기본 콘텐츠", empty: "빈 상태", loading: "로딩", error: "오류",
+  content: "최근 3개", multiple: "여러 진행 기록", "menu-open": "진행 기록 메뉴", "delete-confirm": "영구 삭제 확인",
+  all: "전체 · 최근 활동순", "search-title": "검색 · 제목 우선", "search-ingredient": "검색 · 재료 일치", "no-results": "검색 결과 없음",
+  empty: "빈 상태", loading: "로딩", error: "오류",
   recording: "녹음 중", processing: "처리 중", steps: "STEP 누적",
   editable: "검토·수정", saving: "저장 중", "save-error": "저장 오류", "not-found": "찾을 수 없음",
   paused: "일시정지", playing: "재생 중", "no-steps": "단계 없음"
@@ -40,6 +46,98 @@ let reviewDraft = {
   memo: "양파가 살짝 투명해질 때 불을 줄이면 좋아요."
 };
 let transitionTimer = null;
+let searchQuery = "";
+let recordMenuId = "";
+let pendingDeleteId = "";
+let deleteDialogOpen = false;
+let homeFeedback = "";
+let lastMenuTriggerId = "";
+let focusIntent = null;
+const deletedRecipeIds = new Set();
+
+const recipes = [
+  {
+    id: "draft-step",
+    state: "recording",
+    title: "작성 중인 요리",
+    status: "기록 중 · STEP 2개",
+    activity: "방금 전",
+    lastActivityAt: "2026-07-30T14:00:00+09:00",
+    detail: "7월 30일 오후 5:20 · 마지막 STEP으로 이동",
+    ingredients: [],
+    nav: "log",
+    navState: "steps"
+  },
+  {
+    id: "draft-organizing",
+    state: "organizing",
+    title: "삼겹살 요리 기록",
+    status: "AI 정리 중 · STEP 4개",
+    activity: "8분 전",
+    lastActivityAt: "2026-07-30T13:52:00+09:00",
+    detail: "다른 화면을 사용해도 정리는 계속돼요.",
+    ingredients: [],
+    nav: "review",
+    navState: "processing"
+  },
+  {
+    id: "draft-review",
+    state: "review",
+    title: "달큰한 간장 삼겹살",
+    status: "검토 필요",
+    activity: "어제",
+    lastActivityAt: "2026-07-29T18:10:00+09:00",
+    detail: "삼겹살 · 양파 · 간장",
+    ingredients: ["삼겹살", "양파", "간장"],
+    nav: "review",
+    navState: "editable"
+  },
+  {
+    id: "recipe-tofu",
+    state: "complete",
+    title: "매콤한 두부조림",
+    activity: "7월 27일",
+    lastActivityAt: "2026-07-27T12:20:00+09:00",
+    detail: "두부 · 대파 · 고춧가루",
+    ingredients: ["두부", "대파", "고춧가루"],
+    time: "약 20분",
+    steps: 4,
+    nav: "detail",
+    navState: "content"
+  },
+  {
+    id: "recipe-pasta",
+    state: "complete",
+    title: "토마토 달걀 볶음",
+    activity: "7월 24일",
+    lastActivityAt: "2026-07-24T19:00:00+09:00",
+    detail: "토마토 · 달걀 · 대파",
+    ingredients: ["토마토", "달걀", "대파"],
+    time: "약 15분",
+    steps: 3,
+    nav: "detail",
+    navState: "content"
+  },
+  {
+    id: "recipe-soup",
+    state: "complete",
+    title: "구수한 된장국",
+    activity: "7월 20일",
+    lastActivityAt: "2026-07-20T11:30:00+09:00",
+    detail: "두부 · 애호박 · 된장",
+    ingredients: ["두부", "애호박", "된장"],
+    time: "약 25분",
+    steps: 5,
+    nav: "detail",
+    navState: "content"
+  }
+];
+
+if (screen === "library") {
+  if (state === "search-title") searchQuery = "삼겹살";
+  else if (state === "search-ingredient") searchQuery = "애호박";
+  else if (state === "no-results") searchQuery = "크림 파스타";
+}
 
 const app = document.querySelector("#app");
 const screenSelect = document.querySelector("#screen-select");
@@ -68,13 +166,49 @@ function header({ back, title = "CookLog", action = "" } = {}) {
   </header>`;
 }
 
-function recipeCard() {
-  return `<button class="card recipe-card" data-nav="detail" data-state="content">
-    <span class="meta">어제 · 약 25분</span>
-    <h4>달큰한 간장 삼겹살</h4>
-    <p>삼겹살 · 양파 · 간장&nbsp;&nbsp;|&nbsp;&nbsp;4단계</p>
-    <span class="recipe-arrow" aria-hidden="true">→</span>
-  </button>`;
+function visibleRecipes() {
+  return recipes
+    .filter(item => !deletedRecipeIds.has(item.id))
+    .sort((left, right) => Date.parse(right.lastActivityAt) - Date.parse(left.lastActivityAt));
+}
+
+function recipeCard(item, { match = "", menuOpen = false } = {}) {
+  const inProgress = item.state !== "complete";
+  const stateClass = item.state === "review" ? "is-review" : `is-${item.state}`;
+  const matchLabel = match ? `<span class="match-label">${match}</span>` : "";
+  const stateMarkup = inProgress
+    ? `<span class="recipe-state ${stateClass}"><i class="recipe-state-symbol"></i>${item.status}</span>`
+    : `<span class="meta">${item.activity} · ${item.time}</span>`;
+  const supporting = item.state === "complete"
+    ? `${item.detail} · ${item.steps}단계`
+    : `${item.detail} · ${item.activity}`;
+  return `<article class="card recipe-card recipe-card-shell" data-recipe-id="${item.id}" data-content-state="${item.state}">
+    <button class="recipe-card-main" data-nav="${item.nav}" data-state="${item.navState}" aria-label="${escapeHTML(item.title)}, ${inProgress ? item.status : "레시피 상세"} 열기">
+      ${matchLabel}${stateMarkup}
+      <h4>${escapeHTML(item.title)}</h4>
+      <p>${escapeHTML(supporting)}</p>
+      <span class="recipe-arrow" aria-hidden="true">→</span>
+    </button>
+    ${inProgress ? `<button class="recipe-more" type="button" data-action="open-record-menu" data-id="${item.id}" aria-label="${escapeHTML(item.title)} 메뉴" aria-expanded="${menuOpen}" aria-controls="recipe-menu-${item.id}">${icons.more}</button>` : ""}
+    ${menuOpen ? `<div class="recipe-menu" id="recipe-menu-${item.id}" role="menu"><button type="button" role="menuitem" data-action="request-delete-record" data-id="${item.id}">진행 기록 삭제</button></div>` : ""}
+  </article>`;
+}
+
+function deleteDialog() {
+  if (!deleteDialogOpen) return "";
+  const item = recipes.find(recipe => recipe.id === pendingDeleteId);
+  if (!item) return "";
+  return `<div class="dialog-scrim" role="presentation">
+    <section class="delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-title" aria-describedby="delete-copy" tabindex="-1">
+      <span class="dialog-icon" aria-hidden="true">×</span>
+      <h3 id="delete-title">진행 기록을 영구 삭제할까요?</h3>
+      <p id="delete-copy"><strong>${escapeHTML(item.title)}</strong>의 STEP Preview와 임시 저장 내용을 삭제합니다. 삭제한 기록은 복구할 수 없어요.</p>
+      <div class="dialog-actions">
+        <button class="button button-secondary" type="button" data-action="cancel-delete-record" data-dialog-initial-focus>취소</button>
+        <button class="button button-destructive" type="button" data-action="confirm-delete-record">영구 삭제</button>
+      </div>
+    </section>
+  </div>`;
 }
 
 function escapeHTML(value) {
@@ -97,21 +231,78 @@ function feedbackCard(kind, title, copy, retry) {
 function renderHome() {
   if (state === "loading") return `<section class="screen">${header()}${feedbackCard("loading", "레시피를 불러오는 중", "나의 요리 기록을 정리하고 있어요.")}</section>`;
   if (state === "error") return `<section class="screen">${header()}${feedbackCard("error", "레시피를 불러오지 못했어요", "잠시 후 다시 시도해주세요.", "content")}</section>`;
-  const content = state === "empty"
-    ? `<div class="card empty-card"><div><div class="empty-icon">${icons.book}</div><h4>아직 저장된 레시피가 없어요</h4><p>첫 요리를 10초씩 기록하면 여기에 나만의 레시피가 쌓입니다.</p></div></div>`
-    : recipeCard();
+  if (state === "menu-open") {
+    recordMenuId = "draft-step";
+    deleteDialogOpen = false;
+  } else if (state === "delete-confirm") {
+    recordMenuId = "";
+    pendingDeleteId = "draft-step";
+    deleteDialogOpen = true;
+  }
+  const recent = visibleRecipes().slice(0, 3);
+  const content = state === "empty" || recent.length === 0
+    ? `<div class="card empty-card"><div><div class="empty-icon">${icons.book}</div><h4>아직 요리 기록이 없어요</h4><p>첫 요리를 10초씩 기록하면 진행 기록과 완성한 레시피가 여기에 쌓입니다.</p></div></div>`
+    : `<div class="recipe-list">${recent.map(item => recipeCard(item, { menuOpen: recordMenuId === item.id })).join("")}</div>`;
   return `<section class="screen home-screen">
-    ${header({ action: `<button class="icon-button" aria-label="저장된 레시피">${icons.book}</button>` })}
+    ${header({ action: `<button class="icon-button" data-nav="library" data-state="all" aria-label="전체 요리 기록">${icons.book}</button>` })}
     <div class="hero">
       <p class="eyebrow">나의 주방 기록</p>
       <h2>오늘의 맛을<br>잊지 않도록</h2>
       <p>요리하면서 10초씩 말해보세요.<br>다시 만들 수 있는 레시피로 남겨드려요.</p>
     </div>
-    <button class="button button-primary" data-nav="log" data-state="empty">
+    <button class="button button-primary" data-action="start-new-log">
       ${icons.mic}<span>10초 요리 기록 시작</span>
     </button>
-    <div class="section-head"><h3>${state === "empty" ? "나의 레시피" : "최근 레시피"}</h3><button class="text-action">전체 보기</button></div>
+    <p class="preservation-note">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</p>
+    ${homeFeedback ? `<div class="compact-feedback" role="status">${escapeHTML(homeFeedback)}</div>` : ""}
+    <div class="section-head"><div><h3>${state === "empty" ? "나의 요리 기록" : "최근 레시피"}</h3><span>최근 활동순 · 최대 3개</span></div><button class="text-action" data-nav="library" data-state="all">전체 보기</button></div>
     ${content}
+    ${deleteDialog()}
+  </section>`;
+}
+
+function libraryResults(query) {
+  const searchable = visibleRecipes().filter(item => item.state === "review" || item.state === "complete");
+  const normalized = query.trim().toLocaleLowerCase("ko");
+  if (!normalized) return visibleRecipes().map(item => ({ item, match: "" }));
+  const titleMatches = searchable
+    .filter(item => item.title.toLocaleLowerCase("ko").includes(normalized))
+    .map(item => ({ item, match: "제목 일치" }));
+  const titleIds = new Set(titleMatches.map(result => result.item.id));
+  const ingredientMatches = searchable
+    .filter(item => !titleIds.has(item.id) && item.ingredients.some(ingredient => ingredient.toLocaleLowerCase("ko").includes(normalized)))
+    .map(item => ({ item, match: "재료 일치" }));
+  return [...titleMatches, ...ingredientMatches];
+}
+
+function librarySearchState(query, results = libraryResults(query)) {
+  if (!query.trim()) return "all";
+  if (results.length === 0) return "no-results";
+  return results.some(result => result.match === "제목 일치") ? "search-title" : "search-ingredient";
+}
+
+function renderLibrary() {
+  if (state === "empty") searchQuery = "";
+  const results = state === "empty" ? [] : libraryResults(searchQuery);
+  const searching = searchQuery.trim().length > 0;
+  const resultCopy = searching
+    ? `${results.length}개 결과 · ${state === "search-ingredient" ? "재료 일치" : "제목 일치 우선"}`
+    : `최근 활동순 · ${results.length}개`;
+  const body = results.length
+    ? `<div class="recipe-list">${results.map(result => recipeCard(result.item, { match: result.match, menuOpen: recordMenuId === result.item.id })).join("")}</div>`
+    : `<div class="card search-empty"><div class="empty-icon">${icons.search}</div><h3>${searching ? "일치하는 레시피가 없어요" : "아직 요리 기록이 없어요"}</h3><p>${searching ? "제목이나 재료명을 다시 확인하거나 검색어를 지워보세요." : "Home에서 첫 요리 기록을 시작해보세요."}</p>${searching ? `<button class="button button-secondary" type="button" data-action="clear-search">검색어 지우기</button>` : ""}</div>`;
+  return `<section class="screen library-screen">
+    ${header({ back: "home", title: "전체 보기" })}
+    <div class="library-intro"><p class="eyebrow">MY COOKLOG</p><h2>모든 요리 기록</h2><p>진행 중인 기록과 완료 레시피를 최근 활동순으로 모았습니다.</p></div>
+    <label class="search-field" for="recipe-search">
+      <span class="search-icon">${icons.search}</span>
+      <input id="recipe-search" type="search" inputmode="search" autocomplete="off" placeholder="제목·재료명 검색" value="${escapeHTML(searchQuery)}" aria-describedby="search-privacy">
+      ${searching ? `<button type="button" data-action="clear-search" aria-label="검색어 지우기">${icons.close}</button>` : ""}
+    </label>
+    <p class="search-privacy" id="search-privacy">기기 안에서만 검색하며 서버나 AI로 보내지 않습니다.</p>
+    <div class="library-summary"><strong>${resultCopy}</strong>${searching ? `<span>STEP Preview 초안은 검색에서 제외</span>` : `<span>정렬·필터 없음</span>`}</div>
+    ${body}
+    ${deleteDialog()}
   </section>`;
 }
 
@@ -260,12 +451,41 @@ function renderStateList() {
   ).join("");
 }
 
+function applyFocusIntent() {
+  let intent = focusIntent;
+  focusIntent = null;
+  if (!intent && deleteDialogOpen) intent = { type: "dialog-cancel" };
+  if (!intent && recordMenuId) intent = { type: "menu-item", id: recordMenuId };
+  if (!intent) return;
+
+  const selectors = {
+    "dialog-cancel": "[data-dialog-initial-focus]",
+    "menu-item": `[data-action="request-delete-record"][data-id="${intent.id || ""}"]`,
+    "menu-trigger": `[data-action="open-record-menu"][data-id="${intent.id || ""}"]`,
+    "start-new-log": "[data-action=\"start-new-log\"]",
+    "library-search": "#recipe-search"
+  };
+  const target = document.querySelector(selectors[intent.type]);
+  if (target) target.focus({ preventScroll: true });
+}
+
+function cancelDeleteRecord() {
+  deleteDialogOpen = false;
+  pendingDeleteId = "";
+  if (screen === "home") state = "content";
+  focusIntent = lastMenuTriggerId
+    ? { type: "menu-trigger", id: lastMenuTriggerId }
+    : { type: "start-new-log" };
+  render();
+}
+
 function render() {
   window.clearTimeout(transitionTimer);
-  const renderers = { home: renderHome, log: renderLog, review: renderReview, detail: renderDetail, player: renderPlayer };
+  const renderers = { home: renderHome, library: renderLibrary, log: renderLog, review: renderReview, detail: renderDetail, player: renderPlayer };
   app.innerHTML = renderers[screen]();
   screenSelect.value = screen;
   renderStateList();
+  applyFocusIntent();
   if (screen === "log" && state === "processing") {
     transitionTimer = window.setTimeout(completeTranscription, 1600);
   } else if (screen === "review" && state === "processing") {
@@ -278,6 +498,14 @@ function render() {
 function navigate(nextScreen, nextState) {
   screen = nextScreen;
   state = nextState || screenStates[screen][0];
+  recordMenuId = "";
+  if (state !== "delete-confirm") deleteDialogOpen = false;
+  if (screen === "library") {
+    if (state === "search-title") searchQuery = "삼겹살";
+    else if (state === "search-ingredient") searchQuery = "애호박";
+    else if (state === "no-results") searchQuery = "크림 파스타";
+    else searchQuery = "";
+  }
   if (screen === "log" && state === "empty") recordedStepCount = 0;
   if (screen !== "player") playerFeedback = "";
   render();
@@ -300,7 +528,41 @@ document.addEventListener("click", event => {
   if (!target) return;
   if (target.dataset.action === "complete-transcription") completeTranscription();
   else if (target.dataset.action === "save-recipe") startSaving();
-  else if (target.dataset.action === "add-ingredient") {
+  else if (target.dataset.action === "start-new-log") {
+    homeFeedback = "새 진행 기록을 시작했습니다. 기존 기록은 그대로 보존돼요.";
+    navigate("log", "empty");
+  } else if (target.dataset.action === "open-record-menu") {
+    recordMenuId = recordMenuId === target.dataset.id ? "" : target.dataset.id;
+    lastMenuTriggerId = target.dataset.id;
+    deleteDialogOpen = false;
+    if (screen === "home") state = recordMenuId ? "menu-open" : "content";
+    focusIntent = recordMenuId
+      ? { type: "menu-item", id: recordMenuId }
+      : { type: "menu-trigger", id: lastMenuTriggerId };
+    render();
+  } else if (target.dataset.action === "request-delete-record") {
+    pendingDeleteId = target.dataset.id;
+    lastMenuTriggerId = target.dataset.id;
+    recordMenuId = "";
+    deleteDialogOpen = true;
+    if (screen === "home") state = "delete-confirm";
+    focusIntent = { type: "dialog-cancel" };
+    render();
+  } else if (target.dataset.action === "cancel-delete-record") {
+    cancelDeleteRecord();
+  } else if (target.dataset.action === "confirm-delete-record") {
+    if (pendingDeleteId) deletedRecipeIds.add(pendingDeleteId);
+    deleteDialogOpen = false;
+    pendingDeleteId = "";
+    homeFeedback = "진행 기록을 영구 삭제했어요.";
+    if (screen === "home") state = "content";
+    focusIntent = { type: screen === "home" ? "start-new-log" : "library-search" };
+    render();
+  } else if (target.dataset.action === "clear-search") {
+    searchQuery = "";
+    state = "all";
+    render();
+  } else if (target.dataset.action === "add-ingredient") {
     reviewDraft.ingredients.push({ name: "새 재료", amount: "적당량" });
     render();
   } else if (target.dataset.action === "remove-ingredient") {
@@ -309,6 +571,17 @@ document.addEventListener("click", event => {
   } else if (target.dataset.nav) navigate(target.dataset.nav, target.dataset.state);
   else if (target.dataset.state) {
     state = target.dataset.state;
+    if (screen === "home") {
+      recordMenuId = state === "menu-open" ? "draft-step" : "";
+      pendingDeleteId = state === "delete-confirm" ? "draft-step" : "";
+      deleteDialogOpen = state === "delete-confirm";
+    }
+    if (screen === "library") {
+      if (state === "search-title") searchQuery = "삼겹살";
+      else if (state === "search-ingredient") searchQuery = "애호박";
+      else if (state === "no-results") searchQuery = "크림 파스타";
+      else searchQuery = "";
+    }
     if (screen === "log" && state === "steps" && recordedStepCount === 0) recordedStepCount = 2;
     if (screen === "log" && state === "recording") playerFeedback = "";
     render();
@@ -329,6 +602,18 @@ document.addEventListener("click", event => {
 
 document.addEventListener("input", event => {
   const target = event.target;
+  if (target.id === "recipe-search") {
+    searchQuery = target.value;
+    const results = libraryResults(searchQuery);
+    state = librarySearchState(searchQuery, results);
+    render();
+    const searchInput = document.querySelector("#recipe-search");
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+    }
+    return;
+  }
   const field = target.dataset.draftField;
   if (!field) return;
   if (field === "ingredient-name" || field === "ingredient-amount") {
@@ -338,6 +623,54 @@ document.addEventListener("input", event => {
     return;
   }
   reviewDraft[field] = target.value;
+});
+
+document.addEventListener("keydown", event => {
+  if (deleteDialogOpen) {
+    const dialog = document.querySelector('[role="alertdialog"]');
+    if (!dialog) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      cancelDeleteRecord();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = [...dialog.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+    if (focusable.length === 0) {
+      event.preventDefault();
+      dialog.focus();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!dialog.contains(document.activeElement)) {
+      event.preventDefault();
+      first.focus();
+    } else if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+    return;
+  }
+
+  if (recordMenuId && event.key === "Escape") {
+    event.preventDefault();
+    const triggerId = recordMenuId;
+    recordMenuId = "";
+    if (screen === "home") state = "content";
+    focusIntent = { type: "menu-trigger", id: triggerId };
+    render();
+  }
+});
+
+document.addEventListener("focusin", event => {
+  if (!deleteDialogOpen) return;
+  const dialog = document.querySelector('[role="alertdialog"]');
+  if (!dialog || dialog.contains(event.target)) return;
+  document.querySelector("[data-dialog-initial-focus]")?.focus({ preventScroll: true });
 });
 
 screenSelect.addEventListener("change", event => navigate(event.target.value));
