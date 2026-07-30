@@ -143,3 +143,4 @@ Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료
 - 2026-07-29: Design Lead Agent가 전용 worktree lock을 획득하고 7개 하위 Task scope와 의존성을 등록해 `approved -> in_progress`로 전환했다. 하위 Task 실행은 별도 Product Owner 승인 대기다.
 - 2026-07-29: Product Owner가 첫 하위 Task `T-20260729-008` 실행을 승인했으며 Design Lead Agent가 전용 worktree와 UI/UX Design Agent 라우팅을 준비했다.
 - 2026-07-29: Product Owner가 `T-20260729-008` Design QA 결함 2건의 재작업을 승인했으며 후속 Task 차단은 유지한다.
+- 2026-07-30: 하위 `T-20260729-008`이 Design QA와 Design Lead 완료 검토를 통과하고 PR #11로 `develop`에 병합되어 `done`으로 확정됐다. 다음 순차 후보 `T-20260729-009`는 별도 Product Owner 실행 승인 대기다.

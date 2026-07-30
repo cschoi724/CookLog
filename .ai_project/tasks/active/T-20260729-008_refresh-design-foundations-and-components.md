@@ -1,7 +1,7 @@
 ---
 id: T-20260729-008
 title: 확정 UX용 디자인 Foundation·공통 컴포넌트 갱신
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 모든 후속 화면이 공유하는 토큰과 상태 variant를 먼저 확정해야 화면별 재작업과 iOS 구현 해석 차이를 줄일 수 있다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
   - ui_design
   - prototyping
@@ -134,3 +134,4 @@ qa_to: .ai_project/qa/T-20260729-008_refresh-design-foundations-and-components-q
 - 2026-07-29: UI/UX Design Agent가 결함 2건 수정과 자체 검증을 완료하고 lock을 해제해 `in_progress -> verification_ready`로 전환한 뒤 Design QA Agent에 독립 재검증을 요청했다.
 - 2026-07-30: Design QA Agent가 결함 2건 해소와 기존 통과 항목의 회귀 없음을 독립 재검증해 `verification_ready -> verification_passed`로 전환하고 Design Lead Agent에 인계했다.
 - 2026-07-30: Design Lead Agent가 성공 기준, 최종 Design QA, allowed paths, Figma 비차단 근거와 구현 핸드오프 완전성을 검토해 `verification_passed -> completion_review`로 인계했다. develop 통합 전이므로 `done` 전환은 보류했다.
+- 2026-07-30: Product Owner 승인에 따라 PR #11을 `develop`에 squash merge했고, merge SHA `5de6a934c1cb98859e3b2e4a15c24d9ec54e9feb`을 확인해 `completion_review -> done`으로 전환했다.
