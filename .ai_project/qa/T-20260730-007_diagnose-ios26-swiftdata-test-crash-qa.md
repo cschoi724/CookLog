@@ -3,7 +3,7 @@
 작성일: 2026-07-30
 작성자: iOS QA Agent
 대상 Task: `T-20260730-007`
-판정: `FAIL`
+판정: `PASS`
 
 ## 1. 검증 환경
 
@@ -124,27 +124,53 @@ apps/ios/Scripts/run-xctest.sh
 - 정리 후 최신 `origin/develop` 기반의 깨끗한 전용 worktree에서
   `verification_ready`로 다시 인계한다.
 
+### QA-HIGH-007-001 해소 확인
+
+재작업 커밋:
+
+- `61fca6d1188e3fad5972e6ea65757550f90f7415`
+
+확인 결과:
+
+- 최신 `origin/develop` `af4b959`보다 1개 커밋 앞서고 뒤처진 커밋이 없다.
+- `.ai_project/task_board.md`는 `origin/develop`과 동일하다.
+- 변경 파일 6개는 모두 Task `allowed_paths` 안에 있다.
+- 재작업 전후
+  `apps/ios/CookLogTests/SwiftDataRecipeLocalDataSourceTests.swift` blob은
+  `ed743e9b720d12fe4367f2481ad7282350b9d444`로 동일하다.
+- 재작업 커밋에서 iPhone 17/iOS 26.5 핵심 저장·정렬·삭제 테스트를 다시
+  실행해 3/3 통과, 실패·skip 0, 종료 코드 0을 확인했다.
+- 재검증 xcresult:
+  `/private/tmp/cooklog-t007-qa-rework-selected.fUnBWW/CookLogSelectedTests.xcresult`
+- `git diff --check origin/develop..HEAD`: 통과
+- Task strict metadata 검증: 통과
+
+따라서 `QA-HIGH-007-001`은 해소됐다. 기능 코드가 최초 전체 회귀 검증 시점과
+동일하므로 iOS 26.5와 iOS 17.2의 전체 XCTest 33/33 결과도 유효하다.
+
 ## 7. 최종 판정
 
-`FAIL`.
+`PASS`.
 
 iOS 26.5 crash 해소, 전체 33/33과 iOS 17.2 전체 33/33은 독립 확인했다.
-그러나 `QA-HIGH-007-001`의 변경 범위 위반이 남아 있어
-`rework_requested`로 Development Lead Agent에 인계한다.
+재작업 커밋에서 `QA-HIGH-007-001` 해소와 핵심 테스트 3/3 무회귀를 확인했다.
+Task를 `verification_passed`로 Development Lead Agent에 인계한다.
 
 ## 8. 다음 Agent에게 전달할 말
 
 ```text
 Task: T-20260730-007
-현재 상태: rework_requested
-검증 판정: FAIL
+현재 상태: verification_passed
+검증 판정: PASS
 다음 담당: Development Lead Agent / Lead Role
 기능 검증:
 - iPhone 17 / iOS 26.5 기존 crash 테스트 3/3 통과
 - iPhone 17 / iOS 26.5 전체 XCTest 33/33 통과
 - iPhone 15 / iOS 17.2 전체 XCTest 33/33 통과
-필수 재작업:
-- QA-HIGH-007-001: allowed_paths 밖 .ai_project/task_board.md 변경 제거 또는 명시적 범위 승인
+재작업 확인:
+- QA-HIGH-007-001 해소
+- 변경 파일 6개 모두 allowed_paths 안에 있음
+- 재작업 커밋에서 핵심 테스트 3/3 재통과
 QA 보고서:
 - .ai_project/qa/T-20260730-007_diagnose-ios26-swiftdata-test-crash-qa.md
 ```

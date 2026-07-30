@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-007
 title: iOS 26.5 SwiftData XCTest crash 진단과 최소 수정
-status: verification_ready
+status: verification_passed
 type: bugfix
 priority: P0
 priority_reason: T-20260730-001이 확정한 CI destination에서 SwiftData 저장소 테스트 3개가 crash해
@@ -11,8 +11,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: bugfix
-target_agent: iOS QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
 - ios_qa
 - regression_test
@@ -108,3 +108,5 @@ Xcode 26.6·iPhone 17·iOS 26.5에서 `SwiftDataRecipeLocalDataSourceTests` 3개
 | 2026-07-30 | iOS QA Agent | transition: verification_in_progress -> rework_requested | 기능 XCTest는 iOS 26.5·17.2에서 모두 33/33 통과했으나 QA-HIGH-007-001 allowed_paths 밖 .ai_project/task_board.md 변경 확인 |
 | 2026-07-30 | Product Owner | approve rework | QA-HIGH-007-001 해소를 위한 allowed_paths 밖 루트 Task board 변경 제거 승인 |
 | 2026-07-30 | Development Lead Agent | transition: rework_requested -> verification_ready | `.ai_project/task_board.md`를 origin/develop과 동일하게 복원하고 승인된 변경 경로만 남겨 iOS QA 재검증 인계 |
+| 2026-07-30 | iOS QA Agent | transition: verification_ready -> verification_in_progress | 61fca6d 재작업 커밋의 QA-HIGH-007-001 해소와 SwiftData 핵심 XCTest 재검증 |
+| 2026-07-30 | iOS QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-007-001 해소, 변경 파일 6개 allowed_paths 준수, 재작업 커밋 핵심 XCTest 3/3 및 기존 iOS 26.5·17.2 전체 33/33 확인 |
