@@ -34,7 +34,7 @@
 | `T-20260730-004` | `proposed` | CI | concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` | 선행·승인 대기 |
 | `T-20260730-005` | `proposed` | CI | PR dry run·실패 감지 검증 | iOS Agent | `T-20260730-004` | 선행·승인 대기 |
 | `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
-| `T-20260730-007` | `verification_passed` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | Development Lead Agent | T-001 QA-HIGH-001 | QA-HIGH-007-001 해소, 완료 검토 대기 |
+| `T-20260730-007` | `completion_review` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | Development Lead Agent | T-001 QA-HIGH-001 | 완료 검토 통과, develop PR 통합 대기 |
 
 `T-20260728-008`은 6개 하위 Task까지 scope했습니다. `T-20260730-002`와 `003`은 환경 계약 완료 후 병렬 실행할 수 있고, required check 외부 설정 `006`은 dry run·iOS QA와 별도 Product Owner 승인 후에만 수행합니다. 모든 하위 Task는 별도 승인 전 실행하지 않습니다.
 
@@ -42,4 +42,5 @@
 보유하도록 fixture 수명을 최소 수정했습니다. iOS 26.5와 iOS 17.2 전체 XCTest가
 각각 33/33 통과했고 iOS QA 독립 재검증에서도 동일 결과를 확인했습니다.
 `QA-HIGH-007-001` 재작업으로 allowed_paths 밖 루트 Task board 변경을 제거했고,
-iOS QA 독립 재검증을 통과해 Development Lead 완료 검토를 기다립니다.
+iOS QA 독립 재검증과 Development Lead 완료 검토를 통과했습니다. develop PR
+통합 후 `done`으로 확정합니다.
