@@ -8,6 +8,7 @@
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |
+| `T-20260729-009` | `completion_review` | Home·전체 보기·검색·레시피 상태 routing 디자인 | 최근 3개, 상태 routing, 진행 기록 삭제, 로컬 검색과 접근성 | develop 통합 대기 |
 
 향후 검증 예정 Task:
 
@@ -37,3 +38,5 @@
 `T-20260729-026`은 기존 Product QA `FAIL` 3건을 모두 해소해 재검증 `PASS`를 받고 Product Owner 최종 승인 후 `done`으로 확정했습니다.
 
 `T-20260729-008`은 완료 Recipe Card badge와 Manifest–Gallery variant 누락 해소 및 무회귀 독립 재검증, Design Lead 완료 검토를 통과했습니다. PR #11로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
+
+`T-20260729-009`의 Home 최근 활동순 계산, 영구 삭제 다이얼로그 키보드 포커스와 실제 재료 검색 상태 전이 결함 3건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토를 통과해 `completion_review`로 인계됐으며 Quality Team의 추가 조치는 재작업 발생 시 독립 재검증입니다.

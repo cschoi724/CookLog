@@ -145,3 +145,6 @@ Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료
 - 2026-07-29: Product Owner가 첫 하위 Task `T-20260729-008` 실행을 승인했으며 Design Lead Agent가 전용 worktree와 UI/UX Design Agent 라우팅을 준비했다.
 - 2026-07-29: Product Owner가 `T-20260729-008` Design QA 결함 2건의 재작업을 승인했으며 후속 Task 차단은 유지한다.
 - 2026-07-30: 하위 `T-20260729-008`이 Design QA와 Design Lead 완료 검토를 통과하고 PR #11로 `develop`에 병합되어 `done`으로 확정됐다. 다음 순차 후보 `T-20260729-009`는 별도 Product Owner 실행 승인 대기다.
+- 2026-07-30: Product Owner가 하위 `T-20260729-009` 실행을 승인했으며 최신 `origin/develop` 기반 전용 worktree를 준비해 UI/UX Design Agent에 라우팅했다.
+- 2026-07-30: Product Owner가 하위 `T-20260729-009`의 Design QA 결함 3건 재작업을 승인했으며 후속 `T-20260729-010` 차단은 유지한다.
+- 2026-07-30: 하위 `T-20260729-009`가 결함 3건 독립 재검증과 Design Lead 완료 검토를 통과해 `completion_review`로 인계됐다. develop 병합 전 `done`과 후속 `T-20260729-010` 차단 해제는 보류한다.
