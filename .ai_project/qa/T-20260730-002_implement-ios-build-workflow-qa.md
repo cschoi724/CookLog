@@ -161,3 +161,20 @@ Task: T-20260730-002
 QA 보고서:
 - .ai_project/qa/T-20260730-002_implement-ios-build-workflow-qa.md
 ```
+
+## 9. 최신 develop 통합 확인
+
+Development Lead가 QA 대상 미커밋 내용을 `62fc031`로 보존한 뒤 최신
+`origin/develop` 위로 재정렬했다. 최종 구현 커밋은 `d40ff5d`다.
+
+- workflow·TESTING·Task·실행 보고서·QA 보고서:
+  `62fc031`과 `d40ff5d` 사이 내용 차이 없음
+- 최신 `origin/develop` 대비 behind 0
+- T-20260729-010 완료 상태와 공용 Quality board 기록 보존
+- 변경 경로: Task `allowed_paths` 안
+- `git diff --check`: 통과
+- strict Task validation: 통과
+- YAML 구문 검사: 통과
+
+재정렬로 QA 판정 대상을 바꾸는 구현 내용 변경이 없으므로 기존 독립
+`PASS_WITH_RISK` 판정을 고정 커밋 `d40ff5d`에 적용한다.

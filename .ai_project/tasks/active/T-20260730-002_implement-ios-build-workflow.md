@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-002
 title: ios-build·build-for-testing workflow 구현
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 모든 develop PR에서 컴파일과 테스트 빌드 실패를 자동 차단해야 한다.
@@ -89,3 +89,5 @@ qa_to: ".ai_project/qa/T-20260730-002_implement-ios-build-workflow-qa.md"
 | 2026-07-30 | iOS Agent | transition: in_progress -> verification_ready | 정상 build·build-for-testing과 컴파일 실패 감지, YAML·허용 경로 검증 완료 |
 | 2026-07-30 | iOS QA Agent | transition: verification_ready -> verification_in_progress | ios-build workflow trigger·권한·preflight·정상/컴파일 실패·artifact 경계 독립 검증 |
 | 2026-07-30 | iOS QA Agent | transition: verification_in_progress -> verification_passed | preflight·정상 build/build-for-testing·컴파일 실패 종료 코드 65·권한·artifact 계약 독립 검증 PASS_WITH_RISK, hosted dry run은 T-005 인계 |
+| 2026-07-30 | Development Lead Agent | integrate latest develop | 최신 origin/develop의 T-010 완료 기록을 보존해 재정렬하고 고정 구현 커밋 d40ff5d가 QA 검증 내용과 byte-for-byte 동일함을 확인 |
+| 2026-07-30 | Development Lead Agent | transition: verification_passed -> completion_review | 성공 기준, 독립 QA PASS_WITH_RISK, 허용 경로와 공용 보드 비회귀를 수용하고 hosted 실행 위험은 계획된 T-005 dry run으로 인계 |
