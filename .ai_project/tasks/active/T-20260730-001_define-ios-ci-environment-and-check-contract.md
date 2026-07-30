@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-001
 title: iOS CI 환경·명령·check 계약 확정
-status: verification_passed
+status: completion_review
 type: docs
 priority: P0
 priority_reason: workflow 구현 전에 지원 runner·Xcode·Simulator와 고정 check 이름을 합의해야 한다.
@@ -103,3 +103,4 @@ qa_to: ".ai_project/qa/T-20260730-001_define-ios-ci-environment-and-check-contra
 | 2026-07-30 | Development Lead Agent | transition: rework_requested -> verification_ready | T-007 PR #18·#19와 iOS 26.5·17.2 전체 XCTest 33/33, SwiftData crash 해소를 확인하고 기존 CI 계약 변경 없이 iOS QA 재검증 인계 |
 | 2026-07-30 | iOS QA Agent | transition: verification_ready -> verification_in_progress | T-007 crash 해소 후 CI 계약 destination 전체 XCTest, timeout·artifact 및 공식 runner 계약 독립 재검증 |
 | 2026-07-30 | iOS QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-001 해소, 확정 destination XCTest 33/33, timeout 124·artifact와 build·build-for-testing 및 공식 runner 계약 독립 재검증 통과 |
+| 2026-07-30 | Development Lead Agent | transition: verification_passed -> completion_review | CI 계약 성공 기준, QA-HIGH-001 해소, 전체 XCTest 33/33, timeout·artifact·build 경계와 allowed_paths 준수를 확인하고 develop PR 통합 대기로 수용 |
