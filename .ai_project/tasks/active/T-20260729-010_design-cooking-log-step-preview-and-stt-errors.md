@@ -1,7 +1,7 @@
 ---
 id: T-20260729-010
 title: Cooking Log·STEP Preview·기기 내 STT·권한·오류 디자인
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 10초 기록과 텍스트 STEP 보존은 CookLog의 핵심 입력 경험이며 Apple 기기 내 STT의 권한·지원·실패 상태가 기존 기록을 손상하지 않아야 한다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent:
+target_role:
 required_capabilities:
   - ux_flow
   - ui_design
@@ -118,6 +118,7 @@ qa_to: .ai_project/qa/T-20260729-010_design-cooking-log-step-preview-and-stt-err
 - 2026-07-30: UI/UX Design Agent가 승인된 결함 4건을 수정하고 동적·접근성 회귀 검증을 통과해 lock을 해제한 뒤 `in_progress -> verification_ready`로 전환하고 Design QA Agent에 독립 재검증을 요청했다.
 - 2026-07-30: Design QA Agent가 결함 4건 해소와 기존 통과 항목 무회귀를 실제 브라우저 경로로 독립 재검증해 `verification_ready -> verification_passed`로 전환하고 Design Lead Agent에 인계했다.
 - 2026-07-30: Design Lead Agent가 성공 기준, 최종 Design QA, allowed paths, Figma 비차단 근거와 iOS 구현 핸드오프를 완료 검토해 `verification_passed -> completion_review`로 인계했다. develop 통합 전이므로 `done` 전환과 후속 `T-20260729-011` 차단 해제는 보류했다.
+- 2026-07-30: Product Owner 승인으로 PR #22를 `develop`에 squash merge하고 merge SHA `aaa6ff26a6a395851c3a61ac62777406c68dfc75`를 확인해 `completion_review -> done`으로 확정했다.
 
 ## 실행 결과
 
@@ -163,3 +164,9 @@ qa_to: .ai_project/qa/T-20260729-010_design-cooking-log-step-preview-and-stt-err
 - 상태 URL 14개, 자동 STT 분기, Undo 수명주기·포커스, 권한·오류·오프라인·snapshot 계약과 접근성 기준이 포함되어 iOS 구현에 필요한 핸드오프가 준비됐다.
 - Task 브랜치는 최신 `origin/develop`보다 4커밋 뒤지만 upstream이 디자인 Source of Truth를 변경하지 않아 완료 판정을 차단하지 않는다. 최신 develop 정렬, patch 동등성 확인과 Quality Board 정합화는 병합 전 Git gate로 남긴다.
 - develop 병합 전에는 `done`으로 전환하지 않으며 후속 `T-20260729-011`은 이 Task의 `done`과 별도 Product Owner 실행 승인 전까지 `proposed`를 유지한다.
+
+## 완료 확정
+
+- PR #22가 `develop`에 squash merge됐고 merge SHA는 `aaa6ff26a6a395851c3a61ac62777406c68dfc75`다.
+- 병합 전 최신 develop 정렬, patch 동등성, Quality Board 정합화와 로컬 검증을 완료했다.
+- 후속 `T-20260729-011`의 선행 차단은 해제됐지만 실행은 별도 Product Owner 승인이 필요하다.
