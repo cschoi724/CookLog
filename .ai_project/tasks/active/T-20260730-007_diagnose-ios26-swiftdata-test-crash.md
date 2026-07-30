@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-007
 title: iOS 26.5 SwiftData XCTest crash 진단과 최소 수정
-status: completion_review
+status: done
 type: bugfix
 priority: P0
 priority_reason: T-20260730-001이 확정한 CI destination에서 SwiftData 저장소 테스트 3개가 crash해
@@ -111,3 +111,5 @@ Xcode 26.6·iPhone 17·iOS 26.5에서 `SwiftDataRecipeLocalDataSourceTests` 3개
 | 2026-07-30 | iOS QA Agent | transition: verification_ready -> verification_in_progress | 61fca6d 재작업 커밋의 QA-HIGH-007-001 해소와 SwiftData 핵심 XCTest 재검증 |
 | 2026-07-30 | iOS QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-007-001 해소, 변경 파일 6개 allowed_paths 준수, 재작업 커밋 핵심 XCTest 3/3 및 기존 iOS 26.5·17.2 전체 33/33 확인 |
 | 2026-07-30 | Development Lead Agent | transition: verification_passed -> completion_review | 기능 성공 기준, iOS 26.5·17.2 회귀, QA-HIGH-007-001 해소와 allowed_paths 준수를 확인하고 develop PR 통합 대기로 수용 |
+| 2026-07-30 | Product Owner | approve merge | PR #18의 develop squash merge 승인 |
+| 2026-07-30 | Development Lead Agent | transition: completion_review -> done | PR #18이 merge SHA 47bf787로 develop에 통합된 것을 확인하고 개발 하위 Task 완료 확정 |
