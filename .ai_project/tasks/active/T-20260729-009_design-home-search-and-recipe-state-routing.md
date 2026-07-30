@@ -1,7 +1,7 @@
 ---
 id: T-20260729-009
 title: Home·전체 보기·검색·레시피 상태 routing 디자인
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 여러 진행 레시피와 완료 레시피를 하나의 목록에서 구분하고 정확한 현재 단계로 복귀하는 흐름은 로컬 제품 구현의 시작점이다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
   - ux_flow
   - ui_design
@@ -122,6 +122,7 @@ qa_to: .ai_project/qa/T-20260729-009_design-home-search-and-recipe-state-routing
 - 2026-07-30: UI/UX Design Agent가 승인된 결함 3건을 수정하고 자체 회귀 검증을 통과해 lock을 해제한 뒤 `in_progress -> verification_ready`로 전환하고 Design QA Agent에 독립 재검증을 요청했다.
 - 2026-07-30: Design QA Agent가 결함 3건 해소와 기존 통과 항목의 무회귀를 실제 브라우저 경로로 독립 재검증해 `verification_ready -> verification_passed`로 전환하고 Design Lead Agent에 인계했다.
 - 2026-07-30: Design Lead Agent가 성공 기준, 최종 Design QA, allowed paths, Figma 비차단 근거와 구현 핸드오프 완전성을 검토해 `verification_passed -> completion_review`로 인계했다. develop 통합 전이므로 `done` 전환은 보류했다.
+- 2026-07-30: Product Owner 승인에 따라 PR #16을 `develop`에 squash merge했고, merge SHA `44fc8a979e6683133e0fadb4a6580674e0371634`를 확인해 `completion_review -> done`으로 전환했다.
 
 ## Design QA 재작업 요청
 
