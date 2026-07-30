@@ -19,7 +19,7 @@
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
 | `T-20260729-005` | `proposed` | iOS | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `005`, `T-20260729-003` | 선행 계약·환경 대기 |
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
-| `T-20260729-020` | `verification_passed` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | Development Lead Agent | `T-20260729-026` 완료 | PASS_WITH_RISK, 최신 develop 통합 확인 대기 |
+| `T-20260729-020` | `verification_ready` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | Backend QA Agent | `T-20260729-026` 완료 | 고정 통합 커밋·공용 보드 비회귀 재확인 |
 | `T-20260729-021` | `proposed` | Backend | 공통 API·인증·제한·오류 계약 | Backend Agent | `T-20260729-026` | 실행 승인 대기 |
 | `T-20260729-022` | `proposed` | Backend | 기본 비활성 원격 STT adapter 계약 | Backend Agent | `T-20260729-021` | 선행·승인 대기 |
 | `T-20260729-023` | `proposed` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020`, `021` | 선행·승인 대기 |
@@ -33,6 +33,9 @@
 15분 sweeper, 24시간 API 접근 차단과 변경 비용을 독립 재계산해
 `PASS_WITH_RISK`로 인계했습니다. 후속 `T-20260729-023`, `024` 구현과
 staging에서 삭제 SLA 및 cleanup retry 비용을 검증해야 합니다.
+동일 Task ID의 구형 작업선과 최신 `execution-v2` 분기를 정리해 최신
+`origin/develop`에 통합했으며, 미커밋 상태에서 수행된 기존 QA 판정을 고정
+통합 커밋 기준으로 다시 확인하기 위해 `verification_ready`로 인계합니다.
 
 | `T-20260730-001` | `done` | CI | 환경·명령·check 계약 | - | `T-004`, `T-007` 완료 | PR #20 squash merge·완료 확정 |
 | `T-20260730-002` | `done` | CI | ios-build workflow | - | `T-20260730-001` 완료 | PR #24 squash merge·hosted check 통과·완료 확정 |

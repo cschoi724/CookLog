@@ -3,12 +3,17 @@
 작성일: 2026-07-30
 작성자: Backend QA Agent
 대상 Task: `T-20260729-020`
-최종 판정: `PASS_WITH_RISK`
-최종 상태 인계: `verification_in_progress -> verification_passed`
+최종 내용 판정: `PASS_WITH_RISK`
+현재 상태 인계: `verification_ready`
 
 이 문서의 1~9절은 1차 독립 검증에서 `QA-HIGH-020-003`을 발견해
 `rework_requested`로 인계한 기록이다. 10절부터는 해당 결함 재작업에 대한 독립
 재검증 결과이며 최종 판정은 13절을 기준으로 한다.
+
+13절의 판정은 당시 미커밋 worktree 내용에 대한 검증 결과다. Development Lead가
+동일 Task ID의 분기 작업선을 정리해 최신 `origin/develop`에 통합했으므로, 고정된
+통합 커밋의 내용 동등성·허용 경로·공용 보드 비회귀를 확인한 뒤 다시
+`verification_passed`로 인계해야 한다.
 
 ## 1. 검증 범위
 
@@ -417,3 +422,23 @@ Task: T-20260729-020
 QA 보고서:
 - .ai_project/qa/T-20260729-020_compare-backend-runtime-ai-provider-cost-options-qa.md
 ```
+
+## 15. 최신 develop 통합 재확인 요청
+
+Development Lead가 다음 원칙으로 분기된 작업선을 정리했다.
+
+- 정식 Task 파일명은
+  `T-20260729-020_compare-backend-runtime-ai-provider-cost-options.md` 하나만 유지
+- Apple 기기 내 STT 기본값과 원격 STT 기본 비활성 경계를 반영한
+  `execution-v2` 산출물을 정본으로 선택
+- 최신 `origin/develop`의 T-001·T-007 완료 기록과 공용 보드를 보존
+- 구형 원격 STT 중심 Task·보고서·QA 파일은 통합 대상에서 제외
+
+Backend QA Agent는 정리 브랜치의 고정 HEAD를 기준으로 다음만 재확인한다.
+
+1. 13절 `PASS_WITH_RISK` 판정 대상과 결정안·보고서 내용이 동등한지
+2. `QA-HIGH-020-003` 해소 내용과 비용 산식이 보존됐는지
+3. Task `allowed_paths` 밖 변경과 동일 Task ID 중복이 없는지
+4. 최신 `develop`의 기존 완료 Task와 공용 보드 상태를 되돌리지 않는지
+
+이 확인 전에는 Development Lead 완료 검토나 `done` 전환을 진행하지 않는다.

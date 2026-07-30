@@ -12,7 +12,7 @@
 | `T-20260730-001` | `done` | iOS CI 환경·명령·check 계약 확정 | 전체 XCTest 33/33, QA-HIGH-001·timeout·artifact·build 경계 확인 | PR #20 squash merge·완료 확정 |
 | `T-20260729-010` | `done` | Cooking Log·STEP Preview·기기 내 STT·권한·오류 디자인 | 10초 기록, 권한, 기기 내 STT, STEP 삭제·되돌리기, 오프라인과 snapshot 잠금 | PR #22 squash merge·완료 확정 |
 | `T-20260730-002` | `done` | ios-build·build-for-testing workflow 구현 | PR #24 runs 30592350218·30592508288 전 단계 성공, artifact 확인 | 최종 PASS·squash merge·완료 확정 |
-| `T-20260729-020` | `verification_passed` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 22시간 cleanup·15분 sweeper·24시간 접근 차단·변경 비용 | PASS_WITH_RISK, 최신 develop 통합 확인 대기 |
+| `T-20260729-020` | `verification_ready` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 기존 PASS_WITH_RISK 내용 동등성·허용 경로·공용 보드 비회귀 | Backend QA 고정 통합 커밋 재확인 |
 
 향후 검증 예정 Task:
 

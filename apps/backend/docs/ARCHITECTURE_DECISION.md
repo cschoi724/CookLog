@@ -1,7 +1,7 @@
 # Backend 런타임·AI Provider 결정안
 
-작성일: 2026-07-30  
-상태: Product Owner 결정 대기  
+작성일: 2026-07-30
+상태: Product Owner 결정 대기
 적용 범위: 첫 공개 출시의 온라인 `AI 정리하기` gateway
 
 ## 결론
