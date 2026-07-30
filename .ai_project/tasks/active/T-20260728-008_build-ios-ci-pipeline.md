@@ -1,7 +1,8 @@
 ---
+schema: aiops.task.v1
 id: T-20260728-008
 title: iOS CI 기본 파이프라인 구축
-status: proposed
+status: scoped
 type: feature
 priority: P0
 priority_reason: PR 기반 개발에서 재현 가능한 build와 test 검증을 자동화해야 한다.
@@ -17,6 +18,12 @@ required_capabilities:
 depends_on:
   - T-20260728-004
   - T-20260728-007
+  - T-20260730-001
+  - T-20260730-002
+  - T-20260730-003
+  - T-20260730-004
+  - T-20260730-005
+  - T-20260730-006
 blocks:
   - T-20260728-009
 parallel_group:
@@ -94,3 +101,29 @@ qa_to: .ai_project/qa/T-20260728-008_build-ios-ci-pipeline-qa.md
 3. 실패 진단·동시 실행 취소·최소 cache
 4. PR dry run과 iOS QA 실패 감지 검증
 5. Product Owner 승인 후 required check 외부 설정
+
+## Development Lead Scope 결과
+
+| 순서 | Task | 실행 패키지 | 선행 Task |
+|---:|---|---|---|
+| 1 | `T-20260730-001` | macOS·Xcode·Simulator·명령·check 계약 확정 | `T-20260728-004`, `007` |
+| 2A | `T-20260730-002` | `ios-build`·`build-for-testing` workflow | `T-20260730-001` |
+| 2B | `T-20260730-003` | `ios-xctest` 직렬 실행·timeout·artifact workflow | `T-20260730-001` |
+| 3 | `T-20260730-004` | concurrency·실패 진단·최소 cache·artifact 보존 통합 | `T-20260730-002`, `003` |
+| 4 | `T-20260730-005` | 실제 PR dry run과 iOS QA 실패 감지·회귀 검증 | `T-20260730-004` |
+| 5 | `T-20260730-006` | repository required check 외부 설정 | `T-20260730-005`, 별도 Product Owner 승인 |
+
+`T-20260730-002`와 `003`은 서로 다른 workflow 파일을 소유해 승인 후 병렬 실행할 수 있다. `004`부터는 두 workflow를 함께 다루므로 선행 병합 후 최신 `develop` 기준으로 실행한다.
+
+## 정책·승인 경계
+
+- 각 하위 Task는 `proposed`로 등록하고 별도 Product Owner 실행 승인 후 전용 worktree에서 수행한다.
+- `T-20260730-006` 전에는 branch protection과 required check 설정을 변경하지 않는다.
+- `ios-build`와 `ios-xctest` 이름은 기존 확정 정책을 유지한다.
+- Xcode 15.2 호환성을 보장하지 않으며 CI에서 선택한 Xcode·Simulator 조합을 명시한다.
+- 앱 기능 코드, 배포, secret과 다른 Task는 이 scope에서 수정하거나 시작하지 않는다.
+
+## 상태 전이 기록
+
+- 2026-07-30: Development Lead Agent가 최신 `origin/develop`의 T-004·T-007 완료 상태를 확인하고 6개 CI 하위 Task, 병렬 경계와 외부 설정 승인 gate를 확정해 `proposed -> scoped`로 전환했다.
+- 2026-07-30: 상위 scope만 완료했으며 하위 Task 구현 lock, workflow 변경, commit, push, PR과 repository 설정은 실행하지 않았다.
