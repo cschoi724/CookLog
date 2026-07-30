@@ -16,6 +16,7 @@ required_capabilities:
   - design_dependency_management
 depends_on:
   - T-20260729-001
+  - T-20260729-026
 blocks:
   - T-20260728-003
 parallel_group:
@@ -64,7 +65,7 @@ qa_to: .ai_project/qa/T-20260729-002_refresh-design-for-approved-product-ux-qa.m
 - 완료 레시피 수정 모드
 - Audio Guide 버튼 조작과 핸즈프리 시작·종료·인식 실패 fallback
 - 재료 듣기, 마지막 단계, 자동 재생 대기와 화면 잠금 상태
-- 인터넷 연결·STT·AI 서비스 장애의 원인별 안내와 사용자 재실행 상태
+- 마이크·녹음·기기 내 STT와 온라인 AI 장애의 원인별 안내, 원격 STT 자동 fallback 금지와 사용자 재실행 상태
 - 앱 정보의 이메일 문의, 개인정보처리방침, 이용약관과 데이터 보관 안내
 - Light·Dark, 작은 화면, Dynamic Type와 접근성 상태
 
