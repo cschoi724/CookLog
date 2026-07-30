@@ -687,3 +687,53 @@ T-004가 확인한 것은 Xcode 26.6·iOS 17.2 조합이며 Xcode 15.2 호환성
 - 600초 script timeout이 124와 `TIMED_OUT`을 남기고 15분 job timeout보다 먼저 종료되는지
 - 성공·실패 모두에서 log와 조건부 `xcresult`가 업로드되는지
 - runner image 갱신 뒤에도 preflight가 조용히 다른 toolchain으로 이동하지 않고 실패하는지
+
+## 16. T-20260730-002 `ios-build` workflow
+
+`.github/workflows/ios-build.yml`은 `develop` 또는 `main` 대상 pull request와
+수동 실행에서 정확히 하나의 `ios-build` check를 생성합니다.
+
+구현 경계:
+
+- `macos-26`에서 Xcode 26.6 (`17F113`)과 iPhone 17·iOS 26.5를
+  preflight로 확인하며 다른 버전이나 기기로 자동 대체하지 않는다.
+- 같은 DerivedData에서 `build`가 성공한 뒤에만 `build-for-testing`을 실행한다.
+- 두 명령 모두 `set -euo pipefail`과 `tee`를 함께 사용하므로 컴파일 오류가
+  로그 파이프라인에 가려지지 않는다.
+- 권한은 `contents: read`만 사용하고 checkout credential을 보존하지 않는다.
+- 원격 STT secret, endpoint 또는 활성화 flag를 사용하지 않는다.
+- 성공·실패와 무관하게 존재하는 두 build log만 14일 동안 업로드한다.
+  로그가 하나도 없거나 두 번째 로그가 없으면 경고만 남겨 원래 실패를
+  덮어쓰지 않는다.
+
+### 16.1 개발자 검증
+
+2026-07-30 로컬 Xcode 26.6 (`17F113`), iPhone 17, iOS 26.5
+(`23F77`)에서 workflow와 같은 destination과 DerivedData 공유 조건을
+재현했습니다.
+
+| 검증 | 결과 | 종료 코드 |
+|---|---|---:|
+| YAML 구문 | 통과 | 0 |
+| 고정 destination 조회 | iPhone 17·iOS 26.5 확인 | 0 |
+| `xcodebuild build` | `BUILD SUCCEEDED` | 0 |
+| `xcodebuild build-for-testing` | `TEST BUILD SUCCEEDED` | 0 |
+| 의도적 Swift 컴파일 오류 | `BUILD FAILED` 감지 | 65 |
+
+정상 실행 로그:
+
+- `/private/tmp/cooklog-t002-success-20260730-1730/ios-build/xcodebuild-build.log`
+- `/private/tmp/cooklog-t002-success-20260730-1730/ios-build/xcodebuild-build-for-testing.log`
+
+컴파일 실패는 소스 파일을 바꾸지 않고
+`OTHER_SWIFT_FLAGS=$(inherited) -cooklog-intentional-compile-failure`를
+명령행 build setting으로 주입해 재현했습니다. Swift driver가 알 수 없는
+인자로 실패했고 `tee`가 포함된 명령 전체가 종료 코드 65를 반환했습니다.
+실패 로그는
+`/private/tmp/cooklog-t002-compile-failure-20260730-1731/ios-build/xcodebuild-build.log`
+에 남았습니다.
+
+로컬 Xcode 설치 경로는 `/Applications/Xcode.app`이므로 hosted runner용
+`/Applications/Xcode_26.6.app` 경로 preflight의 실제 성공 여부는 후속 PR
+dry run에서 확인합니다. 버전, build 번호와 destination 계약은 로컬에서
+동일하게 검증했습니다.
