@@ -28,7 +28,7 @@
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-020`과 `021`은 승인 후 병렬 실행 가능하며 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 모든 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
-| `T-20260730-001` | `proposed` | CI | 환경·명령·check 계약 | iOS Agent | `T-004`, `T-007` 완료 | 실행 승인 대기 |
+| `T-20260730-001` | `completion_review` | CI | 환경·명령·check 계약 | Development Lead Agent | `T-004`, `T-007` 완료 | 완료 검토 통과, develop PR 통합 대기 |
 | `T-20260730-002` | `proposed` | CI | ios-build workflow | iOS Agent | `T-20260730-001` | 선행·승인 대기 |
 | `T-20260730-003` | `proposed` | CI | ios-xctest workflow | iOS Agent | `T-20260730-001` | 선행·승인 대기 |
 | `T-20260730-004` | `proposed` | CI | concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` | 선행·승인 대기 |
@@ -45,3 +45,11 @@
 iOS QA 독립 재검증과 Development Lead 완료 검토를 통과했습니다. develop PR
 [#18](https://github.com/cschoi724/CookLog/pull/18)에서 squash merge되어
 `done`으로 확정했습니다.
+
+`T-20260730-001`의 최초 QA에서 확인된 iPhone 17·iOS 26.5 SwiftData crash는
+`T-20260730-007`에서 수정·독립 검증 후 PR #18로 develop에 병합됐습니다.
+기존 CI 환경·명령 계약은 변경하지 않았고, iOS QA가 동일 destination의 전체
+XCTest 33/33과 timeout·artifact·build 경계를 독립 재검증해
+`verification_passed`로 인계했습니다. Development Lead가 성공 기준과 QA
+증빙, 허용 경로를 수용해 `completion_review`로 전환했으며, 후속 `002`,
+`003`은 T-001 완료 확정 전 시작하지 않습니다.

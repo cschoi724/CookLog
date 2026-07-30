@@ -1,6 +1,6 @@
 # CookLog Git Workflow
 
-최종 업데이트: 2026-07-28
+최종 업데이트: 2026-07-30
 상태: 확정
 
 이 문서는 CookLog 저장소에서 사람이 실제로 수행하는 Git·PR 절차의 최종 기준입니다. 전략 선택값은 `.ai_project/branch_pr_strategy.md`에 기록하며, 두 문서는 서로 일치해야 합니다.
@@ -136,15 +136,22 @@ PR 원칙:
 
 | Check | 초기 상태 | 실패 처리 |
 |---|---|---|
-| `ios-build` | 구축 후 `develop`, `main` PR required | 실패 시 merge 금지 |
-| `ios-xctest` | 승격 대기 | 안정화 전 수동·선별 테스트 결과를 PR에 기록 |
+| `ios-build` | workflow·dry run·iOS QA 대기 | check 실패 시 merge 후보 제외 |
+| `ios-xctest` | workflow·dry run·iOS QA 대기 | check 실패 시 merge 후보 제외 |
+
+workflow가 생성하는 check 이름은 정확히 `ios-build`, `ios-xctest`로 고정합니다. 두 check를 repository ruleset 또는 branch protection의 required check로 등록하는 외부 변경은 `T-20260730-005` dry run과 iOS QA를 통과한 뒤 `T-20260730-006`에서 Product Owner의 별도 실행 승인을 받아 수행합니다.
+
+두 workflow는 `develop`, `main` 대상 Pull Request에서 `macos-26` ARM64, Xcode
+26.6, iPhone 17 / iOS 26.5 조합을 사용합니다. workflow 표시 이름과 단일 job의
+이름·id도 고정 check 이름과 일치시키며 matrix suffix를 붙이지 않습니다. 세부
+명령, timeout과 artifact 계약은 `apps/ios/docs/TESTING.md`를 따릅니다.
 
 적용 순서:
 
 1. `T-20260728-004`에서 전체 XCTest 실행 기준과 timeout을 확정합니다.
 2. `T-20260728-008`에서 GitHub Actions의 `ios-build`와 `ios-xctest` workflow를 구현합니다.
-3. CI 검증 후 `ios-build`를 branch protection required check로 적용합니다.
-4. 전체 XCTest가 반복 가능하게 종료되면 Product Owner 승인 후 `ios-xctest`도 required check로 승격합니다.
+3. `T-20260730-005`에서 실제 PR dry run으로 두 check의 성공·실패 감지와 artifact를 검증합니다.
+4. iOS QA 통과 후 `T-20260730-006`에서 Product Owner의 별도 승인으로 두 check를 required check에 적용합니다.
 
 CI가 아직 구축되지 않은 동안에는 Task에 지정된 build, test, 수동 QA 결과를 PR 본문에 기록하며, 검증 실패나 결과 누락이 있으면 merge하지 않습니다.
 
@@ -206,3 +213,4 @@ merge 방식은 squash로 통일하며, merge 후 Task·hotfix 브랜치를 삭�
 | 2026-06-22 | 1인 개발 기준 `main` 직접 작업 절차 작성 |
 | 2026-07-28 | `T-20260728-007` 승인에 따라 Task branch·PR·독립 검증·사용자 승인 기반 절차로 전환 |
 | 2026-07-28 | `T-20260728-019` 승인에 따라 `develop` 통합, `main` 안정·릴리즈, hotfix backport 흐름으로 전환 |
+| 2026-07-30 | `T-20260730-001`에서 iOS CI 환경·명령·check·timeout·artifact 계약 확정 |
