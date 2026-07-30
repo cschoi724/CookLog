@@ -10,6 +10,15 @@ CookLog iOS 앱은 SwiftUI 기반 MVP입니다. 현재 앱 실행 경로는 Swif
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 
+로컬 기준과 CI 기준은 의도적으로 구분합니다.
+
+| 구분 | 환경 |
+|---|---|
+| T-004 로컬 검증 | Xcode 26.6 (`17F113`), iPhone 15, iOS 17.2 |
+| GitHub-hosted CI | `macos-26` arm64, Xcode 26.6 (`17F113`), iPhone 17, iOS 26.5 |
+
+GitHub-hosted CI는 `DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer`와 `platform=iOS Simulator,name=iPhone 17,OS=26.5`를 명시합니다. image에 이 조합이 없으면 다른 버전으로 암묵 전환하지 않고 preflight에서 실패해야 합니다. 상세 명령과 artifact 계약은 `docs/TESTING.md`의 “T-20260730-001 CI 환경·명령 계약”을 따릅니다.
+
 ## 빌드
 
 ```bash
@@ -42,6 +51,13 @@ Scripts/run-xctest.sh
 - 성공: `0`
 - 테스트 실패: `xcodebuild` 종료 코드
 - 제한 시간 초과: `124`
+
+CI의 고정 check 이름은 다음 두 개입니다.
+
+- `ios-build`: `build`와 `build-for-testing`
+- `ios-xctest`: `Scripts/run-xctest.sh`
+
+두 check를 required로 만드는 repository 외부 설정은 workflow 구현·dry run·iOS QA 이후 별도 승인 Task에서만 수행합니다.
 
 ## 수동 확인 흐름
 

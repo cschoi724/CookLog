@@ -2,7 +2,7 @@
 
 이 문서는 CookLog iOS 앱의 테스트 기준을 관리합니다.
 
-최종 업데이트: 2026-07-28
+최종 업데이트: 2026-07-30
 상태: 확정
 
 ## 1. 테스트 원칙
@@ -553,3 +553,137 @@ Scripts/run-xctest.sh
 - workflow job timeout은 스크립트 제한보다 긴 15분을 권장합니다.
 - 성공/실패와 무관하게 `xcodebuild.log`, `CookLogTests.xcresult`, `TIMED_OUT` marker가 있으면 artifact로 보존합니다.
 - Xcode 15.2 설치본에서의 독립 재현이 불가능하므로 QA는 현재 지원 toolchain과 사용 가능한 iOS Simulator 조합을 함께 기록합니다.
+
+## 15. T-20260730-001 CI 환경·명령 계약
+
+이 절은 후속 `T-20260730-002`와 `T-20260730-003`이 추가 버전 판단 없이 workflow를 구현하기 위한 고정 계약입니다.
+
+### 15.1 GitHub-hosted 환경
+
+| 항목 | 고정값 |
+|---|---|
+| runner label | `macos-26` |
+| architecture | `arm64` |
+| Xcode | 26.6 (`17F113`) |
+| `DEVELOPER_DIR` | `/Applications/Xcode_26.6.app/Contents/Developer` |
+| Simulator | iPhone 17 |
+| iOS runtime | 26.5 |
+| destination | `platform=iOS Simulator,name=iPhone 17,OS=26.5` |
+| scheme | `CookLog` |
+| project | `apps/ios/CookLog.xcodeproj` |
+
+근거:
+
+- GitHub Actions runner image 목록은 `macos-26`을 arm64 GitHub-hosted label로 제공한다.
+- `macos-26` ARM64 image manifest `20260720.0258.1`은 Xcode 26.6 (`17F113`)과 iOS 26.5 Simulator의 iPhone 17을 함께 제공한다.
+- 공식 image는 갱신될 수 있으므로 `macos-26` label만 신뢰하지 않는다. job 시작 시 아래 preflight를 실행하고 정확한 조합이 없으면 실패시킨다.
+- 공식 근거: [GitHub-hosted runner 목록](https://docs.github.com/en/actions/reference/runners/github-hosted-runners), [GitHub Actions runner images](https://github.com/actions/runner-images), [macOS 26 ARM64 image manifest](https://github.com/actions/runner-images/blob/main/images/macos/macos-26-arm64-Readme.md)
+
+preflight 계약:
+
+```bash
+test -d /Applications/Xcode_26.6.app
+DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer xcodebuild -version
+DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer \
+  xcrun simctl list runtimes available
+DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer \
+  xcrun simctl list devices available
+DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer \
+  xcodebuild -project apps/ios/CookLog.xcodeproj \
+  -scheme CookLog \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' \
+  -showdestinations
+```
+
+출력에서 Xcode `26.6`, build `17F113`, iOS `26.5`와 iPhone 17 destination을 확인하지 못하면 job을 실패 처리합니다. `latest`, `OS=latest`, 임의 기기 선택 또는 자동 runtime 다운로드로 대체하지 않습니다. GitHub Actions `Set up job`의 image version과 `xcodebuild -version` 출력도 진단 근거로 남깁니다.
+
+### 15.2 check 이름과 책임 경계
+
+| 고정 check | 실행 책임 | 성공 조건 |
+|---|---|---|
+| `ios-build` | `build`, 이어서 `build-for-testing` | 두 명령 모두 종료 코드 0 |
+| `ios-xctest` | `Scripts/run-xctest.sh` | 스크립트 종료 코드 0 |
+
+- workflow `name` 변경과 job matrix로 check 이름이 변형되지 않게 한다.
+- required check 외부 설정은 이 계약 범위가 아니며 `T-20260730-006`에서 별도 승인 후 수행한다.
+- `ios-build`는 compile·test bundle build만 담당하고 XCTest를 실행하지 않는다.
+- `ios-xctest`는 script 내부의 `xcodebuild test`만 사용한다. workflow가 별도 `xcodebuild test` 또는 `test-without-building`을 추가하지 않는다.
+- 첫 출시 STT는 Apple 기기 내 처리가 기본이다. 두 check는 원격 STT secret, endpoint 또는 활성화 flag를 요구하지 않는다.
+
+### 15.3 `ios-build` 명령
+
+repository root에서 다음 경계를 유지합니다. workflow는 먼저 artifact 디렉터리를 생성하고 `set -euo pipefail`을 적용합니다.
+
+```bash
+export DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer
+export COOKLOG_CI_ROOT="${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+mkdir -p "${COOKLOG_CI_ROOT}/ios-build"
+set -euo pipefail
+
+xcodebuild \
+  -project apps/ios/CookLog.xcodeproj \
+  -scheme CookLog \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' \
+  -derivedDataPath "${COOKLOG_CI_ROOT}/ios-build/DerivedData" \
+  build 2>&1 | tee "${COOKLOG_CI_ROOT}/ios-build/xcodebuild-build.log"
+
+xcodebuild \
+  -project apps/ios/CookLog.xcodeproj \
+  -scheme CookLog \
+  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' \
+  -derivedDataPath "${COOKLOG_CI_ROOT}/ios-build/DerivedData" \
+  build-for-testing 2>&1 | tee "${COOKLOG_CI_ROOT}/ios-build/xcodebuild-build-for-testing.log"
+```
+
+첫 명령 실패 시 두 번째 명령을 실행하지 않습니다. `ios-build` job timeout은 15분입니다.
+
+### 15.4 `ios-xctest` 명령
+
+repository root에서 다음 환경으로 기존 script만 실행합니다.
+
+```bash
+export DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer
+export COOKLOG_CI_ROOT="${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+export COOKLOG_XCTEST_DESTINATION='platform=iOS Simulator,name=iPhone 17,OS=26.5'
+export COOKLOG_XCTEST_TIMEOUT_SECONDS=600
+export COOKLOG_XCTEST_ARTIFACT_ROOT="${COOKLOG_CI_ROOT}/ios-xctest"
+apps/ios/Scripts/run-xctest.sh
+```
+
+- script timeout: 600초
+- workflow job timeout: 15분
+- 성공: 0
+- 일반 XCTest 실패: `xcodebuild` 종료 코드
+- script timeout: 124와 실행 디렉터리의 `TIMED_OUT`
+- 직렬 실행: `-parallel-testing-enabled NO`, `-maximum-parallel-testing-workers 1`
+
+workflow timeout은 script timeout보다 길게 유지합니다. GitHub job 자체가 먼저 종료되면 script의 124와 `TIMED_OUT` 계약을 보장할 수 없습니다.
+
+### 15.5 artifact 계약
+
+| check | 업로드 대상 | artifact 이름 | 보존 |
+|---|---|---|---|
+| `ios-build` | 두 `xcodebuild-*.log` 파일 | `cooklog-ios-build-${{ github.run_id }}-${{ github.run_attempt }}` | 14일 |
+| `ios-xctest` | `${COOKLOG_CI_ROOT}/ios-xctest/` | `cooklog-ios-xctest-${{ github.run_id }}-${{ github.run_attempt }}` | 14일 |
+
+- `ios-build`는 `${COOKLOG_CI_ROOT}/ios-build/xcodebuild-build.log`와 `${COOKLOG_CI_ROOT}/ios-build/xcodebuild-build-for-testing.log`만 항상 업로드한다. DerivedData는 진단 기본 artifact가 아니므로 업로드하지 않는다.
+- `ios-xctest`는 script가 만든 실행별 `xcodebuild.log`, 존재하는 `CookLogTests.xcresult`, 존재하는 `TIMED_OUT`을 성공·실패와 관계없이 업로드한다.
+- artifact upload step은 `if: always()`를 사용하고 경로가 없는 경우 자체 경고로 원래 build·test 종료 결과를 덮어쓰지 않는다.
+- 로그와 artifact에 token, secret, 음성 또는 사용자 입력을 추가하지 않는다.
+
+### 15.6 T-004 기준과 CI 차이·QA 인계
+
+| 항목 | T-004 로컬 검증 | CI 계약 |
+|---|---|---|
+| Xcode | 26.6 (`17F113`) | 26.6 (`17F113`) |
+| Simulator | iPhone 15 | iPhone 17 |
+| iOS | 17.2 (`21C62`) | 26.5 |
+| XCTest | 33개, 3회 연속 통과 | 동일 test suite를 최초 workflow dry run에서 재검증 |
+
+T-004가 확인한 것은 Xcode 26.6·iOS 17.2 조합이며 Xcode 15.2 호환성을 보장하지 않습니다. GitHub-hosted image에는 Xcode 26.6이 있지만 iOS 17.2 runtime은 없으므로 CI 계약은 같은 Xcode와 공식 image가 함께 제공하는 iOS 26.5 조합으로 고정했습니다. 따라서 다음 항목은 잔여 위험이며 iOS QA가 독립 검증해야 합니다.
+
+- Xcode 26.6에서 전체 XCTest가 종료되고 33개가 모두 통과하는지
+- iOS 26.5·iPhone 17에서 SwiftData와 Simulator worker 회귀가 없는지
+- 600초 script timeout이 124와 `TIMED_OUT`을 남기고 15분 job timeout보다 먼저 종료되는지
+- 성공·실패 모두에서 log와 조건부 `xcresult`가 업로드되는지
+- runner image 갱신 뒤에도 preflight가 조용히 다른 toolchain으로 이동하지 않고 실패하는지

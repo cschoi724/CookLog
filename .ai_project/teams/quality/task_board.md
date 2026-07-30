@@ -9,6 +9,7 @@
 |---|---|---|---|---|
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |
 | `T-20260730-007` | `done` | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | iOS 26.5·17.2 전체 33/33, QA-HIGH-007-001 해소 | PR #18 squash merge·완료 확정 |
+| `T-20260730-001` | `rework_requested` | iOS CI 환경·명령·check 계약 확정 | T-004 로컬 환경과 hosted CI 차이, 고정 runner·toolchain·destination·timeout·artifact | `FAIL`, iOS 26.5 SwiftData crash 재작업 |
 
 향후 검증 예정 Task:
 
