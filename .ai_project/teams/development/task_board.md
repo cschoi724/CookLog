@@ -29,14 +29,19 @@
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-020`과 `021`은 승인 후 병렬 실행 가능하며 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 모든 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
 | `T-20260730-001` | `done` | CI | 환경·명령·check 계약 | - | `T-004`, `T-007` 완료 | PR #20 squash merge·완료 확정 |
-| `T-20260730-002` | `proposed` | CI | ios-build workflow | iOS Agent | `T-20260730-001` 완료 | 선행 해소·별도 승인 대기 |
-| `T-20260730-003` | `proposed` | CI | ios-xctest workflow | iOS Agent | `T-20260730-001` 완료 | 선행 해소·별도 승인 대기 |
+| `T-20260730-002` | `approved` | CI | ios-build workflow | iOS Agent | `T-20260730-001` 완료 | Product Owner 승인·순차 실행 1번 |
+| `T-20260730-003` | `approved` | CI | ios-xctest workflow | iOS Agent | `T-20260730-001` 완료 | Product Owner 승인·T-002 done 후 순차 실행 2번 |
 | `T-20260730-004` | `proposed` | CI | concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` | 선행·승인 대기 |
 | `T-20260730-005` | `proposed` | CI | PR dry run·실패 감지 검증 | iOS Agent | `T-20260730-004` | 선행·승인 대기 |
 | `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
 | `T-20260730-007` | `done` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | - | T-001 QA-HIGH-001 | PR #18 squash merge 완료 |
 
-`T-20260728-008`은 6개 하위 Task까지 scope했습니다. `T-20260730-002`와 `003`은 환경 계약 완료 후 병렬 실행할 수 있고, required check 외부 설정 `006`은 dry run·iOS QA와 별도 Product Owner 승인 후에만 수행합니다. 모든 하위 Task는 별도 승인 전 실행하지 않습니다.
+`T-20260728-008`은 6개 하위 Task까지 scope했습니다. `T-20260730-002`와
+`003`은 파일 경계상 병렬 실행 가능하지만, 현재 단일 iOS Agent 운영 제약에
+따라 Product Owner가 둘 다 승인하고 `002 -> 003` 순차 실행으로 지정했습니다.
+`003`은 `002`가 `done`으로 확정된 뒤 최신 `develop`에서 시작합니다.
+required check 외부 설정 `006`은 dry run·iOS QA와 별도 Product Owner 승인
+후에만 수행하며, 나머지 하위 Task도 별도 승인 전 실행하지 않습니다.
 
 `T-20260730-007`은 SwiftData 테스트가 `ModelContainer`를 테스트 종료까지
 보유하도록 fixture 수명을 최소 수정했습니다. iOS 26.5와 iOS 17.2 전체 XCTest가

@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-002
 title: ios-build·build-for-testing workflow 구현
-status: proposed
+status: approved
 type: feature
 priority: P0
 priority_reason: 모든 develop PR에서 컴파일과 테스트 빌드 실패를 자동 차단해야 한다.
@@ -34,7 +34,7 @@ source_of_truth:
   - docs/GIT_WORKFLOW.md
   - apps/ios/docs/TESTING.md
 created_by: Development Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
@@ -57,3 +57,11 @@ qa_to: .ai_project/qa/T-20260730-002_implement-ios-build-workflow-qa.md
 
 - 성공·컴파일 실패를 재현할 수 있다.
 - iOS QA Agent가 check 이름과 실패 감지를 독립 검증한다.
+
+## 승인 및 실행 순서
+
+- 2026-07-30 Product Owner가 실행을 승인했다.
+- 단일 iOS Agent 운영 기준으로 이 Task를 먼저 실행한다.
+- 최신 `origin/develop` 기반 전용 worktree와 Task 브랜치를 사용한다.
+- 구현 완료 후 iOS QA Agent의 독립 검증과 Development Lead 완료 검토를 거친다.
+- `T-20260730-003`은 이 Task가 `done`으로 확정된 뒤 시작한다.
