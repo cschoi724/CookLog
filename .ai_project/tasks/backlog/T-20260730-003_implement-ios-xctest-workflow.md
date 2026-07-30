@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-003
 title: ios-xctest 직렬 실행·timeout·artifact workflow 구현
-status: approved
+status: proposed
 type: feature
 priority: P0
 priority_reason: 전체 XCTest 결과와 timeout을 PR에서 재현 가능하게 만들어야 한다.
@@ -35,7 +35,7 @@ source_of_truth:
   - apps/ios/docs/TESTING.md
   - docs/GIT_WORKFLOW.md
 created_by: Development Lead Agent
-approved_by: Product Owner
+approved_by:
 locked_by:
 locked_at:
 lock_session:
@@ -58,11 +58,3 @@ qa_to: .ai_project/qa/T-20260730-003_implement-ios-xctest-workflow-qa.md
 
 - 전체 XCTest가 고정 환경에서 명확히 종료된다.
 - iOS QA Agent가 통과·테스트 실패·timeout artifact를 독립 검증한다.
-
-## 승인 및 실행 순서
-
-- 2026-07-30 Product Owner가 실행을 승인했다.
-- 단일 iOS Agent 운영 제약으로 승인 상태에서 대기한다.
-- `T-20260730-002`가 `done`으로 확정된 뒤 최신 `origin/develop`에서 실행한다.
-- 실행 전에는 lock을 획득하거나 workflow 파일을 변경하지 않는다.
-- 구현 완료 후 iOS QA Agent의 독립 검증과 Development Lead 완료 검토를 거친다.
