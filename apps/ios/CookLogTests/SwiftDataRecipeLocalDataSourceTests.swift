@@ -5,39 +5,39 @@ import XCTest
 @MainActor
 final class SwiftDataRecipeLocalDataSourceTests: XCTestCase {
     func testSaveAndFetchRecipe() async throws {
-        let dataSource = try makeDataSource()
+        let store = try makeTestStore()
         let recipe = makeRecipe(id: UUID(), title: "저장한 레시피", updatedAt: Date(timeIntervalSince1970: 100))
 
-        try await dataSource.saveRecipe(recipe)
-        let fetchedRecipe = try await dataSource.fetchRecipe(id: recipe.id)
+        try await store.dataSource.saveRecipe(recipe)
+        let fetchedRecipe = try await store.dataSource.fetchRecipe(id: recipe.id)
 
         XCTAssertEqual(fetchedRecipe, recipe)
     }
 
     func testFetchRecipesSortsByUpdatedAtDescending() async throws {
-        let dataSource = try makeDataSource()
+        let store = try makeTestStore()
         let olderRecipe = makeRecipe(id: UUID(), title: "이전 레시피", updatedAt: Date(timeIntervalSince1970: 100))
         let newerRecipe = makeRecipe(id: UUID(), title: "최근 레시피", updatedAt: Date(timeIntervalSince1970: 200))
 
-        try await dataSource.saveRecipe(olderRecipe)
-        try await dataSource.saveRecipe(newerRecipe)
-        let recipes = try await dataSource.fetchRecipes()
+        try await store.dataSource.saveRecipe(olderRecipe)
+        try await store.dataSource.saveRecipe(newerRecipe)
+        let recipes = try await store.dataSource.fetchRecipes()
 
         XCTAssertEqual(recipes.map(\.id), [newerRecipe.id, olderRecipe.id])
     }
 
     func testDeleteRecipe() async throws {
-        let dataSource = try makeDataSource()
+        let store = try makeTestStore()
         let recipe = makeRecipe(id: UUID(), title: "삭제할 레시피", updatedAt: Date(timeIntervalSince1970: 100))
 
-        try await dataSource.saveRecipe(recipe)
-        try await dataSource.deleteRecipe(id: recipe.id)
-        let fetchedRecipe = try await dataSource.fetchRecipe(id: recipe.id)
+        try await store.dataSource.saveRecipe(recipe)
+        try await store.dataSource.deleteRecipe(id: recipe.id)
+        let fetchedRecipe = try await store.dataSource.fetchRecipe(id: recipe.id)
 
         XCTAssertNil(fetchedRecipe)
     }
 
-    private func makeDataSource() throws -> SwiftDataRecipeLocalDataSource {
+    private func makeTestStore() throws -> TestStore {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let modelContainer = try ModelContainer(
             for: PersistentRecipe.self,
@@ -46,7 +46,7 @@ final class SwiftDataRecipeLocalDataSourceTests: XCTestCase {
             configurations: configuration
         )
 
-        return SwiftDataRecipeLocalDataSource(modelContext: modelContainer.mainContext)
+        return TestStore(modelContainer: modelContainer)
     }
 
     private func makeRecipe(
@@ -68,5 +68,16 @@ final class SwiftDataRecipeLocalDataSourceTests: XCTestCase {
             createdAt: Date(timeIntervalSince1970: 50),
             updatedAt: updatedAt
         )
+    }
+}
+
+@MainActor
+private final class TestStore {
+    let modelContainer: ModelContainer
+    let dataSource: SwiftDataRecipeLocalDataSource
+
+    init(modelContainer: ModelContainer) {
+        self.modelContainer = modelContainer
+        dataSource = SwiftDataRecipeLocalDataSource(modelContext: modelContainer.mainContext)
     }
 }
