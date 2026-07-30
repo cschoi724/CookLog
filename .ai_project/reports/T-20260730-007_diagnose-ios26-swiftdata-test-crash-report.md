@@ -169,3 +169,14 @@ Product Owner 재작업 승인 후 루트 Task board를 `origin/develop`과 동�
 개발 하위 Task의 성공 기준과 독립 검증 기준을 충족해
 `verification_passed -> completion_review`로 수용한다. `develop` 대상 PR이
 병합된 뒤 `done`으로 확정한다.
+
+## 완료
+
+- PR: [#18](https://github.com/cschoi724/CookLog/pull/18)
+- 대상 브랜치: `develop`
+- 병합 방식: squash merge
+- merge SHA: `47bf787fe79a47e3797431e7246ffad35acccf82`
+- 완료 판정: `done`
+
+PR 통합과 merge SHA를 확인해 Development Lead Agent가 개발 하위 Task 완료를
+확정했다.
