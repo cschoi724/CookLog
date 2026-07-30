@@ -130,7 +130,8 @@ Product Owner가 2026-07-29 상위 Task 착수를 승인했고 Design Lead Agent
 
 ## 사용자 결정 필요 항목
 
-- 7개 하위 Task의 범위와 순차 실행 승인
+- `T-20260729-008`: Product Owner 실행 승인 완료
+- `T-20260729-009~014`: 각 선행 Task 완료 후 순차 실행 승인 필요
 
 Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료 여부는 승인 결정이나 로컬 디자인 완료를 차단하지 않는다. 확정 제품 정책을 변경해야 하는 발견이 생기면 해당 하위 Task를 진행하지 않고 Product Lead Agent에 에스컬레이션한다.
 
@@ -140,3 +141,5 @@ Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료
 - 2026-07-29: Design Lead Agent가 Source of Truth, 기존 UI v1과 공용 파일 ownership을 확인하고 `proposed -> scoped`로 전환했다.
 - 2026-07-29: Product Owner의 상위 Task 착수 승인을 반영해 `scoped -> approved`로 전환했다.
 - 2026-07-29: Design Lead Agent가 전용 worktree lock을 획득하고 7개 하위 Task scope와 의존성을 등록해 `approved -> in_progress`로 전환했다. 하위 Task 실행은 별도 Product Owner 승인 대기다.
+- 2026-07-29: Product Owner가 첫 하위 Task `T-20260729-008` 실행을 승인했으며 Design Lead Agent가 전용 worktree와 UI/UX Design Agent 라우팅을 준비했다.
+- 2026-07-29: Product Owner가 `T-20260729-008` Design QA 결함 2건의 재작업을 승인했으며 후속 Task 차단은 유지한다.
