@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-001
 title: iOS CI 환경·명령·check 계약 확정
-status: rework_requested
+status: verification_ready
 type: docs
 priority: P0
 priority_reason: workflow 구현 전에 지원 runner·Xcode·Simulator와 고정 check 이름을 합의해야 한다.
@@ -10,11 +10,11 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Development Lead Agent
-target_role: Lead Role
+target_agent: iOS QA Agent
+target_role: Verification Role
 required_capabilities:
-- technical_planning
-- dependency_management
+- ios_qa
+- regression_test
 depends_on:
 - T-20260728-004
 - T-20260728-007
@@ -99,3 +99,5 @@ qa_to: ".ai_project/qa/T-20260730-001_define-ios-ci-environment-and-check-contra
 | 2026-07-30 | iOS Agent | transition: in_progress -> verification_ready | CI 환경·명령·check·timeout·artifact 계약과 T-004 차이 문서화 및 자체 정합성 검증 완료 |
 | 2026-07-30 | iOS QA Agent | routing correction and lock | Product Owner 직접 배정과 Team board 인계에 맞춰 stale 실행 라우팅을 Verification Role로 수정하고 독립 검증 시작 |
 | 2026-07-30 | iOS QA Agent | transition: verification_in_progress -> rework_requested | 확정 iPhone 17·iOS 26.5 destination에서 SwiftData 저장소 테스트 3개 crash와 종료 코드 65를 확인해 FAIL 판정 |
+| 2026-07-30 | Product Owner | approve rework resume | T-20260730-007 완료 근거를 반영해 T-001 재작업을 순차 재개하도록 승인 |
+| 2026-07-30 | Development Lead Agent | transition: rework_requested -> verification_ready | T-007 PR #18·#19와 iOS 26.5·17.2 전체 XCTest 33/33, SwiftData crash 해소를 확인하고 기존 CI 계약 변경 없이 iOS QA 재검증 인계 |
