@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "runId": "cooklog-mvp-v1-20260728",
-  "revision": "home-search-routing-20260730",
+  "revision": "cooking-log-on-device-stt-20260730",
   "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
   "direction": "A — Warm Kitchen Journal",
   "brandScope": "wordmark-only",
@@ -245,7 +245,7 @@
   "screens": {
     "Home": ["Mixed Recent", "Multiple Drafts", "Record Menu", "Delete Confirmation", "Empty", "Loading", "Error"],
     "All Recipes": ["Recent Activity", "Title Search", "Ingredient Search", "No Results", "Empty"],
-    "Cooking Log": ["Empty", "Recording", "Processing", "STEP Added", "Error"],
+    "Cooking Log": ["First-use Rationale", "Microphone Denied", "Empty", "10-second Recording", "On-device Processing", "Automatic Retry", "STEP Added", "Delete Undo", "Offline Recording", "Recording Error", "On-device STT Unsupported", "STT Final Failure", "AI Snapshot Locked", "Offline AI Notice"],
     "AI Review": ["Processing", "Editable", "Generation Error", "Saving", "Save Error"],
     "Recipe Detail": ["Content", "Loading", "Error", "Not Found"],
     "Audio Player": ["Paused", "Playing", "Loading", "Error", "No Steps"]
@@ -288,15 +288,69 @@
       "deleteDialog": ["Initial focus on Cancel", "Tab and Shift+Tab remain inside", "Escape cancels", "Cancel returns focus to the menu trigger"],
       "deleteConfirmation": "After the deleted trigger is removed, focus moves to the primary Home action or Library search."
     },
+    "cookingLogRules": {
+      "recordingDurationSeconds": 10,
+      "recordingStopsAutomatically": true,
+      "earlyStopPauseResume": false,
+      "firstUsePermissionRationale": "Explain microphone use before requesting system permission.",
+      "permissionDenied": "Keep Home and existing recipes available; offer Settings without repeating the system prompt.",
+      "transcriptionAdapter": "Supported Apple on-device STT",
+      "remoteSTTFallback": false,
+      "audioExternalTransmission": false,
+      "automaticRetry": {
+        "sameAdapterMaximum": 1,
+        "manualRetry": false,
+        "automaticTransition": "Recoverable error moves Processing to Automatic Retry without user action",
+        "prototypeScenarios": {
+          "success": "processing -> steps",
+          "retry-success": "processing -> retrying -> steps",
+          "retry-failure": "processing -> retrying -> stt final failure",
+          "query": "stt-path"
+        }
+      },
+      "stepPreview": {
+        "oneClipCreatesOneRawStep": true,
+        "order": "Recording time ascending",
+        "directEditing": false,
+        "reordering": false,
+        "localAutosaveOn": ["Add", "Delete", "Undo"],
+        "deleteGesture": "Swipe left",
+        "accessibleDeleteAction": true,
+        "shortUndo": true,
+        "undoDurationSeconds": 5,
+        "undoFocus": {
+          "onOpen": "Undo action",
+          "onSuccess": "Restored STEP delete action",
+          "onExpiry": "Nearest remaining STEP delete action or record action"
+        }
+      },
+      "offline": {
+        "recordingAvailableOnSupportedDevices": true,
+        "aiOrganizingRequiresInternet": true,
+        "aiOfflineResult": "Keep STEP Preview and remain in Cooking Log"
+      },
+      "finalFailure": {
+        "newStepCreated": false,
+        "temporaryAudioDeleted": true,
+        "existingStepsPreserved": true,
+        "primaryRecovery": "다시 기록하기"
+      },
+      "aiSnapshotLock": {
+        "addDeleteDisabled": true,
+        "unlockOnAICompletionOrFailure": true
+      }
+    },
     "recordFlow": [
       "Home / Mixed Recent",
+      "Cooking Log / First-use Rationale",
       "Cooking Log / Empty",
-      "Cooking Log / Recording",
-      "Cooking Log / Processing",
+      "Cooking Log / 10-second Recording",
+      "Cooking Log / On-device Processing",
       "Cooking Log / STEP Added",
-      "Cooking Log / Recording",
-      "Cooking Log / Processing",
+      "Cooking Log / 10-second Recording",
+      "Cooking Log / On-device Processing",
       "Cooking Log / STEP Added",
+      "Cooking Log / AI Snapshot Locked",
       "AI Review / Processing",
       "AI Review / Editable",
       "AI Review / Saving",

@@ -10,6 +10,7 @@
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |
 | `T-20260730-007` | `done` | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | iOS 26.5·17.2 전체 33/33, QA-HIGH-007-001 해소 | PR #18 squash merge·완료 확정 |
 | `T-20260730-001` | `done` | iOS CI 환경·명령·check 계약 확정 | 전체 XCTest 33/33, QA-HIGH-001·timeout·artifact·build 경계 확인 | PR #20 squash merge·완료 확정 |
+| `T-20260729-010` | `completion_review` | Cooking Log·STEP Preview·기기 내 STT·권한·오류 디자인 | 10초 기록, 권한, 기기 내 STT, STEP 삭제·되돌리기, 오프라인과 snapshot 잠금 | develop 통합 대기 |
 
 향후 검증 예정 Task:
 
@@ -38,6 +39,10 @@
 
 `T-20260729-026`은 기존 Product QA `FAIL` 3건을 모두 해소해 재검증 `PASS`를 받고 Product Owner 최종 승인 후 `done`으로 확정했습니다.
 
+`T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토를 통과해 `completion_review`로 인계됐으며 Quality Team의 추가 조치는 재작업 발생 시 독립 재검증입니다.
+
 `T-20260729-008`은 완료 Recipe Card badge와 Manifest–Gallery variant 누락 해소 및 무회귀 독립 재검증, Design Lead 완료 검토를 통과했습니다. PR #11로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 
 `T-20260729-009`의 Home 최근 활동순 계산, 영구 삭제 다이얼로그 키보드 포커스와 실제 재료 검색 상태 전이 결함 3건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #16으로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
+
+`T-20260729-010`은 첫 기록 권한 안내, 10초 자동 종료, Apple 기기 내 STT와 자동 재처리 1회, STEP 자동 저장·삭제·되돌리기, 오프라인 기록과 AI snapshot 잠금 구현을 완료했습니다. Design QA Agent는 제품 정책 일치, 실제 상호작용과 접근성을 독립 검증합니다.

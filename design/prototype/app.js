@@ -12,7 +12,7 @@ const icons = {
 const screenStates = {
   home: ["content", "multiple", "menu-open", "delete-confirm", "empty", "loading", "error"],
   library: ["all", "search-title", "search-ingredient", "no-results", "empty"],
-  log: ["empty", "recording", "processing", "steps", "error"],
+  log: ["intro", "permission-denied", "empty", "recording", "processing", "retrying", "steps", "undo-delete", "offline", "record-error", "stt-unsupported", "stt-error", "ai-lock", "ai-offline"],
   review: ["processing", "editable", "error", "saving", "save-error"],
   detail: ["content", "loading", "error", "not-found"],
   player: ["paused", "playing", "loading", "error", "no-steps"]
@@ -22,19 +22,36 @@ const stateLabels = {
   content: "최근 3개", multiple: "여러 진행 기록", "menu-open": "진행 기록 메뉴", "delete-confirm": "영구 삭제 확인",
   all: "전체 · 최근 활동순", "search-title": "검색 · 제목 우선", "search-ingredient": "검색 · 재료 일치", "no-results": "검색 결과 없음",
   empty: "빈 상태", loading: "로딩", error: "오류",
-  recording: "녹음 중", processing: "처리 중", steps: "STEP 누적",
+  intro: "첫 기록 안내", "permission-denied": "마이크 권한 거부", recording: "10초 녹음", processing: "기기 내 변환", retrying: "자동 재처리", steps: "STEP 누적", "undo-delete": "삭제·되돌리기", offline: "오프라인 기록",
+  "record-error": "녹음 오류", "stt-unsupported": "기기 내 STT 미지원", "stt-error": "STT 최종 실패", "ai-lock": "AI snapshot 잠금", "ai-offline": "오프라인 AI 안내",
   editable: "검토·수정", saving: "저장 중", "save-error": "저장 오류", "not-found": "찾을 수 없음",
   paused: "일시정지", playing: "재생 중", "no-steps": "단계 없음"
 };
 
 const params = new URLSearchParams(window.location.search);
-if (params.get("embed") === "1") document.body.classList.add("embed");
+const isEmbedded = params.get("embed") === "1";
+const sttPath = ["success", "retry-success", "retry-failure"].includes(params.get("stt-path")) ? params.get("stt-path") : "success";
+if (isEmbedded) document.body.classList.add("embed");
 let screen = screenStates[params.get("screen")] ? params.get("screen") : "home";
 let state = screenStates[screen].includes(params.get("state")) ? params.get("state") : screenStates[screen][0];
 let dark = params.get("theme") === "dark";
 let playerStep = 1;
 let playerFeedback = "";
-let recordedStepCount = screen === "log" && ["steps", "processing"].includes(state) ? 2 : 0;
+const stepSamples = [
+  "삼겹살을 팬에 넣고 노릇하게 볶았어.",
+  "양파 반 개와 간장 두 스푼을 넣었어.",
+  "불을 줄이고 설탕 한 작은술을 넣었어.",
+  "윤기가 돌 때 불을 끄고 접시에 담았어."
+];
+const statesWithSteps = ["processing", "retrying", "steps", "undo-delete", "offline", "stt-error", "ai-lock", "ai-offline"];
+let recordedSteps = screen === "log" && statesWithSteps.includes(state) ? stepSamples.slice(0, 2) : [];
+let deletedStep = state === "undo-delete" ? { copy: stepSamples[1], index: 1 } : null;
+if (state === "undo-delete") recordedSteps = stepSamples.slice(0, 1);
+let recordSecondsRemaining = 10;
+let logFeedback = "";
+const undoDurationMs = 5000;
+let undoExpiresAt = state === "undo-delete" ? Date.now() + undoDurationMs : 0;
+let undoTimer = null;
 let reviewDraft = {
   title: "달큰한 간장 삼겹살",
   ingredients: [
@@ -306,57 +323,118 @@ function renderLibrary() {
   </section>`;
 }
 
-function stepRows(includeProcessing = false) {
-  const samples = [
-    "삼겹살을 팬에 넣고 노릇하게 볶았어.",
-    "양파 반 개와 간장 두 스푼을 넣었어.",
-    "불을 줄이고 설탕 한 작은술을 넣었어.",
-    "윤기가 돌 때 불을 끄고 접시에 담았어."
-  ];
-  const count = recordedStepCount;
-  const rows = samples.slice(0, count).map((copy, index) =>
-    `<div class="step-row"><span class="step-number">${index + 1}</span><p>${copy}</p></div>`
+function stepRows({ includeProcessing = false, locked = false } = {}) {
+  const rows = recordedSteps.map((copy, index) =>
+    `<div class="step-row ${locked ? "is-locked" : ""}" data-step-index="${index}">
+      <span class="step-number">${index + 1}</span>
+      <div class="step-copy"><p>${copy}</p><span>${locked ? "AI 정리 snapshot에 포함됨" : "왼쪽으로 밀어 삭제"}</span></div>
+      <button class="step-delete" type="button" data-action="delete-step" data-index="${index}" aria-label="STEP ${index + 1} 삭제" ${locked ? "disabled" : ""}>삭제</button>
+    </div>`
   ).join("");
   const pending = includeProcessing
-    ? `<div class="step-row is-processing"><span class="step-number">${count + 1}</span><p class="processing-line">방금 말한 기록을 변환하고 있어요.</p></div>`
+    ? `<div class="step-row is-processing" aria-live="polite"><span class="step-number">${recordedSteps.length + 1}</span><div class="step-copy"><p class="processing-line">방금 말한 기록을 기기에서 변환하고 있어요.</p><span>완료되면 원문 STEP으로 자동 저장</span></div></div>`
     : "";
   return `<div class="step-list">${rows}${pending}</div>`;
 }
 
+function logBanner(kind, title, copy, action = "") {
+  return `<div class="banner banner-${kind}" role="${kind === "error" ? "alert" : "status"}"><strong aria-hidden="true">${kind === "success" ? "✓" : kind === "error" ? "!" : "i"}</strong><div><strong>${title}</strong><p>${copy}</p>${action}</div></div>`;
+}
+
+function logStepSection({ processing = false, locked = false } = {}) {
+  if (recordedSteps.length === 0 && !processing) return "";
+  return `<div class="section-head"><h3>STEP Preview</h3><span class="meta">${processing ? "기기 내 처리 중" : `${recordedSteps.length}개 · 자동 저장됨`}</span></div>${stepRows({ includeProcessing: processing, locked })}`;
+}
+
+function recordAction(label = "10초 기록 시작") {
+  return `<button class="button button-primary" type="button" data-action="start-recording">${icons.mic}<span>${label}</span></button>`;
+}
+
 function renderLog() {
-  if (state === "error") {
-    return `<section class="screen">${header({ back: "home", title: "요리 기록" })}
-      <div class="hero"><p class="eyebrow">STEP PREVIEW</p><h2 class="screen-title">기록을 이어가세요</h2></div>
-      <div class="banner"><strong aria-hidden="true">!</strong><div><strong>음성을 인식하지 못했어요</strong><p>조금 더 가까이에서 다시 말해주세요.</p></div></div>
-      <div class="record-orb"><div class="record-core"><span class="record-time">10</span><span class="record-label">다시 녹음하기</span></div></div>
-      <button class="button button-primary" data-state="recording">${icons.mic}<span>10초 다시 기록</span></button>
+  const baseHeader = header({ back: "home", title: "요리 기록" });
+  if (state === "intro") {
+    return `<section class="screen">${baseHeader}
+      <div class="permission-hero"><span class="permission-icon">${icons.mic}</span><p class="eyebrow">첫 기록 전에</p><h2 class="screen-title">요리한 순간을<br>10초씩 남겨보세요</h2><p>CookLog는 마이크를 지금 한 일을 텍스트 STEP으로 바꾸는 데만 사용해요. 첫 출시에서는 음성을 서버나 외부 STT 업체로 보내지 않습니다.</p></div>
+      <div class="privacy-points"><p><strong>10초 후 자동 종료</strong><span>일시정지나 조기 종료 없이 한 번에 기록해요.</span></p><p><strong>Apple 기기 안에서 변환</strong><span>처리가 끝나면 임시 음성을 삭제해요.</span></p></div>
+      <button class="button button-primary" type="button" data-action="continue-mic-permission">마이크 권한 계속</button>
+      <button class="button button-secondary" type="button" data-nav="home" data-state="content">나중에 하기</button>
+    </section>`;
+  }
+  if (state === "permission-denied") {
+    return `<section class="screen">${baseHeader}
+      <div class="hero"><p class="eyebrow">MICROPHONE ACCESS</p><h2 class="screen-title">기록하려면 마이크 권한이 필요해요</h2><p>권한을 허용해도 음성은 Apple 기기 안에서만 STEP으로 변환됩니다.</p></div>
+      ${logBanner("warning", "기존 기록은 그대로 사용할 수 있어요", "Home, 저장된 레시피와 오디오 가이드는 권한 없이도 열 수 있습니다.")}
+      ${logFeedback ? logBanner("info", logFeedback, "권한을 바꾼 뒤 CookLog로 돌아와 다시 기록해주세요.") : ""}
+      <button class="button button-primary" type="button" data-action="open-settings">설정으로 이동</button>
+      <button class="button button-secondary" type="button" data-nav="home" data-state="content">Home으로 돌아가기</button>
+    </section>`;
+  }
+  if (state === "record-error") {
+    return `<section class="screen">${baseHeader}
+      <div class="hero"><p class="eyebrow">RECORDING ERROR</p><h2 class="screen-title">녹음을 시작하지 못했어요</h2><p>다른 앱이 마이크를 사용 중인지 확인하고 다시 시작해주세요.</p></div>
+      ${logBanner("error", "새 STEP은 만들어지지 않았어요", "기존 STEP과 진행 기록은 그대로 보존되어 있습니다.")}
+      ${logStepSection()}
+      ${recordAction("10초 다시 기록")}
+    </section>`;
+  }
+  if (state === "stt-unsupported") {
+    return `<section class="screen">${baseHeader}
+      <div class="hero"><p class="eyebrow">ON-DEVICE STT</p><h2 class="screen-title">이 기기에서는 음성 기록을 지원하지 않아요</h2><p>지원되는 Apple 기기와 한국어 음성 인식 환경이 필요합니다.</p></div>
+      ${logBanner("warning", "원격 STT로 자동 전환하지 않아요", "음성을 Backend나 외부 제공업체로 보내지 않으며 기존 기록과 레시피는 계속 사용할 수 있습니다.")}
+      <button class="button button-primary" type="button" data-nav="home" data-state="content">기존 기록 보기</button>
+    </section>`;
+  }
+  if (state === "stt-error") {
+    return `<section class="screen">${baseHeader}
+      <div class="hero"><p class="eyebrow">TRANSCRIPTION FAILED</p><h2 class="screen-title">이번 음성을 STEP으로 만들지 못했어요</h2><p>기기 내 자동 재처리 1회까지 완료했지만 인식할 수 없었습니다.</p></div>
+      ${logBanner("error", "임시 음성을 삭제했어요", "원격 STT로 전환하지 않았고 기존 STEP은 모두 보존했습니다.")}
+      ${logStepSection()}
+      ${recordAction("다시 기록하기")}
     </section>`;
   }
   const isRecording = state === "recording";
   const isProcessing = state === "processing";
-  const hasSteps = (state === "steps" && recordedStepCount > 0) || isProcessing;
+  const isRetrying = state === "retrying";
+  const isOffline = state === "offline";
+  const isLocked = state === "ai-lock";
+  const isAiOffline = state === "ai-offline";
+  const isUndo = state === "undo-delete";
+  const showSteps = ["processing", "retrying", "steps", "undo-delete", "offline", "ai-lock", "ai-offline"].includes(state);
+  const showRecordOrb = ["empty", "recording", "processing", "retrying"].includes(state);
+  const eyebrow = isRecording ? "RECORDING" : isProcessing || isRetrying ? "ON-DEVICE STT" : isLocked ? "AI SNAPSHOT" : "STEP PREVIEW";
+  const title = isRecording ? "지금 한 일을 말해주세요" : isProcessing ? "기기에서 STEP으로 바꾸는 중" : isRetrying ? "한 번 더 인식하고 있어요" : isLocked ? "정리에 사용한 STEP을 잠갔어요" : "짧게 말하고 계속 요리하세요";
+  const description = isRecording
+    ? "10초가 지나면 자동으로 종료됩니다. 중간에 멈추거나 늘리지 않아요."
+    : isProcessing ? "음성을 외부로 보내지 않고 Apple 기기 안에서 변환합니다."
+    : isRetrying ? "같은 기기 내 인식으로 자동 재처리하는 마지막 1회입니다."
+    : isLocked ? "AI 정리가 끝날 때까지 이 snapshot은 추가하거나 삭제할 수 없어요."
+    : "STEP은 말한 원문과 녹음 시간순으로 자동 저장됩니다.";
   return `<section class="screen">
-    ${header({ back: "home", title: "요리 기록" })}
+    ${baseHeader}
     <div class="hero">
-      <p class="eyebrow">${isRecording ? "RECORDING" : isProcessing ? "TRANSCRIBING" : "STEP PREVIEW"}</p>
-      <h2 class="screen-title">${isRecording ? "지금 말해주세요" : isProcessing ? "STEP으로 바꾸는 중" : "짧게 말하고 계속 요리하세요"}</h2>
-      <p>${isRecording ? "남은 시간 안에 지금 한 일을 편하게 말해보세요." : "AI 정리는 마지막에 한 번만 진행합니다."}</p>
+      <p class="eyebrow">${eyebrow}</p>
+      <h2 class="screen-title">${title}</h2>
+      <p>${description}</p>
     </div>
-    <div class="record-orb ${isRecording ? "recording" : ""}">
+    ${isOffline ? logBanner("success", "오프라인에서도 기록할 수 있어요", "지원되는 기기에서는 10초 기록과 STEP Preview 생성이 계속됩니다.") : ""}
+    ${isAiOffline ? logBanner("warning", "AI 정리에는 인터넷 연결이 필요해요", "STEP Preview는 그대로 보존했습니다. 연결 후 다시 선택해주세요.") : ""}
+    ${isRetrying ? logBanner("info", "자동 재처리 1/1", "이후에도 실패하면 새 STEP을 만들지 않고 임시 음성을 삭제합니다.") : ""}
+    ${logFeedback ? logBanner("success", logFeedback, "텍스트 초안을 이 기기에 자동 저장했습니다.") : ""}
+    ${showRecordOrb ? `<div class="record-orb ${isRecording ? "recording" : ""}">
       <div class="record-core">
-        <span class="record-time">${isRecording ? "07" : isProcessing ? "···" : "10"}</span>
-        <span class="record-label">${isRecording ? "초 남음" : isProcessing ? "음성 변환 중" : "초 기록"}</span>
+        <span class="record-time" aria-live="polite">${isRecording ? String(recordSecondsRemaining).padStart(2, "0") : isProcessing || isRetrying ? "···" : "10"}</span>
+        <span class="record-label">${isRecording ? "초 남음" : isProcessing ? "기기 내 변환 중" : isRetrying ? "자동 재처리 중" : "초 기록"}</span>
       </div>
-    </div>
-    ${state === "empty" ? `<button class="button button-primary" data-state="recording">${icons.mic}<span>10초 기록 시작</span></button>` : ""}
-    ${hasSteps ? `<div class="section-head"><h3>STEP Preview</h3><span class="meta">${isProcessing ? "처리 중" : `${recordedStepCount}개 기록`}</span></div>${stepRows(isProcessing)}` : ""}
-    ${isRecording ? `<button class="button button-secondary" data-state="processing">기록 완료</button>` : ""}
-    ${isProcessing ? `<button class="button button-secondary" data-action="complete-transcription">STEP 추가 완료 보기</button>` : ""}
-    ${state === "steps" ? `<div class="banner banner-info" role="status"><strong aria-hidden="true">i</strong><div><strong>아직 AI가 정리한 결과가 아니에요</strong><p>말한 순서대로 쌓인 STEP Preview입니다.</p></div></div>
+    </div>` : ""}
+    ${state === "empty" ? recordAction(recordedSteps.length ? "10초 더 기록" : "10초 기록 시작") : ""}
+    ${showSteps ? logStepSection({ processing: isProcessing || isRetrying, locked: isLocked }) : ""}
+    ${isUndo && deletedStep ? `<div class="undo-toast" role="status"><p><strong>STEP을 삭제했어요</strong><span>5초 안에 되돌릴 수 있어요. 변경 사항은 자동 저장됐습니다.</span></p><button type="button" data-action="undo-step" data-undo-step>되돌리기</button></div>` : ""}
+    ${(state === "steps" || isUndo || isAiOffline || isOffline) ? `<div class="banner banner-info" role="status"><strong aria-hidden="true">i</strong><div><strong>아직 AI가 정리한 결과가 아니에요</strong><p>말한 원문과 녹음 순서대로 쌓인 STEP Preview입니다.</p></div></div>
       <div class="log-actions">
-        <button class="button button-secondary" data-state="recording">${icons.mic}<span>10초 더 기록</span></button>
-        <button class="button button-primary" data-nav="review" data-state="processing">${icons.sparkles}<span>AI 정리하기</span></button>
+        <button class="button button-secondary" type="button" data-action="start-recording">${icons.mic}<span>10초 더 기록</span></button>
+        <button class="button button-primary" type="button" data-action="${isAiOffline ? "retry-ai-online" : isOffline ? "show-ai-offline" : "start-ai-organizing"}">${icons.sparkles}<span>${isAiOffline ? "연결 후 다시 확인" : "AI 정리하기"}</span></button>
       </div>` : ""}
+    ${isLocked ? `<div class="log-actions"><button class="button button-secondary" type="button" disabled>${icons.mic}<span>정리 중에는 기록 추가 불가</span></button><button class="button button-primary is-loading" type="button" data-nav="review" data-state="processing"><span class="inline-loader" aria-hidden="true"></span><span>AI 정리 상태 보기</span></button></div>` : ""}
   </section>`;
 }
 
@@ -463,7 +541,10 @@ function applyFocusIntent() {
     "menu-item": `[data-action="request-delete-record"][data-id="${intent.id || ""}"]`,
     "menu-trigger": `[data-action="open-record-menu"][data-id="${intent.id || ""}"]`,
     "start-new-log": "[data-action=\"start-new-log\"]",
-    "library-search": "#recipe-search"
+    "library-search": "#recipe-search",
+    "undo-step": "[data-undo-step]",
+    "step-delete": `[data-action="delete-step"][data-index="${intent.index ?? ""}"]`,
+    "record-action": "[data-action=\"start-recording\"]"
   };
   const target = document.querySelector(selectors[intent.type]);
   if (target) target.focus({ preventScroll: true });
@@ -481,18 +562,29 @@ function cancelDeleteRecord() {
 
 function render() {
   window.clearTimeout(transitionTimer);
+  window.clearTimeout(undoTimer);
   const renderers = { home: renderHome, library: renderLibrary, log: renderLog, review: renderReview, detail: renderDetail, player: renderPlayer };
   app.innerHTML = renderers[screen]();
   screenSelect.value = screen;
   renderStateList();
   applyFocusIntent();
-  if (screen === "log" && state === "processing") {
-    transitionTimer = window.setTimeout(completeTranscription, 1600);
+  if (!isEmbedded && screen === "log" && state === "recording") {
+    transitionTimer = window.setTimeout(() => {
+      recordSecondsRemaining -= 1;
+      if (recordSecondsRemaining <= 0) {
+        state = "processing";
+        recordSecondsRemaining = 10;
+      }
+      render();
+    }, 1000);
+  } else if (!isEmbedded && screen === "log" && ["processing", "retrying"].includes(state)) {
+    transitionTimer = window.setTimeout(advanceTranscription, 1600);
   } else if (screen === "review" && state === "processing") {
     transitionTimer = window.setTimeout(() => { state = "editable"; render(); }, 1800);
   } else if (screen === "review" && state === "saving") {
     transitionTimer = window.setTimeout(() => navigate("detail", "content"), 1400);
   }
+  if (!isEmbedded && screen === "log" && state === "undo-delete" && deletedStep) scheduleUndoExpiration();
 }
 
 function navigate(nextScreen, nextState) {
@@ -506,15 +598,106 @@ function navigate(nextScreen, nextState) {
     else if (state === "no-results") searchQuery = "크림 파스타";
     else searchQuery = "";
   }
-  if (screen === "log" && state === "empty") recordedStepCount = 0;
+  if (screen === "log") prepareLogState(state);
   if (screen !== "player") playerFeedback = "";
   render();
 }
 
+function prepareLogState(nextState) {
+  logFeedback = "";
+  if (nextState === "recording") recordSecondsRemaining = 10;
+  if (nextState === "empty" || nextState === "intro" || nextState === "permission-denied") {
+    recordedSteps = [];
+    deletedStep = null;
+  } else if (statesWithSteps.includes(nextState) && recordedSteps.length === 0) {
+    recordedSteps = stepSamples.slice(0, 2);
+  }
+  if (nextState === "undo-delete") {
+    deletedStep = { copy: recordedSteps[recordedSteps.length - 1] || stepSamples[1], index: Math.max(recordedSteps.length - 1, 0) };
+    if (recordedSteps.length > 1) recordedSteps.splice(deletedStep.index, 1);
+    undoExpiresAt = Date.now() + undoDurationMs;
+  } else {
+    deletedStep = null;
+    undoExpiresAt = 0;
+  }
+}
+
+function startRecording() {
+  window.clearTimeout(undoTimer);
+  deletedStep = null;
+  undoExpiresAt = 0;
+  state = "recording";
+  recordSecondsRemaining = 10;
+  logFeedback = "";
+  render();
+}
+
 function completeTranscription() {
-  if (screen !== "log" || state !== "processing") return;
-  recordedStepCount = Math.min(Math.max(recordedStepCount + 1, 1), 4);
+  if (screen !== "log" || !["processing", "retrying"].includes(state)) return;
+  if (recordedSteps.length < stepSamples.length) recordedSteps.push(stepSamples[recordedSteps.length]);
   state = "steps";
+  logFeedback = `STEP ${recordedSteps.length}을 추가했어요`;
+  render();
+}
+
+function advanceTranscription() {
+  if (screen !== "log") return;
+  if (state === "processing" && sttPath !== "success") {
+    state = "retrying";
+    render();
+    return;
+  }
+  if (state === "retrying" && sttPath === "retry-failure") {
+    state = "stt-error";
+    logFeedback = "";
+    render();
+    return;
+  }
+  completeTranscription();
+}
+
+function scheduleUndoExpiration() {
+  const remaining = Math.max(undoExpiresAt - Date.now(), 0);
+  undoTimer = window.setTimeout(expireStepUndo, remaining);
+}
+
+function expireStepUndo() {
+  if (!deletedStep || state !== "undo-delete") return;
+  const deletedIndex = deletedStep.index;
+  const shouldRestoreFocus = document.activeElement?.matches("[data-undo-step]");
+  deletedStep = null;
+  undoExpiresAt = 0;
+  state = "steps";
+  logFeedback = "STEP 삭제가 확정됐어요";
+  if (shouldRestoreFocus) {
+    focusIntent = recordedSteps.length
+      ? { type: "step-delete", index: Math.min(deletedIndex, recordedSteps.length - 1) }
+      : { type: "record-action" };
+  }
+  render();
+}
+
+function deleteStep(index) {
+  if (screen !== "log" || state === "ai-lock" || !recordedSteps[index]) return;
+  deletedStep = { copy: recordedSteps[index], index };
+  recordedSteps.splice(index, 1);
+  state = "undo-delete";
+  undoExpiresAt = Date.now() + undoDurationMs;
+  logFeedback = "";
+  focusIntent = { type: "undo-step" };
+  render();
+}
+
+function undoStepDeletion() {
+  if (!deletedStep) return;
+  const restoredIndex = deletedStep.index;
+  window.clearTimeout(undoTimer);
+  recordedSteps.splice(deletedStep.index, 0, deletedStep.copy);
+  deletedStep = null;
+  undoExpiresAt = 0;
+  state = "steps";
+  logFeedback = "삭제한 STEP을 되돌렸어요";
+  focusIntent = { type: "step-delete", index: restoredIndex };
   render();
 }
 
@@ -528,9 +711,30 @@ document.addEventListener("click", event => {
   if (!target) return;
   if (target.dataset.action === "complete-transcription") completeTranscription();
   else if (target.dataset.action === "save-recipe") startSaving();
-  else if (target.dataset.action === "start-new-log") {
+  else if (target.dataset.action === "start-recording") startRecording();
+  else if (target.dataset.action === "continue-mic-permission") {
+    state = "empty";
+    render();
+  } else if (target.dataset.action === "open-settings") {
+    logFeedback = "설정 앱에서 마이크 권한을 허용해주세요";
+    render();
+  } else if (target.dataset.action === "delete-step") {
+    deleteStep(Number(target.dataset.index));
+  } else if (target.dataset.action === "undo-step") {
+    undoStepDeletion();
+  } else if (target.dataset.action === "start-ai-organizing") {
+    state = "ai-lock";
+    render();
+  } else if (target.dataset.action === "show-ai-offline") {
+    state = "ai-offline";
+    render();
+  } else if (target.dataset.action === "retry-ai-online") {
+    state = "steps";
+    logFeedback = "연결 상태를 다시 확인했어요";
+    render();
+  } else if (target.dataset.action === "start-new-log") {
     homeFeedback = "새 진행 기록을 시작했습니다. 기존 기록은 그대로 보존돼요.";
-    navigate("log", "empty");
+    navigate("log", "intro");
   } else if (target.dataset.action === "open-record-menu") {
     recordMenuId = recordMenuId === target.dataset.id ? "" : target.dataset.id;
     lastMenuTriggerId = target.dataset.id;
@@ -582,8 +786,7 @@ document.addEventListener("click", event => {
       else if (state === "no-results") searchQuery = "크림 파스타";
       else searchQuery = "";
     }
-    if (screen === "log" && state === "steps" && recordedStepCount === 0) recordedStepCount = 2;
-    if (screen === "log" && state === "recording") playerFeedback = "";
+    if (screen === "log") prepareLogState(state);
     render();
   } else if (target.dataset.player === "next" && playerStep < 3) {
     playerStep += 1;
@@ -623,6 +826,21 @@ document.addEventListener("input", event => {
     return;
   }
   reviewDraft[field] = target.value;
+});
+
+let stepSwipe = null;
+document.addEventListener("pointerdown", event => {
+  const row = event.target.closest(".step-row[data-step-index]");
+  if (!row || event.target.closest("button") || state === "ai-lock") return;
+  stepSwipe = { index: Number(row.dataset.stepIndex), x: event.clientX };
+});
+
+document.addEventListener("pointerup", event => {
+  if (!stepSwipe) return;
+  const distance = event.clientX - stepSwipe.x;
+  const index = stepSwipe.index;
+  stepSwipe = null;
+  if (distance <= -56) deleteStep(index);
 });
 
 document.addEventListener("keydown", event => {
