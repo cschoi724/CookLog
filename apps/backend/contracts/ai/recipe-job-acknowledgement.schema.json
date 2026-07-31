@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cooklog.app/ai/recipe-job-acknowledgement.schema.json",
+  "title": "CookLog AI result acknowledgement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "result_version",
+    "saved_locally_at"
+  ],
+  "properties": {
+    "result_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "saved_locally_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

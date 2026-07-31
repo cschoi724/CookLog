@@ -22,9 +22,9 @@
 | `T-20260729-020` | `done` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | - | `T-20260729-026` 완료 | PR #26 squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend | 공통 API·인증·제한·오류 계약 | - | `T-20260729-026` 완료 | PR #32 squash merge·완료 확정 |
 | `T-20260729-022` | `done` | Backend | 기본 비활성 원격 STT adapter 계약 | - | `T-20260729-021`, `026` 완료 | PR #40 checks 통과·squash merge·완료 확정 |
-| `T-20260729-023` | `approved` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
+| `T-20260729-023` | `done` | Backend | AI recipe job·상태 조회·결과 복구 계약 | - | `T-20260729-020`, `021` 완료 | 완료 검토·Product Owner 승인 완료, T-025 인계 |
 | `T-20260729-024` | `approved` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
-| `T-20260729-025` | `proposed` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | 선행·승인 대기 |
+| `T-20260729-025` | `approved` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | Product Owner 실행 승인, T-024 완료 후 Backend Agent 착수 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. T-020 런타임·provider 추천안, T-021 공통 API 계약과 T-022 기본 비활성 원격 STT 계약은 `done`입니다. T-023·024는 Product Owner 실행 승인을 받은 `approved`, T-025는 T-023·024 완료 후 실행하는 선행 대기 `proposed`입니다. 원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지합니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
@@ -68,6 +68,18 @@ runtime cleanup 장애 복구와 provider 물리 삭제 SLA는 T-025·staging ga
 PR #40의 hosted checks와 merge SHA `93f577e`를 확인해 T-20260729-022를
 `done`으로 확정했습니다. T-025와 후속 원격 STT 활성화 staging gate에서
 runtime cleanup과 provider 물리 삭제 SLA를 검증합니다.
+
+Backend QA가 T-023에서 ACK 필수 `result_version`의 응답 누락
+`QA-HIGH-023-001`, provider 시작 후 timeout의 `AI_TIMEOUT`/`OUTCOME_UNKNOWN`
+분류 상충 `QA-HIGH-023-002`를 확인해 `rework_requested`로 인계했습니다. create 전
+quota 실패와 failed job의 `QUOTA_EXCEEDED` 이중 표현도 재작업 시 정리해야 합니다.
+T-024 승인 상태는 변경하지 않습니다.
+
+Backend QA 독립 재검증에서 `QA-HIGH-023-001~002`와 `QA-MEDIUM-023-001` 해소를
+확인했습니다. result version ACK 4개, timeout decision 6개, quota create HTTP 429
+단일 경계와 기존 provider 단일 호출·복구·삭제 계약이 통과해 `PASS_WITH_RISK`,
+`verification_passed`로 인계했습니다. runtime validator·CAS·cleanup SLA는 T-025와
+후속 구현·staging 검증에서 확인하며 T-024 `approved` 상태는 보존합니다.
 
 Backend QA가 T-022의 기본 비활성·무승인 업로드·자동 fallback 금지는 통과시켰으나,
 provider 오류 retry/terminal 계약 상충 `QA-HIGH-022-001`과 삭제 실패 시 최대 1시간

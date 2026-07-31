@@ -1,0 +1,58 @@
+{
+  "cases": [
+    {
+      "name": "queue_start_timeout",
+      "provider_started": false,
+      "provider_execution_absent_confirmed": true,
+      "provider_calls": 0,
+      "terminal_failure": "QUEUE_TIMEOUT",
+      "late_response_action": "not_applicable",
+      "new_job_allowed": "after_terminal_state_observed_and_user_confirms"
+    },
+    {
+      "name": "worker_deadline_before_provider_start",
+      "provider_started": false,
+      "provider_execution_absent_confirmed": true,
+      "provider_calls": 0,
+      "terminal_failure": "AI_TIMEOUT",
+      "late_response_action": "not_applicable",
+      "new_job_allowed": "after_terminal_state_observed_and_user_confirms"
+    },
+    {
+      "name": "provider_cancelled_before_execution",
+      "provider_started": true,
+      "provider_execution_absent_confirmed": true,
+      "provider_calls": 1,
+      "terminal_failure": "AI_TIMEOUT",
+      "late_response_action": "reject_as_contract_violation",
+      "new_job_allowed": "after_terminal_state_observed_and_user_confirms"
+    },
+    {
+      "name": "provider_response_deadline_after_start",
+      "provider_started": true,
+      "provider_execution_absent_confirmed": false,
+      "provider_calls": 1,
+      "terminal_failure": "OUTCOME_UNKNOWN",
+      "late_response_action": "discard_on_state_version_cas_failure",
+      "new_job_allowed": "after_terminal_state_observed_and_user_confirms"
+    },
+    {
+      "name": "connection_lost_after_start",
+      "provider_started": true,
+      "provider_execution_absent_confirmed": false,
+      "provider_calls": 1,
+      "terminal_failure": "OUTCOME_UNKNOWN",
+      "late_response_action": "discard_on_state_version_cas_failure",
+      "new_job_allowed": "after_terminal_state_observed_and_user_confirms"
+    },
+    {
+      "name": "worker_deadline_after_provider_start",
+      "provider_started": true,
+      "provider_execution_absent_confirmed": false,
+      "provider_calls": 1,
+      "terminal_failure": "OUTCOME_UNKNOWN",
+      "late_response_action": "discard_on_state_version_cas_failure",
+      "new_job_allowed": "after_terminal_state_observed_and_user_confirms"
+    }
+  ]
+}

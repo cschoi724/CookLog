@@ -1,0 +1,74 @@
+{
+  "available_status": {
+    "state": "succeeded",
+    "state_version": 3,
+    "result_state": "available",
+    "result_version": 1,
+    "result_present": true
+  },
+  "non_available_statuses": [
+    {
+      "state": "queued",
+      "result_state": "none",
+      "result_version": null
+    },
+    {
+      "state": "processing",
+      "result_state": "none",
+      "result_version": null
+    },
+    {
+      "state": "failed",
+      "result_state": "none",
+      "result_version": null
+    },
+    {
+      "state": "succeeded",
+      "result_state": "acknowledged_deleted",
+      "result_version": null
+    },
+    {
+      "state": "expired",
+      "result_state": "expired_deleted",
+      "result_version": null
+    }
+  ],
+  "ack_cases": [
+    {
+      "name": "get_version_then_ack",
+      "submitted_result_version": 1,
+      "stored_result_version": 1,
+      "acknowledged_result_version": null,
+      "concurrent_requests": 1,
+      "content_delete_count": 1,
+      "result": "success"
+    },
+    {
+      "name": "wrong_version",
+      "submitted_result_version": 2,
+      "stored_result_version": 1,
+      "acknowledged_result_version": null,
+      "concurrent_requests": 1,
+      "content_delete_count": 0,
+      "result": "VALIDATION_FAILED:MISMATCH"
+    },
+    {
+      "name": "concurrent_ack",
+      "submitted_result_version": 1,
+      "stored_result_version": 1,
+      "acknowledged_result_version": null,
+      "concurrent_requests": 2,
+      "content_delete_count": 1,
+      "result": "same_success"
+    },
+    {
+      "name": "ack_replay_after_delete",
+      "submitted_result_version": 1,
+      "stored_result_version": null,
+      "acknowledged_result_version": 1,
+      "concurrent_requests": 1,
+      "content_delete_count": 0,
+      "result": "success_replayed"
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cooklog.app/ai/recipe-job-status.schema.json",
+  "title": "CookLog AI recipe job status data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "job_id",
+    "contract_version",
+    "state",
+    "state_version",
+    "result_state",
+    "result_version",
+    "created_at",
+    "updated_at",
+    "expires_at",
+    "poll_after_seconds",
+    "failure",
+    "result"
+  ],
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "contract_version": {
+      "const": "ai-recipe-job.v1"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "processing",
+        "succeeded",
+        "failed",
+        "expired"
+      ]
+    },
+    "state_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "result_state": {
+      "type": "string",
+      "enum": [
+        "none",
+        "available",
+        "acknowledged_deleted",
+        "expired_deleted"
+      ]
+    },
+    "result_version": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "poll_after_seconds": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 30
+    },
+    "failure": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "user_action"
+          ],
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": [
+                "QUEUE_TIMEOUT",
+                "AI_UNAVAILABLE",
+                "AI_TIMEOUT",
+                "OUTCOME_UNKNOWN",
+                "OUTPUT_INVALID",
+                "SAFETY_REJECTED",
+                "INTERNAL_ERROR"
+              ]
+            },
+            "user_action": {
+              "type": "string",
+              "enum": [
+                "retry_manually",
+                "review_steps_then_retry"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "result": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "recipe-draft.schema.json"
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "queued",
+              "processing"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "result_state": {
+            "const": "none"
+          },
+          "result_version": {
+            "type": "null"
+          },
+          "poll_after_seconds": {
+            "type": "integer"
+          },
+          "failure": {
+            "type": "null"
+          },
+          "result": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "failed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "result_state": {
+            "const": "none"
+          },
+          "result_version": {
+            "type": "null"
+          },
+          "poll_after_seconds": {
+            "type": "null"
+          },
+          "failure": {
+            "type": "object"
+          },
+          "result": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "succeeded"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "result_state": {
+            "enum": [
+              "available",
+              "acknowledged_deleted"
+            ]
+          },
+          "poll_after_seconds": {
+            "type": "null"
+          },
+          "failure": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "succeeded"
+          },
+          "result_state": {
+            "const": "available"
+          }
+        },
+        "required": [
+          "state",
+          "result_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "$ref": "recipe-draft.schema.json"
+          },
+          "result_version": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result_state": {
+            "const": "acknowledged_deleted"
+          }
+        },
+        "required": [
+          "result_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "type": "null"
+          },
+          "result_version": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "expired"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "result_state": {
+            "const": "expired_deleted"
+          },
+          "result_version": {
+            "type": "null"
+          },
+          "poll_after_seconds": {
+            "type": "null"
+          },
+          "failure": {
+            "type": "null"
+          },
+          "result": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}
