@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260731-001
 title: 활성 문서 Source of Truth 정합성 복구
-status: completion_review
+status: done
 type: docs
 priority: P0
 priority_reason: 최신 제품 정책과 완료된 Design·Backend·CI 결과가 루트·운영·iOS·디자인 안내 문서에 반영되지 않아
@@ -131,21 +131,22 @@ qa_to: ".ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-
 - 2026-07-31: T-004 무회귀·T-022~025 상태 단일성·Task graph·계약 검증을 마치고 `in_progress -> verification_ready`로 Product QA Agent에 다시 인계했다.
 - 2026-07-31: Product QA Agent가 최초 필수 결함 4건과 후속 Board 충돌 해소, 전체 무회귀를 독립 검증해 `verification_ready -> verification_in_progress -> verification_passed`로 인계했다.
 - 2026-07-31: Product Lead Agent가 QA `PASS`, 허용 경로, 최신 develop 정렬과 자체 검증을 수용해 `verification_passed -> completion_review`로 전환했다. Product Owner 명시적 최종 완료 승인은 대기한다.
+- 2026-07-31: Product Owner가 최종 완료와 commit·push·develop 대상 PR·squash merge를 명시적으로 승인해 Product Lead Agent가 `completion_review -> done`으로 확정하고 develop 통합을 시작했다.
 
 ## Next Agent Handoff
 
 ```text
 너는 Product Lead Agent / Completion Role이야.
-T-20260731-001의 Product Owner 최종 완료 승인을 확인해줘.
+T-20260731-001의 develop 통합 결과를 확인해줘.
 
-- 현재 상태: completion_review
-- 다음에 해야 할 일: Product Owner가 최종 완료를 명시적으로 승인하면 `done` 전환과 develop 통합을 진행해줘.
+- 현재 상태: done
+- 다음에 해야 할 일: 완료 커밋을 push하고 develop 대상 PR의 checks 통과 후 squash merge 결과를 확인해줘.
 - 기준 문서: .ai_project/source_of_truth.md, 개별 Task 파일, 최신 제품 문서
 - 참고 산출물: .ai_project/reports/T-20260731-001_reconcile-active-document-source-of-truth-report.md, .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
 - 변경/검토 대상: Task·작업 보고서·Product QA 보고서와 활성 상태 인계 문서
 - 검증 기준: Product QA 최종 `PASS`, PQA-HIGH-031-001~004 최종 해소, Task graph·허용 경로·계약 검증 통과
 - 승인 범위: Product Owner가 운영·Team context 추가 경로와 필수 재작업 4건을 승인
-- 금지: Product Owner 명시적 승인 전 `done` 확정·push·PR·merge 또는 T-20260728-003 차단 해제
+- 승인: Product Owner가 `done` 확정·commit·push·develop 대상 PR·squash merge를 명시적으로 승인
 ```
 
 ## AI Ops CLI 기록
@@ -172,6 +173,8 @@ T-20260731-001의 Product Owner 최종 완료 승인을 확인해줘.
 | 2026-07-31 | Product QA Agent | transition: verification_in_progress -> verification_passed | PQA-HIGH-031-002 해소와 기존 결함 무회귀, Task graph·허용 경로·계약 검증 통과 |
 | 2026-07-31 | Product QA Agent | unlock | task unlock |
 | 2026-07-31 | Product Lead Agent | transition: verification_passed -> completion_review | Product QA PASS와 완료 기준을 수용하고 Product Owner 명시적 최종 완료 승인 대기 |
+| 2026-07-31 | Product Owner | approve final completion and integration | T-20260731-001 done 확정, commit·push·develop PR·squash merge 승인 |
+| 2026-07-31 | Product Lead Agent | transition: completion_review -> done | Product Owner 최종 승인에 따라 문서 정합성 Task 완료 확정·develop 통합 시작 |
 
 ## Product Lead 완료 검토
 
@@ -184,5 +187,6 @@ T-20260731-001의 Product Owner 최종 완료 승인을 확인해줘.
 - 미해결 차단 결함: 없음
 
 Product Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로 전환한다.
-Product Owner의 명시적 최종 완료 승인 전에는 `done`으로 확정하거나
-`T-20260728-003` 차단을 해제하지 않는다.
+Product Owner가 최종 완료와 develop 통합을 명시적으로 승인해 `done`으로
+확정한다. `T-20260728-003`의 문서 정합성 선행 차단은 해소됐으며, 해당 Task의
+나머지 의존성과 별도 실행 승인은 계속 적용한다.

@@ -254,7 +254,7 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | CI 구성과 필수 check | T-001~004 완료, branch protection 적용 대기 | T-005~006 검증·승인 후 |
 | Android Workstream 활성화 | deferred | iOS 우선 이정표 완료 후 |
 | Release Role 활성화 | inactive | TestFlight 또는 운영 배포 준비 전 |
-| 루트·플랫폼 안내 문서 정합성 | T-20260731-001 Product Lead 완료 검토·`completion_review` | Product Owner 최종 완료 승인 후 |
+| 루트·플랫폼 안내 문서 정합성 | T-20260731-001 `done` | Product QA PASS·Product Lead 완료 검토·Product Owner 최종 승인 |
 | `docs/GIT_WORKFLOW.md`와 새 전략 동기화 | resolved by `T-20260728-007` | - |
 
 ## 15. 변경 이력

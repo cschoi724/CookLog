@@ -35,7 +35,7 @@
 - 구형 Mock UI 잔여 검증 `T-20260728-001`은 최종 제품 구현·출시 게이트와 중복되어 `cancelled`입니다.
 - 첫 공개 출시 Critical Path는 `docs/product/CookLog_ROADMAP.md`를 따릅니다.
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
-- Product `T-20260731-001`은 Product QA 최종 `PASS`와 Product Lead 완료 검토를 수용해 `completion_review`이며 Product Owner 최종 완료 승인 대기 상태입니다.
+- Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다.
 - Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~011`은 `done`, T-012는 실행 승인 대기입니다.
 - Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다.
 - CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~004는 `done`, T-005~006은 순차 승인·검증 대상입니다.
@@ -49,7 +49,7 @@
 - push, merge, 배포는 사용자 승인 후 진행합니다.
 - 일반 Task는 최신 `develop`에서 시작하고 `develop` 대상 PR로 병합합니다.
 - `main`은 통합 QA와 Product Lead 수용 검토를 거친 `develop -> main` 승격 또는 승인된 hotfix만 받습니다.
-- T-20260731-001은 Product Lead 완료 검토를 통과했으며 Product Owner 최종 승인 전 T-20260728-003 차단을 해제하지 않습니다.
+- T-20260731-001의 문서 정합성 선행 차단은 해소됐습니다. T-20260728-003은 Design 상위 Task 완료와 별도 실행 승인을 확인해야 합니다.
 
 ## 4. 세션 시작 체크
 
@@ -77,3 +77,4 @@
 | 2026-07-31 | T-022 PR #40 squash merge와 완료 확정을 반영해 `done`으로 동기화 |
 | 2026-07-31 | T-001 Backend 상위 요약 재작업을 마치고 Product QA 독립 재검증 재인계 |
 | 2026-07-31 | T-001 Product QA 최종 PASS 수용·Product Lead `completion_review` 전환 |
+| 2026-07-31 | Product Owner 최종 승인으로 T-001 `done` 확정·develop 통합 시작 |
