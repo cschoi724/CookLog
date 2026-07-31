@@ -93,3 +93,15 @@ JSON syntax, schema 구조, 예제/문서 필드의 수동 대조까지 수행�
 - JSON Schema `format`과 `contentEncoding`은 validator에 따라 annotation으로만
   처리될 수 있으므로 구현 validator 설정 또는 명시적 runtime 검사가 필요하다.
 
+## 최신 develop 통합
+
+2026-07-31 Product Owner가 T-021 실행 승인을 재확인했다. Development Lead가
+기존 미커밋 구현을 커밋 `de04b6a`로 보존한 뒤 최신 `origin/develop`
+`ad06bb9` 위로 재정렬했다.
+
+- 재정렬된 구현 보존 커밋: `a1eb57f`
+- API 계약·공통 JSON Schema·실행 보고서의 의미 변경: 없음
+- T-20260729-020 `done`과 최신 공용 보드 기록: 보존
+- Task 위치: `backlog`에서 `active`로 정규화
+- 현재 상태: `verification_ready`
+- 다음 담당: Backend QA Agent

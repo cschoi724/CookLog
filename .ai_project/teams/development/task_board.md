@@ -26,7 +26,7 @@
 | `T-20260729-024` | `proposed` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020` 완료, `021` 대기 | T-021 선행·승인 대기 |
 | `T-20260729-025` | `proposed` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | 선행·승인 대기 |
 
-`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-021`은 Product Owner 승인 아래 공통 API 계약 작성과 자체 검증을 마치고 Backend QA 독립 검증 대기입니다. 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 나머지 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-021`은 Product Owner가 실행 승인을 재확인했으며 기존 공통 API 계약 구현과 자체 검증을 최신 `develop`에 정렬해 Backend QA 독립 검증 대기입니다. 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 나머지 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
 `T-20260729-020`은 Apple 기기 내 STT 기본 정책을 보존한 런타임·AI provider
 결정안으로 재작업됐습니다. Backend QA가 ACK 즉시 삭제, 생성 22시간 cleanup,
