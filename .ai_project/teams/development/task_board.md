@@ -53,7 +53,7 @@ PR #26의 `ios-build` 통과와 squash merge SHA `a8e3a8a`를 확인해 T-020을
 
 | `T-20260730-001` | `done` | CI | 환경·명령·check 계약 | - | `T-004`, `T-007` 완료 | PR #20 squash merge·완료 확정 |
 | `T-20260730-002` | `done` | CI | ios-build workflow | - | `T-20260730-001` 완료 | PR #24 squash merge·hosted check 통과·완료 확정 |
-| `T-20260730-003` | `proposed` | CI | ios-xctest workflow | iOS Agent | `T-20260730-001`, `T-20260730-002` 완료 | 기존 순차 실행 승인 적용 준비 |
+| `T-20260730-003` | `approved` | CI | ios-xctest workflow | iOS Agent | `T-20260730-001`, `T-20260730-002` 완료 | 기존 Product Owner 순차 실행 승인 적용, 전용 worktree 준비 완료 |
 | `T-20260730-004` | `proposed` | CI | concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` | 선행·승인 대기 |
 | `T-20260730-005` | `proposed` | CI | PR dry run·실패 감지 검증 | iOS Agent | `T-20260730-004` | 선행·승인 대기 |
 | `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
