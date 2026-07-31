@@ -41,7 +41,7 @@ jobs:
         run: |
           set -euo pipefail
           perl -0pi -e \
-            's/XCTAssertTrue\\(true\\)/XCTFail("T-20260730-005 intentional failure")/' \
+            's/XCTAssertTrue\(true\)/XCTFail("T-20260730-005 intentional failure")/' \
             apps/ios/CookLogTests/CookLogTests.swift
           grep -Fq 'T-20260730-005 intentional failure' \
             apps/ios/CookLogTests/CookLogTests.swift
