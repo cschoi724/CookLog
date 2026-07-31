@@ -10,7 +10,7 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend Agent
+target_agent: Backend QA Agent
 target_role: Verification Role
 required_capabilities:
 - backend_architecture
