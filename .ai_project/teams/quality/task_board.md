@@ -24,6 +24,7 @@
 | `T-20260729-023` | `done` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | 완료 확정, PASS_WITH_RISK 잔여 위험은 staging 인계 |
 | `T-20260729-024` | `done` | Backend 보안·개인정보·관측성·비용 guardrail | 비용 operation 전액 결정·actual 초과 정산 불변식 | PR #50 squash merge `00feb017`·완료 확정 |
 | `T-20260729-013` | `verification_passed` | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | App Info 전환 포커스·선택형 진단 정보 동의 범위와 기존 통과 항목 무회귀 | Design QA PASS·Design Lead 완료 검토 통과 |
+| `T-20260731-003` | `proposed` | GitHub Actions 사용량 절감 및 실행 정책 최적화 | paths filter·concurrency·문서 PR 제외·수동/야간 회귀·Budget 운영 | 실행 승인 후 iOS QA·AI Ops 독립 검증 |
 
 향후 검증 예정 Task:
 
