@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-005
 title: iOS CI PR dry run·실패 감지·회귀 검증
-status: approved
+status: in_progress
 type: test
 priority: P0
 priority_reason: branch protection 전에 실제 PR에서 성공과 의도된 실패가 모두 감지돼야 한다.
@@ -36,9 +36,9 @@ source_of_truth:
   - apps/ios/docs/TESTING.md
 created_by: Development Lead Agent
 approved_by: Product Owner
-locked_by:
-locked_at:
-lock_session:
+locked_by: iOS Agent
+locked_at: 2026-07-31T13:05:08+09:00
+lock_session: /root
 lock_timeout_minutes: 240
 created_at: 2026-07-30
 updated_at: '2026-07-31'
@@ -76,3 +76,4 @@ qa_to: .ai_project/qa/T-20260730-005_verify-ios-ci-pr-dry-run-qa.md
 |---|---|---|---|
 | 2026-07-31 | Product Owner | transition: proposed -> approved | T-004 완료 후 실제 PR dry run·실패 감지·회귀 검증 실행 승인 |
 | 2026-07-31 | Development Lead Agent | approve execution | iOS Agent 실행, iOS QA Agent 독립 검증, T-006 required check 인계 기준 확정 |
+| 2026-07-31 | iOS Agent | transition: approved -> in_progress | 정상 Task PR과 격리된 build 실패·test 실패·timeout 검증 PR 실행 시작 |
