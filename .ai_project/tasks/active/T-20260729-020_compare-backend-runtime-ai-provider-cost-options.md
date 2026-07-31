@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-020
 title: Backend 런타임·배포·AI provider·비용 후보 결정안
-status: completion_review
+status: done
 type: docs
 priority: P0
 priority_reason: 첫 출시 AI gateway의 외부 비용과 운영 경계를 구현 전에 승인해야 한다.
@@ -136,6 +136,8 @@ qa_to: ".ai_project/qa/T-20260729-020_compare-backend-runtime-ai-provider-cost-o
 | 2026-07-30 | Backend QA Agent | unlock | 고정 통합 커밋 독립 재검증 완료 및 Development Lead Completion Role 인계 |
 | 2026-07-31 | Development Lead Agent | integrate latest develop | QA 결과를 고정한 뒤 최신 origin/develop 위로 재정렬하고 T-010·T-002 done 기록과 T-020 핵심 산출물 동등성을 확인 |
 | 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | QA-HIGH-020-003 해소, PASS_WITH_RISK 증빙, allowed paths와 비차단 잔여 위험 인계를 수용해 develop PR 통합 대기로 전환 |
+| 2026-07-31 | Product Owner | approve merge and completion | Development Lead 완료 검토 이후 push·develop PR 병합·done 확정 진행 승인 |
+| 2026-07-31 | Development Lead Agent | transition: completion_review -> done | PR #26 ios-build 통과와 squash merge SHA a8e3a8a 확인, 후보 결정안 문서 Task 완료 확정 |
 
 ## Development Lead 완료 검토
 
@@ -159,3 +161,16 @@ qa_to: ".ai_project/qa/T-20260729-020_compare-backend-runtime-ai-provider-cost-o
 
 차단 결함이 없으므로 `completion_review`로 수용한다. `develop` 대상 PR이
 병합된 뒤 별도 완료 기록에서 `done`으로 확정한다.
+
+## 완료
+
+- PR: [#26](https://github.com/cschoi724/CookLog/pull/26)
+- 대상 브랜치: `develop`
+- 병합 방식: squash merge
+- merge SHA: `a8e3a8a6353b51da7cda953eeacb9e40f53841ea`
+- GitHub Actions run: `30595092548`
+- check: `ios-build` 성공
+- 완료 판정: `done`
+
+후속 T-20260729-023·024는 T-020 선행 조건을 충족했지만
+T-20260729-021 완료와 각각의 Product Owner 실행 승인을 계속 기다린다.
