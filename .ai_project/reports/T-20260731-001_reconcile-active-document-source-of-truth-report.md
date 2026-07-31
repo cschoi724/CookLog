@@ -2,7 +2,7 @@
 
 작성일: 2026-07-31
 작성자: Product Lead Agent
-상태: Product QA FAIL 필수 결함 4건 승인 재작업 중
+상태: Product QA FAIL 필수 결함 4건 재작업 완료·독립 재검증 대기
 
 ## 결과 요약
 
@@ -48,13 +48,13 @@
 
 ## Task Board 정합성
 
-개별 Task 파일 기준 집계를 다시 계산해 기존 요약 보드의 상태를 최신화했다. 최신 `origin/develop`의 T-20260730-004 `completion_review`까지 병합한 재작업 기준 집계는 다음과 같다.
+개별 Task 파일 기준 집계를 다시 계산해 기존 요약 보드의 상태를 최신화했다. 최신 `origin/develop`의 T-20260730-004 `done`까지 병합한 재작업 기준 집계는 다음과 같다.
 
 - proposed 17
 - scoped 2
-- in_progress 2
-- completion_review 1
-- done 19
+- in_progress 1
+- verification_ready 1
+- done 20
 - cancelled 1
 
 ## 자체 검증
@@ -66,6 +66,10 @@
 - `git diff --check`: PASS
 - 주요 구형 충돌 문구 scan: 잔여 활성 충돌 0
 - 제품 핵심 정책 비교: STT·저장·삭제·핸즈프리 변경 없음
+- Product QA 지적 문구 동일 조건 재검색: 활성 안내 문서 0건. QA 보고서와 Task 상태 이력의 증거 문구만 보존
+- Product QA 등록 대조: Agent Registry·Operating Model·Quality Team Context·Current Context 일치
+- 최신 develop 포함: `origin/develop` `0fdfe52`가 현재 HEAD의 ancestor임을 확인
+- T-004 상태 대조: 개별 Task·Project/Development/Quality Board·Project/iOS Status 모두 `done`
 - 프로젝트 전역 strict 검증: 기존 `operating_model.md`·`agent_registry.md` front matter와 archive T-019 `schema` 누락으로 FAIL. T-001 변경에서 새로 만든 결함은 아니며 이번 Product QA 필수 결함 4건과 분리한 운영 schema 정비 대상으로 인계
 
 ## Product QA FAIL과 승인 재작업
@@ -86,7 +90,7 @@ QA 판정을 커밋으로 보존하고 최신 develop을 병합한 뒤 다음과
 - Migration Plan을 이력 문서로 명시하고 PDF·Backend·Figma·CI 현재 상태 갱신
 - Backend·CI 상위 Board에서 완료·completion review·승인 대기 하위 Task 분리
 - Product QA Agent와 독립 문서·cross-domain 검증 capability를 Registry·Operating Model·Quality Context에 등록
-- T-004는 QA 표현의 `done`이 아니라 개별 Task의 실제 `completion_review` 상태로 보존
+- 최초 병합 시 T-004를 개별 Task의 실제 `completion_review`로 보존한 뒤, 후속 최신 develop의 최종 `done` 확정을 다시 반영
 
 ## 최신 develop 정렬 결과
 
@@ -95,7 +99,7 @@ Product Owner 승인에 따라 최초 문서 변경과 Product QA FAIL 판정을
 
 - 병합 결과: T-021 Task·Development·Quality Board와 Backend API 계약 보존
 - T-021 최종 상태: `done`
-- T-004 최종 상태: `completion_review`
+- T-004 최종 상태: `done`
 - T-20260731-001 Product QA FAIL과 재작업 상태: 보존
 - 전체 Task 상태 집계: 최신화
 - 신규 Backend API 계약 링크: 존재 확인

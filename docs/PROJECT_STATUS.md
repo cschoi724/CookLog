@@ -47,8 +47,8 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - Backend T-20260729-020 런타임·AI provider·비용 추천안 완료, 최종 provider 선택 대기
 - Backend T-20260729-021 공통 API·인증·제한·오류 계약과 독립 QA develop 통합·완료 확정
 - CI T-20260730-001~003 계약·ios-build·ios-xctest workflow와 hosted 검증 완료
-- CI T-20260730-004 concurrency·공통 진단·artifact 통합과 독립 QA develop 반영, `completion_review`
-- T-20260731-001 Product QA `FAIL` 4건의 운영·Team context·Board·QA routing·최신 develop 정합성 재작업 진행
+- CI T-20260730-004 concurrency·공통 진단·artifact 통합과 독립 QA·PR #34 완료 확정
+- T-20260731-001 Product QA `FAIL` 4건의 운영·Team context·Board·QA routing·최신 develop 정합성 재작업과 자체 검증 완료, 독립 재검증 대기
 
 ### 첫 공개 출시 실행 순서
 
@@ -75,7 +75,7 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
   - 신규 P1 제품 결함 없음
   - Xcode 15.2 설치본 부재로 과거 worker 대기 현상의 동일 toolchain 재현은 잔여 위험
 - 다음 작업:
-  1. `T-20260730-004` 최종 완료 확정 후 T-005 dry run과 T-006 required check 외부 설정 진행
+  1. T-20260730-005 dry run과 T-006 required check 외부 설정 진행
   2. `T-20260729-002`의 T-012~014 완료 후 `T-20260728-003`을 로컬 상태·화면 하위 Task로 분해
   3. Apple 기기 내 STT 구현과 지원 기기·한국어 품질 검증
   4. Backend API·job·보안·fixture 계약과 실제 AI client 연동

@@ -6,7 +6,7 @@
 - T-20260731-001에서 운영·iOS·Design 활성 문서와 최신 제품 정책·완료 Task의 정합성 복구를 시작했습니다.
 - 2026-06-22 PDF PRD를 현재 제품 계약이 아닌 역사적 스냅샷으로 명확히 구분했습니다.
 - Product QA가 확인한 활성 Team context·Board·QA routing·최신 develop 정합성 결함 4건의 재작업을 승인받아 반영했습니다.
-- Product QA Agent를 정식 Verification Agent로 등록하고 T-20260730-004의 실제 `completion_review` 상태를 활성 문서에 반영했습니다.
+- Product QA Agent를 정식 Verification Agent로 등록하고 T-20260730-004의 PR #34·최종 `done` 상태를 활성 문서에 반영했습니다.
 
 ## 2026-07-29
 

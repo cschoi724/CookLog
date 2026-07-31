@@ -195,7 +195,7 @@ CookLog/
 | `docs/GIT_WORKFLOW.md` 동기화 | resolved by `T-20260728-007`, `019` | `develop` 통합·`main` 승격 |
 | Backend source of truth | resolved by `T-20260729-020`, `021` | Architecture Decision·공통 API 계약·contract schema |
 | UI/UX 원본과 Figma | resolved by `T-20260728-002`, `T-20260731-001` | 로컬 Prototype·Manifest 원본, Figma 미러 |
-| CI merge gate | partially resolved by `T-20260730-001~004` | workflow·진단 통합, T-005 dry run·T-006 required check 설정 대기 |
+| CI merge gate | partially resolved by `T-20260730-001~004` | T-001~004 완료, T-005 dry run·T-006 required check 설정 대기 |
 
 ### 롤백
 

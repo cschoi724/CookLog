@@ -15,7 +15,7 @@
 ## OI-20260727-006 - CI 필수 check 미확정
 
 - 상태: open
-- 현재 상태: T-20260730-001~003은 `done`, T-004는 workflow 통합과 독립 QA를 마치고 `completion_review`입니다.
+- 현재 상태: T-20260730-001~004는 `done`이며 build·XCTest·concurrency·공통 진단·artifact workflow가 통합됐습니다.
 - 잔여 이슈: 실제 취소·실패 PR dry run T-005와 required check 외부 설정 T-006이 남아 있습니다.
 - 영향: workflow 자체는 자동화됐지만 branch protection의 최종 merge 차단은 아직 확정되지 않았습니다.
 - 임시 대응: `ios-build`, `ios-xctest` 결과와 Task별 검증 기록을 merge gate로 확인합니다.

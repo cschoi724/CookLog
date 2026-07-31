@@ -21,13 +21,13 @@
 2. T-20260729-004 Apple 기기 내 STT 구현과 실제 기기 품질 검증
 3. Backend 계약 이후 T-20260729-005 AI 정리·Review 실서비스 연동
 4. T-20260729-006 로컬 TTS·핸즈프리 Audio Guide 구현
-5. CI T-20260730-004 최종 완료 확정 후 T-005 dry run·T-006 required check 적용
+5. CI T-20260730-005 dry run·T-006 required check 적용
 
 ## 최근 작업
 
 - T-20260730-001에서 `macos-26`, Xcode 26.6, iPhone 17·iOS 26.5 CI 계약을 확정했습니다.
 - T-20260730-002와 T-20260730-003에서 `ios-build`, `ios-xctest` workflow를 구현하고 GitHub-hosted check·33/33·artifact를 검증했습니다.
-- T-20260730-004에서 concurrency 격리, 공통 진단 action과 artifact 요약을 통합하고 독립 QA 후 `completion_review`로 인계했습니다.
+- T-20260730-004에서 concurrency 격리, 공통 진단 action과 artifact 요약을 통합하고 독립 QA·PR #34를 거쳐 `done`으로 확정했습니다.
 - T-20260730-007에서 iOS 26.5 SwiftData XCTest crash를 수정하고 iOS 26.5·17.2 전체 33/33을 확인했습니다.
 - 아래 항목은 Mock Core MVP부터 이어진 구현·검증 이력이며 현재 다음 작업을 의미하지 않습니다.
 - T-20260728-004에서 공유 scheme의 XCTest 병렬 실행을 비활성화했습니다.
@@ -161,7 +161,7 @@
 
 ## 열린 질문
 
-- CI 환경·build·XCTest workflow와 T-004 진단 통합은 반영됐습니다. T-004 최종 완료 확정, T-005 dry run과 T-006 required check 적용이 남아 있습니다.
+- CI 환경·build·XCTest workflow와 T-004 진단 통합은 완료됐습니다. T-005 dry run과 T-006 required check 적용이 남아 있습니다.
 - Xcode 15.2 설치본 부재 위험은 Product Owner가 수용했으며 Xcode 15.2 호환성을 보장하지 않습니다.
 
 ## 세션 시작 체크리스트

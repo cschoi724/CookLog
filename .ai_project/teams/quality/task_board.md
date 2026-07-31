@@ -16,7 +16,7 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
-| `T-20260731-001` | `in_progress` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product QA `FAIL` 4건 승인 재작업 중 |
+| `T-20260731-001` | `verification_ready` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product QA `FAIL` 4건 독립 재검증 대기 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 
 향후 검증 예정 Task:
@@ -43,7 +43,7 @@
 `T-20260731-001`은 Product QA 독립 검증에서 활성 Team context·운영 이슈·Task
 Board·Product QA routing·최신 develop 정렬 결함 4건을 확인해 `FAIL` 판정을
 받았습니다. Product Owner가 필수 재작업과 추가 경로를 승인했으며 Product Lead가
-최신 develop 기준으로 재작업 중입니다.
+최신 develop 기준 재작업과 자체 검증을 마쳐 Product QA 재검증을 기다립니다.
 
 `T-20260729-021`은 Backend QA 독립 검증에서 최초 설치 challenge의 동시 소비 원자성
 누락과 오류 `title/detail` 내부의 provider detail·secret·원문 비노출을 schema가
