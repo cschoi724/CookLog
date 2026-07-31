@@ -160,7 +160,7 @@ provider와 Cloud Run·Tasks·Firestore·TTL·egress·observability·build SKU�
 | `T-20260730-004` | `done` | CI | concurrency·진단·cache·artifact 통합 | - | `T-20260730-002`, `003` 완료 | PR #34 checks·artifact 통과·squash merge |
 | `T-20260730-005` | `done` | CI | PR dry run·실패 감지 검증 | - | `T-20260730-004` 완료 | PR #36 squash merge `a5c6503`·완료 확정, T-006 required check 설정으로 인계 |
 | `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
-| `T-20260731-003` | `approved` | CI/Ops | GitHub Actions 사용량 절감 및 실행 정책 최적화 | iOS Agent | `T-20260730-005` | WP-1~5 iOS Agent 착수, WP-6~7 AI Ops Agent 별도 운영 인계 |
+| `T-20260731-003` | `verification_ready` | CI/Ops | GitHub Actions 사용량 절감 및 실행 정책 최적화 | iOS QA Agent | `T-20260730-005` | WP-1~5 positive/negative path·required check·실패 경계 독립 검증 |
 | `T-20260730-007` | `done` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | - | T-001 QA-HIGH-001 | PR #18 squash merge 완료 |
 
 `T-20260728-008`은 6개 하위 Task까지 scope했습니다. `T-20260730-002`와

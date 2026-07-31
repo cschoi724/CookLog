@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260731-003
 title: GitHub Actions 사용량 절감 및 실행 정책 최적화
-status: approved
+status: verification_ready
 type: ops
 priority: P1
 priority_reason: Actions 사용량 90% 경고에 대응하고 iOS CI를 필요한 변경에만 실행해야 한다.
@@ -10,11 +10,11 @@ org_unit: Core Development Team
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS Agent
-target_role: Execution Role
+target_agent: iOS QA Agent
+target_role: Verification Role
 required_capabilities:
-- workflow_governance
 - ios_qa
+- regression_test
 depends_on:
 - T-20260730-005
 blocks:
@@ -109,3 +109,6 @@ check 경계를 보존한다. WP-6~7 운영 정책과 Budget 설정은 AI Ops Ag
 |---|---|---|---|
 | 2026-07-31 | Product Owner | transition: proposed -> approved | Actions 사용량 90% 경고 대응을 위한 WP-1~5 iOS Agent 실행 승인 |
 | 2026-07-31 | Development Lead Agent | handoff | iOS Agent에 paths·중복 실행·concurrency·workflow 분리·회귀 검증 인계 |
+| 2026-07-31 | iOS Agent | transition: approved -> in_progress | 최신 origin/develop `153bc44` 기반 전용 worktree에서 WP-1~5 실행 시작 |
+| 2026-07-31 | iOS Agent | rebase latest develop | 게시 전 최신 origin/develop `3ae2b15` 위로 재정렬하고 T-20260729-013 상태와 AI Ops 인계를 보존 |
+| 2026-07-31 | iOS Agent | transition: in_progress -> verification_ready | required check 호환 경량 path 판정, 동적 runner, concurrency 보존과 33/33·실패 65·timeout 124 회귀 검증 완료 |
