@@ -3,8 +3,8 @@
 작성일: 2026-07-31
 작성자: Product QA Agent
 대상 Task: `T-20260731-001`
-최종 판정: `FAIL` (독립 재재검증)
-최종 상태 인계: `verification_in_progress -> rework_requested`
+최종 판정: `PASS`
+최종 상태 인계: `verification_in_progress -> verification_passed`
 
 ## 1. 검증 범위
 
@@ -188,7 +188,7 @@ QA 보고서:
 - .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
 ```
 
-## 8. 독립 재재검증 결과
+## 8. 직전 독립 재재검증 결과
 
 재재검증일: 2026-07-31
 
@@ -228,7 +228,7 @@ QA 보고서:
 - `git diff --check`: 통과
 - Backend 공통 계약·원격 STT 계약 검증 script: 통과
 
-## 9. 독립 재재검증 최종 판정
+## 9. 직전 독립 재재검증 판정
 
 `FAIL`.
 
@@ -245,6 +245,48 @@ Task: T-20260731-001
 - Development Board T-20260728-005 상위 행을 T-020~022 done, T-023·024 approved, T-025 대기로 정렬
 - 같은 Board의 현재 Backend 요약과 과거 승인 대기 설명을 현재 상태와 구분
 - T-004 무회귀와 T-022~025 상태 단일성을 재검색한 뒤 Product QA 재검증 요청
+```
+
+## 10. 최종 독립 재검증 결과
+
+최종 재검증일: 2026-07-31
+
+| 검증 항목 | 결과 | 근거 |
+|---|---|---|
+| PQA-HIGH-031-002 Backend 상위 Board 상태 | 해소 | Development Board의 T-20260728-005 상위 행·현재 요약·개별 행이 T-020~022 `done`, T-023·024 `approved`, T-025 `proposed`·선행 대기로 일치한다. |
+| T-004 상태 충돌 | 무회귀 | T-20260728-008 상위 행은 T-001~004 완료·T-005~006 대기이며 현재 T-004 설명은 `done`만 안내한다. |
+| PQA-HIGH-031-001 Source of Truth | 무회귀 | Design 로컬 원본/Figma 미러, Backend T-020~022 계약·검증 경계가 활성 문서에 일치한다. |
+| PQA-MEDIUM-031-003 Product QA routing | 무회귀 | Agent Registry·Operating Model·Quality Context·Current Context에 Product QA와 요구 capability가 등록돼 있다. |
+| PQA-HIGH-031-004 최신 develop 정렬 | 무회귀 | `origin/develop` `5118712`는 HEAD의 ancestor이며 T-022 `done`·T-023·024 `approved` 상태가 Project·Development·Quality 문서에 일치한다. |
+
+### 최종 회귀 검사
+
+- T-20260731-001 strict task schema: 통과
+- Task 42개 파싱, ID 중복 0건
+- 누락 dependency/block 참조 0건, dependency cycle 0건
+- 검증 실행 중 상태: approved 2, cancelled 1, done 21, in_progress 1, proposed 14, scoped 2, verification_in_progress 1
+- `origin/develop...HEAD` 변경 31개 경로의 `allowed_paths` 위반: 0건
+- `git diff --check`: 통과
+- Backend 공통 계약·원격 STT 계약 검증 script: 통과
+- 제품 정책·구현 코드 변경: 발견하지 못함
+
+## 11. 최종 판정
+
+`PASS`.
+
+최초 필수 결함 4건과 후속 Board 상태 충돌이 모두 해소됐고, 성공 기준과 Team 인계
+완전성을 독립적으로 재현했다. Product Lead Agent가 완료 검토를 수행해야 하며,
+완료 수용 전까지 T-20260728-003 차단은 유지한다.
+
+```text
+Task: T-20260731-001
+현재 상태: verification_passed
+최종 검증 판정: PASS
+다음 담당: Product Lead Agent / Completion Role
+다음 조치:
+- QA 보고서와 작업 보고서, 최신 develop·허용 경로를 완료 검토
+- 완료 수용 시 completion_review 또는 저장소 운영 기준에 따른 최종 상태 전이
+- 완료 검토 전 T-20260728-003 차단 해제 금지
 ```
 
 ## 부록 A. 이전 재검증 결과
