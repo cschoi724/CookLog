@@ -1,0 +1,24 @@
+{
+  "register_cleanup_before_body_read": true,
+  "atomic_handle_record_and_task": true,
+  "delete_deadline_seconds": 3600,
+  "final_forced_delete_offset_seconds": 3300,
+  "retry_offsets_seconds": [
+    0,
+    60,
+    300,
+    900,
+    1800,
+    2700,
+    3300
+  ],
+  "sweeper_interval_seconds": 300,
+  "sweeper_deadline_lookahead_seconds": 600,
+  "sweeper_checks_cleanup_records": true,
+  "sweeper_checks_object_prefix": true,
+  "sweeper_checks_multipart_uploads": true,
+  "worker_and_sweeper_independent": true,
+  "provider_physical_delete_confirmation_required": true,
+  "block_activation_when_confirmation_unsupported": true,
+  "block_activation_on_deadline_breach": true
+}

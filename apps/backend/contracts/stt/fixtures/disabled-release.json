@@ -1,0 +1,9 @@
+{
+  "profile": "first_public_release",
+  "mode": "disabled",
+  "upload_route_registered": false,
+  "provider_configured": false,
+  "audio_egress_allowed": false,
+  "automatic_fallback": false,
+  "activation_requires_new_approval": true
+}

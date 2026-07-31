@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cooklog.app/stt/remote-stt-deletion-receipt.schema.json",
+  "title": "CookLog ephemeral audio deletion receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "audio_handle",
+    "received_at",
+    "terminal_at",
+    "access_revoked_at",
+    "deletion_completed_at",
+    "delete_deadline_at",
+    "terminal_reason",
+    "recovery_path",
+    "deletion_attempt_count",
+    "status"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "audio_handle": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "terminal_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "access_revoked_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deletion_completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "delete_deadline_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "terminal_reason": {
+      "type": "string",
+      "enum": [
+        "success",
+        "final_failure",
+        "cancelled",
+        "timeout",
+        "worker_crash"
+      ]
+    },
+    "recovery_path": {
+      "type": "string",
+      "enum": [
+        "inline_delete",
+        "deadline_task",
+        "independent_sweeper",
+        "multipart_sweeper"
+      ]
+    },
+    "deletion_attempt_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8
+    },
+    "status": {
+      "const": "deleted"
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "cases": [
+    {
+      "name": "success",
+      "receipt": {
+        "request_id": "00000000-0000-4000-8000-000000000001",
+        "audio_handle": "10000000-0000-4000-8000-000000000001",
+        "received_at": "2026-07-31T01:00:00Z",
+        "terminal_at": "2026-07-31T01:00:09Z",
+        "access_revoked_at": "2026-07-31T01:00:09Z",
+        "deletion_completed_at": "2026-07-31T01:00:11Z",
+        "delete_deadline_at": "2026-07-31T02:00:00Z",
+        "terminal_reason": "success",
+        "recovery_path": "inline_delete",
+        "deletion_attempt_count": 1,
+        "status": "deleted"
+      }
+    },
+    {
+      "name": "final_failure",
+      "receipt": {
+        "request_id": "00000000-0000-4000-8000-000000000002",
+        "audio_handle": "10000000-0000-4000-8000-000000000002",
+        "received_at": "2026-07-31T01:00:00Z",
+        "terminal_at": "2026-07-31T01:00:06Z",
+        "access_revoked_at": "2026-07-31T01:00:06Z",
+        "deletion_completed_at": "2026-07-31T01:00:08Z",
+        "delete_deadline_at": "2026-07-31T02:00:00Z",
+        "terminal_reason": "final_failure",
+        "recovery_path": "inline_delete",
+        "deletion_attempt_count": 1,
+        "status": "deleted"
+      }
+    },
+    {
+      "name": "cancelled",
+      "receipt": {
+        "request_id": "00000000-0000-4000-8000-000000000003",
+        "audio_handle": "10000000-0000-4000-8000-000000000003",
+        "received_at": "2026-07-31T01:00:00Z",
+        "terminal_at": "2026-07-31T01:00:03Z",
+        "access_revoked_at": "2026-07-31T01:00:03Z",
+        "deletion_completed_at": "2026-07-31T01:00:05Z",
+        "delete_deadline_at": "2026-07-31T02:00:00Z",
+        "terminal_reason": "cancelled",
+        "recovery_path": "inline_delete",
+        "deletion_attempt_count": 1,
+        "status": "deleted"
+      }
+    },
+    {
+      "name": "timeout",
+      "receipt": {
+        "request_id": "00000000-0000-4000-8000-000000000004",
+        "audio_handle": "10000000-0000-4000-8000-000000000004",
+        "received_at": "2026-07-31T01:00:00Z",
+        "terminal_at": "2026-07-31T01:00:10Z",
+        "access_revoked_at": "2026-07-31T01:00:10Z",
+        "deletion_completed_at": "2026-07-31T01:00:13Z",
+        "delete_deadline_at": "2026-07-31T02:00:00Z",
+        "terminal_reason": "timeout",
+        "recovery_path": "inline_delete",
+        "deletion_attempt_count": 1,
+        "status": "deleted"
+      }
+    },
+    {
+      "name": "worker_crash",
+      "receipt": {
+        "request_id": "00000000-0000-4000-8000-000000000005",
+        "audio_handle": "10000000-0000-4000-8000-000000000005",
+        "received_at": "2026-07-31T01:00:00Z",
+        "terminal_at": "2026-07-31T01:00:12Z",
+        "access_revoked_at": "2026-07-31T01:05:00Z",
+        "deletion_completed_at": "2026-07-31T01:05:04Z",
+        "delete_deadline_at": "2026-07-31T02:00:00Z",
+        "terminal_reason": "worker_crash",
+        "recovery_path": "independent_sweeper",
+        "deletion_attempt_count": 1,
+        "status": "deleted"
+      }
+    },
+    {
+      "name": "delete_first_attempt_failed",
+      "receipt": {
+        "request_id": "00000000-0000-4000-8000-000000000006",
+        "audio_handle": "10000000-0000-4000-8000-000000000006",
+        "received_at": "2026-07-31T01:00:00Z",
+        "terminal_at": "2026-07-31T01:00:08Z",
+        "access_revoked_at": "2026-07-31T01:00:08Z",
+        "deletion_completed_at": "2026-07-31T01:01:02Z",
+        "delete_deadline_at": "2026-07-31T02:00:00Z",
+        "terminal_reason": "success",
+        "recovery_path": "deadline_task",
+        "deletion_attempt_count": 2,
+        "status": "deleted"
+      }
+    },
+    {
+      "name": "queue_delivery_failed",
+      "receipt": {
+        "request_id": "00000000-0000-4000-8000-000000000007",
+        "audio_handle": "10000000-0000-4000-8000-000000000007",
+        "received_at": "2026-07-31T01:00:00Z",
+        "terminal_at": "2026-07-31T01:00:07Z",
+        "access_revoked_at": "2026-07-31T01:05:00Z",
+        "deletion_completed_at": "2026-07-31T01:05:03Z",
+        "delete_deadline_at": "2026-07-31T02:00:00Z",
+        "terminal_reason": "final_failure",
+        "recovery_path": "independent_sweeper",
+        "deletion_attempt_count": 1,
+        "status": "deleted"
+      }
+    },
+    {
+      "name": "multipart_residual",
+      "receipt": {
+        "request_id": "00000000-0000-4000-8000-000000000008",
+        "audio_handle": "10000000-0000-4000-8000-000000000008",
+        "received_at": "2026-07-31T01:00:00Z",
+        "terminal_at": "2026-07-31T01:00:04Z",
+        "access_revoked_at": "2026-07-31T01:05:00Z",
+        "deletion_completed_at": "2026-07-31T01:05:05Z",
+        "delete_deadline_at": "2026-07-31T02:00:00Z",
+        "terminal_reason": "final_failure",
+        "recovery_path": "multipart_sweeper",
+        "deletion_attempt_count": 1,
+        "status": "deleted"
+      }
+    }
+  ]
+}

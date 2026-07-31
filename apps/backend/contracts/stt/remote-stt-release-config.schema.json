@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cooklog.app/stt/remote-stt-release-config.schema.json",
+  "title": "CookLog first release remote STT configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "mode",
+    "upload_route_registered",
+    "provider_configured",
+    "audio_egress_allowed",
+    "automatic_fallback",
+    "activation_requires_new_approval"
+  ],
+  "properties": {
+    "profile": {
+      "const": "first_public_release"
+    },
+    "mode": {
+      "const": "disabled"
+    },
+    "upload_route_registered": {
+      "const": false
+    },
+    "provider_configured": {
+      "const": false
+    },
+    "audio_egress_allowed": {
+      "const": false
+    },
+    "automatic_fallback": {
+      "const": false
+    },
+    "activation_requires_new_approval": {
+      "const": true
+    }
+  }
+}

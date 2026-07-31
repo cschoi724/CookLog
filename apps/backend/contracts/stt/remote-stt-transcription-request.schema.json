@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cooklog.app/stt/remote-stt-transcription-request.schema.json",
+  "title": "CookLog approved remote STT request metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "installation_id",
+    "clip_id",
+    "audio_handle",
+    "content_type",
+    "byte_length",
+    "duration_ms",
+    "sha256",
+    "locale",
+    "authorization"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "installation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "clip_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "audio_handle": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "audio/mp4",
+        "audio/x-m4a",
+        "audio/wav"
+      ]
+    },
+    "byte_length": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5242880
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "locale": {
+      "type": "string",
+      "enum": [
+        "ko-KR"
+      ]
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "grant_id",
+        "notice_revision",
+        "explicit_remote_selection",
+        "one_time",
+        "expires_at"
+      ],
+      "properties": {
+        "grant_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "notice_revision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,64}$"
+        },
+        "explicit_remote_selection": {
+          "const": true
+        },
+        "one_time": {
+          "const": true
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
