@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "runId": "cooklog-mvp-v1-20260728",
-  "revision": "audio-guide-focus-rework-20260731",
+  "revision": "app-info-data-service-failures-20260731",
   "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
   "direction": "A — Warm Kitchen Journal",
   "brandScope": "wordmark-only",
@@ -208,7 +208,7 @@
     },
     "Alert": {
       "properties": {
-        "Category": ["Permission", "Offline", "Service", "Delete Confirmation", "Long Processing"],
+        "Category": ["Permission", "Offline", "Network", "Service", "Local Storage", "Legal Link", "Delete Confirmation", "Long Processing"],
         "Actions": ["Single", "Dual", "Triple"]
       },
       "rule": "Name the cause category, preserved data, and the user's next action."
@@ -228,6 +228,20 @@
         "Button Fallback": ["Always Available"]
       },
       "rule": "Voice failure preserves playback state and never removes button controls."
+    },
+    "Info List Item": {
+      "properties": {
+        "Type": ["Contact", "Privacy", "Terms", "Data Retention"],
+        "State": ["Default", "Pressed", "Unavailable"]
+      },
+      "minimumTouchTarget": 44
+    },
+    "Diagnostic Consent": {
+      "properties": {
+        "Selection": ["Excluded", "Included"],
+        "Content Attachment": ["Never"]
+      },
+      "rule": "Only user-selected non-content diagnostics may be included; voice, transcription, recipes, and search queries are never attached."
     }
   },
   "accessibility": {
@@ -244,12 +258,13 @@
     "fallbackRule": "Permission, network, service, and voice-command failures keep unaffected local actions available."
   },
   "screens": {
-    "Home": ["Mixed Recent", "Multiple Drafts", "AI Review Ready", "Record Menu", "Delete Confirmation", "Empty", "Loading", "Error"],
+    "Home": ["Mixed Recent", "Multiple Drafts", "AI Review Ready", "Network Error", "Record Menu", "Delete Confirmation", "Empty", "Loading", "Error"],
     "All Recipes": ["Recent Activity", "Title Search", "Ingredient Search", "No Results", "Empty"],
     "Cooking Log": ["First-use Rationale", "Microphone Denied", "Empty", "10-second Recording", "On-device Processing", "Automatic Retry", "STEP Added", "Delete Undo", "Offline Recording", "Recording Error", "On-device STT Unsupported", "STT Final Failure", "AI Snapshot Locked", "Offline AI Notice"],
     "AI Review": ["Processing", "Long Processing", "Review Ready", "Editable", "Draft Saved", "Unsaved Exit", "Validation Error", "Saving", "Save Error", "Generation Error", "Complete Recipe Edit", "Complete Recipe Saving"],
     "Recipe Detail": ["Content", "More Menu", "Delete Confirmation", "Deleted", "Loading", "Error", "Not Found"],
-    "Audio Player": ["Ready", "Paused", "Playing", "Step Complete", "Last Step", "Ingredients", "Reading Speed", "Handsfree First-use", "Handsfree Permission Denied", "Handsfree Active", "Listening", "Command Next", "Command Previous", "Command Pause", "Command Resume", "Command Replay", "Command Ingredients", "Command Exit", "Command Uncertain", "Audio Interrupted", "Background or Lock Ended", "Loading", "Error", "No Steps"]
+    "Audio Player": ["Ready", "Paused", "Playing", "Step Complete", "Last Step", "Ingredients", "Reading Speed", "Handsfree First-use", "Handsfree Permission Denied", "Handsfree Active", "Listening", "Command Next", "Command Previous", "Command Pause", "Command Resume", "Command Replay", "Command Ingredients", "Command Exit", "Command Uncertain", "Audio Interrupted", "Background or Lock Ended", "Loading", "Error", "No Steps"],
+    "App Info": ["Overview", "Data Retention", "Contact Consent", "Contact Ready", "Mail Unavailable", "Privacy Loading", "Privacy URL Unconfigured", "Privacy Open Error", "Terms Loading", "Terms URL Unconfigured", "Terms Open Error"]
   },
   "prototype": {
     "homeRules": {
@@ -262,6 +277,49 @@
       "newRecordingPreservesExistingDrafts": true,
       "progressDeletion": "More menu + irreversible confirmation",
       "completeDeletionLocation": "Recipe Detail only"
+    },
+    "appInfoRules": {
+      "entry": "Home app-info icon",
+      "version": "CookLog 1.0.0 placeholder until release integration",
+      "contact": {
+        "channel": "Email",
+        "address": "Release-integration placeholder; never present an unconfirmed address as operational.",
+        "automaticContentAttachment": false,
+        "excludedContent": ["Voice", "STT text", "Recipe fields", "Search query"],
+        "defaultMetadata": ["App version"],
+        "optionalMetadata": ["OS version", "Error screen and time", "Non-content diagnostic category"],
+        "optionalMetadataRequiresExplicitSelection": true,
+        "mailUnavailable": "Confirm nothing was sent; keep all local data and offer retry."
+      },
+      "legalLinks": {
+        "privacy": "Release-integration URL placeholder",
+        "terms": "Release-integration URL placeholder",
+        "states": ["Loading", "URL Unconfigured", "Open Error"],
+        "retryRule": "Retry only the selected document link.",
+        "misrepresentationGuard": "Never present placeholder or temporary copy as the published legal document."
+      },
+      "dataRetention": {
+        "storage": "Current device app storage",
+        "lossRisks": ["App deletion", "Device reset", "Device loss", "Local storage corruption"],
+        "cookLogBackup": false,
+        "cookLogRecovery": false,
+        "crossDeviceSync": false,
+        "recipeExport": false,
+        "osBackupGuarantee": false
+      }
+    },
+    "serviceFailureRules": {
+      "categories": {
+        "Internet": "Ask the user to check connectivity.",
+        "Transcription": "Explain that current voice conversion is unavailable and preserve existing STEP Preview.",
+        "AI Organizing": "Preserve STEP Preview, unlock the snapshot, and retry AI organizing only.",
+        "Local Save": "Keep current edit values and retry local save; do not describe this as a network failure."
+      },
+      "internalDetailsHidden": ["Error codes", "Provider names", "Server topology"],
+      "automaticRetryAfterRecovery": false,
+      "automaticNavigationAfterRecovery": false,
+      "unaffectedLocalActions": ["Progress records", "Completed recipes", "Local search", "Local save when storage is healthy", "Button Audio Guide", "Local TTS"],
+      "retryScope": "Retry only the failed action."
     },
     "cardRouting": {
       "Recording": "Cooking Log / STEP Added",
@@ -534,6 +592,26 @@
       "All Recipes / Ingredient Search",
       "All Recipes / No Results",
       "All Recipes / Recent Activity"
+    ],
+    "appInfoFlow": [
+      "Home / Mixed Recent",
+      "App Info / Overview",
+      "App Info / Contact Consent",
+      "App Info / Contact Ready",
+      "App Info / Overview",
+      "App Info / Data Retention"
+    ],
+    "legalLinkFlow": [
+      "App Info / Overview",
+      "App Info / Privacy Loading",
+      "App Info / Privacy URL Unconfigured or Open Error",
+      "App Info / Overview"
+    ],
+    "serviceFailureFlow": [
+      "Home / Network Error",
+      "Cooking Log / STT Final Failure",
+      "AI Review / Generation Error",
+      "AI Review / Save Error"
     ]
   },
   "validation": {

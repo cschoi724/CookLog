@@ -4,7 +4,7 @@ Figma MCP 한도와 무관하게 CookLog MVP UI/UX v1을 검토하기 위한 로
 
 이 디렉토리는 Product Owner가 승인한 CookLog의 공식 UI Source of Truth입니다.
 
-현재 Prototype revision은 `audio-guide-focus-rework-20260731`이며 `design/figma-build/manifest.json`과 동일합니다.
+현재 Prototype revision은 `app-info-data-service-failures-20260731`이며 `design/figma-build/manifest.json`과 동일합니다.
 
 ## 실행
 
@@ -68,6 +68,13 @@ http://127.0.0.1:8765/?screen=home&state=delete-confirm
 http://127.0.0.1:8765/?screen=library&state=all
 http://127.0.0.1:8765/?screen=library&state=search-title
 http://127.0.0.1:8765/?screen=library&state=no-results&theme=dark
+http://127.0.0.1:8765/?screen=info&state=overview
+http://127.0.0.1:8765/?screen=info&state=data-retention
+http://127.0.0.1:8765/?screen=info&state=contact-consent
+http://127.0.0.1:8765/?screen=info&state=mail-unavailable
+http://127.0.0.1:8765/?screen=info&state=privacy-unconfigured
+http://127.0.0.1:8765/?screen=info&state=terms-error
+http://127.0.0.1:8765/?screen=home&state=network-error
 ```
 
 ## 포함
@@ -78,6 +85,7 @@ http://127.0.0.1:8765/?screen=library&state=no-results&theme=dark
 - AI Review
 - Recipe Detail
 - Audio Player
+- 앱 정보·지원·데이터 보관 안내
 - Light / Dark
 - 주요 빈 상태, 로딩, 녹음, 처리, 오류, 비활성, 재생 상태
 - 최근 활동순 혼합 목록, 진행 상태별 routing, 진행 기록 영구 삭제 확인
@@ -105,6 +113,13 @@ http://127.0.0.1:8765/?screen=library&state=no-results&theme=dark
 - Player 행동 후 동등 control 포커스 유지와 로컬 TTS 오류 시 레시피 내용·단계 이동·가이드 종료 fallback
 - 재생·단계 이동·다시 듣기의 자동 완료 렌더링 뒤에도 재생 control로 키보드 포커스 복원
 - 전화·Siri·다른 오디오·Bluetooth 중단과 백그라운드·직접 잠금 후 수동 재개
+- Home 앱 정보 진입, 문의·개인정보처리방침·이용약관·데이터 보관 안내
+- 문의 시 사용자 콘텐츠 자동 비첨부, 앱 버전 기본 제공과 사용자가 명시적으로 선택하는 OS 버전·오류 화면/시각·비콘텐츠 진단 범주
+- Home·App Info 하위 화면 전환 뒤 새 화면 제목으로 이동하는 키보드 포커스
+- 법적 문서 로딩·운영 URL 미설정·열기 실패와 이메일 앱 사용 불가 상태
+- 앱 삭제·기기 초기화·분실·저장소 손상 유실 가능성과 자체 백업·복구·동기화 미제공 경계
+- 인터넷·음성 변환·AI 서비스·로컬 저장 실패의 원인 범주와 실패한 행동만 다시 실행하는 CTA
+- 온라인 장애 중 진행·완료 레시피, 검색과 버튼 Audio Guide 등 로컬 기능 유지
 - 390×844와 실제 375×667 레이아웃
 - Button, Status Banner, Form Field, Recipe Card, Player Control 상태 보드
 
