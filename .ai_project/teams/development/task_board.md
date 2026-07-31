@@ -10,10 +10,10 @@
 | `T-20260728-001` | `cancelled` | iOS | iOS M8 잔여 안정화와 최종 검증 | - | - | 유효 항목 T-003/T-009 통합 |
 | `T-20260728-003` | `proposed` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` | 7개 iOS 하위 패키지 scope |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
-| `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | T-020~022 `done`, T-023·024 `approved`, T-025 `proposed`·선행 대기 |
+| `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | T-020~023 `done`, T-024·025 `approved` |
 | `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` | 선행 Task 대기 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
-| `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~004 완료, T-005~006 후속 대기 |
+| `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~005 완료, T-006 별도 승인 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
 | `T-20260729-003` | `proposed` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` | AI provider 승인 후 하위 패키지 |
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
@@ -26,7 +26,7 @@
 | `T-20260729-024` | `approved` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
 | `T-20260729-025` | `approved` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | Product Owner 실행 승인, T-024 완료 후 Backend Agent 착수 |
 
-`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. T-020 런타임·provider 추천안, T-021 공통 API 계약과 T-022 기본 비활성 원격 STT 계약은 `done`입니다. T-023·024는 Product Owner 실행 승인을 받은 `approved`, T-025는 T-023·024 완료 후 실행하는 선행 대기 `proposed`입니다. 원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지합니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. T-020 런타임·provider 추천안, T-021 공통 API 계약, T-022 기본 비활성 원격 STT 계약과 T-023 AI recipe job 계약은 `done`입니다. T-024·025는 Product Owner 실행 승인을 받은 `approved`이며 T-025는 T-024 완료 후 착수합니다. 원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지합니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
 Backend QA가 `T-20260729-021`에서 최초 설치 challenge의 동시 소비 원자성 누락
 `QA-HIGH-021-001`, 오류 허용 문자열 내부 민감정보 비노출을 기계적으로 보장하지 못하는
@@ -141,8 +141,10 @@ timeout과 artifact/check gate를 검증용 변경으로 수행하고, iOS QA Ag
 T-20260730-005는 PR #36에서 정상 `ios-build`·`ios-xctest` 33/33을 확인하고,
 미병합 검증 PR #37~#39에서 build 실패 65, XCTest assertion 실패 65,
 timeout 124와 진단 artifact를 확인했습니다. 같은 PR 연속 push의 이전 두
-workflow run도 각각 취소됐습니다. 검증 PR 3개는 미병합 종료했고 iOS QA
-독립 판정을 위해 `verification_ready`로 인계합니다.
+workflow run도 각각 취소됐습니다. 검증 PR 3개는 미병합 종료했고 iOS QA 독립
+검증과 Development Lead 완료 검토를 통과했습니다. PR #36과 완료 기록 PR #46이
+`develop`에 병합되어 `done`으로 확정됐으며 T-006 required check 설정으로
+인계합니다.
 
 `T-20260730-007`은 SwiftData 테스트가 `ModelContainer`를 테스트 종료까지
 보유하도록 fixture 수명을 최소 수정했습니다. iOS 26.5와 iOS 17.2 전체 XCTest가
