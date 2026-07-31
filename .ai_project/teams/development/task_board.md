@@ -21,7 +21,7 @@
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
 | `T-20260729-020` | `done` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | - | `T-20260729-026` 완료 | PR #26 squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend | 공통 API·인증·제한·오류 계약 | - | `T-20260729-026` 완료 | PR #32 squash merge·완료 확정 |
-| `T-20260729-022` | `completion_review` | Backend | 기본 비활성 원격 STT adapter 계약 | Development Lead Agent | `T-20260729-021`, `026` 완료 | 완료 검토 통과·develop PR 통합 대기 |
+| `T-20260729-022` | `done` | Backend | 기본 비활성 원격 STT adapter 계약 | - | `T-20260729-021`, `026` 완료 | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260729-023` | `approved` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
 | `T-20260729-024` | `approved` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
 | `T-20260729-025` | `proposed` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | 선행·승인 대기 |
@@ -64,6 +64,10 @@ QA 인계와 PR 직전에 최신 `develop` 재정렬로 형제 Task 상태를 �
 T-20260729-022 재작업은 Backend QA `PASS_WITH_RISK`를 받고 Development Lead 완료
 검토로 전환했습니다. retry/terminal 충돌과 1시간 삭제 보장 누락을 해소했으며,
 runtime cleanup 장애 복구와 provider 물리 삭제 SLA는 T-025·staging gate로 인계합니다.
+
+PR #40의 hosted checks와 merge SHA `93f577e`를 확인해 T-20260729-022를
+`done`으로 확정했습니다. T-025와 후속 원격 STT 활성화 staging gate에서
+runtime cleanup과 provider 물리 삭제 SLA를 검증합니다.
 
 Backend QA가 T-022의 기본 비활성·무승인 업로드·자동 fallback 금지는 통과시켰으나,
 provider 오류 retry/terminal 계약 상충 `QA-HIGH-022-001`과 삭제 실패 시 최대 1시간

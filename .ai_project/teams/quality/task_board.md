@@ -18,7 +18,7 @@
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
 | `T-20260731-001` | `verification_ready` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | PQA-HIGH-031-002 독립 재재검증 대기 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
-| `T-20260729-022` | `completion_review` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PASS_WITH_RISK 수용·develop PR 통합 대기 |
+| `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 
 향후 검증 예정 Task:
 
