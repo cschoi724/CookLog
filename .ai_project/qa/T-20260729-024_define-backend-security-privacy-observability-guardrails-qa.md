@@ -2,7 +2,8 @@
 
 검증일: 2026-07-31
 검증자: Backend QA Agent / Verification Role
-검증 기준: `task/T-20260729-024-define-backend-security-privacy-observability-guardrails` `d9e0d61`
+최초 검증 기준: `task/T-20260729-024-define-backend-security-privacy-observability-guardrails` `d9e0d61`
+재검증 기준: `task/T-20260729-024-define-backend-security-privacy-observability-guardrails` `d66c28b`
 기준 develop: `origin/develop` `0014935`
 판정: `FAIL`
 상태 인계: `verification_in_progress -> rework_requested`
@@ -208,3 +209,84 @@ secret 최소 권한, telemetry 비노출, provider 보관·학습, 기존 AI·S
 
 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 Development Lead
 Agent / Lead Role에 인계한다.
+
+## 10. 독립 재검증
+
+재검증일: 2026-07-31
+
+### 결함 해소 결과
+
+| 결함 | 결과 | 독립 재검증 근거 |
+|---|---|---|
+| `QA-HIGH-024-001` | RESOLVED | raw metadata 생성 시 +28일 cleanup outbox 원자 등록, 15분 독립 sweeper, +29일 경고·차단·incident, +30일 read/export/aggregate 접근 차단과 모든 sink receipt를 정의했다. task 누락·worker crash·queue 장애·sink delete 실패·TTL 지연을 포함한 6개 fixture와 검증기가 통과했다. |
+| `QA-HIGH-024-002` | OPEN | Cloud Run·Tasks·Firestore·TTL·egress·observability·build 비용을 단일 원장에 포함한 점은 보완됐다. 그러나 동시성 fixture가 하나의 2,000원 예약을 1,000원 승인과 1,000원 거절로 부분 처리하고, 문서는 예약보다 큰 실제값을 허용하면서 50,000원 불변식 유지 방법을 정의하지 않는다. |
+| `QA-MEDIUM-024-001` | RESOLVED | storage region, regional processing 지원, processing boundary와 국외 처리 승인을 분리했다. OpenAI 한국 저장·한국 밖 처리 승인, Vertex EU 처리와 unknown/global/cache 실패 6개 fixture가 통과했다. |
+
+### 잔여 차단 반례 — `QA-HIGH-024-002`
+
+`provider_and_nonprovider_compete` fixture의 입력은 다음과 같다.
+
+```text
+requests_krw: [6000, 3000, 2000]
+accepted_krw: [6000, 3000, 1000]
+rejected_krw: [1000]
+```
+
+2,000원짜리 operation 하나가 1,000원 승인·1,000원 거절로 분할됐다. 하지만 본문은
+provider 호출이나 비용 발생 operation의 최대 상한 전체를 실행 전에 하나의
+reservation으로 묶고, 예약 성공 후에만 실행하도록 정의한다. 부분 예약으로 실제
+operation을 실행하면 나머지 비용이 미예약 상태가 되고, 부분 예약으로 실행하지
+않는다면 fixture의 1,000원 승인은 의미가 없다.
+
+독립 검사:
+
+```text
+all(concurrency_cases;
+  sort(accepted_krw + rejected_krw) == sort(requests_krw))
+=> false
+```
+
+또한 본문은 실제 SKU 비용이 예상보다 크면 즉시 `committed_actual_krw`에 반영한다고
+하면서 다른 reservation과 고정 5,000원 delayed reserve를 해제하지 않는다고 한다.
+원장이 이미 50,000원 경계에 있으면 예약 초과 실제값 반영 순간 다음 불변식이 깨진다.
+
+```text
+committed_actual_krw
++ active_reservations_krw
++ delayed_billing_reserve_krw
+<= 50,000
+```
+
+필수 재작업:
+
+1. 각 reservation에 operation ID와 요청 금액을 두고 전체 요청이 `accepted` 또는
+   `rejected` 중 하나가 되도록 한다. 부분 실행이 필요한 작업은 예약 전에 별도
+   operation으로 명시적으로 분할한다.
+2. 동시성 fixture의 accepted·rejected multiset이 requests와 정확히 일치하도록 하고
+   검증 script가 이를 검사하게 한다.
+3. 실제값이 reservation을 초과할 수 없도록 보수적 상한 산식을 고정하거나, 초과분이
+   delayed reserve를 원자 소비하면서도 불변식을 유지하는 전이를 정의한다.
+4. actual-over-reservation, 동시 provider/logging 경합과 경계 직전 요청의 전체 거절
+   fixture를 추가한다.
+
+### 회귀·검증 결과
+
+```text
+sh apps/backend/contracts/security/validate-contracts.sh: PASS
+sh apps/backend/contracts/common/validate-contracts.sh: PASS
+sh apps/backend/contracts/stt/validate-contracts.sh: PASS
+sh apps/backend/contracts/ai/validate-contracts.sh: PASS
+jq empty apps/backend/contracts/security/fixtures/*.json: PASS
+aiops validate task ... --strict: PASS
+git diff --check: PASS
+origin/develop...HEAD: 0 behind / 4 ahead
+Task ID count: 1
+atomic reservation request/result correspondence: FAIL
+```
+
+기존 secret·telemetry 비노출, AI·Remote STT 삭제, provider 보관·학습,
+호출·token 상한과 incident 계약에는 회귀가 없다. 실제 runtime·cloud 설정 검증은
+기존 `QA-RISK-024-001`로 유지한다.
+
+재검증 최종 판정은 `FAIL`이다. `QA-HIGH-024-002`의 원자 예약·초과 정산 반례를
+해소한 뒤 다시 독립 재검증해야 한다.

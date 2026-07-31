@@ -22,7 +22,7 @@
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260730-005` | `done` | iOS CI PR dry run·실패 감지·회귀 검증 | 최신 PR #36 33/33, #37~#39 실패 65·timeout 124·취소·artifact | PR #36 squash merge `a5c6503`·완료 확정 |
 | `T-20260729-023` | `done` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | 완료 확정, PASS_WITH_RISK 잔여 위험은 staging 인계 |
-| `T-20260729-024` | `verification_ready` | Backend 보안·개인정보·관측성·비용 guardrail | raw metadata 30일 장애 경계·전체 외부비 원장·provider 처리 지역 gate | Backend QA 독립 재검증 |
+| `T-20260729-024` | `approved` | Backend 보안·개인정보·관측성·비용 guardrail | raw metadata 30일 장애 경계·전체 외부비 원장·provider 처리 지역 gate | QA-HIGH-024-002 재작업 후 QA 독립 재검증 |
 
 향후 검증 예정 Task:
 
@@ -132,6 +132,12 @@ raw metadata 최대 30일에 사전 cleanup·sweeper·접근 차단이 없는
 egress 비용 반영이 없는 `QA-HIGH-024-002`를 확인해 `FAIL`,
 `rework_requested`로 인계했습니다. OpenAI 한국 저장 후보와 처리 지역 gate의
 불일치는 `QA-MEDIUM-024-001`로 보완해야 합니다.
+
+재작업 독립 재검증에서 `QA-HIGH-024-001`의 +28/+30일 lifecycle과
+`QA-MEDIUM-024-001`의 저장·처리·국외 승인 gate는 해소됐습니다. 그러나 비용 동시성
+fixture가 2,000원 operation을 1,000원 승인·1,000원 거절로 부분 처리하고 예약 초과
+실제값의 50,000원 불변식 유지 규칙도 없어 `QA-HIGH-024-002`는 미해소입니다.
+재검증 `FAIL`, `rework_requested`로 다시 인계했습니다.
 
 승인 재작업은 raw metadata +28일 cleanup·15분 독립 sweeper·+30일 read/export/
 aggregate 차단과 sink receipt, 전체 외부비 SKU 단일 원장, 저장 region·regional
