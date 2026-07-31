@@ -1,14 +1,14 @@
 # CookLog Project Status
 
-최종 업데이트: 2026-07-30
+최종 업데이트: 2026-07-31
 
 ## 현재 상태
 
-- 전체 상태: 제품 정책·첫 공개 출시 Roadmap 확정 중, iOS Mock Core Loop 조건부 통과
+- 전체 상태: 제품 정책·첫 공개 출시 Roadmap 확정, Design·Backend·CI Foundation 실행 중
 - 현재 우선 플랫폼: iOS
 - Android 상태: 개발 대기
 - iOS 프로젝트: `apps/ios/CookLog.xcodeproj` 생성 완료
-- iOS 현재 이정표: Core v1 출시 Foundation 진입 준비
+- iOS 현재 이정표: Core v1 출시 Foundation 구현·검증
 - 기준 제품 문서: `docs/product/CookLog_PRD_v2.md`
 - 기본 작업 브랜치: `develop`
 - 안정·릴리즈 브랜치: `main`
@@ -43,11 +43,16 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - 구형 Mock M8 잔여 검증 Task 폐기, 유효 항목을 제품 구현·최종 출시 게이트에 통합
 - Design, XCTest·CI, Backend Contract·Foundation, iOS 실서비스와 최종 Release 상위 Task 등록
 - T-20260729-001 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토 후 `done`
+- Design T-20260729-008~011 구현·독립 검증·develop 통합 완료
+- Backend T-20260729-020 런타임·AI provider·비용 추천안 완료, 최종 provider 선택 대기
+- Backend T-20260729-021 공통 API·인증·제한·오류 계약과 독립 QA develop 통합, 최종 완료 검토 중
+- CI T-20260730-001~003 계약·ios-build·ios-xctest workflow와 hosted 검증 완료
+- T-20260731-001에서 루트·운영·iOS·Design 활성 문서 Source of Truth 정합성 복구 진행
 
 ### 첫 공개 출시 실행 순서
 
 1. 완료: `T-20260729-001` 제품 문서와 Task 정합성 검증, `T-20260729-026` 첫 출시 STT 정책 변경
-2. 진행: `T-20260729-002` Design과 `T-20260728-005` Backend Contract 병렬 Foundation, `T-20260728-004` XCTest 안정화 완료
+2. 진행: `T-20260729-002` Design, `T-20260728-005` Backend Contract와 `T-20260728-008` CI 병렬 Foundation
 3. 이후: iOS 로컬 제품 상태, Apple 기기 내 STT, Backend AI foundation·production gateway와 iOS AI·Audio Guide 구현
 4. 최종: `T-20260728-009` TestFlight 통합, 최소 품질 게이트와 App Store 제출 준비
 
@@ -65,13 +70,14 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
   - AI Review, Recipe Detail, Audio Player, SwiftData 저장소 선별 테스트 18개 통과
   - 전체 XCTest 직렬 실행, 600초 timeout, 로그와 `xcresult` 보존 절차 확정
   - Xcode 26.6, iPhone 15 iOS 17.2 Simulator에서 전체 XCTest 33개 3회 연속 통과
+  - `ios-build`, `ios-xctest` GitHub Actions workflow 구현과 hosted 33/33·artifact 검증 완료
   - 신규 P1 제품 결함 없음
   - Xcode 15.2 설치본 부재로 과거 worker 대기 현상의 동일 toolchain 재현은 잔여 위험
 - 다음 작업:
-  1. `T-20260728-008`에서 CI의 Xcode·Simulator 버전을 고정하고 표준 XCTest 스크립트와 artifact 보존 절차 재검증
-  2. `T-20260729-002` 완료 후 `T-20260728-003`을 로컬 상태·화면 하위 Task로 분해
+  1. `T-20260730-004~006`에서 CI concurrency·진단·dry run과 required check 외부 설정 완료
+  2. `T-20260729-002`의 T-012~014 완료 후 `T-20260728-003`을 로컬 상태·화면 하위 Task로 분해
   3. Apple 기기 내 STT 구현과 지원 기기·한국어 품질 검증
-  4. Backend AI 계약·환경 이후 실제 AI client 연동
+  4. Backend API·job·보안·fixture 계약과 실제 AI client 연동
   5. 로컬 TTS·핸즈프리 구현과 최종 실제 기기 검증
 - 상세 상태 기준: `apps/ios/docs/STATUS.md`
 
@@ -92,8 +98,8 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 ## 열린 질문
 
 - iOS QA Agent가 현재 지원 toolchain에서 `Scripts/run-xctest.sh`, timeout과 artifact 절차를 독립 재현해 `PASS_WITH_RISK`로 판정했습니다.
-- Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했으며 T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정해 재검증합니다.
-- Backend runtime·배포 환경, AI provider·model과 초기 비용 상한은 `T-20260728-005`에서 추천안을 준비해 Product Owner가 승인해야 합니다.
+- Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했습니다. 현재 CI는 Xcode 26.6·iPhone 17·iOS 26.5로 고정했고 hosted 33/33을 검증했습니다.
+- Backend runtime·배포 환경, AI provider·model과 초기 비용 상한 추천안은 T-20260729-020에서 완료했습니다. 실제 provider 계약·배포 전 Product Owner의 항목별 최종 선택이 필요합니다.
 - 원격 STT provider와 비용 비교 결과는 후속 adapter 활성화 참고자료이며 첫 출시 기본 경로를 변경하지 않습니다.
 - Apple 기기 내 STT의 지원 기기·OS·한국어 품질과 구현 안정성이 최소 출시 기준을 충족하지 못하면 Product Owner가 지원 범위 조정, 출시 연기 또는 원격 adapter 도입을 별도로 결정해야 합니다.
 - 핸즈프리 Apple framework 조합과 지원 기기 범위는 `T-20260729-006`의 기술 spike 후 승인해야 합니다.

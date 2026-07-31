@@ -32,7 +32,7 @@
 | Agent 실행 Task | `.ai_project/tasks/` | `.ai_project/task_board.md`, report/QA 문서 | Task 파일 우선 |
 | Agent 작업 상태 요약 | `.ai_project/task_board.md` | `.ai_project/tasks/` | 충돌 시 Task 파일 기준으로 보드 갱신 |
 | 제품 방향 요약 | `docs/product/CookLog_PRODUCT.md` | `agents.md` | 상세 동작 충돌 시 PRD v2 우선 |
-| 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog PRD v2.pdf`, `docs/product/CookLog_PRODUCT.md`, `agents.md` | PRD v2와 사용자 최신 결정 우선 |
+| 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog_PRODUCT.md`, `agents.md` | PRD v2와 사용자 최신 결정 우선. `CookLog PRD v2.pdf`는 2026-06-22 역사적 스냅샷 |
 | MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `docs/product/CookLog_PRD_v2.md`, `agents.md` | PRD v2와 MVP Scope를 함께 확인 |
 | 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | `agents.md`, 플랫폼별 `agents.md` | PRD v2와 User Flow 우선 |
 | 와이어프레임 | `docs/product/CookLog_WIREFRAME.md` | 디자인 산출물 | 최신 승인 산출물 우선 |
@@ -48,8 +48,8 @@
 | iOS 구현 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` | `apps/ios/docs/STATUS.md` | 계획 변경은 Product Lead Agent 또는 iOS Agent가 문서화 |
 | iOS 기술 스펙 | `apps/ios/docs/DEVELOPMENT_SPEC.md` | `apps/ios/docs/ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md` | 세부 영역 문서와 실제 코드 모두 확인 |
 | iOS QA 기준 | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` | `apps/ios/docs/TESTING.md`, `.ai_project/qa/` | iOS QA Agent가 리스크 분류 |
-| Backend 아키텍처 | `T-20260728-005`에서 확정 예정 | PRD v2, Roadmap과 운영 모델 | Backend foundation·provider 구현 전에 Product Owner 승인 필요 |
-| Backend API 계약 | `T-20260728-005`에서 확정 예정 | PRD v2, iOS service 문서 | STT·AI iOS 연동 완료 전에 버전 계약과 fixture 필요 |
+| Backend 런타임·AI provider 추천안 | `apps/backend/docs/ARCHITECTURE_DECISION.md` | T-20260729-020 report·QA | Task 완료와 최종 provider 선택을 구분하며 실제 계약·배포 전 Product Owner 승인 필요 |
+| Backend 공통 API 계약 | `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/` | T-20260729-021 report·QA | T-021 완료 검토와 후속 job·보안·fixture 계약을 함께 확인 |
 | Android 세션 기준 | `apps/android/agents.md` | 루트 `agents.md` | Android 착수 전 Android 문서 우선 |
 | Android 현재 상태 | `apps/android/docs/STATUS.md` | Android 개발 문서 | Android는 iOS MVP 안정화 후 착수 |
 | AI Knowledge | `.ai_knowledge/` | 이 Source Of Truth 매트릭스 | Wiki는 원본이 아니며 충돌 시 이 문서의 원본 우선 |
@@ -73,7 +73,7 @@ apps/android/docs/
 |---|---|---|
 | iOS 빌드 | `apps/ios/`에서 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build` | iOS Agent |
 | iOS 테스트 빌드 | `apps/ios/`에서 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing` | iOS Agent |
-| iOS 테스트 | `apps/ios/`에서 `xcodebuild test` 실행. 현재 로컬 XCTest runner 대기 이슈가 있어 별도 확인 필요 | iOS Agent / iOS QA Agent |
+| iOS 테스트 | `apps/ios/Scripts/run-xctest.sh`와 `.github/workflows/ios-xctest.yml`; 단일 worker·timeout·로그·xcresult 기준 | iOS Agent / iOS QA Agent |
 | iOS 수동 QA | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` 기준 | iOS QA Agent |
 | Backend 검증 | Backend 구조와 API 계약 확정 후 정의 | Backend Agent / Backend QA Agent |
 | Android 검증 | Android 착수 후 확정 | Android 착수 후 Execution/Verification Agent 확정 |
@@ -98,3 +98,4 @@ apps/android/docs/
 | 2026-07-28 | CookLog MVP UI/UX v1 Figma 작업 파일 생성과 링크 등록 |
 | 2026-07-28 | Product Owner 결정으로 `design/prototype/`을 공식 UI Source of Truth, Figma를 점진적 미러로 전환 |
 | 2026-07-29 | Product Charter와 첫 공개 출시 Roadmap 역할, Backend 계약 확정 Task를 Source of Truth 매트릭스에 반영 |
+| 2026-07-31 | PDF를 역사적 스냅샷으로 명시하고 Backend 추천안·API 계약 경계와 iOS CI 검증 기준을 최신화 |

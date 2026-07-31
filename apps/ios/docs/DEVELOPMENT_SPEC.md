@@ -1,9 +1,9 @@
 # CookLog iOS Development Spec
 
-이 문서는 CookLog iOS MVP 개발의 최상위 기술 기준과 상세 문서 위치를 정리합니다. 세부 구현 기준은 역할별 문서에서 관리합니다.
+이 문서는 CookLog iOS의 기술 기준과 상세 문서 위치를 정리합니다. 제품 기능 범위는 배정 Task와 루트 제품 Source of Truth에서 관리합니다.
 
 작성일: 2026-06-19
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-07-31
 상태: 확정
 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 
@@ -11,7 +11,7 @@
 
 CookLog iOS 앱은 SwiftUI 기반 네이티브 앱으로 시작합니다.
 
-MVP에서 제외된 기능도 향후 추가나 교체가 쉬운 구조를 목표로 합니다. 단, MVP에서 제외된 기능을 미리 구현하지는 않습니다.
+과거 Mock Core MVP와 첫 App Store 공개 출시 범위를 구분합니다. 구현 여부는 이 기술 문서의 오래된 목록이 아니라 승인된 Task와 `CookLog_MVP_SCOPE.md`를 따릅니다.
 
 핵심 원칙:
 
@@ -21,20 +21,21 @@ MVP에서 제외된 기능도 향후 추가나 교체가 쉬운 구조를 목표
 - AI는 `AI 정리하기` 시점에만 호출한다.
 - ViewModel은 SwiftData, Speech, AVFoundation, 실제 AI API에 직접 의존하지 않는다.
 - 도메인 모델은 저장소 구현과 분리한다.
-- MVP 제외 기능은 구현하지 않되, 교체 지점과 모델 확장성은 고려한다.
+- 제품 범위를 기술 편의로 축소하지 않고 Task가 요구한 교체 지점과 모델 확장성을 고려한다.
 
 ## 2. 확정 기술 기준
 
 - 언어: Swift
 - UI: SwiftUI
 - 아키텍처: Feature 중심 MVVM + UseCase + Repository/DataSource
-- Xcode 기준: 15.2
+- 현재 CI 검증 Xcode: 26.6 (`macos-26`)
+- 과거 프로젝트 생성 Xcode: 15.2, 현재 호환성 미보장
 - 최소 iOS 버전: iOS 17 이상
 - 로컬 저장: SwiftData
 - 음성 입력: Apple Speech
 - 오디오 안내: `AVSpeechSynthesizer`
-- AI 정리: `RecipeGenerationRepository`와 `RecipeAIDataSource` 뒤의 Mock 구현 우선
-- 실제 AI API: MVP 화면 흐름 완성 후 연결 검토
+- AI 정리: `RecipeGenerationRepository`와 `RecipeAIDataSource` 경계 유지, 첫 공개 출시는 Backend 연동
+- 실제 AI API: 앱 직접 호출 금지, 승인된 Backend 계약 사용
 - 테스트: 도메인 로직과 서비스 Mock 중심의 Unit Test 우선
 
 ## 3. 확정된 추가 결정
@@ -103,25 +104,14 @@ apps/ios/
 └── CookLogTests/
 ```
 
-## 6. MVP에서 구현하지 않는 기능
+## 6. 제품 범위 참조
 
-- 로그인
-- 회원가입
-- 서버 저장
-- 동기화
-- 커뮤니티
-- 공유
-- 블로그 Import
-- 유튜브 Import
-- 이미지 OCR
-- AI 챗
-- 음성 명령
-- 백그라운드 오디오
-- 복잡한 디자인 시스템
-- 레시피 검색
-- 작성 중 세션 영구 저장
+- Core MVP와 첫 App Store 공개 출시 포함·제외: `../../../docs/product/CookLog_MVP_SCOPE.md`
+- 상세 상태·저장·오류·핸즈프리 계약: `../../../docs/product/CookLog_PRD_v2.md`
+- 실행 순서: `../../../docs/product/CookLog_ROADMAP.md`와 개별 Task
+- 로컬 검색, 진행 기록 저장과 공개 출시 핸즈프리는 현재 제품 문서와 Task에 따라 구현하며 과거 제외 목록을 적용하지 않습니다.
 
-확장 대비만 하는 항목:
+기술 확장 지점:
 
 - `RecipeSource`
 - `RecipeGenerationInput`
@@ -130,7 +120,7 @@ apps/ios/
 - Repository/DataSource/Service 프로토콜
 - 도메인 모델과 SwiftData 모델 분리
 
-## 7. 첫 구현 순서
+## 7. 과거 첫 구현 순서
 
 1. SwiftUI 프로젝트 생성
 2. 도메인 모델 작성
@@ -145,6 +135,8 @@ apps/ios/
 11. SwiftData 저장소 구현
 12. Apple Speech 실제 구현 연결
 13. 실제 AI API 연결 검토
+
+현재 첫 공개 출시 구현은 위 과거 순서가 아니라 최신 Roadmap과 개별 Task를 따릅니다.
 
 ## 8. 참고 공식 문서
 

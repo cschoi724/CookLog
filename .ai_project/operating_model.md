@@ -220,8 +220,10 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | 테스트/QA | `apps/ios/docs/TESTING.md`, `apps/ios/docs/MANUAL_QA_CHECKLIST.md` |
 | 공통 결정 | `docs/PROJECT_DECISIONS.md` |
 | 변경 이력 | `docs/PROJECT_CHANGELOG.md` |
-| Backend 아키텍처/API | `unresolved`, 생성 후보 |
-| Figma 원본 | `unresolved`, 링크 등록 후보 |
+| Backend 런타임·AI provider 추천안 | `apps/backend/docs/ARCHITECTURE_DECISION.md` |
+| Backend 공통 API 계약 | `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/` |
+| UI/UX 원본 | `design/prototype/`, `design/figma-build/manifest.json` |
+| Figma 미러 | [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn) |
 
 세부 기준은 `.ai_project/source_of_truth.md`를 따른다.
 
@@ -243,12 +245,13 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 
 | 질문 | 상태 | 결정 필요 시점 |
 |---|---|---|
-| Figma 원본 링크 | unresolved | Design Team 첫 실행 전 |
-| Backend 코드 경로와 API 계약 문서 | to_create_candidate | Backend 구현 Task 승인 전 |
-| CI 구성과 필수 check | `ios-build` 우선, `ios-xctest` 승격 대기 | `T-20260728-008` 구축 및 저장소 적용 승인 전 |
+| Figma 원본 링크 | resolved, 로컬 Prototype 원본·Figma 미러 | - |
+| Backend runtime·AI provider | T-020 추천안 완료, Product Owner 최종 선택 대기 | 실제 provider 계약·배포 전 |
+| Backend 공통 API 계약 | T-021 산출물·QA develop 통합, Task 완료 검토 중 | 후속 T-022~025 실행 전 |
+| CI 구성과 필수 check | `ios-build`, `ios-xctest` workflow 구현 완료, branch protection 적용 대기 | `T-20260730-005~006` 검증·승인 후 |
 | Android Workstream 활성화 | deferred | iOS 우선 이정표 완료 후 |
 | Release Role 활성화 | inactive | TestFlight 또는 운영 배포 준비 전 |
-| 기존 `agents.md`와 adapter 지침 병합 | needs_user_decision | 후속 운영 Task |
+| 루트·플랫폼 안내 문서 정합성 | T-20260731-001 실행 중 | Product QA 인계 전 |
 | `docs/GIT_WORKFLOW.md`와 새 전략 동기화 | resolved by `T-20260728-007` | - |
 
 ## 15. 변경 이력
@@ -259,3 +262,4 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | 2026-07-28 | Design Lead/Execution 분리와 Team 하위 Task/제품 상위 Task 완료 권한 범위 추가 |
 | 2026-07-28 | 일반 Task는 `develop`, 안정·릴리즈 승격은 `main`을 사용하는 통합 브랜치 운영으로 전환 |
 | 2026-07-28 | `T-20260728-007` 승인 기준으로 Task branch·PR·초기 CI check와 merge gate 확정 |
+| 2026-07-31 | T-20260731-001에서 UI/UX 원본, Backend 추천안·계약 경계와 CI 현재 상태를 최신화 |

@@ -2,6 +2,13 @@
 
 이 문서는 iOS 앱 개발 변경 기록을 관리합니다.
 
+## 2026-07-31
+
+- iOS Agent 안내를 제품 세부 범위 복제 없이 Task·제품·Design Source of Truth 참조 중심으로 재구성했습니다.
+- 과거 Mock Core MVP 계획·스펙·결정과 첫 App Store 공개 출시 범위를 명확히 분리했습니다.
+- 로컬 검색, 진행 기록 저장과 핸즈프리를 과거 제외 기능으로 오인하지 않도록 활성 문서를 갱신했습니다.
+- `ios-build`, `ios-xctest` hosted 검증과 현재 CI Xcode·Simulator 기준을 상태 문서에 반영했습니다.
+
 ## 2026-07-28
 
 - T-20260728-004에서 `CookLogTests`의 scheme 병렬 실행을 비활성화했습니다.

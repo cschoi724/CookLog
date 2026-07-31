@@ -1,27 +1,34 @@
 # CookLog iOS Status
 
-최종 업데이트: 2026-07-28
+최종 업데이트: 2026-07-31
 
 ## 현재 상태
 
-- 상태: M8 MVP 흐름 검증과 마무리 정리 진행
+- 상태: Mock Core MVP 조건부 통과, 첫 공개 출시 Foundation 구현 중
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
-- 프로젝트 기준 Xcode: 15.2
+- 현재 CI 기준 Xcode: 26.6 (`17F113`)
+- 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: M8. MVP 정리와 검증
+- 현재 이정표: Design 완료 대기와 iOS 첫 공개 출시 구현 준비
 - scheme: `CookLog`
-- 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
+- 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
+- CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. 실제 기기 또는 사람 손 입력으로 AI Review의 재료명/양, STEP 본문, 예상 시간, 메모 문자열 수정과 키보드 가림을 최종 확인
-2. 2단계 이상 저장 레시피에서 Audio Player 이전/다음 단계 이동을 수동 확인
-3. 필요 시 M8에서 발견된 작은 UI 문구/레이아웃 보정
-4. T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정하고 `Scripts/run-xctest.sh`를 재검증
+1. Design T-20260729-012~014 완료 후 T-20260728-003 iOS 로컬 제품 적용 scope
+2. T-20260729-004 Apple 기기 내 STT 구현과 실제 기기 품질 검증
+3. Backend 계약 이후 T-20260729-005 AI 정리·Review 실서비스 연동
+4. T-20260729-006 로컬 TTS·핸즈프리 Audio Guide 구현
+5. CI T-20260730-004~006 진단·dry run·required check 적용
 
 ## 최근 작업
 
+- T-20260730-001에서 `macos-26`, Xcode 26.6, iPhone 17·iOS 26.5 CI 계약을 확정했습니다.
+- T-20260730-002와 T-20260730-003에서 `ios-build`, `ios-xctest` workflow를 구현하고 GitHub-hosted check·33/33·artifact를 검증했습니다.
+- T-20260730-007에서 iOS 26.5 SwiftData XCTest crash를 수정하고 iOS 26.5·17.2 전체 33/33을 확인했습니다.
+- 아래 항목은 Mock Core MVP부터 이어진 구현·검증 이력이며 현재 다음 작업을 의미하지 않습니다.
 - T-20260728-004에서 공유 scheme의 XCTest 병렬 실행을 비활성화했습니다.
 - `Scripts/run-xctest.sh`를 추가해 단일 worker, 600초 제한, 로그와 `xcresult` 보존을 표준화했습니다.
 - unmanaged SwiftData relationship 접근으로 crash하던 `RecipePersistenceMapperTests`를 in-memory `ModelContainer` 조건으로 수정했습니다.
@@ -33,10 +40,10 @@
 - iOS 개발 문서를 `apps/ios/docs/`로 이동했습니다.
 - iOS 전담 개발 세션 기준을 `apps/ios/agents.md`에 정리했습니다.
 - 향후 확장을 고려한 iOS 개발 스펙을 작성했습니다.
-- 현재 개발 Mac 기준으로 Xcode 15.2를 개발 기준으로 확정했습니다.
+- Core MVP 당시 Xcode 15.2를 프로젝트 생성 기준으로 정했습니다.
 - 최소 iOS 버전을 iOS 17 이상으로 확정했습니다.
 - MVP 로컬 저장은 SwiftData로 바로 시작하기로 확정했습니다.
-- 레시피 검색은 MVP에서 제외하고 보류하기로 결정했습니다.
+- Core MVP 당시 레시피 검색을 보류했으며 첫 공개 출시에는 최신 제품 결정에 따라 제목·재료명 로컬 검색을 포함합니다.
 - STT 실패 시 사용자 텍스트 입력 fallback은 제공하지 않고 다시 녹음/권한 안내를 제공하기로 결정했습니다.
 - 실제 AI API는 앱 직접 호출을 피하고 추후 백엔드 프록시 방식을 우선 검토하기로 결정했습니다.
 - 프로젝트는 Xcode에서 직접 생성하기로 결정했습니다.
@@ -153,7 +160,7 @@
 
 ## 열린 질문
 
-- T-20260728-008에서 CI가 사용할 Xcode와 Simulator 버전을 명시하고 표준 XCTest 스크립트와 artifact 생성 절차를 재검증해야 합니다.
+- CI 환경·build·XCTest workflow는 완료됐고 T-20260730-004~006의 진단·dry run·required check 적용이 남아 있습니다.
 - Xcode 15.2 설치본 부재 위험은 Product Owner가 수용했으며 Xcode 15.2 호환성을 보장하지 않습니다.
 
 ## 세션 시작 체크리스트
