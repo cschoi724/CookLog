@@ -20,8 +20,8 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `in_progress` | 1 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
-| `verification_passed` | 1 |
-| `completion_review` | 0 |
+| `verification_passed` | 0 |
+| `completion_review` | 1 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
 | `done` | 21 |
@@ -31,13 +31,13 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Development Board Backend 상위 요약 정렬과 전체 무회귀 독립 재검증을 `PASS`해 Product Lead 완료 검토 대기 상태입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. Backend T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다. CI T-001~004는 `done`, T-005~006은 후속 승인·검증 대상입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`와 Product Lead 완료 검토를 수용해 `completion_review`이며 Product Owner 최종 완료 승인 대기 상태입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. Backend T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다. CI T-001~004는 `done`, T-005~006은 후속 승인·검증 대상입니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
-| Product | 0 | 1 | 0 | `.ai_project/teams/product/task_board.md` |
+| Product | 1 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 4 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
@@ -66,7 +66,7 @@ Team별 요약:
 | `T-20260729-006` | P0 | iOS 로컬 TTS·오디오 중단·핸즈프리 Audio Guide 구현 | Development Lead Agent | `T-20260728-003` |
 | `T-20260729-007` | P1 | Product QA Agent 운영 등록과 루트 제품 안내 동기화 | AI Ops Agent | T-001 재작업에서 등록 범위 충족, 중복 범위 재조정·폐기 검토 |
 | `T-20260729-026` | P0 | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | - | `done`, Product QA PASS·Product Owner 최종 승인 |
-| `T-20260731-001` | P0 | 활성 문서 Source of Truth 정합성 복구 | Product Lead Agent | `verification_passed`, Product QA `PASS`·완료 검토 대기 |
+| `T-20260731-001` | P0 | 활성 문서 Source of Truth 정합성 복구 | Product Lead Agent | `completion_review`, Product Owner 최종 완료 승인 대기 |
 
 Design `T-20260729-002` 하위 실행 후보:
 
@@ -248,3 +248,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-31 | Product QA 재재검증에서 T-004 해소를 확인했으나 Development Board Backend 상위 요약이 T-022 `done`·T-023·024 `approved`를 반영하지 않아 `rework_requested`로 재인계 |
 | 2026-07-31 | Product Owner 승인으로 Development Board Backend 상위 요약을 T-020~022 `done`, T-023·024 `approved`, T-025 선행 대기로 정렬하고 Product QA 재검증 재인계 |
 | 2026-07-31 | Product QA가 PQA-HIGH-031-001~004 최종 해소와 전체 무회귀를 확인해 `PASS`·`verification_passed`로 Product Lead 완료 검토에 인계 |
+| 2026-07-31 | Product Lead가 QA PASS·허용 경로·최신 develop 정렬을 수용해 `completion_review`로 전환하고 Product Owner 최종 승인 대기 |

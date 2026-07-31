@@ -16,7 +16,7 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
-| `T-20260731-001` | `verification_passed` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | 최종 `PASS`, Product Lead 완료 검토 |
+| `T-20260731-001` | `completion_review` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product Lead 완료 검토 수용·Product Owner 최종 승인 대기 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 
@@ -67,6 +67,8 @@ Product QA 최종 독립 재검증에서 Backend 상위 행·현재 요약·개�
 일치, T-004 무회귀와 기존 PQA-HIGH-031-001·004·PQA-MEDIUM-031-003 해소를
 확인했습니다. Task graph·허용 경로·계약 검증도 통과해 `PASS`,
 `verification_passed`로 Product Lead 완료 검토에 인계했습니다.
+Product Lead는 QA 증빙과 성공 기준을 수용해 `completion_review`로 전환했으며
+Product Owner의 명시적 최종 완료 승인을 기다립니다.
 
 `T-20260729-021`은 Backend QA 독립 검증에서 최초 설치 challenge의 동시 소비 원자성
 누락과 오류 `title/detail` 내부의 provider detail·secret·원문 비노출을 schema가
