@@ -10,7 +10,7 @@
 | `T-20260728-001` | `cancelled` | iOS | iOS M8 잔여 안정화와 최종 검증 | - | - | 유효 항목 T-003/T-009 통합 |
 | `T-20260728-003` | `proposed` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` | 7개 iOS 하위 패키지 scope |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
-| `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | T-020~023 `done`, T-024·025 `approved` |
+| `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | T-020~023 `done`, T-024 QA 인계, T-025 승인·T-024 선행 대기 |
 | `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` | 선행 Task 대기 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
 | `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~005 완료, T-006 별도 승인 대기 |
@@ -23,10 +23,14 @@
 | `T-20260729-021` | `done` | Backend | 공통 API·인증·제한·오류 계약 | - | `T-20260729-026` 완료 | PR #32 squash merge·완료 확정 |
 | `T-20260729-022` | `done` | Backend | 기본 비활성 원격 STT adapter 계약 | - | `T-20260729-021`, `026` 완료 | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260729-023` | `done` | Backend | AI recipe job·상태 조회·결과 복구 계약 | - | `T-20260729-020`, `021` 완료 | 완료 검토·Product Owner 승인 완료, T-025 인계 |
-| `T-20260729-024` | `approved` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
+| `T-20260729-024` | `verification_ready` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend QA Agent | `T-20260729-020`, `021` 완료 | 자체 검증 완료, Backend QA 독립 검증 |
 | `T-20260729-025` | `approved` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | Product Owner 실행 승인, T-024 완료 후 Backend Agent 착수 |
 
-`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. T-020 런타임·provider 추천안, T-021 공통 API 계약, T-022 기본 비활성 원격 STT 계약과 T-023 AI recipe job 계약은 `done`입니다. T-024·025는 Product Owner 실행 승인을 받은 `approved`이며 T-025는 T-024 완료 후 착수합니다. 원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지합니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
+T-020~023은 `done`이고 T-024는 자체 검증 후 Backend QA 독립 검증에 인계했습니다.
+T-025는 Product Owner 실행 승인을 받았으며 T-024 완료 후 착수합니다. 원격 STT는
+T-022의 기본 비활성 문서 계약으로만 유지합니다. 일반 개발 Task는 최신 `develop`
+기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
 Backend QA가 `T-20260729-021`에서 최초 설치 challenge의 동시 소비 원자성 누락
 `QA-HIGH-021-001`, 오류 허용 문자열 내부 민감정보 비노출을 기계적으로 보장하지 못하는
@@ -113,6 +117,11 @@ Development Lead가 QA 결과를 고정한 뒤 최신 develop 위로 재정렬�
 PR #26의 `ios-build` 통과와 squash merge SHA `a8e3a8a`를 확인해 T-020을
 `done`으로 확정했습니다. T-021도 `done`이므로 T-023·T-024의 Task 선행 조건은
 해소됐지만 별도 Product Owner 실행 승인을 계속 기다립니다.
+
+T-024는 secret 최소 권한·회전, 콘텐츠·secret telemetry 0건, raw metadata 최대
+30일, provider 지역·학습·보관 activation gate와 호출 전 원자 비용 예약을 계약으로
+고정했습니다. Firestore TTL 삭제가 무료 할당량 대상이 아닌 유료 safety net임을
+명시하고 자체 검증을 통과해 Backend QA 독립 검증에 인계합니다.
 
 | `T-20260730-001` | `done` | CI | 환경·명령·check 계약 | - | `T-004`, `T-007` 완료 | PR #20 squash merge·완료 확정 |
 | `T-20260730-002` | `done` | CI | ios-build workflow | - | `T-20260730-001` 완료 | PR #24 squash merge·hosted check 통과·완료 확정 |

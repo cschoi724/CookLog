@@ -22,6 +22,7 @@
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260730-005` | `done` | iOS CI PR dry run·실패 감지·회귀 검증 | 최신 PR #36 33/33, #37~#39 실패 65·timeout 124·취소·artifact | PR #36 squash merge `a5c6503`·완료 확정 |
 | `T-20260729-023` | `done` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | 완료 확정, PASS_WITH_RISK 잔여 위험은 staging 인계 |
+| `T-20260729-024` | `verification_ready` | Backend 보안·개인정보·관측성·비용 guardrail | secret·콘텐츠 0건, provider gate, 보존·삭제, 비용 hard cutoff·incident | Backend QA 독립 검증 |
 
 향후 검증 예정 Task:
 
@@ -31,7 +32,6 @@
 | `T-20260728-005` | Backend | Backend QA Agent | API 계약, 보안, 개인정보 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
-| `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |
 
@@ -118,6 +118,12 @@ quota 생성 전 HTTP 429 단일 경계를 확인했습니다. 기존 provider �
 idempotency, invalid output 차단과 22/24시간 삭제 계약에도 회귀가 없어
 `PASS_WITH_RISK`, `verification_passed`로 인계했습니다. 실제 runtime validator·CAS와
 staging cleanup SLA는 T-025 및 후속 구현 검증에서 확인합니다.
+
+`T-20260729-024`는 Secret Manager·service account 권한 분리와 회전, 콘텐츠·secret의
+모든 telemetry 계층 0건, raw metadata 최대 30일, provider 지역·학습·보관 설정
+activation gate를 계약으로 고정했습니다. 월 호출·token·비용은 provider 호출 전에
+원자 예약하고 hard cutoff를 우회할 수 없습니다. Backend QA는 합성 canary,
+동시 예약, 삭제 시각과 incident kill switch를 독립 검증합니다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 

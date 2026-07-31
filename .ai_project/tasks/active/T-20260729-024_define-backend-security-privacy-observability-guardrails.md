@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-024
 title: Backend 보안·개인정보·관측성·비용 guardrail 정의
-status: approved
+status: verification_ready
 type: docs
 priority: P0
 priority_reason: 사용자 콘텐츠와 provider 비용을 로그·장애·abuse 경계에서 보호해야 한다.
@@ -11,28 +11,28 @@ team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
 target_agent: Backend Agent
-target_role: Execution Role
+target_role: Verification Role
 required_capabilities:
-  - backend_architecture
-  - api_contract
+- backend_architecture
+- api_contract
 depends_on:
-  - T-20260729-020
-  - T-20260729-021
+- T-20260729-020
+- T-20260729-021
 blocks:
-  - T-20260728-005
-  - T-20260729-025
+- T-20260728-005
+- T-20260729-025
 parallel_group: backend-contract-foundation
 allowed_paths:
-  - apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md
-  - .ai_project/tasks/backlog/T-20260729-024_define-backend-security-privacy-observability-guardrails.md
-  - .ai_project/tasks/active/T-20260729-024_define-backend-security-privacy-observability-guardrails.md
-  - .ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md
-  - .ai_project/qa/T-20260729-024_define-backend-security-privacy-observability-guardrails-qa.md
-  - .ai_project/teams/development/task_board.md
-  - .ai_project/teams/quality/task_board.md
+- apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md
+- ".ai_project/tasks/backlog/T-20260729-024_define-backend-security-privacy-observability-guardrails.md"
+- ".ai_project/tasks/active/T-20260729-024_define-backend-security-privacy-observability-guardrails.md"
+- ".ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md"
+- ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observability-guardrails-qa.md"
+- ".ai_project/teams/development/task_board.md"
+- ".ai_project/teams/quality/task_board.md"
 source_of_truth:
-  - docs/product/CookLog_PRD_v2.md
-  - docs/PROJECT_DECISIONS.md
+- docs/product/CookLog_PRD_v2.md
+- docs/PROJECT_DECISIONS.md
 created_by: Development Lead Agent
 approved_by: Product Owner
 locked_by:
@@ -40,9 +40,9 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
-updated_at: 2026-07-31
-report_to: .ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md
-qa_to: .ai_project/qa/T-20260729-024_define-backend-security-privacy-observability-guardrails-qa.md
+updated_at: '2026-07-31'
+report_to: ".ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md"
+qa_to: ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observability-guardrails-qa.md"
 ---
 
 # Backend 보안·개인정보·관측성·비용 guardrail 정의
@@ -80,3 +80,6 @@ qa_to: .ai_project/qa/T-20260729-024_define-backend-security-privacy-observabili
 |---|---|---|---|
 | 2026-07-31 | Product Owner | transition: proposed -> approved | T-020·T-021 완료 후 보안·개인정보·관측성·비용 guardrail 실행 승인 |
 | 2026-07-31 | Development Lead Agent | approve parallel execution | T-022·T-023과 독립 산출물 병렬 실행, 공용 보드 직렬 통합 기준 확정 |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | 승인된 보안·개인정보·관측성·비용 guardrail 계약 작성 시작 |
+| 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | 보안·개인정보·관측성·비용 guardrail 계약 작성 및 자체 검증 완료, Backend QA 독립 검증 인계 |
