@@ -2,7 +2,7 @@
 
 작성일: 2026-07-30
 작성자: Backend Agent
-상태: completion_review
+상태: done
 
 ## 결과
 
@@ -207,3 +207,15 @@ Backend QA 결과를 커밋 `85c6d0f`로 고정하고 최신 `origin/develop` �
 
 Development Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로
 전환한다. `develop` 대상 PR 병합 후 `done`으로 확정한다.
+
+## 완료
+
+- PR: [#26](https://github.com/cschoi724/CookLog/pull/26)
+- merge SHA: `a8e3a8a6353b51da7cda953eeacb9e40f53841ea`
+- GitHub Actions run: `30595092548`
+- check: `ios-build` 성공
+- 병합 방식: `develop` 대상 squash merge
+
+Development Lead가 PR 통합과 merge SHA를 확인해 `done`으로 확정했다.
+T-20260729-023·024에 대한 T-020 선행 조건은 해소됐으며, 남은
+T-20260729-021 의존성과 별도 실행 승인은 유지한다.
