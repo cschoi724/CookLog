@@ -821,3 +821,120 @@ preflight와 전체 XCTest가 성공했습니다.
 
 hosted 일반 실패 65와 timeout 124·`TIMED_OUT` 구분은
 `T-20260730-005`의 실패 PR dry run에서 확인합니다.
+
+## 18. T-20260730-004 CI 실행 통합
+
+`ios-build`와 `ios-xctest`의 check 이름과 실행 책임은 유지하면서 PR별
+concurrency, 공통 환경 진단, Step Summary와 artifact 계약을 통합했습니다.
+
+공식 기준:
+
+- GitHub는 같은 concurrency group에서 새 실행이 시작될 때
+  `cancel-in-progress: true`로 진행 중인 이전 실행을 취소할 수 있으며, 여러
+  workflow가 서로 취소되지 않도록 group에 `github.workflow`를 포함할 것을
+  안내합니다.
+  [GitHub concurrency 문서](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency)
+- dependency cache는 lockfile hash처럼 입력 의존성을 식별하는 key와 재사용할
+  실제 dependency 경로가 있어야 합니다. cache에는 민감정보를 넣지 않아야
+  합니다.
+  [GitHub dependency caching 문서](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching)
+
+### 18.1 concurrency 격리
+
+두 workflow는 다음 group을 사용합니다.
+
+```yaml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+```
+
+| 실행 | group 예시 | 취소 관계 |
+|---|---|---|
+| `ios-build`, PR 42 | `ios-build-pull_request-42` | 같은 workflow·PR의 이전 실행만 취소 |
+| `ios-build`, PR 43 | `ios-build-pull_request-43` | PR 42와 독립 |
+| `ios-xctest`, PR 42 | `ios-xctest-pull_request-42` | `ios-build`와 독립 |
+| `workflow_dispatch`, `develop` | `<workflow>-workflow_dispatch-refs/heads/develop` | 같은 workflow·수동 branch 실행만 취소 |
+
+workflow 이름, event와 PR 번호 또는 전체 ref를 모두 포함하므로 다른 PR,
+다른 branch와 두 required check가 서로를 취소하지 않습니다.
+
+### 18.2 공통 preflight와 진단
+
+중복된 환경 검증을 `.github/actions/prepare-ios-ci/action.yml`로 통합했습니다.
+
+- 실행별 `${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}`를
+  유지한다.
+- Xcode 26.6 (`17F113`)과 iPhone 17·iOS 26.5를 fail-fast 검증한다.
+- workflow, event, ref, SHA, run·attempt, runner OS·architecture, destination,
+  cache 정책, `sw_vers`, root disk 사용량과 Simulator 목록을
+  `ci-environment.log`에 기록한다.
+- token, secret, 전체 environment dump, 음성 또는 사용자 입력은 기록하지
+  않는다.
+
+`.github/actions/summarize-ios-ci/action.yml`은 성공·실패와 무관하게 다음을
+GitHub Step Summary와 `ci-summary.md`에 기록합니다.
+
+- check 결과
+- event, ref, SHA, run·attempt
+- cache 정책
+- 실제 생성된 진단 artifact 목록
+
+summary 생성은 원래 build·test 실패를 덮어쓰지 않도록 항상 종료 코드 0으로
+끝납니다.
+
+### 18.3 cache 결정
+
+2026-07-31 기준 `apps/ios/`에는 `Package.resolved`, CocoaPods·Carthage
+lockfile, Xcode remote package reference가 없습니다. 따라서 hash로 무효화할
+dependency cache와 재사용할 dependency download 경로가 없으며
+`actions/cache`를 추가하지 않습니다.
+
+- 현재 정책: `disabled-no-dependency-lockfile`
+- DerivedData: 실행별 임시 경로만 사용하고 workflow 간 cache 금지
+- lockfile이 추가되더라도 자동 cache하지 않고 측정·비회귀 검증 뒤 별도
+  변경으로 승인
+- 공통 preflight는 lockfile이 감지되면
+  `disabled-pending-measured-verification`으로 진단해 무검증 cache 도입을
+  방지
+
+이는 “검증된 최소 cache만 적용” 기준에서 현재 안전한 최소값이 cache 없음임을
+명시한 결정입니다.
+
+### 18.4 artifact
+
+| check | 기존 결과물 | 추가 진단 | 보존 |
+|---|---|---|---|
+| `ios-build` | build log 2개 | `ci-environment.log`, `ci-summary.md` | 14일 |
+| `ios-xctest` | log, 조건부 xcresult·`TIMED_OUT` | `ci-environment.log`, `ci-summary.md` | 14일 |
+
+DerivedData는 두 artifact에서 계속 제외합니다. preflight에서 실패해 build
+log가 생성되지 않아도 환경 진단과 summary가 있으면 업로드하며, 아무 파일도
+없으면 upload step은 경고만 남겨 원래 결과를 바꾸지 않습니다.
+
+### 18.5 개발자 검증
+
+로컬 Xcode 설치 경로만 `/Applications/Xcode.app`으로 치환해 공통 action을
+실행했습니다.
+
+- Xcode 26.6 (`17F113`)·iPhone 17·iOS 26.5 preflight: 종료 코드 0
+- `ci-environment.log`: 생성
+- cache 정책: `disabled-no-dependency-lockfile`
+- hosted 고정 경로 누락 재현: 종료 코드 1과 누락 경로 진단 보존
+- summary action: 종료 코드 0, Step Summary·`ci-summary.md` 생성
+
+cache 미적용 회귀:
+
+- `xcodebuild build`: 성공, 종료 코드 0
+- `xcodebuild build-for-testing`: 성공, 종료 코드 0
+- `run-xctest.sh`: 33/33 통과, 종료 코드 0
+- 정상 xcresult 존재, `TIMED_OUT` 없음
+
+검증 artifact:
+
+- `/private/tmp/cooklog-t004-action-validation/`
+- `/private/tmp/cooklog-t004-build-regression-20260731-1101/`
+- `/private/tmp/cooklog-t004-xctest-regression-20260731-1102/`
+
+실제 같은 PR 재실행 취소와 GitHub-hosted artifact·Step Summary는 T-004 PR과
+후속 T-005 dry run에서 독립 검증합니다.

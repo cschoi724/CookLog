@@ -1,0 +1,89 @@
+name: Prepare iOS CI
+description: 고정 Xcode·Simulator 계약을 검증하고 안전한 진단 로그를 생성합니다.
+
+inputs:
+  artifact-subdirectory:
+    description: CI 실행 루트 아래 artifact 하위 디렉터리
+    required: true
+  destination:
+    description: 검증할 고정 xcodebuild destination
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Verify environment
+      shell: bash
+      env:
+        ARTIFACT_SUBDIRECTORY: ${{ inputs.artifact-subdirectory }}
+        IOS_CI_DESTINATION: ${{ inputs.destination }}
+      run: |
+        set -euo pipefail
+
+        case "${ARTIFACT_SUBDIRECTORY}" in
+          ios-build|ios-xctest) ;;
+          *)
+            echo "Unsupported artifact subdirectory: ${ARTIFACT_SUBDIRECTORY}" >&2
+            exit 2
+            ;;
+        esac
+
+        COOKLOG_CI_ROOT="${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+        artifact_root="${COOKLOG_CI_ROOT}/${ARTIFACT_SUBDIRECTORY}"
+        diagnostics_path="${artifact_root}/ci-environment.log"
+        mkdir -p "${artifact_root}"
+
+        if find apps/ios -name Package.resolved -type f -print -quit | grep -q .; then
+          CI_CACHE_POLICY="disabled-pending-measured-verification"
+        else
+          CI_CACHE_POLICY="disabled-no-dependency-lockfile"
+        fi
+
+        printf 'COOKLOG_CI_ROOT=%s\n' "${COOKLOG_CI_ROOT}" >> "${GITHUB_ENV}"
+        printf 'CI_CACHE_POLICY=%s\n' "${CI_CACHE_POLICY}" >> "${GITHUB_ENV}"
+        if [[ "${ARTIFACT_SUBDIRECTORY}" == "ios-xctest" ]]; then
+          printf 'COOKLOG_XCTEST_ARTIFACT_ROOT=%s\n' "${artifact_root}" >> "${GITHUB_ENV}"
+        fi
+
+        {
+          printf 'workflow=%s\n' "${GITHUB_WORKFLOW}"
+          printf 'event=%s\n' "${GITHUB_EVENT_NAME}"
+          printf 'ref=%s\n' "${GITHUB_REF}"
+          printf 'sha=%s\n' "${GITHUB_SHA}"
+          printf 'run_id=%s\n' "${GITHUB_RUN_ID}"
+          printf 'run_attempt=%s\n' "${GITHUB_RUN_ATTEMPT}"
+          printf 'runner_os=%s\n' "${RUNNER_OS}"
+          printf 'runner_arch=%s\n' "${RUNNER_ARCH}"
+          printf 'destination=%s\n' "${IOS_CI_DESTINATION}"
+          printf 'cache_policy=%s\n' "${CI_CACHE_POLICY}"
+          sw_vers
+          uname -m
+          df -h /
+        } 2>&1 | tee "${diagnostics_path}"
+
+        if [[ ! -d /Applications/Xcode_26.6.app ]]; then
+          echo "Missing /Applications/Xcode_26.6.app" | tee -a "${diagnostics_path}" >&2
+          exit 1
+        fi
+
+        xcode_version="$(xcodebuild -version)"
+        printf '%s\n' "${xcode_version}" | tee -a "${diagnostics_path}"
+        grep -Fxq 'Xcode 26.6' <<<"${xcode_version}"
+        grep -Fxq 'Build version 17F113' <<<"${xcode_version}"
+
+        xcrun simctl list runtimes available 2>&1 \
+          | tee -a "${diagnostics_path}"
+        xcrun simctl list devices available 2>&1 \
+          | tee -a "${diagnostics_path}"
+        xcrun simctl list devices available -j \
+          | jq -e '
+              .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-5"]
+              | any(.name == "iPhone 17" and .isAvailable == true)
+            '
+
+        xcodebuild \
+          -project apps/ios/CookLog.xcodeproj \
+          -scheme CookLog \
+          -destination "${IOS_CI_DESTINATION}" \
+          -showdestinations 2>&1 \
+          | tee -a "${diagnostics_path}"

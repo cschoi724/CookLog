@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-004
 title: iOS CI concurrency·진단·cache·artifact 통합
-status: approved
+status: verification_ready
 type: feature
 priority: P1
 priority_reason: 중복 실행 비용을 줄이고 실패 원인을 보존하되 불안정한 cache를 피해야 한다.
@@ -10,11 +10,11 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS Agent
-target_role: Execution Role
+target_agent: iOS QA Agent
+target_role: Verification Role
 required_capabilities:
-  - ios_implementation
-  - developer_verification
+  - ios_qa
+  - regression_test
 depends_on:
   - T-20260730-002
   - T-20260730-003
@@ -80,3 +80,20 @@ qa_to: .ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-c
 |---|---|---|---|
 | 2026-07-31 | Product Owner | transition: proposed -> approved | concurrency·진단·cache·artifact 통합 실행 승인 |
 | 2026-07-31 | Development Lead Agent | prepare execution branch | 최신 origin/develop a3d1853 기반 전용 worktree와 Task 브랜치 준비 |
+| 2026-07-31 | iOS Agent | transition: approved -> in_progress | 공통 preflight·진단·요약, PR별 concurrency와 cache 적격성 검증 구현 시작 |
+| 2026-07-31 | iOS Agent | transition: in_progress -> verification_ready | PR별 concurrency, 공통 진단·summary·artifact, cache 미적용 결정과 build·XCTest 회귀 검증 완료 |
+
+## 실행 결과
+
+- 두 workflow에 workflow·event·PR 번호 또는 ref 기반 concurrency group을
+  적용해 같은 PR의 이전 실행만 check별로 취소한다.
+- 환경 preflight와 안전한 진단 로그 생성을 공통 composite action으로
+  통합했다.
+- 성공·실패 결과, cache 정책과 artifact 목록을 Step Summary와
+  `ci-summary.md`로 남긴다.
+- 기존 build·XCTest artifact에 `ci-environment.log`, `ci-summary.md`를
+  추가하고 14일 보존과 DerivedData 제외를 유지했다.
+- dependency lockfile과 외부 package가 없어 cache는 적용하지 않았으며
+  정책을 `disabled-no-dependency-lockfile`로 명시했다.
+- cache 미적용 상태에서 build, build-for-testing과 전체 XCTest 33/33이
+  모두 종료 코드 0으로 통과했다.
