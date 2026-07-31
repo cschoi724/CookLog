@@ -22,7 +22,7 @@
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260730-005` | `done` | iOS CI PR dry run·실패 감지·회귀 검증 | 최신 PR #36 33/33, #37~#39 실패 65·timeout 124·취소·artifact | PR #36 squash merge `a5c6503`·완료 확정 |
 | `T-20260729-023` | `done` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | 완료 확정, PASS_WITH_RISK 잔여 위험은 staging 인계 |
-| `T-20260729-024` | `verification_ready` | Backend 보안·개인정보·관측성·비용 guardrail | secret·콘텐츠 0건, provider gate, 보존·삭제, 비용 hard cutoff·incident | Backend QA 독립 검증 |
+| `T-20260729-024` | `approved` | Backend 보안·개인정보·관측성·비용 guardrail | secret·콘텐츠 0건, provider gate, 보존·삭제, 비용 hard cutoff·incident | Backend Agent 재작업 후 QA 독립 재검증 |
 
 향후 검증 예정 Task:
 
@@ -124,6 +124,14 @@ staging cleanup SLA는 T-025 및 후속 구현 검증에서 확인합니다.
 activation gate를 계약으로 고정했습니다. 월 호출·token·비용은 provider 호출 전에
 원자 예약하고 hard cutoff를 우회할 수 없습니다. Backend QA는 합성 canary,
 동시 예약, 삭제 시각과 incident kill switch를 독립 검증합니다.
+
+최신 `origin/develop` `0014935` 기준 독립 검증에서 secret·telemetry 비노출,
+AI·Remote STT 삭제 경계, 호출·token 상한과 incident 계약은 통과했습니다. 그러나
+raw metadata 최대 30일에 사전 cleanup·sweeper·접근 차단이 없는
+`QA-HIGH-024-001`, 전체 Backend 외부비 원장에 runtime·Tasks·Firestore·logging·
+egress 비용 반영이 없는 `QA-HIGH-024-002`를 확인해 `FAIL`,
+`rework_requested`로 인계했습니다. OpenAI 한국 저장 후보와 처리 지역 gate의
+불일치는 `QA-MEDIUM-024-001`로 보완해야 합니다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 

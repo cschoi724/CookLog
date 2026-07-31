@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-024
 title: Backend 보안·개인정보·관측성·비용 guardrail 정의
-status: verification_ready
+status: approved
 type: docs
 priority: P0
 priority_reason: 사용자 콘텐츠와 provider 비용을 로그·장애·abuse 경계에서 보호해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Backend Agent
+target_role: Execution Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -83,3 +83,9 @@ qa_to: ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observabil
 | 2026-07-31 | Backend Agent | lock | task lock |
 | 2026-07-31 | Backend Agent | transition: approved -> in_progress | 승인된 보안·개인정보·관측성·비용 guardrail 계약 작성 시작 |
 | 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | 보안·개인정보·관측성·비용 guardrail 계약 작성 및 자체 검증 완료, Backend QA 독립 검증 인계 |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | 최신 origin/develop 0014935 기준 보안·개인정보·관측성·비용 guardrail 독립 검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-024-001 raw metadata 30일 삭제 보장 누락, QA-HIGH-024-002 전체 외부비 원장 비provider 비용 누락 |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Product Owner | approve rework | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 수정 범위 재작업 승인 |
+| 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 재작업 인계, 수정 후 독립 재검증 진행 |
