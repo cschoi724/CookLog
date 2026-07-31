@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-004
 title: iOS CI concurrency·진단·cache·artifact 통합
-status: completion_review
+status: done
 type: feature
 priority: P1
 priority_reason: 중복 실행 비용을 줄이고 실패 원인을 보존하되 불안정한 cache를 피해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
 - ios_qa
 - regression_test
@@ -101,6 +101,8 @@ qa_to: ".ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-
 | 2026-07-31 | iOS QA Agent | transition: verification_in_progress -> verification_passed | 독립 QA PASS_WITH_RISK: concurrency 격리, cache 미적용 build·XCTest 33/33, 실패 진단·summary·artifact 확인; QA-RISK-004-001 hosted 취소 동작 후속 |
 | 2026-07-31 | Development Lead Agent | integrate latest develop | QA 결과를 고정한 뒤 origin/develop dedfa74 위로 재정렬하고 T-20260729-021 done과 CI 산출물 동등성 보존 |
 | 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | 성공 기준, 독립 QA PASS_WITH_RISK, 허용 경로와 비차단 잔여 위험 인계를 수용해 hosted PR 검증 대기로 전환 |
+| 2026-07-31 | GitHub Actions | hosted verification passed | PR #34 ios-build·ios-xctest, preflight·summary·artifact와 XCTest 33/33 성공 |
+| 2026-07-31 | Development Lead Agent | transition: completion_review -> done | PR #34 squash merge SHA 22fe75f와 hosted 증빙 확인, T-004 완료 확정 |
 
 ## Development Lead 완료 검토
 
@@ -126,3 +128,21 @@ qa_to: ".ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-
 
 Development Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로
 전환한다. 필수 hosted check 통과 후 `develop` 병합 대상으로 확정한다.
+
+## 완료
+
+- PR: [#34](https://github.com/cschoi724/CookLog/pull/34)
+- 대상 브랜치: `develop`
+- 병합 방식: squash merge
+- merge SHA: `22fe75f7a2b7e6f10104342f3ef11fb4aea57acf`
+- `ios-build` run: `30599716229`, 성공
+- `ios-xctest` run: `30599716186`, 성공
+- hosted XCTest: 33/33, 실패 0, `TEST SUCCEEDED`
+- build artifact: `cooklog-ios-build-30599716229-1`
+- XCTest artifact: `cooklog-ios-xctest-30599716186-1`
+- hosted preflight·summary·환경 로그·xcresult: 확인
+- 완료 판정: `done`
+
+hosted 정상 실행과 진단 artifact 조건은 해소됐다. 같은 PR 연속 실행 취소와
+hosted 의도적 실패·timeout dry run은 계획대로 `T-20260730-005`에 인계한다.
+T-20260730-005의 T-004 선행 조건은 해소됐지만 별도 실행 승인은 유지한다.
