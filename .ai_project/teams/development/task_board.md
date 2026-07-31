@@ -20,7 +20,7 @@
 | `T-20260729-005` | `proposed` | iOS | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `005`, `T-20260729-003` | 선행 계약·환경 대기 |
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
 | `T-20260729-020` | `done` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | - | `T-20260729-026` 완료 | PR #26 squash merge·완료 확정 |
-| `T-20260729-021` | `verification_ready` | Backend | 공통 API·인증·제한·오류 계약 | Backend QA Agent | `T-20260729-026` 완료 | 승인된 QA 결함 3건 독립 재검증 |
+| `T-20260729-021` | `verification_passed` | Backend | 공통 API·인증·제한·오류 계약 | Development Lead Agent | `T-20260729-026` 완료 | PASS_WITH_RISK 수용·최신 develop 재정렬 후 완료 검토 |
 | `T-20260729-022` | `proposed` | Backend | 기본 비활성 원격 STT adapter 계약 | Backend Agent | `T-20260729-021` | 선행·승인 대기 |
 | `T-20260729-023` | `proposed` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020` 완료, `021` 대기 | T-021 선행·승인 대기 |
 | `T-20260729-024` | `proposed` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020` 완료, `021` 대기 | T-021 선행·승인 대기 |
@@ -38,6 +38,12 @@ Backend Agent는 최초 설치 challenge 원자 CAS·단일 승자, 공개 오�
 negative fixture, T-020 project 월간 비용 hard cutoff 원자 예약을 계약에 반영했습니다.
 공통 계약 검증 script와 JSON 문법·strict Task·diff 자체 검증 후 Backend QA에
 `verification_ready`로 인계합니다.
+
+Backend QA는 승인된 결함 3건 해소, 오류 catalog 20개 mapping·악성 fixture 4개와 기존
+timeout·제한·idempotency·원격 STT 금지 계약의 무회귀를 독립 확인해
+`PASS_WITH_RISK`로 `verification_passed` 인계했습니다. runtime validator·renderer는
+T-025에서 검증하고 최신 `origin/develop`의 T-20260730-003 `done` 기록을 보존한
+재정렬 후 완료 검토해야 합니다.
 
 `T-20260729-020`은 Apple 기기 내 STT 기본 정책을 보존한 런타임·AI provider
 결정안으로 재작업됐습니다. Backend QA가 ACK 즉시 삭제, 생성 22시간 cleanup,

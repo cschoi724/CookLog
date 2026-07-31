@@ -3,8 +3,12 @@
 검증일: 2026-07-31
 검증자: Backend QA Agent / Verification Role
 검증 기준: `task/T-20260729-021-define-backend-common-api-contract` `068deb2`
-판정: `FAIL`
-상태 인계: `verification_in_progress -> rework_requested`
+최종 재검증 판정: `PASS_WITH_RISK`
+최종 상태 인계: `verification_in_progress -> verification_passed`
+
+이 문서의 1~7절은 최초 독립 검증의 `FAIL`과 재작업 요청 기록이다. 8절부터는
+Product Owner가 승인한 `QA-HIGH-021-001~002`, `QA-MEDIUM-021-001` 재작업에 대한
+독립 재검증 결과다.
 
 ## 1. 검증 범위
 
@@ -168,3 +172,106 @@ aiops validate task .ai_project/tasks/active/T-20260729-021_define-backend-commo
 `QA-HIGH-021-001`, `QA-HIGH-021-002`가 해소되기 전에는 replay와 오류 정보 비노출
 성공 기준을 충족하지 못한다. Task를 `rework_requested`로 전환하고 lock을 해제해
 Development Lead Agent / Lead Role에 인계한다.
+
+## 8. 승인된 재작업 독립 재검증
+
+검증일: 2026-07-31
+재검증 기준 커밋: `cdf4746`
+기준 브랜치: `task/T-20260729-021-define-backend-common-api-contract`
+
+### 8.1 QA-HIGH-021-001 해소
+
+최초 설치 등록의 challenge 소비가 일반 idempotency key와 별개의 replay 경계로
+정의됐다.
+
+- proof 검증 후 challenge `state=unused` 조건부 검사와
+  `unused -> consumed` compare-and-set을 수행한다.
+- challenge 소비, App Attest credential 전역 유일성, installation·공개키 등록,
+  idempotency record와 committed token grant를 하나의 transaction 또는 동등한
+  단일 승자 경계로 묶는다.
+- commit에 성공한 요청만 access token을 서명하며 commit 전 발급을 금지한다.
+- 같은 challenge·서로 다른 idempotency key의 동시 요청은 정확히 한 요청만 성공하고
+  패배 요청은 installation/token grant 없이 `ATTESTATION_REPLAYED`가 된다.
+- Firebase는 `consume=true`의 `alreadyConsumed=false`만 허용하고 이미 소비된 token을
+  transaction 진입 전에 거부한다.
+- commit 후 응답 실패는 동일 key와 committed grant로 복구하므로 새 challenge 소비나
+  두 번째 installation 등록을 만들지 않는다.
+
+판정: 해소.
+
+### 8.2 QA-HIGH-021-002 해소
+
+공개 오류 생성의 기계 검증 원본과 renderer 입력 경계가 추가됐다.
+
+- `public-error-catalog.json`이 공개 오류 20개의
+  `type/title/status/detail/code/user_message_key/retryable` 고정 mapping을 제공한다.
+- renderer는 caller가 제공한 raw exception이나 문자열을 사용하지 않고 catalog 값만
+  복사한다. 미등록 code·field·reason과 HTTP status 불일치는 고정
+  `INTERNAL_ERROR`로 치환한다.
+- error schema의 title, detail, code, message key와 violation field/reason은
+  allowlist enum으로 제한됐다.
+- 독립 대조에서 오류 표·catalog 20개 mapping의 status, retryable, message key가 모두
+  일치했고 schema enum에도 모두 포함됐다.
+- 악성 fixture 4개에서 provider명, authorization/token, stack, 사용자 원문, 내부
+  resource ID와 attestation proof가 공개 고정 mapping에 포함되지 않음을 확인했다.
+
+수행 결과:
+
+```text
+sh -n apps/backend/contracts/common/validate-contracts.sh
+sh apps/backend/contracts/common/validate-contracts.sh
+common contract validation: PASS
+INDEPENDENT_CATALOG_TABLE_SCHEMA_FIXTURE_CHECK: PASS (20 mappings, 4 negative cases)
+```
+
+판정: 해소.
+
+### 8.3 QA-MEDIUM-021-001 해소
+
+T-020의 확정 hard cutoff가 공통 project quota에 연결됐다.
+
+- 모든 installation·IP를 합산해 월 provider 호출 5,500회, 입력 20M token,
+  출력 8M token과 추정 Backend 외부비 KRW 50,000을 적용한다.
+- outbound provider 호출과 domain side effect 전에 호출·최대 token·추정 외부비를
+  원자적으로 예약한다.
+- 하나라도 초과하면 429 `QUOTA_EXCEEDED`로 차단하고 provider를 호출하지 않는다.
+- 원장이나 원자 예약 장애는 503 `LIMITER_UNAVAILABLE`로 fail closed한다.
+- T-024는 상한을 낮출 수 있지만 승인된 hard cutoff를 상향하거나 우회할 수 없다.
+
+판정: 해소.
+
+## 9. 기존 통과 항목 무회귀
+
+| 항목 | 결과 |
+|---|---|
+| timeout·결과 불명확 | PASS — shrinking deadline, side effect 미시작 504와 불명확 409 분리가 유지됐다. |
+| 동일 idempotency key 동시성 | PASS — transaction, 처리 중 409, 완료 replay와 payload 충돌 규칙이 유지됐다. |
+| 제한 초과·abuse 기본 방어 | PASS — IP·installation·project 다중 scope, 429와 limiter fail closed가 유지됐다. |
+| App Attest counter·Firebase replay | PASS — counter 원자 저장과 limited-use token 소비 경계가 유지됐다. |
+| 오류 정보 비노출 | PASS — 고정 catalog·allowlist·renderer 경계와 negative fixture가 추가됐다. |
+| 원격 STT 자동 fallback 금지 | PASS — Backend 음성 endpoint·upload·adapter 활성화가 없고 자동 fallback 금지가 유지됐다. |
+| JSON·Task·diff 검증 | PASS — `jq empty`, strict Task validation, `git diff --check` 통과. |
+| allowed paths·Task ID | PASS — 변경은 Task 허용 경로 안이며 Task front matter ID는 1개다. |
+
+## 10. 잔여 위험
+
+### QA-RISK-021-001 — runtime validator·renderer 구현은 후속 Task
+
+현재 결과는 구현 가능한 문서 계약, catalog, schema와 fixture 검증이다. 실제 Backend
+runtime JSON Schema validator와 catalog 기반 renderer 동일성 테스트는 계획된 T-025와
+후속 foundation 구현에서 확인해야 한다. 이 위험은 현재 docs Task를 차단하지 않는다.
+
+### QA-RISK-021-002 — 최신 develop 재정렬 필요
+
+검증 기준 `cdf4746`은 최신 `origin/develop` `a3d1853`보다 1개 커밋 뒤다. 차이는
+T-20260730-003 완료 확정과 iOS 테스트 문서이며 Backend 계약과 직접 충돌하지 않는다.
+Development Lead는 PR·완료 검토 전에 최신 develop 위로 재정렬하고 T-20260730-003
+`done` 및 최신 공용 보드 기록을 보존해야 한다.
+
+## 11. 최종 판정과 인계
+
+`QA-HIGH-021-001`, `QA-HIGH-021-002`, `QA-MEDIUM-021-001`은 모두 해소됐고 기존 통과
+항목에 회귀가 없다. 잔여 위험은 후속 구현 검증과 최신 develop 재정렬로 관리 가능하다.
+
+최종 판정은 `PASS_WITH_RISK`다. Task를 `verification_passed`로 전환하고 lock을
+해제해 Development Lead Agent / Completion Role에 인계한다.

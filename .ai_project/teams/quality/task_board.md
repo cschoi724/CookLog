@@ -15,7 +15,7 @@
 | `T-20260729-020` | `done` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 고정 커밋 동등성·QA-HIGH-020-003·비용·최신 보드 비회귀 | PASS_WITH_RISK 수용·PR #26 squash merge·완료 확정 |
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
-| `T-20260729-021` | `verification_ready` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | 승인된 결함 3건 독립 재검증 |
+| `T-20260729-021` | `verification_passed` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PASS_WITH_RISK, 최신 develop 재정렬 후 완료 검토 |
 
 향후 검증 예정 Task:
 
@@ -47,6 +47,12 @@
 `QA-MEDIUM-021-001` 재작업을 승인했습니다. Backend Agent가 challenge 원자 CAS,
 공개 오류 catalog·negative fixture와 project 월간 비용 hard cutoff 원자 예약을
 반영하고 자체 검증을 통과해 `verification_ready`로 인계했습니다.
+
+Backend QA 독립 재검증에서 `QA-HIGH-021-001~002`, `QA-MEDIUM-021-001` 해소와
+기존 timeout·제한·idempotency·원격 STT 금지 계약 무회귀를 확인했습니다. 공통 계약
+script, 오류 mapping 20개와 악성 fixture 4개가 통과해 `PASS_WITH_RISK`로
+`verification_passed` 인계했습니다. runtime renderer·validator는 T-025에서 검증하고,
+PR 전 최신 develop의 T-20260730-003 `done` 기록을 보존해 재정렬해야 합니다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 

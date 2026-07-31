@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-021
 title: Backend 공통 API·인증·제한·오류 계약 정의
-status: verification_ready
+status: verification_passed
 type: docs
 priority: P0
 priority_reason: AI와 선택형 원격 STT가 같은 보안·재시도·오류 경계를 사용해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -145,3 +145,7 @@ T-20260729-021의 승인된 재작업을 독립 재검증해줘.
 - 정책 경계: 첫 출시 STT는 Apple 기기 내 처리. 원격 STT endpoint와 자동 fallback 금지
 - 공식 판정은 Backend QA Agent가 수행
 ```
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-021-001~002와 QA-MEDIUM-021-001 해소 및 기존 통과 항목 독립 재검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-021-001~002와 QA-MEDIUM-021-001 해소, 계약 검증 script·20개 오류 mapping·4개 악성 fixture·기존 통과 항목 무회귀 PASS_WITH_RISK |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
