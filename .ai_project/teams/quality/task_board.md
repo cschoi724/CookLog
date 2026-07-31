@@ -15,6 +15,7 @@
 | `T-20260729-020` | `done` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 고정 커밋 동등성·QA-HIGH-020-003·비용·최신 보드 비회귀 | PASS_WITH_RISK 수용·PR #26 squash merge·완료 확정 |
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
+| `T-20260729-021` | `verification_ready` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | Backend QA Agent 독립 검증 시작 |
 
 향후 검증 예정 Task:
 
@@ -24,7 +25,6 @@
 | `T-20260728-005` | Backend | Backend QA Agent | API 계약, 보안, 개인정보 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
-| `T-20260729-021` | Backend | Backend QA Agent | 인증·제한·idempotency·오류 계약 |
 | `T-20260729-022` | Backend | Backend QA Agent | 기본 비활성·무승인 업로드 방지·조건부 TTL |
 | `T-20260729-023` | Backend | Backend QA Agent | AI 상태·복구·schema·timeout |
 | `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.cooklog.app/contracts/common/error-envelope.schema.json",
+  "title": "CookLog API 오류 응답",
+  "description": "RFC 9457 Problem Details에 CookLog 공개 오류 필드를 추가한 계약",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "title",
+    "status",
+    "detail",
+    "instance",
+    "request_id",
+    "code",
+    "user_message_key",
+    "retryable"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://api\\.cooklog\\.app/problems/[a-z0-9-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "status": {
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "detail": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "instance": {
+      "type": "string",
+      "pattern": "^urn:cooklog:request:[0-9a-fA-F-]{36}$"
+    },
+    "request_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+    },
+    "user_message_key": {
+      "type": "string",
+      "pattern": "^error\\.[a-z0-9_]+$"
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "retry_after_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 86400
+    },
+    "violations": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "reason"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "reason": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+          }
+        }
+      }
+    }
+  }
+}
+

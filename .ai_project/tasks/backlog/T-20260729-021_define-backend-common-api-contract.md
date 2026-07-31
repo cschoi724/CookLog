@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-021
 title: Backend 공통 API·인증·제한·오류 계약 정의
-status: proposed
+status: verification_ready
 type: docs
 priority: P0
 priority_reason: AI와 선택형 원격 STT가 같은 보안·재시도·오류 경계를 사용해야 한다.
@@ -10,42 +10,43 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Backend QA Agent
+target_role: Verification Role
 required_capabilities:
-  - backend_architecture
-  - api_contract
+- backend_architecture
+- api_contract
+- backend_contract_verification
 depends_on:
-  - T-20260729-026
+- T-20260729-026
 blocks:
-  - T-20260728-005
-  - T-20260729-022
-  - T-20260729-023
-  - T-20260729-024
-  - T-20260729-025
+- T-20260728-005
+- T-20260729-022
+- T-20260729-023
+- T-20260729-024
+- T-20260729-025
 parallel_group: backend-contract-foundation
 allowed_paths:
-  - apps/backend/contracts/common/
-  - apps/backend/docs/API_CONTRACT.md
-  - .ai_project/tasks/backlog/T-20260729-021_define-backend-common-api-contract.md
-  - .ai_project/tasks/active/T-20260729-021_define-backend-common-api-contract.md
-  - .ai_project/reports/T-20260729-021_define-backend-common-api-contract-report.md
-  - .ai_project/qa/T-20260729-021_define-backend-common-api-contract-qa.md
-  - .ai_project/teams/development/task_board.md
-  - .ai_project/teams/quality/task_board.md
+- apps/backend/contracts/common/
+- apps/backend/docs/API_CONTRACT.md
+- ".ai_project/tasks/backlog/T-20260729-021_define-backend-common-api-contract.md"
+- ".ai_project/tasks/active/T-20260729-021_define-backend-common-api-contract.md"
+- ".ai_project/reports/T-20260729-021_define-backend-common-api-contract-report.md"
+- ".ai_project/qa/T-20260729-021_define-backend-common-api-contract-qa.md"
+- ".ai_project/teams/development/task_board.md"
+- ".ai_project/teams/quality/task_board.md"
 source_of_truth:
-  - docs/product/CookLog_PRD_v2.md
-  - docs/PROJECT_DECISIONS.md
+- docs/product/CookLog_PRD_v2.md
+- docs/PROJECT_DECISIONS.md
 created_by: Development Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
-updated_at: 2026-07-30
-report_to: .ai_project/reports/T-20260729-021_define-backend-common-api-contract-report.md
-qa_to: .ai_project/qa/T-20260729-021_define-backend-common-api-contract-qa.md
+updated_at: '2026-07-30'
+report_to: ".ai_project/reports/T-20260729-021_define-backend-common-api-contract-report.md"
+qa_to: ".ai_project/qa/T-20260729-021_define-backend-common-api-contract-qa.md"
 ---
 
 # Backend 공통 API·인증·제한·오류 계약 정의
@@ -62,3 +63,53 @@ qa_to: .ai_project/qa/T-20260729-021_define-backend-common-api-contract-qa.md
 
 - AI와 비활성 원격 STT 계약이 같은 공통 규칙을 참조한다.
 - Backend QA Agent가 replay, abuse, timeout과 제한 초과 계약을 독립 검증한다.
+
+## 실행 결과
+
+- 공통 `/v1` version, canonical request ID, 성공·실패 envelope를 확정했다.
+- App Attest와 Firebase App Check를 `AttestationVerifier` 경계 뒤에서 정규화하고,
+  challenge·counter 또는 limited-use token 소비로 replay를 차단하는 설치 인증 계약을
+  정의했다.
+- installation·IP·project·비용 endpoint 제한, emergency kill switch와 limiter 장애
+  동작을 정의했다.
+- idempotency key scope·body hash·24시간 record, timeout 결과 불명확 상태와 iOS/Backend
+  재시도 소유권을 정의했다.
+- 외부 공개 오류 코드·사용자 현지화 key와 내부 오류·provider detail·secret을 분리했다.
+- 첫 출시 STT는 Apple 기기 내 처리라는 정책을 유지했으며 원격 STT endpoint나 자동
+  fallback은 추가하지 않았다.
+
+## Backend QA 인계
+
+Backend QA Agent는 별도 세션에서 다음을 독립 검증한다.
+
+- challenge, assertion counter와 limited-use token replay
+- installation/token subject 불일치와 위조·만료·wrong audience proof
+- installation·IP·project rate limit 및 일일 quota 우회
+- 동일 idempotency key의 동시 요청·동일 body replay·다른 body 충돌
+- timeout 전후 side effect와 `REQUEST_OUTCOME_UNKNOWN` 처리
+- 모든 실패 fixture의 JSON Schema 통과와 내부 정보·secret·원문 비노출
+- STT 실패가 Backend 음성 요청 또는 원격 fallback으로 이어지지 않음
+
+## AI Ops CLI 기록
+
+| 날짜 | Actor | Event | Reason |
+|---|---|---|---|
+| 2026-07-30 | Development Lead Agent | transition: proposed -> scoped | Development Lead scope와 하위 Task 등록 완료 |
+| 2026-07-30 | Product Owner | transition: scoped -> approved | Product Owner 실행 및 에이전트 인계 승인 |
+| 2026-07-30 | Backend Agent | lock | task lock |
+| 2026-07-30 | Backend Agent | transition: approved -> in_progress | 최신 origin/develop 기반 전용 worktree에서 실행 시작 |
+| 2026-07-30 | Backend Agent | self-verification | JSON parse·schema 구조·경로·정책 경계 자체 검증 |
+| 2026-07-30 | Backend Agent | transition: in_progress -> verification_ready | 공통 API 계약과 기계 검증 schema 작성 완료, Backend QA 독립 검증 인계 |
+
+## Next Agent Handoff
+
+```text
+너는 Backend QA Agent / Verification Role이야.
+T-20260729-021을 별도 검증 세션에서 확인해줘.
+
+- 기준 문서: apps/backend/docs/API_CONTRACT.md
+- schema: apps/backend/contracts/common/
+- 필수 검증: replay, abuse, timeout, 제한 초과, idempotency 동시성, 오류 정보 비노출
+- 정책 경계: 첫 출시 STT는 Apple 기기 내 처리. 원격 STT endpoint와 자동 fallback 금지
+- 완료 조건: 독립 검증 결과를 qa_to 경로에 기록하고 상태 전이 절차를 따라줘.
+```

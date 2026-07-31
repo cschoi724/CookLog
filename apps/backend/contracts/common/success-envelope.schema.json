@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.cooklog.app/contracts/common/success-envelope.schema.json",
+  "title": "CookLog API 성공 응답",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["data", "meta"],
+  "properties": {
+    "data": true,
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request_id", "api_version"],
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "api_version": {
+          "const": "v1"
+        }
+      }
+    }
+  }
+}
+

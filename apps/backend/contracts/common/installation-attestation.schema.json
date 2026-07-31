@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.cooklog.app/contracts/common/installation-attestation.schema.json",
+  "title": "설치 등록·토큰 갱신 무결성 증명 요청",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/appleAppAttest"
+    },
+    {
+      "$ref": "#/$defs/firebaseAppCheck"
+    }
+  ],
+  "$defs": {
+    "base": {
+      "type": "object",
+      "properties": {
+        "installation_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "challenge_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "app_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+        }
+      },
+      "required": ["installation_id", "challenge_id", "app_version"]
+    },
+    "appleAppAttest": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "installation_id",
+            "challenge_id",
+            "app_version",
+            "provider",
+            "key_id",
+            "proof",
+            "proof_kind"
+          ],
+          "properties": {
+            "installation_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "challenge_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "app_version": {
+              "type": "string",
+              "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+            },
+            "provider": {
+              "const": "apple_app_attest"
+            },
+            "key_id": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 512
+            },
+            "proof": {
+              "type": "string",
+              "contentEncoding": "base64",
+              "minLength": 16,
+              "maxLength": 16384
+            },
+            "proof_kind": {
+              "enum": ["attestation", "assertion"]
+            }
+          }
+        }
+      ]
+    },
+    "firebaseAppCheck": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "installation_id",
+            "challenge_id",
+            "app_version",
+            "provider",
+            "proof",
+            "proof_kind"
+          ],
+          "properties": {
+            "installation_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "challenge_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "app_version": {
+              "type": "string",
+              "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+            },
+            "provider": {
+              "const": "firebase_app_check"
+            },
+            "proof": {
+              "type": "string",
+              "minLength": 32,
+              "maxLength": 8192
+            },
+            "proof_kind": {
+              "const": "limited_use_token"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
