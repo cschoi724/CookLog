@@ -15,7 +15,7 @@
 | `T-20260729-020` | `done` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 고정 커밋 동등성·QA-HIGH-020-003·비용·최신 보드 비회귀 | PASS_WITH_RISK 수용·PR #26 squash merge·완료 확정 |
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
-| `T-20260729-012` | `completion_review` | Audio Guide·핸즈프리·오디오 중단 상태 디자인 | 자동 완료 포커스와 기존 HIGH 4건·TTS fallback·접근성 무회귀 | PASS · 완료 검토 통과 · develop 통합 대기 |
+| `T-20260729-012` | `done` | Audio Guide·핸즈프리·오디오 중단 상태 디자인 | 자동 완료 포커스와 기존 HIGH 4건·TTS fallback·접근성 무회귀 | PR #42 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
 | `T-20260731-001` | `done` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product Owner 최종 승인·완료 확정 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
@@ -138,3 +138,8 @@ GitHub-hosted runner로 확인했습니다. 연속 push의 이전 `ios-build`와
 결함 6건이 모두 해소되어 `verification_passed`로 Design Lead Agent에 인계했습니다.
 Design Lead 완료 검토도 통과해 `completion_review`로 인계했으며 develop 통합
 전에는 `done`으로 변경하지 않습니다.
+
+PR #42의 `ios-build`·`ios-xctest` 성공과 squash merge SHA
+`2b9b7502d521db64f2ce11ac3e6a249e7cabf210`을 확인해 `done`으로
+확정했습니다. 추가 Design QA는 필요하지 않으며 후속 T-013은 별도 실행 승인
+대기입니다.
