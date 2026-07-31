@@ -18,20 +18,20 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `scoped` | 2 |
 | `approved` | 2 |
 | `in_progress` | 1 |
-| `verification_ready` | 1 |
+| `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 25 |
+| `done` | 26 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~012`는 `done`입니다. Backend T-020~023은 `done`, T-024·025는 `approved`입니다. CI T-001~005는 `done`, T-006은 후속 승인 대상입니다. AI Ops `T-20260731-002`는 공용 상태·Git 안전 guardrail 구현을 마치고 독립 검증 대기입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~012`는 `done`입니다. Backend T-020~023은 `done`, T-024·025는 `approved`입니다. CI T-001~005는 `done`, T-006은 후속 승인 대상입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -41,7 +41,7 @@ Team별 요약:
 | Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 4 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
-| AI Ops | 0 | 1 | 0 | `T-20260731-002` Task·report·QA 기록 |
+| AI Ops | 0 | 0 | 0 | `T-20260731-002` `done`, Task·report·QA 기록 |
 
 ## 4. Next Candidates
 
@@ -57,7 +57,7 @@ Team별 요약:
 | `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
-| `T-20260731-002` | P0 | 프로젝트 공용 상태 일관성 및 Git 안전 guardrail | AI Ops Agent | `verification_ready`, 독립 AI Ops 검증 대기 |
+| `T-20260731-002` | P0 | 프로젝트 공용 상태 일관성 및 Git 안전 guardrail | - | `done`, 독립 AI Ops PASS·PR #48 squash merge |
 | `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `scoped`; T-001~005 `done`, T-006 별도 승인 대기 |
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
@@ -268,3 +268,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-31 | Design Lead Agent가 T-012 성공 기준·최종 QA·allowed paths·Figma 비차단·iOS 핸드오프를 확인해 completion_review로 인계 |
 | 2026-07-31 | Product Owner 승인으로 T-012 PR #42를 develop에 squash merge하고 merge SHA `2b9b750`·두 CI 성공 확인 후 done 확정 |
 | 2026-07-31 | T-005 공용 상태 복구 PR #47 병합 후 T-20260731-002 프로젝트 상태·Git 안전 guardrail을 정식 등록하고 독립 검증으로 인계 |
+| 2026-07-31 | T-20260731-002 독립 AI Ops PASS와 PR #48 squash merge를 확인해 `done`으로 확정 |

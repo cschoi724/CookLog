@@ -3,7 +3,7 @@
 작성일: 2026-07-31
 작성자: AI Ops Agent
 대상 Task: `T-20260731-002`
-상태: `verification_ready`
+상태: `PASS`
 
 ## 검증 대상
 
@@ -46,3 +46,19 @@ aiops validate task .ai_project/tasks/active/T-20260731-002_project-public-state
 
 검증 중 파일 수정, stage, commit, push, PR, merge와 worktree 정리를 수행하지
 않는다.
+
+## 독립 검증 결과
+
+판정: `AI_OPS_GUARDRAIL_PASS`
+
+- 기준 `origin/develop@4760ba6`과 실행 worktree 기준점 일치
+- 추적·신규 후보 문서 충돌 표식 0건
+- T-005 Task·프로젝트/Development/Quality Board·current context `done` 일치
+- 변경 9개 파일 모두 Task `allowed_paths` 안에 있음
+- `agents.md`, `.ai/`, 제품 코드 변경 없음
+- 공용·로컬 상태, 보고 필드와 의존성 공용 효력 시점 명확
+- dirty worktree 자동 `reset`, `rebase`, `stash` 금지 확인
+- 병합 직후 자동 삭제 금지, 안전 감사와 Product Owner 승인 조건 확인
+- squash merge 판정 시 PR 상태와 patch 동등성 확인 조건 존재
+- `git diff --check`와 Task strict validation 통과
+- 기존 guardrail worktree 2개 보존 확인

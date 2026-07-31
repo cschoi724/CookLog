@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260731-002
 title: 프로젝트 공용 상태 일관성 및 Git 안전 guardrail
-status: verification_ready
+status: done
 type: ops_migration
 priority: P0
 priority_reason: 다중 Agent worktree가 오래된 로컬 문서를 공용 상태로 오인하면 완료·의존성·착수 판단이 잘못될 수 있다.
@@ -91,3 +91,5 @@ qa_to: .ai_project/qa/T-20260731-002_project-public-state-git-safety-guardrails-
 - 2026-07-31: T-005 공용 상태 무결성 복구 PR #47의 `develop` 병합을 확인했다.
 - 2026-07-31: 최신 `origin/develop@4760ba6` 기반 전용 worktree에서 실행을 시작했다.
 - 2026-07-31: 프로젝트 로컬 운영 문서와 Git 정리 정책을 동기화하고 독립 검증으로 인계했다.
+- 2026-07-31: 별도 AI Ops Verification Agent가 `AI_OPS_GUARDRAIL_PASS`를 판정했다.
+- 2026-07-31: Product Owner 승인으로 PR #48을 `develop`에 squash merge하고 merge SHA `2621051`을 확인해 `done`으로 확정했다.
