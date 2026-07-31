@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260731-001
 title: 활성 문서 Source of Truth 정합성 복구
-status: rework_requested
+status: in_progress
 type: docs
 priority: P0
 priority_reason: 최신 제품 정책과 완료된 Design·Backend·CI 결과가 루트·운영·iOS·디자인 안내 문서에 반영되지 않아
@@ -16,6 +16,9 @@ target_role: Lead Role
 required_capabilities:
 - product_direction
 - priority_management
+- product_documentation
+- cross_domain_reconciliation
+- source_of_truth_governance
 depends_on:
 - T-20260729-026
 - T-20260729-011
@@ -32,7 +35,14 @@ allowed_paths:
 - ".ai_project/new_clone_handoff.md"
 - ".ai_project/task_board.md"
 - ".ai_project/teams/product/task_board.md"
+- ".ai_project/teams/design/team_context.md"
+- ".ai_project/teams/development/team_context.md"
+- ".ai_project/teams/development/task_board.md"
+- ".ai_project/teams/quality/team_context.md"
 - ".ai_project/teams/quality/task_board.md"
+- ".ai_project/agent_registry.md"
+- ".ai_project/ops_issues.md"
+- ".ai_project/ops_migration_plan.md"
 - ".ai_project/tasks/"
 - ".ai_project/reports/"
 - ".ai_project/qa/"
@@ -61,9 +71,9 @@ source_of_truth:
 - docs/PROJECT_DECISIONS.md
 created_by: Product Lead Agent
 approved_by: Product Owner
-locked_by:
-locked_at:
-lock_session:
+locked_by: Product Lead Agent
+locked_at: 2026-07-31T13:30:00+09:00
+lock_session: /root
 lock_timeout_minutes: 240
 created_at: 2026-07-31
 updated_at: '2026-07-31'
@@ -110,20 +120,23 @@ qa_to: ".ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-
 - 2026-07-31: Product Lead Agent가 최신 `origin/develop` 전용 worktree에서 Task를 등록하고 `proposed -> scoped -> approved -> in_progress`로 실행을 시작했다.
 - 2026-07-31: Product Owner 승인에 따라 로컬 문서 커밋을 생성하고 최신 `origin/develop`을 병합했다.
 - 2026-07-31: 최신 상태 재집계·링크·strict Task·Backend 계약·diff 검증을 마치고 `in_progress -> verification_ready`로 Product QA Agent에 인계했다.
+- 2026-07-31: Product QA Agent가 활성 Team context·Board·Product QA routing·최신 develop 정렬 결함 4건을 확인해 `verification_ready -> verification_in_progress -> rework_requested`로 인계했다.
+- 2026-07-31: Product Owner가 필수 재작업 4건과 운영·Team context 추가 경로를 승인해 Product Lead Agent가 `rework_requested -> approved -> in_progress`로 재작업을 시작했다.
+- 2026-07-31: 최신 `origin/develop` `22fe75f`를 병합하고 T-20260730-004의 실제 `completion_review` 상태를 보존했다.
 
 ## Next Agent Handoff
 
 ```text
 너는 Product Lead Agent / Lead Role이야.
-T-20260731-001의 재작업 범위와 허용 경로를 다시 조율해줘.
+T-20260731-001의 승인된 재작업을 계속 진행해줘.
 
-- 현재 상태: rework_requested
-- 다음에 해야 할 일: Product QA 보고서의 필수 재작업 4건을 최신 origin/develop 기준으로 반영하고 재검증을 요청해줘.
+- 현재 상태: in_progress
+- 다음에 해야 할 일: Product QA 보고서의 필수 재작업 4건을 반영하고 자체 검증 후 Product QA 재검증을 요청해줘.
 - 기준 문서: .ai_project/source_of_truth.md, 개별 Task 파일, 최신 제품 문서
 - 참고 산출물: .ai_project/reports/T-20260731-001_reconcile-active-document-source-of-truth-report.md, .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
 - 변경/검토 대상: 활성 Team context, Ops Issues·Migration Plan, Project·Development·Quality board, Product QA routing
-- 남은 리스크: Figma·Backend·CI 구형 기준 잔존, 완료/승인 대기 상태 충돌, Product QA 정식 역할 매핑 누락, 최신 develop 1커밋 통합 필요
-- 차단/결정 필요: 현재 allowed_paths 밖 운영·Team context 수정 범위를 Product Owner와 재승인한 뒤 재작업
+- 남은 리스크: 재작업 중 최신 develop 드리프트와 T-004 `completion_review`를 `done`으로 오인할 가능성
+- 승인 범위: Product Owner가 운영·Team context 추가 경로와 필수 재작업 4건을 승인
 - 금지: Product QA 재검증 전 T-20260728-003 차단 해제, completion_review 또는 done 전환
 ```
 

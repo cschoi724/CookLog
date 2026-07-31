@@ -75,7 +75,8 @@ apps/android/docs/
 | iOS 테스트 빌드 | `apps/ios/`에서 `xcodebuild -project CookLog.xcodeproj -scheme CookLog -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' build-for-testing` | iOS Agent |
 | iOS 테스트 | `apps/ios/Scripts/run-xctest.sh`와 `.github/workflows/ios-xctest.yml`; 단일 worker·timeout·로그·xcresult 기준 | iOS Agent / iOS QA Agent |
 | iOS 수동 QA | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` 기준 | iOS QA Agent |
-| Backend 검증 | Backend 구조와 API 계약 확정 후 정의 | Backend Agent / Backend QA Agent |
+| Backend 공통 계약 검증 | `apps/backend/contracts/common/validate-contracts.sh`, T-20260729-021 report·QA | Backend Agent / Backend QA Agent |
+| Backend 후속 계약 검증 | T-20260729-023~025의 job·보안·fixture 계약과 runtime renderer·validator 동일성 | Backend Agent / Backend QA Agent |
 | Android 검증 | Android 착수 후 확정 | Android 착수 후 Execution/Verification Agent 확정 |
 
 ## 6. 충돌 해결 원칙
@@ -99,3 +100,4 @@ apps/android/docs/
 | 2026-07-28 | Product Owner 결정으로 `design/prototype/`을 공식 UI Source of Truth, Figma를 점진적 미러로 전환 |
 | 2026-07-29 | Product Charter와 첫 공개 출시 Roadmap 역할, Backend 계약 확정 Task를 Source of Truth 매트릭스에 반영 |
 | 2026-07-31 | PDF를 역사적 스냅샷으로 명시하고 Backend 추천안·API 계약 경계와 iOS CI 검증 기준을 최신화 |
+| 2026-07-31 | T-20260731-001 재작업에서 Backend 계약 검증 script·후속 계약 경계와 Product QA 운영 정합성 반영 |

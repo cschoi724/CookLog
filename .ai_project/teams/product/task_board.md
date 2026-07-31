@@ -9,6 +9,6 @@
 |---|---|---|---|---|---|
 | `T-20260729-001` | `done` | 확정 제품 정책과 출시 계획 통합 문서화 | - | 없음 | 완료 |
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | - | `T-20260729-001` | 완료 |
-| `T-20260731-001` | `rework_requested` | 활성 문서 Source of Truth 정합성 복구 | Product Lead Agent / Lead Role | `T-20260729-026`, `T-20260729-011`, `T-20260729-020`, `T-20260730-003` | 허용 경로 재조율·필수 재작업 4건·최신 develop 반영 후 재검증 요청 |
+| `T-20260731-001` | `in_progress` | 활성 문서 Source of Truth 정합성 복구 | Product Lead Agent / Lead Role | `T-20260729-026`, `T-20260729-011`, `T-20260729-020`, `T-20260730-003` | 승인된 필수 재작업 4건·최신 develop 반영 후 재검증 요청 |
 
-첫 공개 출시 STT 정책 변경은 Product QA 재검증과 Product Lead 완료 검토를 통과하고 Product Owner 최종 승인을 받아 `done`으로 확정했습니다. `T-20260731-001`은 활성 운영·Team context와 Task Board의 구형 기준이 남아 Product QA `FAIL` 판정을 받았습니다. 재작업과 Product QA 재검증 전에는 T-20260728-003 차단을 해제하지 않습니다. 수익화 동결 Workstream은 Core v1 출시선에 포함하지 않습니다.
+첫 공개 출시 STT 정책 변경은 Product QA 재검증과 Product Lead 완료 검토를 통과하고 Product Owner 최종 승인을 받아 `done`으로 확정했습니다. `T-20260731-001`은 활성 운영·Team context와 Task Board의 구형 기준에 대한 Product QA `FAIL` 4건을 승인받아 재작업 중입니다. Product QA 재검증 전에는 T-20260728-003 차단을 해제하지 않습니다. 수익화 동결 Workstream은 Core v1 출시선에 포함하지 않습니다.

@@ -16,8 +16,8 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
-| `T-20260731-001` | `rework_requested` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product QA `FAIL`, Product Lead 재작업 후 재검증 |
-| `T-20260730-004` | `completion_review` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·실패 진단 독립 확인 | PASS_WITH_RISK 수용·hosted checks merge gate |
+| `T-20260731-001` | `in_progress` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product QA `FAIL` 4건 승인 재작업 중 |
+| `T-20260730-004` | `completion_review` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·실패 진단 독립 확인 | PR #34 checks·develop 통합 완료, 최종 완료 확정 대기 |
 
 향후 검증 예정 Task:
 
@@ -33,13 +33,17 @@
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
 | `T-20260730-005` | CI | iOS QA Agent | 실제 PR dry run·check gate 준비도 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |
-| `T-20260730-007` | iOS/CI | iOS QA Agent | iOS 26.5 SwiftData crash 원인·최소 수정·33/33 회귀 |
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
 
 `T-20260729-001`은 Product QA `PASS_WITH_RISK` 후 Product Lead 완료 검토를 통과해 `done`으로 확정했습니다.
 
 `T-20260729-026`은 기존 Product QA `FAIL` 3건을 모두 해소해 재검증 `PASS`를 받고 Product Owner 최종 승인 후 `done`으로 확정했습니다.
+
+`T-20260731-001`은 Product QA 독립 검증에서 활성 Team context·운영 이슈·Task
+Board·Product QA routing·최신 develop 정렬 결함 4건을 확인해 `FAIL` 판정을
+받았습니다. Product Owner가 필수 재작업과 추가 경로를 승인했으며 Product Lead가
+최신 develop 기준으로 재작업 중입니다.
 
 `T-20260729-021`은 Backend QA 독립 검증에서 최초 설치 challenge의 동시 소비 원자성
 누락과 오류 `title/detail` 내부의 provider detail·secret·원문 비노출을 schema가
@@ -76,5 +80,6 @@ renderer·validator 동일성 검증은 `T-20260729-025`에서 수행합니다.
 
 T-20260730-004는 concurrency 격리, cache 미적용 33/33, build 실패 65와 timeout
 124의 진단 보존을 독립 확인해 `PASS_WITH_RISK`를 받았습니다. Development Lead가
-최신 develop 재정렬과 허용 경로를 확인해 `completion_review`로 수용했으며 hosted
-정상 동작은 T-004 PR, 실제 취소·실패 dry run은 T-20260730-005에서 확인합니다.
+최신 develop 재정렬과 허용 경로를 확인해 `completion_review`로 수용했고 PR #34의
+hosted checks와 develop 통합을 마쳤습니다. 실제 취소·실패 dry run은
+T-20260730-005에서 확인합니다.

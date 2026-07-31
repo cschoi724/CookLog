@@ -2,7 +2,7 @@
 
 작성일: 2026-07-31
 작성자: Product Lead Agent
-상태: 실행 완료·최신 develop 정렬 및 자체 검증 완료·Product QA 대기
+상태: Product QA FAIL 필수 결함 4건 승인 재작업 중
 
 ## 결과 요약
 
@@ -48,12 +48,12 @@
 
 ## Task Board 정합성
 
-개별 Task 파일 기준 집계를 다시 계산해 기존 요약 보드의 상태를 최신화했다. 최신 `origin/develop`의 T-20260729-021 완료 확정까지 병합한 현재 작업선 기준 집계는 다음과 같다.
+개별 Task 파일 기준 집계를 다시 계산해 기존 요약 보드의 상태를 최신화했다. 최신 `origin/develop`의 T-20260730-004 `completion_review`까지 병합한 재작업 기준 집계는 다음과 같다.
 
-- proposed 18
+- proposed 17
 - scoped 2
-- in_progress 1
-- verification_ready 1
+- in_progress 2
+- completion_review 1
 - done 19
 - cancelled 1
 
@@ -66,16 +66,37 @@
 - `git diff --check`: PASS
 - 주요 구형 충돌 문구 scan: 잔여 활성 충돌 0
 - 제품 핵심 정책 비교: STT·저장·삭제·핸즈프리 변경 없음
-- 프로젝트 전역 strict 검증: 기존 `operating_model.md`·`agent_registry.md` front matter와 archive T-019 `schema` 누락으로 FAIL. T-001 변경에서 새로 만든 결함은 아니며 `agent_registry.md`는 allowed paths 밖이므로 별도 운영 정비 대상으로 인계
+- 프로젝트 전역 strict 검증: 기존 `operating_model.md`·`agent_registry.md` front matter와 archive T-019 `schema` 누락으로 FAIL. T-001 변경에서 새로 만든 결함은 아니며 이번 Product QA 필수 결함 4건과 분리한 운영 schema 정비 대상으로 인계
+
+## Product QA FAIL과 승인 재작업
+
+Product QA는 최초 독립 검증에서 아래 필수 결함을 확인했다.
+
+- PQA-HIGH-031-001: 활성 Team context·Ops Issues·Migration Plan의 구형 Figma·Backend 기준
+- PQA-HIGH-031-002: 상위 Board가 완료된 Backend·CI 하위 Task까지 승인 대기로 표시
+- PQA-MEDIUM-031-003: Product QA Agent·capability의 운영 모델 등록 누락
+- PQA-HIGH-031-004: 검증 중 최신 develop에 T-20260730-004 통합 결과 추가
+
+Product Owner가 4건의 재작업과 운영·Team context 추가 경로를 승인했다. Product Lead는
+QA 판정을 커밋으로 보존하고 최신 develop을 병합한 뒤 다음과 같이 재작업했다.
+
+- Design Team context를 로컬 Prototype·Manifest 원본과 Figma 미러 기준으로 통일
+- Development Team context에 Backend Architecture Decision·공통 API 계약 등록
+- 해결된 Ops Issue OI-001~005를 닫고 CI 잔여 이슈를 T-005~006으로 축소
+- Migration Plan을 이력 문서로 명시하고 PDF·Backend·Figma·CI 현재 상태 갱신
+- Backend·CI 상위 Board에서 완료·completion review·승인 대기 하위 Task 분리
+- Product QA Agent와 독립 문서·cross-domain 검증 capability를 Registry·Operating Model·Quality Context에 등록
+- T-004는 QA 표현의 `done`이 아니라 개별 Task의 실제 `completion_review` 상태로 보존
 
 ## 최신 develop 정렬 결과
 
-Product Owner 승인에 따라 문서 변경을 로컬 커밋한 뒤 최신 `origin/develop`
-`dedfa74`를 병합했다.
+Product Owner 승인에 따라 최초 문서 변경과 Product QA FAIL 판정을 각각 로컬
+커밋으로 보존한 뒤 최신 `origin/develop` `22fe75f`를 병합했다.
 
 - 병합 결과: T-021 Task·Development·Quality Board와 Backend API 계약 보존
 - T-021 최종 상태: `done`
-- T-20260731-001 Quality Board 검증 예정 항목: 보존
+- T-004 최종 상태: `completion_review`
+- T-20260731-001 Product QA FAIL과 재작업 상태: 보존
 - 전체 Task 상태 집계: 최신화
 - 신규 Backend API 계약 링크: 존재 확인
 - 충돌 문구 scan과 `git diff --check`: 재검증 대상 통과

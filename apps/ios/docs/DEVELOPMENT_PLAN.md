@@ -588,7 +588,7 @@ M8 검증 결과:
 
 ## 열린 질문
 
-- `ios-build`, `ios-xctest` 구현과 hosted 검증은 완료됐습니다. T-20260730-004~006의 진단·dry run·required check 적용이 남아 있습니다.
+- `ios-build`, `ios-xctest` 구현과 hosted 검증은 완료됐고 T-20260730-004의 concurrency·공통 진단·artifact 통합은 `completion_review`입니다. T-004 최종 완료 확정 후 T-005 dry run과 T-006 required check 적용이 남아 있습니다.
 - Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했으며 현재 CI 계약은 Xcode 26.6·iPhone 17·iOS 26.5입니다.
 
 ## 관련 문서

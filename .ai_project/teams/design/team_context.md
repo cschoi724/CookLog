@@ -31,7 +31,7 @@ Product Lead Agent는 필수 Design 하위 Task가 모두 완료된 뒤 상위 �
 |---|---|
 | Path | `design/`, 디자인 관련 `docs/product/` 문서 |
 | Domain | user flow, interaction, visual design, handoff |
-| External | Figma 원본 링크는 unresolved |
+| External | Figma는 로컬 UI/UX 원본을 미러하는 버전 스냅샷이며 충돌 시 로컬 원본 우선 |
 
 ## 4. Source of Truth
 
@@ -40,6 +40,9 @@ Product Lead Agent는 필수 Design 하위 Task가 모두 완료된 뒤 상위 �
 | 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` |
 | 와이어프레임 | `docs/product/CookLog_WIREFRAME.md` |
 | 제품 요구 | `docs/product/CookLog_PRD_v2.md` |
+| UI/UX 원본 | `design/prototype/`, `design/figma-build/manifest.json` |
+| 구현 핸드오프 | `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md` |
+| Figma 미러 | [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn) |
 
 ## 5. Board / Escalation
 

@@ -12,65 +12,44 @@
 
 ## 2. 열린 운영 이슈
 
-## OI-20260701-001 - 루트 상태 문서와 iOS 상태 문서의 진행 상태 차이
-
-- 상태: open
-- 점검 범위: `docs/PROJECT_STATUS.md`, `apps/ios/docs/STATUS.md`, 실제 `apps/ios/` 파일 구조
-- 발견한 운영 이슈: 루트 `docs/PROJECT_STATUS.md`는 iOS 프로젝트가 아직 생성 전이라고 기록하지만, `apps/ios/docs/STATUS.md`와 실제 파일 구조에는 `CookLog.xcodeproj`, SwiftUI 앱, 테스트 파일, M8 진행 상태가 존재합니다.
-- 영향: PM/Development/QA Agent가 서로 다른 현재 상태를 기준으로 Task를 만들거나 실행할 수 있습니다.
-- 권장 개선안: PM Agent가 루트 `docs/PROJECT_STATUS.md`와 필요 시 `docs/PROJECT_CHANGELOG.md`를 최신 iOS 상태 기준으로 동기화하는 문서 Task를 생성합니다.
-- 수정 필요 문서: `docs/PROJECT_STATUS.md`, 필요 시 `docs/PROJECT_CHANGELOG.md`
-- 사용자 승인 필요: PM Agent가 제품/프로젝트 상태 문서 갱신 Task를 생성할 때 필요
-
-## OI-20260701-002 - AI Agent Task Queue가 아직 비어 있음
-
-- 상태: open
-- 점검 범위: `.ai_project/tasks/`, `.ai_project/task_board.md`
-- 발견한 운영 이슈: `.ai_project/` 초기화 직후라 실행 가능한 `proposed`, `approved`, `ready_for_qa` Task가 없습니다.
-- 영향: Development Agent와 QA Agent가 공유 Queue 기반으로 다음 작업을 선택할 수 없습니다.
-- 권장 개선안: PM Agent가 첫 파일럿 Task를 `proposed` 상태로 등록하고 Product Owner 승인 후 `approved`로 전환합니다.
-- 수정 필요 문서: `.ai_project/tasks/`, `.ai_project/task_board.md`
-- 사용자 승인 필요: 첫 파일럿 Task 선정과 승인
-
-## OI-20260727-003 - 기존 Git 문서와 신규 Branch/PR 전략 충돌
-
-- 상태: open
-- 발견한 운영 이슈: `docs/GIT_WORKFLOW.md`는 `main` 직접 작업을 기준으로 하지만 승인된 운영 모델은 `feature_branch_pr`를 사용합니다.
-- 영향: Agent가 서로 다른 branch, push, merge 기준을 적용할 수 있습니다.
-- 임시 대응: `.ai_project/branch_pr_strategy.md`와 사용자 승인 원칙을 따르고 `main` 직접 push를 하지 않습니다.
-- 개선 후보: Product/Docs Task로 `docs/GIT_WORKFLOW.md` 동기화
-- 사용자 승인 필요: 제품 문서 수정
-
-## OI-20260727-004 - 기존 `agents.md`와 신규 adapter 지침 정합성 미확인
-
-- 상태: open
-- 발견한 운영 이슈: 원격 저장소는 기존 `agents.md`를 사용하며 core migration 검증은 `AGENTS.md` adapter 갱신을 `needs_user_decision`으로 보고했습니다.
-- 영향: 도구와 세션에 따라 서로 다른 운영 지침을 읽을 수 있습니다.
-- 임시 대응: 제품/플랫폼 기준은 기존 문서를 보존하고 AI 실행 기준은 `.ai/`와 `.ai_project/operating_model.md`를 확인합니다.
-- 개선 후보: 기존 내용을 보존하는 adapter 병합안 작성
-- 사용자 승인 필요: `AGENTS.md` 또는 `agents.md` 변경
-
-## OI-20260727-005 - Backend와 Figma source of truth 미확정
-
-- 상태: open
-- 발견한 운영 이슈: Backend 코드 경로·API 계약 문서와 Figma 원본 링크가 아직 없습니다.
-- 영향: Backend 구현 및 디자인 핸드오프 Task를 안전하게 승인할 수 없습니다.
-- 임시 대응: 관련 Task 승인 전까지 `unresolved`와 생성 후보로 유지합니다.
-- 개선 후보: Product/Design/Development Lead가 각 기준을 제안
-- 사용자 승인 필요: 기준 문서 또는 외부 링크 확정
-
 ## OI-20260727-006 - CI 필수 check 미확정
 
 - 상태: open
-- 발견한 운영 이슈: `feature_branch_pr`를 선택했지만 자동 CI 기준은 확인되지 않았습니다.
-- 영향: PR merge gate가 수동 검증에 의존합니다.
-- 임시 대응: CI 구성 전에는 Task별 빌드·테스트·수동 QA 결과를 PR에 기록합니다.
-- 개선 후보: iOS와 Backend CI 설계 Task
-- 사용자 승인 필요: 외부 CI 설정 변경 시 필요
+- 현재 상태: T-20260730-001~003은 `done`, T-004는 workflow 통합과 독립 QA를 마치고 `completion_review`입니다.
+- 잔여 이슈: 실제 취소·실패 PR dry run T-005와 required check 외부 설정 T-006이 남아 있습니다.
+- 영향: workflow 자체는 자동화됐지만 branch protection의 최종 merge 차단은 아직 확정되지 않았습니다.
+- 임시 대응: `ios-build`, `ios-xctest` 결과와 Task별 검증 기록을 merge gate로 확인합니다.
+- 해결 조건: T-005 검증과 Product Owner가 별도 승인한 T-006 외부 설정 완료
 
 ## 3. 닫힌 운영 이슈
 
-현재 닫힌 운영 이슈가 없습니다.
+### OI-20260701-001 - 루트·iOS 상태 차이
+
+- 상태: closed
+- 해결: T-20260701-001과 후속 상태 갱신으로 `docs/PROJECT_STATUS.md`와 iOS 상태 문서를 동기화했습니다.
+
+### OI-20260701-002 - 초기 Task Queue 공백
+
+- 상태: closed
+- 해결: T-20260701-001부터 공유 Task Queue와 Project/Team Board를 운영 중입니다.
+
+### OI-20260727-003 - Git 문서와 Branch/PR 전략 충돌
+
+- 상태: closed
+- 해결: T-20260728-007·019에서 `develop` 통합, `main` 승격과 사용자 Git 승인 기준을 단일화했습니다.
+
+### OI-20260727-004 - 루트 Agent 안내와 adapter 정합성
+
+- 상태: closed
+- 해결: T-20260731-001에서 루트 `agents.md`를 역할·탐색 경로·Source of Truth 참조 중심으로 축소했습니다.
+
+### OI-20260727-005 - Backend와 UI/UX Source of Truth 미확정
+
+- 상태: closed
+- 해결 Task: T-20260728-002, T-20260729-020, T-20260729-021, T-20260731-001
+- Backend 기준: `apps/backend/docs/ARCHITECTURE_DECISION.md`, `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/`
+- UI/UX 기준: `design/prototype/`, `design/figma-build/manifest.json`; Figma는 버전 미러
+- 잔여 결정: 실제 Backend provider 계약·배포는 Product Owner의 별도 승인 대상이며 Source of Truth 미확정 이슈와 분리합니다.
 
 ## 4. 변경 이력
 
@@ -78,3 +57,4 @@
 |---|---|
 | 2026-07-01 | Ops Issues 문서 초기화 |
 | 2026-07-27 | Git 전략, adapter drift, Backend/Figma, CI 미확정 이슈 추가 |
+| 2026-07-31 | T-20260731-001 재작업에서 해결된 OI-001~005를 닫고 CI 잔여 범위를 T-005~006으로 축소 |

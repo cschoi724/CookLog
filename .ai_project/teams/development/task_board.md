@@ -10,10 +10,10 @@
 | `T-20260728-001` | `cancelled` | iOS | iOS M8 잔여 안정화와 최종 검증 | - | - | 유효 항목 T-003/T-009 통합 |
 | `T-20260728-003` | `proposed` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` | 7개 iOS 하위 패키지 scope |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
-| `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | 각 하위 Task 실행 승인 대기 |
+| `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | T-020·021 완료, T-022~025 선행·승인 상태에 따라 순차 실행 |
 | `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` | 선행 Task 대기 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
-| `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | 각 하위 Task 실행 승인 대기 |
+| `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~003 완료, T-004 완료 검토, T-005~006 후속 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
 | `T-20260729-003` | `proposed` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` | AI provider 승인 후 하위 패키지 |
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
@@ -26,7 +26,7 @@
 | `T-20260729-024` | `proposed` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020`, `021` 완료 | 실행 승인 대기 |
 | `T-20260729-025` | `proposed` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | 선행·승인 대기 |
 
-`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-021`은 Product Owner가 실행 승인을 재확인했고 기존 공통 API 계약 구현과 자체 검증을 최신 `develop`에 정렬한 뒤 Backend QA 독립 검증에서 재작업 요청을 받았습니다. 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 나머지 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. T-020 런타임·provider 추천안과 T-021 공통 API 계약은 `done`입니다. 원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지하며 T-022~024는 선행 조건과 별도 Product Owner 승인, T-025는 T-022~024 완료 후 실행합니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
 Backend QA가 `T-20260729-021`에서 최초 설치 challenge의 동시 소비 원자성 누락
 `QA-HIGH-021-001`, 오류 허용 문자열 내부 민감정보 비노출을 기계적으로 보장하지 못하는
@@ -75,13 +75,13 @@ Development Lead가 QA 결과를 고정한 뒤 최신 develop 위로 재정렬�
 인계하고 `completion_review`로 수용했습니다.
 
 PR #26의 `ios-build` 통과와 squash merge SHA `a8e3a8a`를 확인해 T-020을
-`done`으로 확정했습니다. T-023·T-024는 T-020 의존성이 해소됐지만 T-021 완료와
-별도 Product Owner 실행 승인을 계속 기다립니다.
+`done`으로 확정했습니다. T-021도 `done`이므로 T-023·T-024의 Task 선행 조건은
+해소됐지만 별도 Product Owner 실행 승인을 계속 기다립니다.
 
 | `T-20260730-001` | `done` | CI | 환경·명령·check 계약 | - | `T-004`, `T-007` 완료 | PR #20 squash merge·완료 확정 |
 | `T-20260730-002` | `done` | CI | ios-build workflow | - | `T-20260730-001` 완료 | PR #24 squash merge·hosted check 통과·완료 확정 |
 | `T-20260730-003` | `done` | CI | ios-xctest workflow | - | `T-20260730-001`, `T-20260730-002` 완료 | PR #28 squash merge·hosted 33/33·완료 확정 |
-| `T-20260730-004` | `completion_review` | CI | concurrency·진단·cache·artifact 통합 | Development Lead Agent | `T-20260730-002`, `003` 완료 | 완료 리뷰 통과·hosted checks 후 develop 통합 |
+| `T-20260730-004` | `completion_review` | CI | concurrency·진단·cache·artifact 통합 | Development Lead Agent | `T-20260730-002`, `003` 완료 | PR #34 develop 통합·최종 완료 확정 대기 |
 | `T-20260730-005` | `proposed` | CI | PR dry run·실패 감지 검증 | iOS Agent | `T-20260730-004` | 선행·승인 대기 |
 | `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
 | `T-20260730-007` | `done` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | - | T-001 QA-HIGH-001 | PR #18 squash merge 완료 |
@@ -95,8 +95,8 @@ dry run·iOS QA와 별도 Product Owner 승인 후에만 수행합니다.
 
 T-20260730-004는 독립 QA `PASS_WITH_RISK`, 최신 develop 재정렬, YAML·Task·허용
 경로 검증을 통과해 Development Lead가 `completion_review`로 수용했습니다.
-hosted 정상 preflight·summary·artifact는 T-004 PR merge gate로 확인하고 같은 PR
-취소·hosted 실패 진단은 T-20260730-005로 인계합니다.
+PR #34의 hosted checks와 develop 통합은 완료됐고 최종 완료 확정을 기다립니다.
+연속 실행 취소·hosted 실패 진단은 T-20260730-005로 인계합니다.
 
 `T-20260730-007`은 SwiftData 테스트가 `ModelContainer`를 테스트 종료까지
 보유하도록 fixture 수명을 최소 수정했습니다. iOS 26.5와 iOS 17.2 전체 XCTest가
