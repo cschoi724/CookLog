@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-020
 title: Backend 런타임·배포·AI provider·비용 후보 결정안
-status: verification_ready
+status: verification_passed
 type: docs
 priority: P0
 priority_reason: 첫 출시 AI gateway의 외부 비용과 운영 경계를 구현 전에 승인해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
 - api_qa
 - security_check
@@ -130,3 +130,7 @@ qa_to: ".ai_project/qa/T-20260729-020_compare-backend-runtime-ai-provider-cost-o
 | 2026-07-30 | Backend QA Agent | unlock | task unlock |
 | 2026-07-30 | Development Lead Agent | reconcile duplicate workstreams | 동일 Task ID의 구형 브랜치와 최신 execution-v2가 분기된 원인을 확인하고 Apple 기기 내 STT 기준 최신 산출물만 origin/develop 최신 상태에 통합 |
 | 2026-07-30 | Development Lead Agent | transition: verification_passed -> verification_ready | 기존 PASS_WITH_RISK는 미커밋 상태 검증이므로 고정 통합 커밋 기준 변경 경로·공용 보드 비회귀와 판정 증빙을 Backend QA Agent에 재확인 요청 |
+| 2026-07-30 | Backend QA Agent | transition: verification_ready -> verification_in_progress | 고정 커밋 f4408d0 기준 최신 develop 통합·비회귀 독립 재검증 시작 |
+| 2026-07-30 | Backend QA Agent | lock | task lock |
+| 2026-07-30 | Backend QA Agent | transition: verification_in_progress -> verification_passed | f4408d0 내용 동등성·QA-HIGH-020-003·비용·allowed paths·최신 완료 기록·Task ID 단일성 재검증 PASS_WITH_RISK |
+| 2026-07-30 | Backend QA Agent | unlock | 고정 통합 커밋 독립 재검증 완료 및 Development Lead Completion Role 인계 |

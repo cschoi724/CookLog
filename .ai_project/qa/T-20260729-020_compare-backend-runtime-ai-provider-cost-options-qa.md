@@ -3,8 +3,8 @@
 작성일: 2026-07-30
 작성자: Backend QA Agent
 대상 Task: `T-20260729-020`
-최종 내용 판정: `PASS_WITH_RISK`
-현재 상태 인계: `verification_ready`
+최종 판정: `PASS_WITH_RISK`
+최종 상태 인계: `verification_in_progress -> verification_passed`
 
 이 문서의 1~9절은 1차 독립 검증에서 `QA-HIGH-020-003`을 발견해
 `rework_requested`로 인계한 기록이다. 10절부터는 해당 결함 재작업에 대한 독립
@@ -442,3 +442,90 @@ Backend QA Agent는 정리 브랜치의 고정 HEAD를 기준으로 다음만 �
 4. 최신 `develop`의 기존 완료 Task와 공용 보드 상태를 되돌리지 않는지
 
 이 확인 전에는 Development Lead 완료 검토나 `done` 전환을 진행하지 않는다.
+
+## 16. 고정 통합 커밋 `f4408d0` 독립 재검증
+
+검증 대상:
+
+- branch: `task/T-20260729-020-reconcile-latest`
+- 고정 커밋: `f4408d0596ac101299a52df07d076bfdb11cf43d`
+- 통합 기준점: `2a4751eaad940215080772f5cc8e2e544aa381ab`
+- 기존 PASS_WITH_RISK 내용 보존 커밋: `0908f34`
+
+### 검증 기준별 결과
+
+| 기준 | 결과 | 근거 |
+|---|---|---|
+| 기존 PASS_WITH_RISK와 결정안·보고서 내용 동등성 | 통과 | `0908f34..f4408d0`에서 결정안·보고서는 줄 끝 공백 정리만 있고 의미 변경이 없다. |
+| `QA-HIGH-020-003` 해소 유지 | 통과 | ACK 즉시 delete, 생성 22시간 cleanup, 15분 sweeper, 24시간 접근 차단, 23시간 job 차단·incident와 TTL safety net 경계가 모두 유지됐다. |
+| 비용 산식·잔여 위험 보존 | 통과 | runtime·추천·차선·hard cutoff 재계산이 일치하고 `QA-RISK-020-006`, `007`이 그대로 남아 있다. |
+| Task `allowed_paths` 준수 | 통과 | `2a4751e..f4408d0` 변경 7개와 Task `allowed_paths` 7개가 정확히 일치하며 범위 밖 변경은 0개다. |
+| 최신 develop 완료 기록 비회귀 | 통과 | T-20260730-001·007 Task와 Development·Quality board의 `done`, PR #20·#18 기록이 유지됐다. |
+| 동일 Task ID 중복 없음 | 통과 | `.ai_project/tasks/**/*.md` 전수 검색에서 `id: T-20260729-020`은 active Task 1개뿐이고 backlog 동명 파일은 삭제됐다. |
+
+### 내용 동등성
+
+`f4408d0`의 핵심 Backend 내용은 기존 검증 대상을 바꾸지 않는다.
+
+- `apps/backend/docs/ARCHITECTURE_DECISION.md`: 줄 끝 공백만 정리
+- 실행 보고서: 줄 끝 공백만 정리
+- QA 보고서: 기존 판정 본문을 유지하고 고정 통합 커밋 재확인 요청만 추가
+- Task: `verification_ready`, Backend QA routing·capability와 reconcile 이력만 갱신
+- Development·Quality board: T-020 상태와 재검증 인계만 갱신
+
+따라서 기존 `PASS_WITH_RISK` 판정의 아키텍처·개인정보·비용 근거는 의미적으로
+동일하다.
+
+### 비용 독립 재계산
+
+- 정상 runtime: USD 2.055198
+- OpenAI 추천: AI USD 11.55, runtime 포함 KRW 20,952
+- Vertex AI 차선: AI USD 10.285, runtime 포함 KRW 19,004
+- hard cutoff runtime: USD 2.5234955
+- hard cutoff 추천: KRW 36,226
+- hard cutoff 차선: KRW 32,684
+
+반올림 전 산식과 결과는 11절 및 결정안·실행 보고서와 일치한다.
+
+### 최신 develop 비회귀와 통합 위험
+
+고정 커밋의 기준점에는 T-20260730-001·007 완료가 이미 포함돼 있고 다음 상태가
+그대로 유지된다.
+
+- T-20260730-001: `done`, PR #20 squash merge·완료 확정
+- T-20260730-007: `done`, PR #18 squash merge·완료 확정
+
+재검증 시점의 `origin/develop`은 기준점 이후 T-20260729-010 구현·완료 2개
+커밋만큼 전진했다. `f4408d0`의 자체 patch는 T-010 파일을 삭제하거나 수정하지 않지만,
+Development·Quality board는 양쪽에서 변경됐으므로 병합 전 최신 develop 동기화와
+충돌 해결 시 T-010 `done` 기록 보존을 확인해야 한다.
+
+### QA-RISK-020-008: 현재 origin/develop의 T-010 완료 기록 병합 보존
+
+- 심각도: 낮음
+- 분류: 통합 비회귀
+- `f4408d0`은 생성 당시 최신 기준점 위에서 T-001·T-007을 보존했다.
+- 현재 origin의 후속 T-010 완료는 T-020 patch 범위와 독립적이며 T-020 판정을
+  변경하지 않는다.
+- PR 또는 병합 전 최신 develop을 반영하고 Development·Quality board의 T-010
+  `done` 행이 유지되는지 `git diff`로 재확인한다.
+
+### 자동 검증
+
+- `aiops validate task --strict`: 통과
+- `git diff --check 2a4751e..f4408d0`: 통과
+- allowed path 자동 비교: 변경 7, 허용 7, 범위 밖 0
+- Task ID 전수 검사: `T-20260729-020` 1개
+- 독립 비용 계산: 정상·hard cutoff 모두 일치
+
+### 고정 커밋 최종 판정
+
+`PASS_WITH_RISK`.
+
+기존 PASS_WITH_RISK 대상과 최신 결정안·보고서는 의미적으로 동일하다.
+`QA-HIGH-020-003` 해소 내용, 비용 산식과 `QA-RISK-020-006`, `007`도 유지됐으며
+변경 경로·Task ID·T-001·T-007 완료 기록에서 차단 결함이 없다.
+
+`QA-RISK-020-008`은 병합 직전 최신 develop 동기화로 관리 가능한 비차단 위험이다.
+Task를 `verification_passed`로 전환하고 Development Lead Agent / Completion Role에
+인계한다.
