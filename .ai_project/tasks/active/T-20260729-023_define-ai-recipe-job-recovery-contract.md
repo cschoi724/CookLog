@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-023
 title: AI 레시피 job·상태 조회·결과 복구 계약 정의
-status: approved
+status: in_progress
 type: docs
 priority: P0
 priority_reason: 온라인 AI 정리의 비동기 처리와 실패 복구가 첫 출시 핵심 경로다.
@@ -36,9 +36,9 @@ source_of_truth:
 - docs/PROJECT_DECISIONS.md
 created_by: Development Lead Agent
 approved_by: Product Owner
-locked_by:
-locked_at:
-lock_session:
+locked_by: Backend Agent
+locked_at: '2026-07-31'
+lock_session: codex-backend-t023-rework-20260731
 lock_timeout_minutes: 240
 created_at: 2026-07-30
 updated_at: '2026-07-31'
@@ -72,6 +72,12 @@ qa_to: ".ai_project/qa/T-20260729-023_define-ai-recipe-job-recovery-contract-qa.
 - ACK 즉시 삭제, 생성 22시간 cleanup, 15분 sweeper, 24시간 복호화 전 접근 차단과
   Firestore TTL 유료 safety net 경계를 정의했다.
 - evidence·안전값·step order·schema invalid 출력의 저장·반환 금지를 검증했다.
+- QA-HIGH-023-001 재작업으로 available status에 server-owned `result_version`을
+  제공하고 ACK mismatch·동시·replay 계약과 fixture를 추가했다.
+- QA-HIGH-023-002 재작업으로 provider 시작 전/후와 실행 확실성에 따른 timeout
+  decision table을 고정했다.
+- QA-MEDIUM-023-001 재작업으로 quota 초과를 job 생성 전 HTTP 429 경계로 단일화하고
+  job failure enum에서 제거했다.
 
 ## 자체 검증
 
@@ -129,3 +135,6 @@ T-20260729-023 AI recipe job·상태 조회·결과 복구 계약을 독립 검�
 | 2026-07-31 | Backend QA Agent | unlock | task unlock |
 | 2026-07-31 | Product Owner | approve rework | QA-HIGH-023-001~002 및 QA-MEDIUM-023-001 수정 범위 재작업 승인 |
 | 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 재작업 인계, 수정 후 독립 재검증 진행 |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-023-001~002·QA-MEDIUM-023-001 승인 재작업 시작 |
+| 2026-07-31 | Backend Agent | self-verification | result version ACK 4개·timeout decision 6개·quota HTTP 경계 검사 통과 |

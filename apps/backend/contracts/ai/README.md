@@ -10,6 +10,8 @@
 - `fixtures/recipe-draft.json`: evidence와 review flag를 포함한 정상 결과
 - `fixtures/state-transitions.json`: 상태 전이·provider 호출 상한
 - `fixtures/idempotency-cases.json`: 생성·조회·ACK·수동 재실행
+- `fixtures/result-version-ack-cases.json`: GET result version·ACK mismatch·동시·replay
+- `fixtures/timeout-decision-cases.json`: provider 시작·결과 확실성별 timeout 분류
 - `fixtures/recovery-lifecycle.json`: ACK·22시간 cleanup·sweeper·24시간 만료
 - `fixtures/output-negative.json`: 잘못된 evidence·안전값·schema 결과 차단
 - `validate-contracts.sh`: schema·fixture 정책 정합성 검사

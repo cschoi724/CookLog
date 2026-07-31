@@ -46,8 +46,9 @@ jq -e '
     (.terminal_state == "succeeded" or .terminal_state == "failed")) and
   (.provider_call_cases[] | select(.name == "worker_crash_after_provider_start") |
     .provider_calls == 1 and .failure == "OUTCOME_UNKNOWN") and
-  (.provider_call_cases[] | select(.name == "provider_timeout") |
-    .provider_calls == 1 and .failure == "AI_TIMEOUT") and
+  (.provider_call_cases[] |
+    select(.name == "provider_response_deadline_after_start") |
+    .provider_calls == 1 and .failure == "OUTCOME_UNKNOWN") and
   .timeouts_seconds.create_accept == 5 and
   .timeouts_seconds.queue_start == 120 and
   .timeouts_seconds.worker_execution == 90 and
@@ -70,6 +71,55 @@ jq -e '
   (.cases[] | select(.name == "manual_retry") |
     .keys == 2 and .jobs_created == 2)
 ' "$contract_dir/fixtures/idempotency-cases.json" >/dev/null
+
+jq -e '
+  .available_status.state == "succeeded" and
+  .available_status.result_state == "available" and
+  .available_status.result_version >= 1 and
+  .available_status.result_present == true and
+  all(.non_available_statuses[]; .result_version == null) and
+  (.ack_cases | map(.name) | sort) ==
+    ["ack_replay_after_delete", "concurrent_ack", "get_version_then_ack",
+     "wrong_version"] and
+  (.ack_cases[] | select(.name == "get_version_then_ack") |
+    .submitted_result_version == .stored_result_version and
+    .content_delete_count == 1 and .result == "success") and
+  (.ack_cases[] | select(.name == "wrong_version") |
+    .submitted_result_version != .stored_result_version and
+    .content_delete_count == 0 and
+    .result == "VALIDATION_FAILED:MISMATCH") and
+  (.ack_cases[] | select(.name == "concurrent_ack") |
+    .concurrent_requests == 2 and .content_delete_count == 1 and
+    .result == "same_success") and
+  (.ack_cases[] | select(.name == "ack_replay_after_delete") |
+    .stored_result_version == null and
+    .submitted_result_version == .acknowledged_result_version and
+    .content_delete_count == 0 and .result == "success_replayed")
+' "$contract_dir/fixtures/result-version-ack-cases.json" >/dev/null
+
+jq -e '
+  (.cases | map(.name) | sort) ==
+    ["connection_lost_after_start", "provider_cancelled_before_execution",
+     "provider_response_deadline_after_start", "queue_start_timeout",
+     "worker_deadline_after_provider_start",
+     "worker_deadline_before_provider_start"] and
+  all(.cases[];
+    .provider_calls <= 1 and
+    .new_job_allowed == "after_terminal_state_observed_and_user_confirms") and
+  all(.cases[] | select(.provider_started == false);
+    .provider_calls == 0 and
+    (.terminal_failure == "QUEUE_TIMEOUT" or
+     .terminal_failure == "AI_TIMEOUT")) and
+  all(.cases[] |
+      select(.provider_started == true and
+             .provider_execution_absent_confirmed == false);
+    .provider_calls == 1 and .terminal_failure == "OUTCOME_UNKNOWN" and
+    .late_response_action == "discard_on_state_version_cas_failure") and
+  (.cases[] | select(.name == "provider_cancelled_before_execution") |
+    .provider_calls == 1 and
+    .provider_execution_absent_confirmed == true and
+    .terminal_failure == "AI_TIMEOUT")
+' "$contract_dir/fixtures/timeout-decision-cases.json" >/dev/null
 
 jq -e '
   (.created_at | fromdateiso8601) as $created |
@@ -122,7 +172,14 @@ jq -e '
   (.properties.state.enum | sort) ==
     ["expired", "failed", "processing", "queued", "succeeded"] and
   (.properties.result_state.enum | sort) ==
-    ["acknowledged_deleted", "available", "expired_deleted", "none"]
+    ["acknowledged_deleted", "available", "expired_deleted", "none"] and
+  (.required | index("result_version") != null) and
+  (.properties.failure.oneOf[1].properties.code.enum |
+    index("QUOTA_EXCEEDED") == null) and
+  .allOf[3].if.properties.result_state.const == "available" and
+  .allOf[3].then.properties.result_version.type == "integer" and
+  .allOf[4].if.properties.result_state.const == "acknowledged_deleted" and
+  .allOf[4].then.properties.result_version.type == "null"
 ' "$contract_dir/recipe-job-status.schema.json" >/dev/null
 
 echo "AI recipe contract validation: PASS"

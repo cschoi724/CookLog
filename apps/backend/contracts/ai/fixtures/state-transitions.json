@@ -41,12 +41,12 @@
       "failure": "OUTCOME_UNKNOWN"
     },
     {
-      "name": "provider_timeout",
+      "name": "provider_response_deadline_after_start",
       "deliveries": 1,
       "lease_winners": 1,
       "provider_calls": 1,
       "terminal_state": "failed",
-      "failure": "AI_TIMEOUT"
+      "failure": "OUTCOME_UNKNOWN"
     },
     {
       "name": "provider_5xx",

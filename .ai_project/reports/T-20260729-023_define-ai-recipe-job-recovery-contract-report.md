@@ -33,6 +33,8 @@ STEP Preview snapshot을 비동기 RecipeDraft로 구조화하고 앱 백그라�
 - `apps/backend/contracts/ai/fixtures/recipe-draft.json`
 - `apps/backend/contracts/ai/fixtures/state-transitions.json`
 - `apps/backend/contracts/ai/fixtures/idempotency-cases.json`
+- `apps/backend/contracts/ai/fixtures/result-version-ack-cases.json`
+- `apps/backend/contracts/ai/fixtures/timeout-decision-cases.json`
 - `apps/backend/contracts/ai/fixtures/recovery-lifecycle.json`
 - `apps/backend/contracts/ai/fixtures/output-negative.json`
 - `apps/backend/contracts/ai/validate-contracts.sh`
@@ -45,9 +47,10 @@ job 생성 transaction이 job, 암호화 content, idempotency record, cleanup ta
 없는 worker outbox를 함께 만든다. worker는 state version·generation lease CAS의 단일
 승자만 content를 복호화하고 provider를 호출한다.
 
-provider 시작 후 crash·connection loss·timeout은 `OUTCOME_UNKNOWN` 또는 `AI_TIMEOUT`
-terminal failure다. Cloud Tasks 중복 delivery와 provider 오류는 같은 logical job의
-자동 provider 재호출을 만들지 않는다.
+provider 시작 후 crash·connection loss·deadline은 실행 부재가 확인되지 않는 한
+`OUTCOME_UNKNOWN`이다. Provider 시작 전 timeout 또는 provider가 미실행을 확정한
+경우만 `AI_TIMEOUT`이다. Cloud Tasks 중복 delivery와 provider 오류는 같은 logical
+job의 자동 provider 재호출을 만들지 않는다.
 
 ### RecipeDraft
 
@@ -60,6 +63,34 @@ validator를 통과하지 못한 provider 결과는 저장·반환하지 않는�
 GET은 provider를 호출하지 않고 committed 상태만 반환한다. iOS가 draft를 로컬에
 저장하고 ACK하면 content를 즉시 삭제한다. ACK가 없어도 생성 22시간 delete task와
 15분 sweeper가 명시적으로 삭제하며 24시간부터 복호화와 본문 반환을 먼저 차단한다.
+
+## 승인된 재작업 결과
+
+### QA-HIGH-023-001
+
+- `recipe-job-status.schema.json`에 `result_version`을 필수 응답 필드로 추가했다.
+- `succeeded/available`에서만 양의 정수이고 그 외 상태는 `null`로 고정했다.
+- validated draft commit에서 `result_version=1`을 할당하고 같은 logical job에서
+  불변이며 `state_version`과 별개라고 명시했다.
+- GET version ACK 성공, wrong version `VALIDATION_FAILED/MISMATCH`, 동시 ACK 단일
+  delete, ACK replay 성공 fixture와 검사를 추가했다.
+
+### QA-HIGH-023-002
+
+- provider 시작 전 worker timeout은 `AI_TIMEOUT`, queue 시작 timeout은
+  `QUEUE_TIMEOUT`으로 고정했다.
+- provider 시작 후 응답 deadline·connection loss·worker deadline은 실행 부재가
+  확인되지 않는 한 모두 `OUTCOME_UNKNOWN`으로 통일했다.
+- provider가 미실행·취소와 late result 부재를 확정한 경우만 시작 후에도
+  `AI_TIMEOUT`을 허용했다.
+- 각 사건의 provider 호출 수, late response 폐기와 새 job 허용 시점을 6개 fixture로
+  고정했다.
+
+### QA-MEDIUM-023-001
+
+- quota·비용 예약 실패는 create transaction 전에 HTTP 429 `QUOTA_EXCEEDED`를
+  반환하고 job/content/outbox를 만들지 않는 경계로 단일화했다.
+- job status failure enum과 domain failure 표에서 `QUOTA_EXCEEDED`를 제거했다.
 
 ## 자체 검증
 
@@ -74,6 +105,9 @@ GET은 provider를 호출하지 않고 committed 상태만 반환한다. iOS가 
 | idempotency 생성·GET·ACK·수동 재실행 5개 fixture | PASS |
 | ACK·22시간 cleanup·15분 sweeper·24시간 expiry fixture | PASS |
 | invalid evidence·안전값·order·schema 4개 결과 차단 | PASS |
+| result version ACK 성공·mismatch·동시·replay 4개 fixture | PASS |
+| provider 시작 전후 timeout decision 6개 fixture | PASS |
+| status failure enum `QUOTA_EXCEEDED` 부재 | PASS |
 | `git diff --check` | PASS |
 
 ## 범위 외

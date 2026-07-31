@@ -46,7 +46,8 @@ job 상태와 복구 가능한 결과를 조회한다. GET은 side effect 없는
 provider를 호출하지 않는다.
 
 - `queued`, `processing`: draft 없이 현재 상태와 `poll_after_seconds` 반환
-- `succeeded` + `available`: `recipe-draft.schema.json`을 통과한 draft 반환
+- `succeeded` + `available`: server-owned `result_version`과
+  `recipe-draft.schema.json`을 통과한 draft 반환
 - `succeeded` + `acknowledged_deleted`: draft 없이 수신 확인·삭제 상태 반환
 - `failed`: 안전한 domain failure와 사용자 수동 재실행 가능 여부 반환
 - `expired`: draft를 복호화하거나 반환하지 않음
@@ -66,6 +67,8 @@ iOS가 draft를 로컬 AI Review 초안으로 저장한 뒤 호출한다. `Idemp
 - content delete와 `result_state=acknowledged_deleted` 전환을 하나의 idempotent
   transaction/outbox 경계에서 처리한다.
 - 동일 acknowledgement는 이미 삭제된 상태를 성공으로 재생한다.
+- 잘못되거나 stale `result_version`은 content를 삭제하지 않고 422
+  `VALIDATION_FAILED`, 공개 field `result_version`, reason `MISMATCH`로 거부한다.
 - ACK는 job metadata를 최소 운영 보관 기간까지 남길 수 있지만 STEP·draft·prompt
   payload는 즉시 삭제한다.
 - content delete 실패 시 외부 성공을 확정하지 않고 안전한 `INTERNAL_ERROR`를
@@ -115,6 +118,20 @@ semantic validator는 모든 evidence ID가 입력 STEP에 존재하는지, step
 
 schema 또는 semantic validation 실패 결과는 저장·반환하지 않는다. job은
 `failed/OUTPUT_INVALID`로 terminal 전환하고 content cleanup을 시작한다.
+
+### `result_version`
+
+- server가 validated draft를 처음 commit하는 transaction에서 `result_version=1`을
+  할당한다.
+- `result_version`은 draft content의 version이며 job 상태 전이용 `state_version`과
+  다른 개념이다.
+- 같은 logical job의 draft는 수정·재생성하지 않으므로 한번 할당된 값은 불변이다.
+- GET `succeeded/available`에서만 양의 정수로 공개하고 그 외 상태에서는 `null`이다.
+- ACK 성공 transaction은 내부 metadata에 `acknowledged_result_version`을 보존하고
+  공개 `result_version`을 `null`로 바꾸며 content를 삭제한다.
+- 동시 ACK는 `(job_id, result_state=available, result_version)` CAS의 단일 요청만
+  delete를 실행한다. 패배 요청과 같은 version의 ACK replay는 내부
+  `acknowledged_result_version`을 확인해 같은 성공 응답을 재생한다.
 
 ## 5. 상태 머신
 
@@ -166,14 +183,29 @@ worker 규칙:
   provider idempotency key를 commit한다.
 - logical job당 provider 호출은 최대 1회다.
 - worker가 provider 호출 전에 종료되면 queue가 같은 job을 다시 전달할 수 있다.
-- `provider_started_at` 이후 worker crash, connection loss 또는 timeout으로 결과가
-  불명확하면 자동 provider 재호출하지 않고 `failed/OUTCOME_UNKNOWN`으로 전환한다.
+- timeout은 provider 호출 시작 여부와 결과 확실성에 따라 아래 decision table로만
+  분류한다.
 - provider 5xx·rate limit도 동일 job에서 자동 재호출하지 않는다.
 - 늦게 도착한 provider 응답은 state/version CAS에 실패하며 결과를 저장하지 않고
   안전하게 폐기한다.
 
 T-021의 HTTP `retryable=true`는 상태 조회 또는 사용자의 새 요청 가능성을 뜻한다.
 이미 생성된 logical job의 provider 자동 재실행을 허용하지 않는다.
+
+timeout decision table:
+
+| 사건 | provider 호출 수 | terminal failure | late response | 새 job 허용 시점 |
+|---|---:|---|---|---|
+| queue 시작 120초 초과 | 0 | `QUEUE_TIMEOUT` | 없음 | failed GET 확인 후 사용자 선택 |
+| provider 시작 전 worker deadline | 0 | `AI_TIMEOUT` | 없음 | failed GET 확인 후 사용자 선택 |
+| provider가 미실행·취소를 확정 | 1 | `AI_TIMEOUT` | 오면 계약 위반으로 폐기 | failed GET 확인 후 사용자 선택 |
+| provider 시작 후 응답 deadline | 1 | `OUTCOME_UNKNOWN` | state CAS 실패로 폐기 | failed GET 확인 후 사용자 선택 |
+| provider 시작 후 connection loss | 1 | `OUTCOME_UNKNOWN` | state CAS 실패로 폐기 | failed GET 확인 후 사용자 선택 |
+| provider 시작 후 worker deadline | 1 | `OUTCOME_UNKNOWN` | state CAS 실패로 폐기 | failed GET 확인 후 사용자 선택 |
+
+`AI_TIMEOUT`은 provider 실행이 시작되지 않았거나 provider가 실행·late result 부재를
+확정한 경우에만 사용한다. provider가 요청을 수신해 결과 가능성이 남아 있으면 원인이
+timeout, connection loss, worker deadline 중 무엇이든 `OUTCOME_UNKNOWN`이다.
 
 ## 7. 실패와 사용자 재실행
 
@@ -183,11 +215,10 @@ T-021의 HTTP `retryable=true`는 상태 조회 또는 사용자의 새 요청 �
 |---|---|---|
 | `QUEUE_TIMEOUT` | 제한 시간 안에 worker 시작 실패 | `다시 정리하기` |
 | `AI_UNAVAILABLE` | provider 5xx·rate limit | `다시 정리하기` |
-| `AI_TIMEOUT` | provider/worker deadline | `다시 정리하기` |
+| `AI_TIMEOUT` | provider 미실행이 확인된 deadline | `다시 정리하기` |
 | `OUTCOME_UNKNOWN` | provider 시작 후 결과 불명확 | 상태 확인 후 `다시 정리하기` |
 | `OUTPUT_INVALID` | schema·semantic validation 실패 | `다시 정리하기` |
 | `SAFETY_REJECTED` | 안전 정책상 결과 미사용 | 기록 검토 후 다시 실행 |
-| `QUOTA_EXCEEDED` | project/installation 비용 제한 | 제한 해제 후 다시 실행 |
 | `INTERNAL_ERROR` | 안전하게 분류되지 않은 실패 | 나중에 다시 실행 |
 
 failure에는 provider명, model명, prompt, STEP, raw response, stack과 내부 resource ID를
@@ -196,6 +227,13 @@ failure에는 provider명, model명, prompt, STEP, raw response, stack과 내부
 
 사용자 수동 재실행은 새 `Idempotency-Key`와 새 logical job을 만든다. 동일 snapshot을
 재사용할 수 있지만 이전 job ID나 provider idempotency key를 재사용하지 않는다.
+모든 failure에서 GET으로 terminal state를 확인하고 사용자가 명시적으로 선택한 뒤에만
+새 job을 허용한다.
+
+quota는 job domain failure가 아니다. create 순서 4의 project·installation quota 또는
+비용 상한 예약이 실패하면 job/content/outbox를 만들지 않고 T-021 HTTP 429
+`QUOTA_EXCEEDED`를 반환한다. worker 단계에서 추가 `QUOTA_EXCEEDED` 상태를 만들지
+않으며 status failure enum에도 포함하지 않는다.
 
 ## 8. idempotency
 
@@ -206,7 +244,8 @@ failure에는 provider명, model명, prompt, STEP, raw response, stack과 내부
 | 같은 key·다른 body | 409 `IDEMPOTENCY_KEY_REUSED` |
 | create 응답 유실 | 같은 key로 원 job 복구 |
 | GET 반복 | state version에 따른 같은 snapshot, provider 호출 0 |
-| ACK 동시·반복 | content delete 한 번, 같은 성공 replay |
+| ACK wrong/stale version | delete 0, 422 `VALIDATION_FAILED/MISMATCH` |
+| ACK 동시·반복 | version CAS로 content delete 한 번, 같은 성공 replay |
 | 사용자 `다시 정리하기` | 새 key·새 job, 이전 job 불변 |
 
 create idempotency record는 최소 job `expires_at`까지 유지한다. snapshot hash만으로 다른
@@ -270,4 +309,6 @@ Backend QA Agent는 최소 다음을 독립 검증한다.
 7. ACK·22시간 delete task·15분 sweeper·24시간 expiry gate의 콘텐츠 삭제
 8. `now >= expires_at`에서 복호화·본문 반환 전에 접근을 차단하는지
 9. provider·prompt·STEP·draft·secret이 공개 오류와 관측 데이터에 없는지
-10. version mismatch와 만료·중복·수동 재실행 fixture가 계약에 맞는지
+10. GET result version으로 ACK 성공, wrong/stale 거부, 동시 단일 삭제와 replay
+11. 시작 전/후 timeout·connection loss·late response가 decision table과 같은지
+12. quota 초과가 HTTP 429이며 job failure를 만들지 않는지

@@ -10,6 +10,7 @@
     "state",
     "state_version",
     "result_state",
+    "result_version",
     "created_at",
     "updated_at",
     "expires_at",
@@ -47,6 +48,13 @@
         "acknowledged_deleted",
         "expired_deleted"
       ]
+    },
+    "result_version": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
     },
     "created_at": {
       "type": "string",
@@ -90,7 +98,6 @@
                 "OUTCOME_UNKNOWN",
                 "OUTPUT_INVALID",
                 "SAFETY_REJECTED",
-                "QUOTA_EXCEEDED",
                 "INTERNAL_ERROR"
               ]
             },
@@ -98,8 +105,7 @@
               "type": "string",
               "enum": [
                 "retry_manually",
-                "review_steps_then_retry",
-                "wait_for_quota"
+                "review_steps_then_retry"
               ]
             }
           }
@@ -134,6 +140,9 @@
           "result_state": {
             "const": "none"
           },
+          "result_version": {
+            "type": "null"
+          },
           "poll_after_seconds": {
             "type": "integer"
           },
@@ -158,6 +167,9 @@
         "properties": {
           "result_state": {
             "const": "none"
+          },
+          "result_version": {
+            "type": "null"
           },
           "poll_after_seconds": {
             "type": "null"
@@ -215,6 +227,9 @@
         "properties": {
           "result": {
             "$ref": "recipe-draft.schema.json"
+          },
+          "result_version": {
+            "type": "integer"
           }
         }
       }
@@ -234,6 +249,9 @@
         "properties": {
           "result": {
             "type": "null"
+          },
+          "result_version": {
+            "type": "null"
           }
         }
       }
@@ -250,6 +268,9 @@
         "properties": {
           "result_state": {
             "const": "expired_deleted"
+          },
+          "result_version": {
+            "type": "null"
           },
           "poll_after_seconds": {
             "type": "null"
