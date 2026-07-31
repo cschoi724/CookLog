@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-024
 title: Backend 보안·개인정보·관측성·비용 guardrail 정의
-status: approved
+status: completion_review
 type: docs
 priority: P0
 priority_reason: 사용자 콘텐츠와 provider 비용을 로그·장애·abuse 경계에서 보호해야 한다.
@@ -10,29 +10,34 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
-  - backend_architecture
-  - api_contract
+- backend_architecture
+- api_contract
 depends_on:
-  - T-20260729-020
-  - T-20260729-021
+- T-20260729-020
+- T-20260729-021
 blocks:
-  - T-20260728-005
-  - T-20260729-025
+- T-20260728-005
+- T-20260729-025
 parallel_group: backend-contract-foundation
 allowed_paths:
-  - apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md
-  - .ai_project/tasks/backlog/T-20260729-024_define-backend-security-privacy-observability-guardrails.md
-  - .ai_project/tasks/active/T-20260729-024_define-backend-security-privacy-observability-guardrails.md
-  - .ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md
-  - .ai_project/qa/T-20260729-024_define-backend-security-privacy-observability-guardrails-qa.md
-  - .ai_project/teams/development/task_board.md
-  - .ai_project/teams/quality/task_board.md
+- apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md
+- apps/backend/contracts/security/README.md
+- apps/backend/contracts/security/fixtures/raw-metadata-retention-cases.json
+- apps/backend/contracts/security/fixtures/cost-ledger-cases.json
+- apps/backend/contracts/security/fixtures/provider-region-gate-cases.json
+- apps/backend/contracts/security/validate-contracts.sh
+- ".ai_project/tasks/backlog/T-20260729-024_define-backend-security-privacy-observability-guardrails.md"
+- ".ai_project/tasks/active/T-20260729-024_define-backend-security-privacy-observability-guardrails.md"
+- ".ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md"
+- ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observability-guardrails-qa.md"
+- ".ai_project/teams/development/task_board.md"
+- ".ai_project/teams/quality/task_board.md"
 source_of_truth:
-  - docs/product/CookLog_PRD_v2.md
-  - docs/PROJECT_DECISIONS.md
+- docs/product/CookLog_PRD_v2.md
+- docs/PROJECT_DECISIONS.md
 created_by: Development Lead Agent
 approved_by: Product Owner
 locked_by:
@@ -40,9 +45,9 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
-updated_at: 2026-07-31
-report_to: .ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md
-qa_to: .ai_project/qa/T-20260729-024_define-backend-security-privacy-observability-guardrails-qa.md
+updated_at: '2026-07-31'
+report_to: ".ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md"
+qa_to: ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observability-guardrails-qa.md"
 ---
 
 # Backend 보안·개인정보·관측성·비용 guardrail 정의
@@ -80,3 +85,37 @@ qa_to: .ai_project/qa/T-20260729-024_define-backend-security-privacy-observabili
 |---|---|---|---|
 | 2026-07-31 | Product Owner | transition: proposed -> approved | T-020·T-021 완료 후 보안·개인정보·관측성·비용 guardrail 실행 승인 |
 | 2026-07-31 | Development Lead Agent | approve parallel execution | T-022·T-023과 독립 산출물 병렬 실행, 공용 보드 직렬 통합 기준 확정 |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | 승인된 보안·개인정보·관측성·비용 guardrail 계약 작성 시작 |
+| 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | 보안·개인정보·관측성·비용 guardrail 계약 작성 및 자체 검증 완료, Backend QA 독립 검증 인계 |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | 최신 origin/develop 0014935 기준 보안·개인정보·관측성·비용 guardrail 독립 검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-024-001 raw metadata 30일 삭제 보장 누락, QA-HIGH-024-002 전체 외부비 원장 비provider 비용 누락 |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Product Owner | approve rework | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 수정 범위 재작업 승인 |
+| 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 재작업 인계, 수정 후 독립 재검증 진행 |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 승인 재작업 시작 |
+| 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 재작업·fixture 검증 완료, Backend QA 독립 재검증 인계 |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 재작업 독립 재검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-024-002 미해소: 비용 operation 부분 승인과 reservation 초과 actual 정산이 KRW 50,000 불변식을 보장하지 못함 |
+| 2026-07-31 | Product Owner | approve rework | QA-HIGH-024-002 원자 비용 예약·초과 정산 차단 재작업 승인 |
+| 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 단일 차단 결함 재작업 인계, 수정 후 독립 재검증 진행 |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-024-002 원자 예약·초과 정산 단일 결함 승인 재작업 시작 |
+| 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | QA-HIGH-024-002 operation 전액 결정·actual 초과 delayed reserve 원자 정산 재작업 완료, Backend QA 독립 재검증 인계 |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-024-002 operation 전액 결정·actual 초과 delayed reserve 원자 정산 독립 재검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 해소, 보안·개인정보·비용 계약 회귀 없음, PASS_WITH_RISK |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | QA PASS_WITH_RISK, 삭제·비용 hard cutoff·처리 지역 gate와 allowed paths를 확인하고 develop 통합 대기로 전환 |
+
+## Development Lead 완료 검토
+
+- 독립 QA 최종 `PASS_WITH_RISK`와 세 결함 해소 결과를 확인했다.
+- raw metadata 30일 삭제, 전체 외부비 원자 예약·초과 차단, storage/processing region gate를 수용했다.
+- 비용 operation 전액 결정·actual 정산 대응·동시성 fixture와 기존 계약 검증 통과를 확인했다.
+- 잔여 위험은 실제 Cloud runtime·IAM·billing·provider console staging 검증으로 한정된다.
+- `develop` 통합 후 `done` 확정이 필요하며, T-025는 T-024 완료 후 착수한다.

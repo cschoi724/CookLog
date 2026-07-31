@@ -1,0 +1,94 @@
+{
+  "contract_version": "raw-metadata-retention.v1",
+  "created_at": "2026-07-01T00:00:00Z",
+  "delete_after": "2026-07-29T00:00:00Z",
+  "warning_at": "2026-07-30T00:00:00Z",
+  "critical_at": "2026-07-30T12:00:00Z",
+  "incident_at": "2026-07-30T18:00:00Z",
+  "cleanup_retry_stops_at": "2026-07-30T23:45:00Z",
+  "expires_at": "2026-07-31T00:00:00Z",
+  "sweeper_interval_seconds": 900,
+  "cleanup_outbox_registered_atomically": true,
+  "sweeper_independent_from_cleanup_queue": true,
+  "required_sinks": [
+    "source",
+    "error_tracker",
+    "analytics_staging",
+    "incident_replica",
+    "export_object",
+    "backup"
+  ],
+  "cases": [
+    {
+      "name": "normal_cleanup",
+      "fault": "none",
+      "recovered_before_expires_at": true,
+      "receipts_complete_before_expires_at": true,
+      "receipt_sink_ids": ["source", "error_tracker", "analytics_staging", "incident_replica", "export_object", "backup"],
+      "read_after_expiry": false,
+      "export_after_expiry": false,
+      "aggregate_input_after_expiry": false,
+      "sync_delete_attempted_at_expiry": true
+    },
+    {
+      "name": "cleanup_task_missing",
+      "fault": "outbox_delivery_missing",
+      "recovery": "independent_sweeper",
+      "recovered_before_expires_at": true,
+      "receipts_complete_before_expires_at": true,
+      "receipt_sink_ids": ["source", "error_tracker", "analytics_staging", "incident_replica", "export_object", "backup"],
+      "read_after_expiry": false,
+      "export_after_expiry": false,
+      "aggregate_input_after_expiry": false,
+      "sync_delete_attempted_at_expiry": true
+    },
+    {
+      "name": "cleanup_worker_crash",
+      "fault": "worker_crash_after_partial_receipts",
+      "recovery": "idempotent_sweeper_retry",
+      "recovered_before_expires_at": true,
+      "receipts_complete_before_expires_at": true,
+      "receipt_sink_ids": ["source", "error_tracker", "analytics_staging", "incident_replica", "export_object", "backup"],
+      "read_after_expiry": false,
+      "export_after_expiry": false,
+      "aggregate_input_after_expiry": false,
+      "sync_delete_attempted_at_expiry": true
+    },
+    {
+      "name": "cleanup_queue_outage",
+      "fault": "cleanup_queue_unavailable",
+      "recovery": "independent_sweeper_and_sink_ttl",
+      "recovered_before_expires_at": true,
+      "receipts_complete_before_expires_at": true,
+      "receipt_sink_ids": ["source", "error_tracker", "analytics_staging", "incident_replica", "export_object", "backup"],
+      "read_after_expiry": false,
+      "export_after_expiry": false,
+      "aggregate_input_after_expiry": false,
+      "sync_delete_attempted_at_expiry": true
+    },
+    {
+      "name": "sink_delete_failure",
+      "fault": "one_sink_transient_delete_failure",
+      "recovery": "retry_then_receipt_before_expiry",
+      "recovered_before_expires_at": true,
+      "receipts_complete_before_expires_at": true,
+      "receipt_sink_ids": ["source", "error_tracker", "analytics_staging", "incident_replica", "export_object", "backup"],
+      "read_after_expiry": false,
+      "export_after_expiry": false,
+      "aggregate_input_after_expiry": false,
+      "sync_delete_attempted_at_expiry": true
+    },
+    {
+      "name": "firestore_ttl_delay",
+      "fault": "ttl_delete_delayed_beyond_expiry",
+      "recovery": "explicit_cleanup_and_expiry_access_gate",
+      "recovered_before_expires_at": true,
+      "receipts_complete_before_expires_at": true,
+      "receipt_sink_ids": ["source", "error_tracker", "analytics_staging", "incident_replica", "export_object", "backup"],
+      "read_after_expiry": false,
+      "export_after_expiry": false,
+      "aggregate_input_after_expiry": false,
+      "sync_delete_attempted_at_expiry": true
+    }
+  ]
+}

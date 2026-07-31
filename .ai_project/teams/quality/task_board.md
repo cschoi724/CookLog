@@ -22,6 +22,7 @@
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260730-005` | `done` | iOS CI PR dry run·실패 감지·회귀 검증 | 최신 PR #36 33/33, #37~#39 실패 65·timeout 124·취소·artifact | PR #36 squash merge `a5c6503`·완료 확정 |
 | `T-20260729-023` | `done` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | 완료 확정, PASS_WITH_RISK 잔여 위험은 staging 인계 |
+| `T-20260729-024` | `completion_review` | Backend 보안·개인정보·관측성·비용 guardrail | 비용 operation 전액 결정·actual 초과 정산 불변식 | QA PASS_WITH_RISK 확인, develop 통합 대기 |
 
 향후 검증 예정 Task:
 
@@ -31,7 +32,6 @@
 | `T-20260728-005` | Backend | Backend QA Agent | API 계약, 보안, 개인정보 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
-| `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |
 
@@ -118,6 +118,45 @@ quota 생성 전 HTTP 429 단일 경계를 확인했습니다. 기존 provider �
 idempotency, invalid output 차단과 22/24시간 삭제 계약에도 회귀가 없어
 `PASS_WITH_RISK`, `verification_passed`로 인계했습니다. 실제 runtime validator·CAS와
 staging cleanup SLA는 T-025 및 후속 구현 검증에서 확인합니다.
+
+`T-20260729-024`는 Secret Manager·service account 권한 분리와 회전, 콘텐츠·secret의
+모든 telemetry 계층 0건, raw metadata 최대 30일, provider 지역·학습·보관 설정
+activation gate를 계약으로 고정했습니다. 월 호출·token·비용은 provider 호출 전에
+원자 예약하고 hard cutoff를 우회할 수 없습니다. Backend QA는 합성 canary,
+동시 예약, 삭제 시각과 incident kill switch를 독립 검증합니다.
+
+최신 `origin/develop` `0014935` 기준 독립 검증에서 secret·telemetry 비노출,
+AI·Remote STT 삭제 경계, 호출·token 상한과 incident 계약은 통과했습니다. 그러나
+raw metadata 최대 30일에 사전 cleanup·sweeper·접근 차단이 없는
+`QA-HIGH-024-001`, 전체 Backend 외부비 원장에 runtime·Tasks·Firestore·logging·
+egress 비용 반영이 없는 `QA-HIGH-024-002`를 확인해 `FAIL`,
+`rework_requested`로 인계했습니다. OpenAI 한국 저장 후보와 처리 지역 gate의
+불일치는 `QA-MEDIUM-024-001`로 보완해야 합니다.
+
+재작업 독립 재검증에서 `QA-HIGH-024-001`의 +28/+30일 lifecycle과
+`QA-MEDIUM-024-001`의 저장·처리·국외 승인 gate는 해소됐습니다. 그러나 비용 동시성
+fixture가 2,000원 operation을 1,000원 승인·1,000원 거절로 부분 처리하고 예약 초과
+실제값의 50,000원 불변식 유지 규칙도 없어 `QA-HIGH-024-002`는 미해소입니다.
+재검증 `FAIL`, `rework_requested`로 다시 인계했습니다.
+
+최종 독립 재검증에서 operation ID별 전액 승인·거절, 요청/result multiset 일치,
+KRW 49,500 경계의 501원 전액 거절과 actual 초과 delayed reserve 원자 정산을
+확인했습니다. `QA-HIGH-024-002`가 해소되고 기존 30일 삭제·provider 지역 gate와
+비노출 계약에도 회귀가 없어 `PASS_WITH_RISK`, `verification_passed`로 인계했습니다.
+실제 cloud 설정·비용 정산·sink 삭제는 T-025와 staging gate에서 검증합니다.
+
+두 번째 재작업은 operation ID별 요청 금액을 부분 처리 없이 전액 accepted 또는
+rejected로 결정하고 그 multiset이 전체 요청과 일치하도록 검증합니다. actual 초과분은
+delayed reserve를 같은 ledger version CAS에서 소비하며, provider·logging 동시 경합,
+경계 직전 전액 거절과 actual 정상·초과 정산 fixture가 통과했습니다. Backend QA는
+`QA-HIGH-024-002` 해소와 기존 해소 항목의 무회귀를 독립 재검증합니다.
+
+승인 재작업은 raw metadata +28일 cleanup·15분 독립 sweeper·+30일 read/export/
+aggregate 차단과 sink receipt, 전체 외부비 SKU 단일 원장, 저장 region·regional
+processing·국외 처리 승인 분리를 반영했습니다. 정상·장애·동시 비용 경합·지역 gate
+fixture와 security 검증 script 및 기존 common·STT·AI 계약 검증이 통과했습니다.
+Backend QA는 `QA-HIGH-024-001~002`, `QA-MEDIUM-024-001` 해소와 기존 통과 항목
+무회귀를 독립 재검증합니다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 

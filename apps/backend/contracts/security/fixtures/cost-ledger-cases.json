@@ -1,0 +1,152 @@
+{
+  "contract_version": "backend-cost-ledger.v1",
+  "billing_month": "2026-07",
+  "hard_cutoff_krw": 50000,
+  "delayed_billing_reserve_krw": 5000,
+  "price_manifest": {
+    "effective_at": "2026-07-01T00:00:00Z",
+    "expires_at": "2026-08-01T00:00:00Z",
+    "usd_krw": 1400,
+    "tax_fx_buffer_percent": 10,
+    "billing_reconciliation_max_delay_seconds": 21600,
+    "fixture_only": true,
+    "skus": [
+      {"service": "ai_provider_input", "catalog_sku_id": "fixture-ai-input", "unit": "million_tokens", "unit_price_usd": 0.25},
+      {"service": "ai_provider_output", "catalog_sku_id": "fixture-ai-output", "unit": "million_tokens", "unit_price_usd": 2.0},
+      {"service": "cloud_run_cpu_seoul_tier2", "catalog_sku_id": "085C-A237-027A", "unit": "vcpu_second", "unit_price_usd": 0.0000264},
+      {"service": "cloud_run_memory_seoul_tier2", "catalog_sku_id": "600C-3782-6708", "unit": "gib_second", "unit_price_usd": 0.00000275},
+      {"service": "cloud_run_requests", "catalog_sku_id": "2DA5-55D3-E679", "unit": "million_requests", "unit_price_usd": 0.4},
+      {"service": "cloud_tasks_operations_seoul", "catalog_sku_id": "fixture-cloud-tasks", "unit": "million_operations", "unit_price_usd": 0.4},
+      {"service": "firestore_reads_seoul", "catalog_sku_id": "fixture-firestore-reads", "unit": "document_read", "unit_price_usd": 0.000001},
+      {"service": "firestore_writes_seoul", "catalog_sku_id": "fixture-firestore-writes", "unit": "document_write", "unit_price_usd": 0.000001},
+      {"service": "firestore_deletes_seoul", "catalog_sku_id": "fixture-firestore-deletes", "unit": "document_delete", "unit_price_usd": 0.000001},
+      {"service": "firestore_ttl_deletes_seoul", "catalog_sku_id": "fixture-firestore-ttl", "unit": "ttl_delete", "unit_price_usd": 0.000001},
+      {"service": "firestore_storage_seoul", "catalog_sku_id": "fixture-firestore-storage", "unit": "gib_month", "unit_price_usd": 0.01},
+      {"service": "network_egress", "catalog_sku_id": "fixture-network-egress", "unit": "gib", "unit_price_usd": 0.01},
+      {"service": "cloud_logging", "catalog_sku_id": "fixture-cloud-logging", "unit": "gib", "unit_price_usd": 0.01},
+      {"service": "cloud_trace", "catalog_sku_id": "fixture-cloud-trace", "unit": "million_spans", "unit_price_usd": 0.01},
+      {"service": "cloud_monitoring", "catalog_sku_id": "fixture-cloud-monitoring", "unit": "million_samples", "unit_price_usd": 0.01},
+      {"service": "cloud_build", "catalog_sku_id": "fixture-cloud-build", "unit": "build_minute", "unit_price_usd": 0.01},
+      {"service": "artifact_registry", "catalog_sku_id": "fixture-artifact-registry", "unit": "gib_month", "unit_price_usd": 0.01}
+    ]
+  },
+  "concurrency_cases": [
+    {
+      "name": "provider_and_nonprovider_compete",
+      "committed_actual_krw": 30000,
+      "active_reservations_before_krw": 5000,
+      "requests_krw": [6000, 3000, 2000],
+      "accepted_krw": [6000, 3000],
+      "rejected_krw": [2000],
+      "operations": [
+        {"operation_id": "provider-001", "requested_reservation_krw": 6000, "decision": "accepted"},
+        {"operation_id": "logging-001", "requested_reservation_krw": 3000, "decision": "accepted"},
+        {"operation_id": "cleanup-001", "requested_reservation_krw": 2000, "decision": "rejected"}
+      ],
+      "guarded_total_krw": 49000,
+      "hard_cutoff_exceeded": false
+    },
+    {
+      "name": "logging_spike",
+      "committed_actual_krw": 39000,
+      "active_reservations_before_krw": 5000,
+      "requests_krw": [1000, 4000],
+      "accepted_krw": [1000],
+      "rejected_krw": [4000],
+      "operations": [
+        {"operation_id": "logging-spike-accepted", "requested_reservation_krw": 1000, "decision": "accepted"},
+        {"operation_id": "logging-spike-rejected", "requested_reservation_krw": 4000, "decision": "rejected"}
+      ],
+      "guarded_total_krw": 50000,
+      "alert_percent": 100,
+      "alerts_observed_percent": [50, 75, 90, 100],
+      "kill_switch": true,
+      "hard_cutoff_exceeded": false
+    },
+    {
+      "name": "cleanup_retry_spike",
+      "committed_actual_krw": 37500,
+      "active_reservations_before_krw": 6500,
+      "requests_krw": [1000, 3000],
+      "accepted_krw": [1000],
+      "rejected_krw": [3000],
+      "operations": [
+        {"operation_id": "cleanup-retry-accepted", "requested_reservation_krw": 1000, "decision": "accepted"},
+        {"operation_id": "cleanup-retry-rejected", "requested_reservation_krw": 3000, "decision": "rejected"}
+      ],
+      "guarded_total_krw": 50000,
+      "alert_percent": 100,
+      "alerts_observed_percent": [50, 75, 90, 100],
+      "kill_switch": true,
+      "privacy_cleanup_continues_from_reserved_envelope": true,
+      "hard_cutoff_exceeded": false
+    },
+    {
+      "name": "ttl_delete_spike",
+      "committed_actual_krw": 40000,
+      "active_reservations_before_krw": 4000,
+      "requests_krw": [1000, 2000],
+      "accepted_krw": [1000],
+      "rejected_krw": [2000],
+      "operations": [
+        {"operation_id": "ttl-delete-accepted", "requested_reservation_krw": 1000, "decision": "accepted"},
+        {"operation_id": "ttl-delete-rejected", "requested_reservation_krw": 2000, "decision": "rejected"}
+      ],
+      "guarded_total_krw": 50000,
+      "alert_percent": 100,
+      "alerts_observed_percent": [50, 75, 90, 100],
+      "kill_switch": true,
+      "hard_cutoff_exceeded": false
+    },
+    {
+      "name": "boundary_request_rejected_whole",
+      "committed_actual_krw": 39500,
+      "active_reservations_before_krw": 5000,
+      "requests_krw": [501],
+      "accepted_krw": [],
+      "rejected_krw": [501],
+      "operations": [
+        {"operation_id": "boundary-501", "requested_reservation_krw": 501, "decision": "rejected"}
+      ],
+      "guarded_total_krw": 49500,
+      "hard_cutoff_exceeded": false
+    }
+  ],
+  "settlement_cases": [
+    {
+      "name": "actual_within_reservation",
+      "committed_before_krw": 30000,
+      "active_reservation_before_krw": 1200,
+      "delayed_reserve_before_krw": 5000,
+      "requested_reservation_krw": 1200,
+      "actual_krw": 1000,
+      "committed_after_krw": 31000,
+      "active_reservation_after_krw": 0,
+      "delayed_reserve_after_krw": 5000,
+      "unused_reservation_released_krw": 200,
+      "atomic_ledger_version_cas": true
+    },
+    {
+      "name": "actual_over_reservation_consumes_delayed_reserve",
+      "committed_before_krw": 30000,
+      "active_reservation_before_krw": 1000,
+      "delayed_reserve_before_krw": 5000,
+      "requested_reservation_krw": 1000,
+      "actual_krw": 1100,
+      "committed_after_krw": 31100,
+      "active_reservation_after_krw": 0,
+      "delayed_reserve_after_krw": 4900,
+      "overflow_delta_krw": 100,
+      "atomic_ledger_version_cas": true,
+      "price_manifest_integrity_incident": true
+    }
+  ],
+  "fail_closed_cases": [
+    {"name": "price_snapshot_expired", "cost_action_allowed": false},
+    {"name": "catalog_sku_missing", "cost_action_allowed": false},
+    {"name": "fx_snapshot_expired", "cost_action_allowed": false},
+    {"name": "billing_reconciliation_over_six_hours", "cost_action_allowed": false}
+  ],
+  "alert_threshold_percent": [50, 75, 90, 100],
+  "firestore_ttl_free_quota_eligible": false
+}
