@@ -11,7 +11,7 @@
 | `T-20260730-007` | `done` | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | iOS 26.5·17.2 전체 33/33, QA-HIGH-007-001 해소 | PR #18 squash merge·완료 확정 |
 | `T-20260730-001` | `done` | iOS CI 환경·명령·check 계약 확정 | 전체 XCTest 33/33, QA-HIGH-001·timeout·artifact·build 경계 확인 | PR #20 squash merge·완료 확정 |
 | `T-20260729-010` | `done` | Cooking Log·STEP Preview·기기 내 STT·권한·오류 디자인 | 10초 기록, 권한, 기기 내 STT, STEP 삭제·되돌리기, 오프라인과 snapshot 잠금 | PR #22 squash merge·완료 확정 |
-| `T-20260730-002` | `completion_review` | ios-build·build-for-testing workflow 구현 | PR #24 run 30592350218 preflight·build·test build·artifact 성공 | 최종 PASS, develop 병합 대기 |
+| `T-20260730-002` | `done` | ios-build·build-for-testing workflow 구현 | PR #24 runs 30592350218·30592508288 전 단계 성공, artifact 확인 | 최종 PASS·squash merge·완료 확정 |
 
 향후 검증 예정 Task:
 
