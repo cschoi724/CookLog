@@ -809,3 +809,15 @@ timeout은 `COOKLOG_XCTEST_TIMEOUT_SECONDS=1`로 재현했습니다.
 T-003 PR run에서 확인합니다. 같은 preflight 구조는 T-002 PR #24의
 GitHub-hosted run에서 이미 통과했지만 `ios-xctest` 자체의 hosted 결과는
 별도 증빙이 필요합니다.
+
+### 17.2 Hosted 정상 실행
+
+2026-07-31 PR #28의 GitHub-hosted `ios-xctest` run `30596768335`에서
+preflight와 전체 XCTest가 성공했습니다.
+
+- XCTest: 33/33, 실패 0, `TEST SUCCEEDED`
+- artifact: `cooklog-ios-xctest-30596768335-1`
+- 포함 파일: `xcodebuild.log`, `CookLogTests.xcresult`
+
+hosted 일반 실패 65와 timeout 124·`TIMED_OUT` 구분은
+`T-20260730-005`의 실패 PR dry run에서 확인합니다.

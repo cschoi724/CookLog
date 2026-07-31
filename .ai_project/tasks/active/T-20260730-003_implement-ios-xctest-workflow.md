@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-003
 title: ios-xctest 직렬 실행·timeout·artifact workflow 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 전체 XCTest 결과와 timeout을 PR에서 재현 가능하게 만들어야 한다.
@@ -96,6 +96,9 @@ qa_to: ".ai_project/qa/T-20260730-003_implement-ios-xctest-workflow-qa.md"
 | 2026-07-31 | iOS QA Agent | transition: verification_in_progress -> verification_passed | 독립 QA PASS_WITH_RISK: XCTest 33/33, 일반 실패 65, timeout 124 및 artifact 경계 확인; QA-RISK-003-001 hosted 실행 후속 확인 |
 | 2026-07-31 | Development Lead Agent | integrate latest develop | 구현·QA 결과를 고정한 뒤 최신 origin/develop 위로 재정렬하고 T-020 done 기록과 핵심 산출물 동등성을 확인 |
 | 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | 성공 기준, 독립 QA PASS_WITH_RISK, 허용 경로와 공용 보드 비회귀를 수용하고 hosted 성공 실행은 PR merge gate로 지정 |
+| 2026-07-31 | GitHub Actions | hosted verification passed | PR #28의 ios-build·ios-xctest 성공, hosted XCTest 33/33·xcresult artifact 생성 확인 |
+| 2026-07-31 | Product Owner | approve merge and completion | Development Lead 완료 검토 이후 push·develop PR 병합·done 확정 진행 승인 |
+| 2026-07-31 | Development Lead Agent | transition: completion_review -> done | PR #28 squash merge SHA e939b78과 hosted 성공 증빙 확인, T-003 완료 확정 |
 
 ## Development Lead 완료 검토
 
@@ -117,3 +120,19 @@ qa_to: ".ai_project/qa/T-20260730-003_implement-ios-xctest-workflow-qa.md"
 확인한다. 일반 실패 65와 timeout 124의 hosted dry run은 계획된 T-005에
 인계한다. 현재 Task 성공 기준과 독립 QA 기준을 충족해 `completion_review`로
 수용하며, hosted `ios-xctest` 성공 후 `develop` 병합 대상으로 판단한다.
+
+## 완료
+
+- PR: [#28](https://github.com/cschoi724/CookLog/pull/28)
+- 대상 브랜치: `develop`
+- 병합 방식: squash merge
+- merge SHA: `e939b7810ad6c17745f1bcbd6ef7fb3966cc3c3c`
+- `ios-build` run: `30596768311`, 성공
+- `ios-xctest` run: `30596768335`, 성공
+- hosted XCTest: 33/33, 실패 0, `TEST SUCCEEDED`
+- artifact: `cooklog-ios-xctest-30596768335-1`, log·xcresult 포함
+- 완료 판정: `done`
+
+hosted 정상 실행 조건은 해소됐다. hosted 일반 실패 65와 timeout 124·
+`TIMED_OUT` dry run은 T-20260730-005에 인계하며 현재 Task 완료를 차단하지
+않는다. T-20260730-004의 T-003 선행 조건도 해소됐다.

@@ -195,3 +195,21 @@ Task: T-20260730-003
 QA 보고서:
 - .ai_project/qa/T-20260730-003_implement-ios-xctest-workflow-qa.md
 ```
+
+## 10. PR #28 hosted 후속 확인
+
+Development Lead가 PR #28의 GitHub-hosted 실행을 완료 조건으로 확인했다.
+
+- `ios-xctest` run: `30596768335`
+- job 결론: `success`
+- preflight: 성공
+- XCTest step: 성공
+- hosted log: 33개 실행, 실패 0, `TEST SUCCEEDED`
+- artifact upload: 성공
+- artifact: `cooklog-ios-xctest-30596768335-1`
+- artifact 내용: `xcodebuild.log`, `CookLogTests.xcresult`
+
+`QA-RISK-003-001`의 hosted 정상 check·Xcode/Simulator preflight·33/33·artifact
+조건은 해소됐다. hosted 일반 실패 65와 timeout 124·`TIMED_OUT` 구분은
+T-20260730-005의 실패 dry run으로 계속 인계한다. 이는 T-003 완료를 차단하지
+않는다.
