@@ -1,0 +1,74 @@
+name: ios-xctest
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ios-xctest:
+    name: ios-xctest
+    runs-on: macos-26
+    timeout-minutes: 15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      COOKLOG_XCTEST_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.5
+      COOKLOG_XCTEST_TIMEOUT_SECONDS: "600"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Verify Xcode and Simulator contract
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          COOKLOG_CI_ROOT="${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          COOKLOG_XCTEST_ARTIFACT_ROOT="${COOKLOG_CI_ROOT}/ios-xctest"
+          printf 'COOKLOG_CI_ROOT=%s\n' "${COOKLOG_CI_ROOT}" >> "${GITHUB_ENV}"
+          printf 'COOKLOG_XCTEST_ARTIFACT_ROOT=%s\n' "${COOKLOG_XCTEST_ARTIFACT_ROOT}" >> "${GITHUB_ENV}"
+          mkdir -p "${COOKLOG_XCTEST_ARTIFACT_ROOT}"
+          test -d /Applications/Xcode_26.6.app
+
+          xcode_version="$(xcodebuild -version)"
+          printf '%s\n' "${xcode_version}"
+          grep -Fxq 'Xcode 26.6' <<<"${xcode_version}"
+          grep -Fxq 'Build version 17F113' <<<"${xcode_version}"
+
+          xcrun simctl list runtimes available
+          xcrun simctl list devices available
+          xcrun simctl list devices available -j \
+            | jq -e '
+                .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-5"]
+                | any(.name == "iPhone 17" and .isAvailable == true)
+              '
+
+          xcodebuild \
+            -project apps/ios/CookLog.xcodeproj \
+            -scheme CookLog \
+            -destination "${COOKLOG_XCTEST_DESTINATION}" \
+            -showdestinations
+
+      - name: Run XCTest
+        shell: bash
+        run: apps/ios/Scripts/run-xctest.sh
+
+      - name: Upload XCTest artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: cooklog-ios-xctest-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-xctest/*/xcodebuild.log
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-xctest/*/CookLogTests.xcresult
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-xctest/*/TIMED_OUT
+          if-no-files-found: warn
+          retention-days: 14
