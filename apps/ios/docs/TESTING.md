@@ -2,7 +2,7 @@
 
 이 문서는 CookLog iOS 앱의 테스트 기준을 관리합니다.
 
-최종 업데이트: 2026-07-30
+최종 업데이트: 2026-07-31
 상태: 확정
 
 ## 1. 테스트 원칙
@@ -938,3 +938,36 @@ cache 미적용 회귀:
 
 실제 같은 PR 재실행 취소와 GitHub-hosted artifact·Step Summary는 T-004 PR과
 후속 T-005 dry run에서 독립 검증합니다.
+
+## 19. T-20260730-005 실제 PR dry run
+
+2026-07-31 GitHub-hosted runner에서 정상·build 실패·XCTest assertion
+실패·timeout과 concurrency 취소를 실제 PR로 검증했습니다.
+
+| 경로 | PR | `ios-build` | `ios-xctest` |
+|---|---:|---|---|
+| 정상 | #36 | `30603291076` 성공 | `30603291074` 성공·33/33 |
+| build 실패 | #37 | `30603556803` 실패 65 | `30603556798` 성공 |
+| XCTest 실패 | #38 | `30603771279` 성공 | `30603771271` 실패 65·1/33 실패 |
+| timeout | #39 | `30603584112` 성공 | `30603584038` 실패 124 |
+
+실패 검증 변경은 workflow에만 격리했고 #37~#39를 모두 미병합 상태로
+닫았습니다. 정상 PR #36만 최종 병합 후보로 유지합니다.
+
+진단 경계:
+
+- build 실패: `BUILD FAILED`, 종료 코드 65, build log·environment·summary
+- XCTest 실패: 실제 `XCTFail`, 종료 코드 65, 33개 중 1개 실패,
+  log·실패 xcresult·environment·summary
+- timeout: 종료 코드 124, `TIMED_OUT`, log·environment·summary
+- 1초 hosted timeout은 result bundle 생성 전 종료돼 조건부 xcresult가 없음
+- 정상 artifact는 전체 xcresult를 포함하고 build·test artifact 모두 14일 보존
+
+PR #37의 연속 push에서 이전 `ios-build` run `30603789373`과
+`ios-xctest` run `30603789377`이 각각 취소됐습니다. 최신 두 workflow와
+다른 PR 실행은 유지돼 같은 workflow·PR만 취소하는 concurrency 격리가 실제
+GitHub에서 동작함을 확인했습니다.
+
+branch protection required check 후보는 정확히 `ios-build`,
+`ios-xctest`입니다. 실제 required check 설정은 T-20260730-006에서 별도
+승인 후 수행합니다.

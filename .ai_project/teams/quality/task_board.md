@@ -19,6 +19,7 @@
 | `T-20260731-001` | `done` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product Owner 최종 승인·완료 확정 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
+| `T-20260730-005` | `verification_ready` | iOS CI PR dry run·실패 감지·회귀 검증 | PR #36~#39 정상·실패 65·timeout 124·취소·artifact | 고정 run과 미병합 종료 상태 독립 판정 |
 
 향후 검증 예정 Task:
 
@@ -31,7 +32,6 @@
 | `T-20260729-023` | Backend | Backend QA Agent | AI 상태·복구·schema·timeout |
 | `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
-| `T-20260730-005` | CI | iOS QA Agent | 실제 PR dry run·check gate 준비도 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
@@ -123,3 +123,9 @@ T-20260730-004는 concurrency 격리, cache 미적용 33/33, build 실패 65와 
 PR #34 hosted `ios-build`·`ios-xctest`, preflight·summary·artifact와 XCTest
 33/33 성공을 확인해 `done`으로 확정했습니다. 같은 PR 취소와 hosted
 실패·timeout dry run은 T-20260730-005에서 검증합니다.
+
+T-20260730-005는 정상 PR #36과 미병합 검증 PR #37~#39에서 두 check 이름,
+정상 33/33, build·XCTest 실패 65, timeout 124, 원인별 artifact를
+GitHub-hosted runner로 확인했습니다. 연속 push의 이전 `ios-build`와
+`ios-xctest` run이 각각 취소되고 다른 PR은 유지됐습니다. iOS QA Agent는
+고정 run·artifact와 #37~#39의 `closed`, `merged: false`를 독립 확인합니다.
