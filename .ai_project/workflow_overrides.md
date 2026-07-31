@@ -10,7 +10,7 @@
 
 ## 2. 현재 예외
 
-현재 등록된 workflow override는 없습니다.
+공통 workflow 자체를 대체하는 예외는 없습니다. CookLog 저장소의 상태 일관성과 Git 안전을 위한 프로젝트 로컬 guardrail은 3절을 따릅니다.
 
 기본 workflow:
 
@@ -24,6 +24,24 @@
 
 ## 3. CookLog 운영 메모
 
+- 상태 조회와 일반 Task 시작 전 다음 preflight를 수행합니다.
+
+```bash
+git status -sb
+git branch --show-current
+git fetch origin develop
+git rev-parse --short origin/develop
+git rev-list --left-right --count origin/develop...HEAD
+git merge-base --is-ancestor origin/develop HEAD
+```
+
+- 상태 보고에는 `public_source: origin/develop@<SHA>`, worktree 경로, branch, local HEAD, 공용·로컬 Task 상태, 미커밋 여부를 구분해 기록합니다.
+- 공용 Task와 Board 상태는 `git show origin/develop:.ai_project/task_board.md`와 `git show origin/develop:<TASK_FILE>`로 확인합니다. 루트 WIP, 오래된 로컬 `develop`, Task worktree 파일을 공용 현재 상태로 사용하지 않습니다.
+- 새 worktree 또는 아직 변경하지 않은 깨끗한 worktree가 최신 `origin/develop`을 포함하지 않으면 최신 기준으로 다시 준비한 뒤 시작합니다.
+- 이미 실행 중이거나 미커밋 변경이 있는 worktree가 최신 `origin/develop`을 포함하지 않으면 작업을 보존하고 중단 보고합니다. 자동 `reset`, `rebase`, `stash`로 재정렬하지 않습니다.
+- fetch 또는 SHA 확인에 실패하면 `PUBLIC_STATE_UNVERIFIED`, 전용 worktree가 없으면 `WORKTREE_REQUIRED`로 보고하고 Task 착수와 의존성 판단을 중단합니다.
+- `approved`, dependency·blocks 변경, `rework_requested`, 최종 `done`, 후속 Task 차단 해제는 `develop` 병합 후에만 공용 효력이 있습니다. `in_progress`나 로컬 검증 상태는 다른 Task의 의존성을 해제하지 않습니다.
+- 별도 비파괴 감사와 Product Owner 승인 전에는 worktree 또는 branch를 삭제하지 않습니다.
 - iOS 구현 Task는 기본적으로 `apps/ios/`로 `allowed_paths`를 제한합니다.
 - Backend 구현 Task는 코드 경로와 API 계약 source of truth를 확정한 뒤 승인합니다.
 - Android 구현 Task는 Android Workstream 활성화에 대한 사용자 승인 전까지 생성하지 않습니다.
@@ -48,3 +66,4 @@
 | 2026-07-27 | 멀티팀 vNext 신규 Task 운영 메모 추가, override 없음 유지 |
 | 2026-07-28 | 상위/하위 Task Completion 라우팅과 도메인별 QA 병렬 운영 규칙 추가 |
 | 2026-07-28 | `develop` Task 통합, `main` 승격과 hotfix backport 라우팅 추가 |
+| 2026-07-31 | T-20260731-002에서 최신 `origin/develop` 공용 상태 preflight, 상태 보고 형식, stale worktree 중단과 삭제 동결 규칙 추가 |

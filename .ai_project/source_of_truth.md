@@ -29,8 +29,8 @@
 | Agent 운영 원칙 | `.ai/` | `.ai_project/` | 운영 원칙은 `.ai/` 우선 |
 | 프로젝트 운영 구성 | `.ai_project/operating_model.md` | `.ai/bootstrap/project_bootstrap_policy.md` | CookLog 선택값은 `operating_model.md` 우선 |
 | Agent 구성 | `.ai_project/agent_registry.md` | `.ai/models/agent_registry.md`, `.ai/models/role_model.md` | 프로젝트 활성 구성은 `.ai_project/` 우선 |
-| Agent 실행 Task | `.ai_project/tasks/` | `.ai_project/task_board.md`, report/QA 문서 | Task 파일 우선 |
-| Agent 작업 상태 요약 | `.ai_project/task_board.md` | `.ai_project/tasks/` | 충돌 시 Task 파일 기준으로 보드 갱신 |
+| Agent 실행 Task | 최신 `origin/develop`의 `.ai_project/tasks/` | 로컬 Task 브랜치의 Task 파일, report/QA 문서 | 공용 판단은 최신 `origin/develop`의 Task 파일 우선. 로컬 파일은 해당 브랜치의 실행 스냅샷 |
+| Agent 작업 상태 요약 | 최신 `origin/develop`의 `.ai_project/task_board.md` | 최신 `origin/develop`의 `.ai_project/tasks/` | 충돌 시 최신 `origin/develop`의 Task 파일 기준으로 보드 갱신 |
 | 제품 방향 요약 | `docs/product/CookLog_PRODUCT.md` | `agents.md` | 상세 동작 충돌 시 PRD v2 우선 |
 | 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog_PRODUCT.md`, `agents.md` | PRD v2와 사용자 최신 결정 우선. `CookLog PRD v2.pdf`는 2026-06-22 역사적 스냅샷 |
 | MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `docs/product/CookLog_PRD_v2.md`, `agents.md` | PRD v2와 MVP Scope를 함께 확인 |
@@ -55,7 +55,30 @@
 | Android 현재 상태 | `apps/android/docs/STATUS.md` | Android 개발 문서 | Android는 iOS MVP 안정화 후 착수 |
 | AI Knowledge | `.ai_knowledge/` | 이 Source Of Truth 매트릭스 | Wiki는 원본이 아니며 충돌 시 이 문서의 원본 우선 |
 
-## 4. 프로젝트 문서 위치
+## 4. 공용 상태와 로컬 실행 상태
+
+프로젝트의 공용 현재 상태는 fetch를 마친 최신 `origin/develop`만 기준으로 합니다.
+
+```bash
+git fetch origin develop
+git rev-parse --short origin/develop
+```
+
+- 모든 상태 보고에는 확인한 `origin/develop` SHA를 `public_source`로 기록합니다.
+- 루트 WIP, 로컬 `develop`, Task worktree의 문서는 각 브랜치 시점의 스냅샷이며 공용 현재 상태가 아닙니다.
+- 다른 Task의 착수·의존성·차단 해제를 판단할 때는 worktree 파일을 직접 읽지 않고 다음처럼 확인합니다.
+
+```bash
+git show origin/develop:.ai_project/task_board.md
+git show origin/develop:<TASK_FILE>
+```
+
+- PR 병합 전 로컬 Task의 `done`은 로컬 완료 후보일 뿐 공용 완료가 아닙니다.
+- `approved`, `depends_on`·`blocks` 변경, `rework_requested`, 최종 `done`, 후속 Task 차단 해제는 `develop` 병합 후에만 다른 Agent의 공용 판단 근거가 됩니다.
+- `in_progress`, 로컬 검증 진행 상태는 다른 Task의 의존성을 해제하지 않습니다.
+- fetch에 실패하거나 최신 SHA를 확인하지 못하면 `PUBLIC_STATE_UNVERIFIED`로 보고하고, 다른 Task의 착수·의존성·완료 판단을 중단합니다.
+
+## 5. 프로젝트 문서 위치
 
 현재 CookLog 기준 문서 위치:
 
@@ -68,7 +91,7 @@ apps/android/docs/
 .ai_knowledge/  # 온보딩용, source of truth 아님
 ```
 
-## 5. 빌드/검증 기준
+## 6. 빌드/검증 기준
 
 | 목적 | 명령 또는 절차 | 실행 주체 |
 |---|---|---|
@@ -81,7 +104,7 @@ apps/android/docs/
 | Backend 후속 계약 검증 | T-20260729-023~025의 job·보안·fixture 계약과 runtime renderer·validator 동일성 | Backend Agent / Backend QA Agent |
 | Android 검증 | Android 착수 후 확정 | Android 착수 후 Execution/Verification Agent 확정 |
 
-## 6. 충돌 해결 원칙
+## 7. 충돌 해결 원칙
 
 1. 사용자 승인 결정이 최우선입니다.
 2. 실제 코드 동작과 문서가 다르면 코드와 검증 결과를 먼저 확인합니다.
@@ -89,7 +112,7 @@ apps/android/docs/
 4. Agent 운영 문서와 프로젝트 기술 문서가 충돌하면 영역을 분리해 해석합니다.
 5. 충돌 해결 후 관련 Task 파일과 `.ai_project/task_board.md`를 갱신합니다.
 
-## 7. 변경 이력
+## 8. 변경 이력
 
 | 날짜 | 변경 내용 |
 |---|---|
@@ -103,3 +126,4 @@ apps/android/docs/
 | 2026-07-29 | Product Charter와 첫 공개 출시 Roadmap 역할, Backend 계약 확정 Task를 Source of Truth 매트릭스에 반영 |
 | 2026-07-31 | PDF를 역사적 스냅샷으로 명시하고 Backend 추천안·API 계약 경계와 iOS CI 검증 기준을 최신화 |
 | 2026-07-31 | T-20260731-001 재작업에서 Backend 계약 검증 script·후속 계약 경계와 Product QA 운영 정합성 반영 |
+| 2026-07-31 | T-20260731-002에서 다중 worktree 공용 상태를 최신 `origin/develop`로 고정하고 로컬 실행 상태와 의존성 판단 경계를 명시 |
