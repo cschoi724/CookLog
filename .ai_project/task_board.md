@@ -18,11 +18,11 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `scoped` | 2 |
 | `approved` | 2 |
 | `in_progress` | 1 |
-| `verification_ready` | 1 |
+| `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
 | `completion_review` | 0 |
-| `rework_requested` | 0 |
+| `rework_requested` | 1 |
 | `blocked` | 0 |
 | `done` | 21 |
 | `cancelled` | 1 |
@@ -31,13 +31,13 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 재검증의 잔여 PQA-HIGH-031-002를 수정하고 독립 재재검증 대기 상태입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. Backend T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다. CI T-001~004는 `done`, T-005~006은 후속 승인·검증 대상입니다.
+Product `T-20260731-001`은 T-004 상태 충돌을 해소했지만 Development Board의 Backend 상위 요약이 T-022 `done`·T-023·024 `approved`를 반영하지 않아 Product QA 재재검증 `FAIL`·재작업 상태입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. Backend T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다. CI T-001~004는 `done`, T-005~006은 후속 승인·검증 대상입니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
-| Product | 0 | 1 | 0 | `.ai_project/teams/product/task_board.md` |
+| Product | 1 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 4 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
@@ -66,7 +66,7 @@ Team별 요약:
 | `T-20260729-006` | P0 | iOS 로컬 TTS·오디오 중단·핸즈프리 Audio Guide 구현 | Development Lead Agent | `T-20260728-003` |
 | `T-20260729-007` | P1 | Product QA Agent 운영 등록과 루트 제품 안내 동기화 | AI Ops Agent | T-001 재작업에서 등록 범위 충족, 중복 범위 재조정·폐기 검토 |
 | `T-20260729-026` | P0 | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | - | `done`, Product QA PASS·Product Owner 최종 승인 |
-| `T-20260731-001` | P0 | 활성 문서 Source of Truth 정합성 복구 | Product QA Agent | `verification_ready`, PQA-HIGH-031-002 독립 재재검증 |
+| `T-20260731-001` | P0 | 활성 문서 Source of Truth 정합성 복구 | Product Lead Agent | `rework_requested`, Development Board Backend 상위 요약 정렬 후 재검증 |
 
 Design `T-20260729-002` 하위 실행 후보:
 
@@ -245,3 +245,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-31 | Product Owner가 PQA-HIGH-031-002 재작업을 승인하고 Development Board T-004 상태를 `done`으로 단일화해 Product QA 재재검증 인계 |
 | 2026-07-31 | 최신 develop `93f577e`의 T-022 `completion_review`, T-023·024 `approved` 상태와 원격 STT 계약 산출물 반영 |
 | 2026-07-31 | 최신 develop `5118712`의 T-022 PR #40 squash merge·`done` 완료 확정 반영 |
+| 2026-07-31 | Product QA 재재검증에서 T-004 해소를 확인했으나 Development Board Backend 상위 요약이 T-022 `done`·T-023·024 `approved`를 반영하지 않아 `rework_requested`로 재인계 |

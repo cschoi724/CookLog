@@ -3,7 +3,7 @@
 작성일: 2026-07-31
 작성자: Product QA Agent
 대상 Task: `T-20260731-001`
-최종 판정: `FAIL` (재검증)
+최종 판정: `FAIL` (독립 재재검증)
 최종 상태 인계: `verification_in_progress -> rework_requested`
 
 ## 1. 검증 범위
@@ -188,7 +188,66 @@ QA 보고서:
 - .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
 ```
 
-## 8. 재검증 결과
+## 8. 독립 재재검증 결과
+
+재재검증일: 2026-07-31
+
+### 결함별 결과
+
+| 검증 항목 | 결과 | 근거 |
+|---|---|---|
+| PQA-HIGH-031-002의 T-004 상태 충돌 | 해소 | Development Board의 T-20260728-008 상위 행은 T-001~004 완료·T-005~006 대기로 수정됐고 T-004 현재 설명은 PR #34 병합·`done` 확정만 안내한다. |
+| 기존 PQA-HIGH-031-001·004, PQA-MEDIUM-031-003 | 무회귀 | Figma/Backend Source of Truth, Product QA routing과 최신 develop ancestor 기준이 유지된다. |
+| 최신 develop T-022 상태 반영 | **실패** | T-022 개별 Task·개별 행·Project/Quality Board는 `done`, T-023·024는 `approved`다. 그러나 Development Board의 T-20260728-005 상위 행과 현재 요약은 T-020·021만 완료이고 T-022~024를 선행·별도 승인 대상으로 안내한다. |
+
+### PQA-HIGH-031-002 미해소 근거
+
+- `.ai_project/teams/development/task_board.md` 상위 T-20260728-005 행:
+  `T-020·021 완료, T-022~025 선행·승인 상태에 따라 순차 실행`
+- 같은 문서의 현재 요약:
+  `T-020`·`T-021`만 `done`, `T-022~024`는 선행 조건과 별도 Product Owner 승인
+- 같은 문서의 개별 행:
+  T-022 `done`, T-023·024 `approved`, T-025 `proposed`
+- Project Board·Current Context·Project Status는 T-020~022 `done`, T-023·024 `approved`로 정확히 안내한다.
+- 작업 보고서의 “최근 Task 상태와 잔여 활성 충돌 0건” 주장은 Development Board 상위 요약에서 재현되지 않았다.
+
+필수 재작업:
+
+1. Development Board의 T-20260728-005 상위 행을 T-020~022 `done`, T-023·024 `approved`, T-025 선행 대기로 수정한다.
+2. 상위 행 아래 현재 요약도 동일 상태로 갱신하고, 과거 승인 대기 설명은 역사적 전이임을 명시하거나 현재 안내와 분리한다.
+3. T-004 수정의 무회귀와 T-022~025 상태 단일성을 함께 재검색해 Product QA에 다시 인계한다.
+
+### 회귀 검사
+
+- 최신 `origin/develop` `5118712` ancestor: 통과
+- T-20260731-001 strict task schema: 통과
+- Task 42개 파싱, ID 중복 0건
+- 누락 dependency/block 참조 0건, dependency cycle 0건
+- 검증 실행 중 상태: approved 2, cancelled 1, done 21, in_progress 1, proposed 14, scoped 2, verification_in_progress 1
+- `origin/develop...HEAD` 변경 31개 경로의 `allowed_paths` 위반: 0건
+- `git diff --check`: 통과
+- Backend 공통 계약·원격 STT 계약 검증 script: 통과
+
+## 9. 독립 재재검증 최종 판정
+
+`FAIL`.
+
+T-004 잔여 충돌은 해소됐지만, 최신 develop 반영 후 같은 PQA-HIGH-031-002가
+Backend 상위 Task 요약에서 남아 문서 정합성·Team 인계 완전성 성공 기준을 충족하지
+못한다. T-20260728-003 차단을 해제하면 안 된다.
+
+```text
+Task: T-20260731-001
+현재 상태: rework_requested
+재재검증 판정: FAIL
+다음 담당: Product Lead Agent / Lead Role
+잔여 필수 재작업:
+- Development Board T-20260728-005 상위 행을 T-020~022 done, T-023·024 approved, T-025 대기로 정렬
+- 같은 Board의 현재 Backend 요약과 과거 승인 대기 설명을 현재 상태와 구분
+- T-004 무회귀와 T-022~025 상태 단일성을 재검색한 뒤 Product QA 재검증 요청
+```
+
+## 부록 A. 이전 재검증 결과
 
 재검증일: 2026-07-31
 
@@ -214,7 +273,7 @@ QA 보고서:
 2. T-004의 `completion_review` 당시 설명은 역사적 이력임을 명시하거나 제거하고, 현재 안내에서 `최종 완료 확정 대기`를 제거한다.
 3. Development Board 전체에서 T-004 현재 상태가 `done`으로만 해석되는지 재검색한 뒤 Product QA에 다시 인계한다.
 
-## 9. 재검증 회귀 검사
+## 부록 B. 이전 재검증 회귀 검사
 
 - 최신 `origin/develop` ancestor: 통과
 - T-20260731-001 strict task schema: 통과
@@ -229,7 +288,7 @@ QA 보고서:
 
 프로젝트 전역 strict validation의 기존 operating model·agent registry·archive schema 문제는 이번 재검증 판정의 단독 근거로 사용하지 않았다.
 
-## 10. 재검증 최종 판정
+## 부록 C. 이전 재검증 최종 판정
 
 `FAIL`.
 
