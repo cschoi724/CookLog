@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-023
 title: AI 레시피 job·상태 조회·결과 복구 계약 정의
-status: in_progress
+status: verification_ready
 type: docs
 priority: P0
 priority_reason: 온라인 AI 정리의 비동기 처리와 실패 복구가 첫 출시 핵심 경로다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Backend QA Agent
+target_role: Verification Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -36,9 +36,9 @@ source_of_truth:
 - docs/PROJECT_DECISIONS.md
 created_by: Development Lead Agent
 approved_by: Product Owner
-locked_by: Backend Agent
-locked_at: '2026-07-31'
-lock_session: codex-backend-t023-rework-20260731
+locked_by:
+locked_at:
+lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
 updated_at: '2026-07-31'
@@ -138,3 +138,5 @@ T-20260729-023 AI recipe job·상태 조회·결과 복구 계약을 독립 검�
 | 2026-07-31 | Backend Agent | lock | task lock |
 | 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-023-001~002·QA-MEDIUM-023-001 승인 재작업 시작 |
 | 2026-07-31 | Backend Agent | self-verification | result version ACK 4개·timeout decision 6개·quota HTTP 경계 검사 통과 |
+| 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | result_version ACK·timeout decision·quota HTTP 경계 재작업과 자체 검증 완료 |
+| 2026-07-31 | Backend Agent | unlock | task unlock |
