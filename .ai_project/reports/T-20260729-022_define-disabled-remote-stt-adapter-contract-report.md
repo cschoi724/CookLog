@@ -17,6 +17,8 @@
 - 기기 내 STT 실패·미지원·네트워크 복구를 원격 fallback 조건으로 사용 금지
 - 별도 제품·비용·개인정보·provider·QA 승인 전 활성화 금지
 - 사용자 one-time authorization을 body read 전에 원자 소비
+- 활성 원격 adapter의 복구 가능한 기술 오류는 같은 request·provider에서 최대 1회만
+  재처리하고 다른 provider fallback·새 upload·deadline 연장 금지
 - 성공·실패·취소·timeout 후 즉시 삭제와 접수 후 최대 1시간 deadline
 - audio·transcript·provider 식별자·secret의 로그·오류·queue·receipt 저장 금지
 
@@ -68,7 +70,7 @@ adapter를 분리한다. 첫 출시 resolver는 Apple adapter만 반환한다. �
 | `sh apps/backend/contracts/stt/validate-contracts.sh` | PASS |
 | STT 계약 JSON 전체 `jq empty` | PASS |
 | 첫 출시 강제 비활성 fixture | PASS |
-| 무승인·fallback·grant replay 5개 negative case | PASS |
+| 무승인·provider 보관 미승인·fallback·grant replay 6개 negative case | PASS |
 | 삭제 receipt 최대 1시간·시각 순서 | PASS |
 | request JSON audio payload·provider URL 부재 | PASS |
 | deletion receipt transcript·provider ID·storage URI 부재 | PASS |
@@ -100,3 +102,10 @@ Backend QA Agent는 문서의 9절을 기준으로 기본 상태에서 원격 �
 무승인 요청이 body read 전에 차단되는지, 자동 fallback이 금지되는지, 삭제 deadline과
 콘텐츠 비노출이 fixture와 일치하는지 독립 검증한다.
 
+## 최신 develop 통합
+
+- 기준 `origin/develop`: `22fe75f`
+- T-022~024 병렬 실행 승인 커밋: `36cf8ee`
+- 최신 T-20260730-004 공용 보드 상태: 보존
+- 형제 T-20260729-023·024 승인 상태: 보존
+- 최신 `origin/develop` 대비 뒤처짐: 0

@@ -17,7 +17,14 @@
     {
       "name": "approval_revision_missing",
       "attempt": "direct_upload",
-      "missing_gate": "product_cost_privacy_approval",
+      "missing_gate": "product_cost_approval",
+      "expected_decision": "reject_before_body_read",
+      "expected_public_code": "SERVICE_DISABLED"
+    },
+    {
+      "name": "provider_retention_not_approved",
+      "attempt": "direct_upload",
+      "missing_gate": "privacy_provider_approval",
       "expected_decision": "reject_before_body_read",
       "expected_public_code": "SERVICE_DISABLED"
     },
@@ -37,4 +44,3 @@
     }
   ]
 }
-

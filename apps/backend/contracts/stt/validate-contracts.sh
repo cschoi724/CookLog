@@ -25,7 +25,8 @@ jq -e '
   . == [
     "explicit_remote_selection",
     "one_time_authorization",
-    "product_cost_privacy_approval",
+    "privacy_provider_approval",
+    "product_cost_approval",
     "runtime_activation",
     "unused_grant"
   ]

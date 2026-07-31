@@ -68,6 +68,8 @@ qa_to: ".ai_project/qa/T-20260729-022_define-disabled-remote-stt-adapter-contrac
   필수 gate로 고정했다.
 - Apple 기기 내 STT 실패·미지원·네트워크 복구가 원격 fallback을 만들지 않도록
   iOS service resolver 경계를 정의했다.
+- 향후 활성 원격 adapter의 복구 가능 오류는 같은 request·provider에서 최대 1회만
+  재처리하고 provider 전환·새 upload·삭제 deadline 연장을 금지했다.
 - 음성 terminal 상태 즉시 삭제, 최초 접수 후 최대 1시간 deadline, cleanup retry의
   콘텐츠 복제 금지와 로그·오류·receipt 비노출을 정의했다.
 - `validate-contracts.sh`로 비활성 profile, negative gate, 삭제 시간 순서와 공통 오류
@@ -121,3 +123,4 @@ T-20260729-022의 기본 비활성 원격 STT adapter 계약을 독립 검증해
 | 2026-07-31 | Backend Agent | self-verification | 강제 비활성·negative gate·삭제 1시간·공통 오류 연결 계약 검사 통과 |
 | 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | 기본 비활성·무승인 업로드 차단·삭제 최대 1시간 계약과 자체 검증 완료 |
 | 2026-07-31 | Backend Agent | unlock | task unlock |
+| 2026-07-31 | Backend Agent | integrate latest develop | origin/develop 22fe75f 위로 재정렬하고 T-004·T-023·T-024 공용 보드 상태 보존 |

@@ -59,6 +59,9 @@ SpeechTranscribing.transcribe(localAudio) -> TranscriptionResult
 - 복구 가능한 오류의 자동 재처리는 같은 기기 내 adapter에서 최대 1회만 수행한다.
 - 원격 adapter가 미래에 활성화돼도 사용자가 해당 기록에 대해 원격 처리를 명시적으로
   선택한 새 요청에만 사용할 수 있다. 실패한 로컬 요청을 이어받지 않는다.
+- 원격 요청 내부의 복구 가능한 기술 오류는 같은 provider adapter·같은 audio
+  handle에서 최대 1회 재처리할 수 있다. 다른 provider로 전환하거나 새 upload를
+  만드는 fallback은 금지한다.
 - 앱 재실행, 네트워크 복구, remote config 변경과 server 응답은 원격 전송을 자동
   시작하지 못한다.
 
@@ -146,8 +149,12 @@ storage URI를 포함하지 않는다.
 - 전체 gateway deadline은 T-021 공통 API timeout보다 짧거나 같아야 하며, 정확한 값은
   provider 활성화 Task에서 확정한다.
 - timeout은 terminal 상태다. audio 접근을 즉시 차단하고 삭제를 시작한다.
-- Backend는 음성 변환을 자동 재실행하지 않는다. 사용자가 다시 선택하면 새 clip,
-  one-time grant와 idempotency key로 새 요청을 만든다.
+- 복구 가능한 provider 기술 오류만 같은 request·adapter·audio handle에서 최대 1회
+  자동 재처리할 수 있다. retry는 새 upload·새 temporary object·다른 provider 호출을
+  만들지 않고 기존 삭제 deadline을 연장하지 않는다.
+- 1회 재처리 후 실패하거나 non-retryable 오류이면 terminal 상태로 전환해 즉시
+  삭제한다. 이후 사용자가 다시 선택하면 새 clip, one-time grant와 idempotency key로
+  새 요청을 만든다.
 - 동일 idempotency key 재전송은 새 upload나 provider 호출을 만들지 않는다.
 - idempotency record에는 body hash, 상태와 안전한 result pointer만 두고 audio 또는
   transcript를 넣지 않는다.
@@ -185,7 +192,6 @@ Backend QA Agent는 최소한 다음을 독립 검증한다.
 4. 승인 revision 또는 one-time grant 하나라도 없으면 body 전 단계에서 거부하는지
 5. 동일 grant 동시 요청이 정확히 한 요청만 통과하는지
 6. 성공·실패·취소·timeout에서 즉시 삭제와 최대 1시간 deadline을 지키는지
-7. cleanup retry와 idempotency가 audio를 복제하거나 TTL을 연장하지 않는지
+7. 같은 adapter 재처리가 최대 1회이며 provider 전환·audio 복제·TTL 연장이 없는지
 8. 로그·trace·metric·오류·receipt에 audio, transcript, provider 정보와 secret이 없는지
 9. schema·fixture와 `validate-contracts.sh`가 통과하는지
-
