@@ -1,0 +1,50 @@
+{
+  "cases": [
+    {
+      "name": "concurrent_same_key_same_body",
+      "keys": 1,
+      "body_hashes": 1,
+      "jobs_created": 1,
+      "outbox_records": 1,
+      "provider_calls_max": 1,
+      "result": "same_job_replayed"
+    },
+    {
+      "name": "same_key_different_body",
+      "keys": 1,
+      "body_hashes": 2,
+      "jobs_created": 1,
+      "outbox_records": 1,
+      "provider_calls_max": 1,
+      "result": "IDEMPOTENCY_KEY_REUSED"
+    },
+    {
+      "name": "repeated_get",
+      "keys": 0,
+      "body_hashes": 0,
+      "jobs_created": 0,
+      "outbox_records": 0,
+      "provider_calls_max": 0,
+      "result": "same_state_version"
+    },
+    {
+      "name": "concurrent_ack",
+      "keys": 1,
+      "body_hashes": 1,
+      "jobs_created": 0,
+      "outbox_records": 1,
+      "provider_calls_max": 0,
+      "content_delete_max": 1,
+      "result": "same_ack_replayed"
+    },
+    {
+      "name": "manual_retry",
+      "keys": 2,
+      "body_hashes": 1,
+      "jobs_created": 2,
+      "outbox_records": 2,
+      "provider_calls_max": 2,
+      "result": "new_job"
+    }
+  ]
+}

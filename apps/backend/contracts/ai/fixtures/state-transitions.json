@@ -1,0 +1,67 @@
+{
+  "allowed": [
+    "none->queued",
+    "queued->processing",
+    "queued->failed",
+    "processing->succeeded",
+    "processing->failed",
+    "queued->expired",
+    "processing->expired",
+    "succeeded->expired",
+    "failed->expired"
+  ],
+  "forbidden": [
+    "succeeded->processing",
+    "failed->processing",
+    "expired->processing",
+    "expired->succeeded",
+    "failed->succeeded"
+  ],
+  "provider_call_cases": [
+    {
+      "name": "duplicate_worker_delivery_before_claim",
+      "deliveries": 2,
+      "lease_winners": 1,
+      "provider_calls": 1,
+      "terminal_state": "succeeded"
+    },
+    {
+      "name": "worker_crash_before_provider_start",
+      "deliveries": 2,
+      "lease_winners": 2,
+      "provider_calls": 1,
+      "terminal_state": "succeeded"
+    },
+    {
+      "name": "worker_crash_after_provider_start",
+      "deliveries": 2,
+      "lease_winners": 1,
+      "provider_calls": 1,
+      "terminal_state": "failed",
+      "failure": "OUTCOME_UNKNOWN"
+    },
+    {
+      "name": "provider_timeout",
+      "deliveries": 1,
+      "lease_winners": 1,
+      "provider_calls": 1,
+      "terminal_state": "failed",
+      "failure": "AI_TIMEOUT"
+    },
+    {
+      "name": "provider_5xx",
+      "deliveries": 1,
+      "lease_winners": 1,
+      "provider_calls": 1,
+      "terminal_state": "failed",
+      "failure": "AI_UNAVAILABLE"
+    }
+  ],
+  "timeouts_seconds": {
+    "create_accept": 5,
+    "queue_start": 120,
+    "worker_execution": 90,
+    "provider_call": 60,
+    "validate_and_commit": 10
+  }
+}

@@ -21,6 +21,7 @@
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260730-005` | `verification_ready` | iOS CI PR dry run·실패 감지·회귀 검증 | PR #36~#39 정상·실패 65·timeout 124·취소·artifact | 고정 run과 미병합 종료 상태 독립 판정 |
+| `T-20260729-023` | `verification_passed` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | PASS_WITH_RISK·Development Lead 완료 검토 |
 
 향후 검증 예정 Task:
 
@@ -30,7 +31,6 @@
 | `T-20260728-005` | Backend | Backend QA Agent | API 계약, 보안, 개인정보 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
-| `T-20260729-023` | Backend | Backend QA Agent | AI 상태·복구·schema·timeout |
 | `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |

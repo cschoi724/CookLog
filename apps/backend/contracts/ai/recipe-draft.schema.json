@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cooklog.app/ai/recipe-draft.schema.json",
+  "title": "CookLog AI RecipeDraft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "title",
+    "ingredients",
+    "steps",
+    "estimated_total_minutes",
+    "estimated_time_provenance",
+    "notes",
+    "review_flags"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "recipe-draft.v1"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "ingredients": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "quantity",
+          "unit",
+          "evidence_step_ids",
+          "inferred_fields"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "quantity": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 40
+          },
+          "unit": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 30
+          },
+          "evidence_step_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "inferred_fields": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "name",
+                "quantity",
+                "unit"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "order",
+          "instruction",
+          "evidence_step_ids",
+          "estimated_duration_minutes",
+          "duration_provenance"
+        ],
+        "properties": {
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 99
+          },
+          "instruction": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "evidence_step_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "estimated_duration_minutes": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 1440
+          },
+          "duration_provenance": {
+            "type": "string",
+            "enum": [
+              "recorded",
+              "ai_inferred",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "estimated_total_minutes": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 1440
+    },
+    "estimated_time_provenance": {
+      "type": "string",
+      "enum": [
+        "recorded",
+        "ai_inferred",
+        "unknown"
+      ]
+    },
+    "notes": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "review_flags": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field_path",
+          "reason",
+          "review_required"
+        ],
+        "properties": {
+          "field_path": {
+            "type": "string",
+            "pattern": "^(ingredients|steps|estimated_total_minutes)(\\[[0-9]+\\])?(\\.[a-z_]+)?$"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "ai_inferred",
+              "missing_source",
+              "safety_review"
+            ]
+          },
+          "review_required": {
+            "const": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "created_at": "2026-07-31T00:00:00Z",
+  "delete_after": "2026-07-31T22:00:00Z",
+  "warning_at": "2026-07-31T22:30:00Z",
+  "critical_at": "2026-07-31T23:00:00Z",
+  "incident_at": "2026-07-31T23:30:00Z",
+  "cleanup_retry_stops_at": "2026-07-31T23:45:00Z",
+  "expires_at": "2026-08-01T00:00:00Z",
+  "ttl_safety_at": "2026-08-01T00:00:00Z",
+  "sweeper_interval_seconds": 900,
+  "cleanup_registered_atomically": true,
+  "paths": [
+    {
+      "name": "app_ack",
+      "delete_trigger": "acknowledgement",
+      "content_returned_after_delete": false,
+      "provider_calls": 0
+    },
+    {
+      "name": "scheduled_cleanup",
+      "delete_trigger": "delete_after",
+      "content_returned_after_delete": false,
+      "provider_calls": 0
+    },
+    {
+      "name": "sweeper_recovery",
+      "delete_trigger": "delete_after_plus_15_minutes_max",
+      "content_returned_after_delete": false,
+      "provider_calls": 0
+    },
+    {
+      "name": "expiry_get",
+      "delete_trigger": "before_decrypt",
+      "content_returned_after_delete": false,
+      "provider_calls": 0
+    }
+  ],
+  "firestore_ttl_is_safety_net_only": true,
+  "firestore_ttl_free_quota_eligible": false
+}

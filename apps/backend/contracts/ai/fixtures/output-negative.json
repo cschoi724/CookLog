@@ -1,0 +1,36 @@
+{
+  "cases": [
+    {
+      "name": "unknown_evidence_step",
+      "violation": "evidence_step_id_not_in_snapshot",
+      "expected_state": "failed",
+      "expected_failure": "OUTPUT_INVALID",
+      "result_stored": false,
+      "result_returned": false
+    },
+    {
+      "name": "invented_safety_temperature",
+      "violation": "safety_value_without_source",
+      "expected_state": "failed",
+      "expected_failure": "OUTPUT_INVALID",
+      "result_stored": false,
+      "result_returned": false
+    },
+    {
+      "name": "non_contiguous_step_order",
+      "violation": "step_order_invalid",
+      "expected_state": "failed",
+      "expected_failure": "OUTPUT_INVALID",
+      "result_stored": false,
+      "result_returned": false
+    },
+    {
+      "name": "schema_additional_property",
+      "violation": "schema_invalid",
+      "expected_state": "failed",
+      "expected_failure": "OUTPUT_INVALID",
+      "result_stored": false,
+      "result_returned": false
+    }
+  ]
+}
