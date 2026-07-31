@@ -18,11 +18,11 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `scoped` | 2 |
 | `approved` | 0 |
 | `in_progress` | 1 |
-| `verification_ready` | 1 |
+| `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
 | `completion_review` | 0 |
-| `rework_requested` | 0 |
+| `rework_requested` | 1 |
 | `blocked` | 0 |
 | `done` | 19 |
 | `cancelled` | 1 |
@@ -31,13 +31,13 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`의 루트·운영·iOS·Design 활성 문서 Source of Truth 정합성 복구는 자체 검증을 마치고 Product QA 독립 검증 대기 상태입니다. 첫 공개 출시 STT 기본 경로 변경 `T-20260729-026`은 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. Backend 공통 API 계약 `T-20260729-021`도 `done`이며, 다음 순차 후보는 각각 별도 Product Owner 실행 승인을 기다립니다.
+Product `T-20260731-001`은 Product QA `FAIL` 판정 후 활성 운영·Team context와 Task Board 재작업 대기 상태입니다. 첫 공개 출시 STT 기본 경로 변경 `T-20260729-026`은 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. Backend 공통 API 계약 `T-20260729-021`도 `done`이며, 다음 순차 후보는 각각 별도 Product Owner 실행 승인을 기다립니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
-| Product | 0 | 1 | 0 | `.ai_project/teams/product/task_board.md` |
+| Product | 1 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 2 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
@@ -66,7 +66,7 @@ Team별 요약:
 | `T-20260729-006` | P0 | iOS 로컬 TTS·오디오 중단·핸즈프리 Audio Guide 구현 | Development Lead Agent | `T-20260728-003` |
 | `T-20260729-007` | P1 | Product QA Agent 운영 등록과 루트 제품 안내 동기화 | AI Ops Agent | `T-20260729-001` |
 | `T-20260729-026` | P0 | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | - | `done`, Product QA PASS·Product Owner 최종 승인 |
-| `T-20260731-001` | P0 | 활성 문서 Source of Truth 정합성 복구 | Product QA Agent | `verification_ready`, 독립 문서 검증 대기 |
+| `T-20260731-001` | P0 | 활성 문서 Source of Truth 정합성 복구 | Product Lead Agent | `rework_requested`, Product QA 필수 재작업 4건 |
 
 Design `T-20260729-002` 하위 실행 후보:
 

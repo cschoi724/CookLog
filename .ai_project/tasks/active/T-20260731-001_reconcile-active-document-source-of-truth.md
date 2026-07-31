@@ -2,64 +2,63 @@
 schema: aiops.task.v1
 id: T-20260731-001
 title: 활성 문서 Source of Truth 정합성 복구
-status: verification_ready
+status: rework_requested
 type: docs
 priority: P0
-priority_reason: 최신 제품 정책과 완료된 Design·Backend·CI 결과가 루트·운영·iOS·디자인 안내 문서에 반영되지 않아 후속 Agent가 잘못된 범위를 구현할 위험이 있다.
+priority_reason: 최신 제품 정책과 완료된 Design·Backend·CI 결과가 루트·운영·iOS·디자인 안내 문서에 반영되지 않아
+  후속 Agent가 잘못된 범위를 구현할 위험이 있다.
 org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: docs
-target_agent: Product QA Agent
-target_role: Verification Role
+target_agent: Product Lead Agent
+target_role: Lead Role
 required_capabilities:
-  - product_documentation
-  - cross_domain_reconciliation
-  - source_of_truth_governance
-  - independent_validation
+- product_direction
+- priority_management
 depends_on:
-  - T-20260729-026
-  - T-20260729-011
-  - T-20260729-020
-  - T-20260730-003
+- T-20260729-026
+- T-20260729-011
+- T-20260729-020
+- T-20260730-003
 blocks:
-  - T-20260728-003
+- T-20260728-003
 parallel_group: documentation-reconciliation
 allowed_paths:
-  - agents.md
-  - .ai_project/operating_model.md
-  - .ai_project/current_context.md
-  - .ai_project/source_of_truth.md
-  - .ai_project/new_clone_handoff.md
-  - .ai_project/task_board.md
-  - .ai_project/teams/product/task_board.md
-  - .ai_project/teams/quality/task_board.md
-  - .ai_project/tasks/
-  - .ai_project/reports/
-  - .ai_project/qa/
-  - docs/PROJECT_STATUS.md
-  - docs/PROJECT_CHANGELOG.md
-  - docs/PROJECT_DECISIONS.md
-  - docs/product/CookLog_PRD_v2.md
-  - design/README.md
-  - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
-  - apps/ios/agents.md
-  - apps/ios/docs/STATUS.md
-  - apps/ios/docs/DEVELOPMENT_PLAN.md
-  - apps/ios/docs/DEVELOPMENT_SPEC.md
-  - apps/ios/docs/ARCHITECTURE.md
-  - apps/ios/docs/SERVICES.md
-  - apps/ios/docs/DECISIONS.md
-  - apps/ios/docs/CHANGELOG.md
+- agents.md
+- ".ai_project/operating_model.md"
+- ".ai_project/current_context.md"
+- ".ai_project/source_of_truth.md"
+- ".ai_project/new_clone_handoff.md"
+- ".ai_project/task_board.md"
+- ".ai_project/teams/product/task_board.md"
+- ".ai_project/teams/quality/task_board.md"
+- ".ai_project/tasks/"
+- ".ai_project/reports/"
+- ".ai_project/qa/"
+- docs/PROJECT_STATUS.md
+- docs/PROJECT_CHANGELOG.md
+- docs/PROJECT_DECISIONS.md
+- docs/product/CookLog_PRD_v2.md
+- design/README.md
+- design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
+- apps/ios/agents.md
+- apps/ios/docs/STATUS.md
+- apps/ios/docs/DEVELOPMENT_PLAN.md
+- apps/ios/docs/DEVELOPMENT_SPEC.md
+- apps/ios/docs/ARCHITECTURE.md
+- apps/ios/docs/SERVICES.md
+- apps/ios/docs/DECISIONS.md
+- apps/ios/docs/CHANGELOG.md
 source_of_truth:
-  - .ai_project/source_of_truth.md
-  - .ai_project/task_board.md
-  - docs/product/CookLog_PRODUCT.md
-  - docs/product/CookLog_PRD_v2.md
-  - docs/product/CookLog_MVP_SCOPE.md
-  - docs/product/CookLog_USER_FLOW.md
-  - docs/product/CookLog_ROADMAP.md
-  - docs/PROJECT_DECISIONS.md
+- ".ai_project/source_of_truth.md"
+- ".ai_project/task_board.md"
+- docs/product/CookLog_PRODUCT.md
+- docs/product/CookLog_PRD_v2.md
+- docs/product/CookLog_MVP_SCOPE.md
+- docs/product/CookLog_USER_FLOW.md
+- docs/product/CookLog_ROADMAP.md
+- docs/PROJECT_DECISIONS.md
 created_by: Product Lead Agent
 approved_by: Product Owner
 locked_by:
@@ -67,9 +66,9 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-31
-updated_at: 2026-07-31
-report_to: .ai_project/reports/T-20260731-001_reconcile-active-document-source-of-truth-report.md
-qa_to: .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
+updated_at: '2026-07-31'
+report_to: ".ai_project/reports/T-20260731-001_reconcile-active-document-source-of-truth-report.md"
+qa_to: ".ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md"
 ---
 
 # 활성 문서 Source of Truth 정합성 복구
@@ -115,12 +114,24 @@ qa_to: .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-q
 ## Next Agent Handoff
 
 ```text
-너는 Product QA Agent / Verification Role이야.
-T-20260731-001 활성 문서 Source of Truth 정합성 복구를 독립 검증해줘.
+너는 Product Lead Agent / Lead Role이야.
+T-20260731-001의 재작업 범위와 허용 경로를 다시 조율해줘.
 
-- 현재 상태: verification_ready
-- 검증 기준: 제품 정책 무변경, 최신 Task 상태, 문서 우선순위와 링크, 후속 Agent 오해 가능성
-- 검증 기준: 현재 전용 worktree의 최종 로컬 HEAD
-- 결과 기록: .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
-- 금지: Product Lead의 자체 검증을 독립 검증으로 대체, 앱 코드 수정, commit·push·PR·merge
+- 현재 상태: rework_requested
+- 다음에 해야 할 일: Product QA 보고서의 필수 재작업 4건을 최신 origin/develop 기준으로 반영하고 재검증을 요청해줘.
+- 기준 문서: .ai_project/source_of_truth.md, 개별 Task 파일, 최신 제품 문서
+- 참고 산출물: .ai_project/reports/T-20260731-001_reconcile-active-document-source-of-truth-report.md, .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
+- 변경/검토 대상: 활성 Team context, Ops Issues·Migration Plan, Project·Development·Quality board, Product QA routing
+- 남은 리스크: Figma·Backend·CI 구형 기준 잔존, 완료/승인 대기 상태 충돌, Product QA 정식 역할 매핑 누락, 최신 develop 1커밋 통합 필요
+- 차단/결정 필요: 현재 allowed_paths 밖 운영·Team context 수정 범위를 Product Owner와 재승인한 뒤 재작업
+- 금지: Product QA 재검증 전 T-20260728-003 차단 해제, completion_review 또는 done 전환
 ```
+
+## AI Ops CLI 기록
+
+| 날짜 | Actor | Event | Reason |
+|---|---|---|---|
+| 2026-07-31 | Product QA Agent | transition: verification_ready -> verification_in_progress | 활성 문서 Source of Truth 정합성 독립 검증 시작 |
+| 2026-07-31 | Product QA Agent | lock | task lock |
+| 2026-07-31 | Product QA Agent | transition: verification_in_progress -> rework_requested | 활성 Team context와 운영 이슈·Task Board에 구형 Figma·Backend·CI 상태가 남고 Product QA routing이 불완전하여 Product Lead 재작업 필요 |
+| 2026-07-31 | Product QA Agent | unlock | task unlock |
