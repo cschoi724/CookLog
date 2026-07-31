@@ -21,7 +21,7 @@
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
 | `T-20260729-020` | `done` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | - | `T-20260729-026` 완료 | PR #26 squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend | 공통 API·인증·제한·오류 계약 | - | `T-20260729-026` 완료 | PR #32 squash merge·완료 확정 |
-| `T-20260729-022` | `approved` | Backend | 기본 비활성 원격 STT adapter 계약 | Backend Agent | `T-20260729-021`, `026` 완료 | QA-HIGH-022-001~002 재작업 승인·Backend Agent 인계 |
+| `T-20260729-022` | `verification_ready` | Backend | 기본 비활성 원격 STT adapter 계약 | Backend QA Agent | `T-20260729-021`, `026` 완료 | retry/terminal·deadline cleanup 재작업 독립 재검증 |
 | `T-20260729-023` | `approved` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
 | `T-20260729-024` | `approved` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
 | `T-20260729-025` | `proposed` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | 선행·승인 대기 |

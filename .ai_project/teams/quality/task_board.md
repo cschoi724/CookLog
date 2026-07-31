@@ -17,7 +17,7 @@
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
-| `T-20260729-022` | `approved` | 기본 비활성 원격 STT adapter 계약 | 강제 비활성·무승인 upload 차단·자동 fallback 금지·삭제 최대 1시간 | Backend Agent 재작업 후 독립 재검증 |
+| `T-20260729-022` | `verification_ready` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | Backend QA Agent 독립 재검증 |
 
 향후 검증 예정 Task:
 
