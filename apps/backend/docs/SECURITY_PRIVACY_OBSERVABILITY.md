@@ -165,13 +165,21 @@ content store의 backup·PITR은 즉시 삭제·최대 수명 계약을 깨지 �
 ## 6. Provider 활성화 gate
 
 AI 또는 향후 Remote STT provider는 다음 manifest를 배포 artifact로 고정하고 배포
-시점과 최소 분기 1회 다시 검증한다.
+시점과 최소 분기 1회 다시 검증한다. 저장 위치와 처리 위치는 같은 의미로 간주하지
+않으며 다음 필드를 각각 필수로 기록한다.
+
+- `storage_region`: provider가 고객 콘텐츠를 저장하는 명시적 region
+- `regional_processing_supported`: 해당 endpoint가 regional processing을 보장하는지
+- `processing_boundary`: 추론·임시 처리가 일어날 수 있는 승인된 지리 경계
+- `cross_border_processing_approved`: 저장 region 밖 처리를 Product Owner가 승인했는지
 
 | Gate | 통과 조건 |
 |---|---|
 | 제품 승인 | 용도, 기능, provider와 비용이 Product Owner 승인 범위 |
 | endpoint·model | T-020의 승인 endpoint와 고정 snapshot/GA ID |
-| 처리 지역 | 승인 리전에서 처리됨을 공식 설정·계약으로 확인 |
+| 저장 지역 | `storage_region`을 공식 설정·계약으로 확인 |
+| 처리 지역 | `regional_processing_supported`와 `processing_boundary`를 별도 확인 |
+| 국외 처리 | 저장 region 밖 처리는 `cross_border_processing_approved=true`와 승인 change ID 필수 |
 | 학습 | 고객 콘텐츠 학습 비활성화 |
 | 보관 | MAM 또는 ZDR 등 승인된 최단 보관, `store=false` |
 | 선택 기능 | web search, tool, cache, file store와 background storage 비활성화 |
@@ -182,9 +190,19 @@ AI 또는 향후 Remote STT provider는 다음 manifest를 배포 artifact로 �
 | 개인정보 | DPA·개인정보 고지와 국외 처리 여부 승인 |
 | 장애 | timeout, 단일 attempt, late result 폐기, 자동 fallback 금지 시험 통과 |
 
-manifest가 없거나, 설정 조회가 실패하거나, 승인 snapshot과 drift가 있거나, 확인
-유효기간이 지났으면 provider 호출은 fail closed한다. 기존 로컬 STEP과 진행 기록은
-보존하되 새 외부 호출을 시작하지 않는다. 다른 provider로 자동 전환하지 않는다.
+OpenAI 한국 저장 후보는 `storage_region=KR`,
+`regional_processing_supported=false`를 그대로 기록한다. MAM 또는 ZDR,
+Modified Retention amendment와 한국 밖 처리의 Product Owner 승인이 모두 확인될
+때만 활성화한다. 한국 내 처리로 표시하거나 저장 위치를 처리 위치의 증거로 쓰지 않는다.
+
+Vertex AI EU 후보는 `storage_region=EU`, `regional_processing_supported=true`,
+`processing_boundary=EU`를 공식 endpoint 설정으로 증명하고 context cache 비활성,
+abuse monitoring 예외를 별도로 확인한다. `global` endpoint는 허용하지 않는다.
+
+manifest가 없거나, 처리 위치가 `unknown`이거나, 설정 조회가 실패하거나, 승인 snapshot과
+drift가 있거나, 국외 처리 승인이 없거나, 확인 유효기간이 지났으면 provider 호출은 fail
+closed한다. 기존 로컬 STEP과 진행 기록은 보존하되 새 외부 호출을 시작하지 않는다.
+다른 provider로 자동 전환하지 않는다.
 
 Remote STT는 T-022의 별도 제품·비용·개인정보·provider 승인 전에는 credential,
 endpoint, egress와 feature flag를 모두 비활성 상태로 유지한다.
@@ -203,13 +221,42 @@ endpoint, egress와 feature flag를 모두 비활성 상태로 유지한다.
 | provider content | 승인된 MAM/ZDR와 `store=false`; 별도 저장 기능 금지 |
 | 폐기 secret version | 필요한 최소 overlap 종료 즉시 provider·Secret Manager에서 폐기 |
 
+### 7.1 Raw metadata 30일 상한
+
+raw 운영·보안 metadata 생성 transaction은 서버 시각으로 다음 값을 고정하고 metadata
+record와 cleanup outbox를 원자 commit한다.
+
+| 시각 | 생성 시각 기준 | 동작 |
+|---|---:|---|
+| `delete_after` | +28일 | 모든 sink에 명시적 delete task 실행 |
+| `warning_at` | +29일 | 잔존 replica 경고, cleanup 우선순위 상승 |
+| `critical_at` | +29일 12시간 | 영향 sink의 새 raw event·export 차단 |
+| `incident_at` | +29일 18시간 | P0 privacy incident와 downstream 격리 |
+| `cleanup_retry_stops_at` | +29일 23시간 45분 | 일반 retry 중단, 격리 동기 삭제 |
+| `expires_at` | +30일 | 조회·export·aggregate 입력 전 접근 차단과 동기 삭제 |
+
+cleanup task 누락·worker crash·queue 장애를 발견하는 독립 sweeper는 15분마다
+`delete_after <= now`인 record와 미완료 sink receipt를 조회한다. sweeper는 cleanup
+queue와 별도 scheduler·service account를 사용하고 decrypt 권한을 갖지 않는다.
+
+삭제 대상은 source log, trace, metric 원본, error tracker, analytics staging,
+incident replica, export object와 backup이다. 각 활성 sink는 최대 삭제 deadline과
+고정 `sink_id`, `deleted_at`, `outcome`만 담은 receipt를 반환해야 한다. 모든 필수
+receipt가 성공하기 전에는 cleanup을 완료로 표시하지 않는다. deadline 내 삭제를
+지원하지 않는 sink·backup·export는 production에서 활성화할 수 없다.
+
+모든 raw metadata read, export와 aggregate job은 body read 전에 서버 시각의
+`expires_at`을 검사한다. `now >= expires_at`이면 결과를 반환하거나 aggregate에
+포함하지 않고 source와 downstream에 동기 삭제를 요청한다. TTL 지연, cleanup task
+유실과 sink delete 실패는 이 접근 gate를 우회하지 못한다.
+
 raw metadata의 기본 TTL은 30일보다 짧게 설정할 수 있으나 길게 설정할 수 없다.
 Firestore TTL은 안전망일 뿐 삭제 SLA의 주 실행기가 아니며 무료 할당량 대상이 아니다.
 명시적 cleanup worker가 삭제를 수행하고 TTL 지연·유료 삭제를 비용 계측에 포함한다.
 
 삭제 결과는 콘텐츠 없이 `cleanup_completed`로 기록한다. delete가 실패하면 backoff
-재시도하되 T-020/T-022의 경고·차단·incident 시각을 넘길 수 없다. 법적 보존 또는
-지원 요청을 이유로 restricted content 수명을 연장하지 않는다.
+재시도하되 위 시각과 T-020/T-022의 더 짧은 콘텐츠 시각을 넘길 수 없다. 법적 보존
+또는 지원 요청을 이유로 restricted content나 raw metadata 수명을 연장하지 않는다.
 
 ## 8. 비콘텐츠 관측성
 
@@ -250,7 +297,68 @@ partition, IP, provider ID와 자유 문자열은 label로 사용하지 않는�
 
 ## 9. Quota·비용 alert와 hard cutoff
 
-### 9.1 고정 상한
+### 9.1 가격 manifest와 전체 외부비 원장
+
+월 KRW 50,000은 AI provider만이 아니라 Backend가 발생시키는 모든 외부비의 단일
+원장 상한이다. production 가격 manifest는 다음 서비스를 누락 없이 포함한다.
+
+| 서비스 | 필수 SKU selector |
+|---|---|
+| AI provider | 고정 model의 input token, output token |
+| Cloud Run 서울 | Tier 2 CPU `085C-A237-027A`, Memory `600C-3782-6708`, Request `2DA5-55D3-E679` |
+| Cloud Tasks | 서울 operations·network 사용량에 대한 Cloud Billing Catalog SKU |
+| Firestore Standard 서울 | document read·write·delete, storage, network, TTL delete SKU |
+| Networking | Cloud Run↔provider와 internet egress의 source·destination별 SKU |
+| Observability | Logging ingest·storage, Trace span, Monitoring billable sample SKU |
+| Build·artifact | Cloud Build compute와 Artifact Registry storage·egress SKU |
+
+Cloud Billing Catalog가 지역·사용 유형에 대해 반환한 불변 `catalog_sku_id`, 통화,
+단위당 가격과 `effective_at`을 manifest에 고정한다. Firestore TTL delete는 일반
+무료 할당량에서 제외된 유료 delete로 별도 계측한다. SKU를 해석하지 못하거나 가격이
+없는 서비스는 비용 0으로 간주하지 않고 기능을 차단한다.
+
+가격 manifest는 매월 원장 개설 전과 배포 전, provider·Cloud Billing 가격 변경
+감지 시 갱신한다. 환율은 월 개설 시 승인 출처의 USD/KRW snapshot을 고정하고 모든
+USD 비용에 세금·환율 변동 10% buffer를 적용한다. snapshot이 31일보다 오래됐거나
+단가 조회·환율 조회가 실패하거나 manifest의 SKU가 실제 billing SKU와 다르면 새
+비용 발생 요청, cleanup 외 신규 job, log export와 build를 fail closed한다. 개인정보
+삭제 cleanup은 중단하지 않고 미리 예약한 privacy reserve만 사용한다.
+
+### 9.2 예약·정산
+
+단일 월 원장은 다음 불변식을 transaction으로 보장한다.
+
+```text
+committed_actual_krw
++ active_reservations_krw
++ delayed_billing_reserve_krw
+<= 50,000
+```
+
+- 월 개설 시 계측 지연, 가격 반올림과 cleanup 비상 실행을 위한
+  `delayed_billing_reserve_krw=5,000`을 먼저 예약하고 월중 해제하지 않는다.
+- provider 호출은 최대 input·output token과 timeout까지의 Cloud Run, Tasks,
+  Firestore read·write·delete, 예상 egress를 하나의 operation reservation으로 묶는다.
+- API·worker·sweeper invocation은 최대 실행 시간의 CPU·memory·request 비용을 시작
+  전에 해당 월 operation envelope에서 차감한다.
+- Firestore write·read·일반 delete·TTL delete와 Cloud Tasks enqueue·delivery는
+  실행 전 보수적 단가를 예약한다. cleanup retry도 새 비용으로 예약한다.
+- log·trace·metric은 허용 event의 최대 byte·sample 수를 emit 전에 예약한다.
+  reservation이 없으면 콘텐츠 없는 필수 보안 counter 외 telemetry를 drop하고 경고한다.
+- internet egress, build와 artifact 작업도 전송 byte·최대 build time·보존량을 실행
+  전에 예약한다. 예약 API를 사용하지 않는 production 경로는 금지한다.
+- provider usage와 Cloud Billing export가 도착하면 실제 SKU별 비용으로 정산한다.
+  예상보다 큰 실제값은 즉시 committed actual에 반영하고 다른 active reservation을
+  해제하지 않는다.
+- billing export는 최소 시간마다 ingest하되 최대 6시간 지연을 가정한다. 마지막 성공
+  reconciliation이 6시간을 넘으면 새 비용 발생 요청을 fail closed한다.
+
+서로 다른 service의 예약도 같은 `(billing_month, ledger_version)` compare-and-set을
+사용한다. provider와 logging·cleanup·TTL delete가 동시에 경합해도 단일 승자만 남은
+KRW를 예약한다. soft alert는
+`committed_actual + active_reservations + delayed_billing_reserve` 합계로 계산한다.
+
+### 9.3 고정 상한
 
 월 주기는 매월 1일 00:00 UTC에 시작한다. 모든 installation을 합산하고 provider 호출
 전에 예상 최대 사용량을 원자 예약한다.
@@ -266,20 +374,23 @@ partition, IP, provider ID와 자유 문자열은 label로 사용하지 않는�
 유지한다. T-021의 installation 전체 60회/분, mutation 12회/분, AI 생성 20회/일,
 project 전체 600회/분과 AI 생성 100회/분을 함께 적용한다.
 
-### 9.2 예약과 차단
+### 9.4 예약과 차단
 
 1. 인증, schema와 idempotency를 검증한다.
-2. 호출·입력·출력·비용의 예상 상한을 하나의 transaction으로 예약한다.
+2. 호출·입력·출력과 위 모든 service 비용의 예상 상한을 하나의 transaction으로
+   예약한다.
 3. 어느 한 차원이라도 hard cutoff를 넘으면 job·content·queue를 만들지 않고
    `QUOTA_EXCEEDED`로 거절한다.
 4. 예약 성공 후에만 job을 만들고 provider 호출은 logical job당 한 번만 수행한다.
-5. provider usage가 확인되면 실제값으로 정산한다.
-6. timeout·응답 유실로 실제 사용량을 확인할 수 없으면 예약 상한을 해제하지 않는다.
+5. provider usage와 Cloud Billing SKU 사용량이 확인되면 실제값으로 정산한다.
+6. timeout·응답 유실·billing 지연으로 실제 사용량을 확인할 수 없으면 예약 상한을
+   해제하지 않는다.
 
 Soft alert는 운영 알림일 뿐 호출 허용 근거가 아니다. hard cutoff, quota ledger 또는
 kill switch가 불명확하거나 사용할 수 없으면 비용 발생 요청은 fail closed한다.
-Cloud Billing budget은 지연될 수 있는 2차 방어이며 애플리케이션 hard cutoff를
-대체하지 않는다.
+Cloud Billing budget은 지연될 수 있는 2차 방어이며 애플리케이션 단일 원장 hard
+cutoff를 대체하지 않는다. logging 폭주, cleanup retry와 TTL delete 증가도 같은
+50%·75%·90% alert와 100% kill switch를 작동시킨다.
 
 운영자, support와 자동 복구는 quota를 재설정·우회하거나 provider를 바꿀 수 없다.
 상한 변경은 새 Product Owner 결정과 T-020 계약 갱신이 필요하며, 이 문서만으로 기존
@@ -300,6 +411,10 @@ Cloud Billing budget은 지연될 수 있는 2차 방어이며 애플리케이�
 | AI content age 23시간 45분 | P0 | 일반 retry 중단, 격리 cleanup |
 | AI content age 24시간 | P0 breach | decrypt·조회 차단, 동기 삭제 시도 |
 | Remote STT content age 45분 / 55분 / 60분 | Warning / Critical / P0 | cleanup 상승 / 새 호출 차단 / incident |
+| raw metadata age 29일 | Warning | 미완료 sink receipt cleanup 상승 |
+| raw metadata age 29일 12시간 | Critical | 영향 sink의 새 raw event·export 차단 |
+| raw metadata age 29일 18시간 | P0 | downstream 격리·privacy incident |
+| raw metadata age 30일 | P0 breach | 조회·export·aggregate 입력 차단, 동기 삭제 |
 | 단일 AI job provider attempt 2 이상 | P0 | AI kill switch, 중복 비용 incident |
 | quota·인증·mutation limiter 불가 | Critical | 해당 요청 fail closed |
 | telemetry schema reject 1건 이상 | Warning | 이벤트 폐기, 배포 version 조사 |
@@ -358,16 +473,28 @@ Agent가 독립 재검증한다.
 
 ### Provider·삭제
 
-- region, 학습 비활성, MAM/ZDR, `store=false`, 고정 model과 선택 기능 비활성 drift가
-  각각 외부 호출을 차단하는지 확인
+- storage region, regional processing 지원, processing boundary와 국외 처리 승인을
+  분리하고 unknown·승인 누락이 외부 호출을 차단하는지 확인
+- OpenAI 한국 저장·한국 밖 처리 승인과 Vertex EU 처리·cache/abuse monitoring
+  예외를 각각 fixture로 확인
+- 학습 비활성, MAM/ZDR, `store=false`, 고정 model과 선택 기능 비활성 drift가 각각
+  외부 호출을 차단하는지 확인
 - ACK 즉시 삭제, AI +22시간/+23시간/+23시간 30분/+23시간 45분/+24시간 경계와
   Remote STT 45분/55분/60분 경계를 가상 시각으로 검증
 - Firestore TTL만으로 성공 처리하지 않고 명시적 cleanup 결과를 확인하는지 검증
+- raw metadata 정상 삭제, task 누락, worker crash, queue 장애, sink delete 실패와
+  TTL 지연에서 +30일 접근·export·aggregate 입력 0건과 전체 sink receipt를 검증
 - content backup·PITR이 비활성 또는 승인된 crypto-shredding 계약인지 확인
 
 ### Quota·장애
 
 - 동시 요청이 네 월 hard cutoff 중 하나도 초과 예약하지 못하는지 확인
+- provider와 Cloud Run·Tasks·Firestore·TTL·egress·observability·build 비용이 같은
+  원장에 들어가고 동시 경합 합계가 KRW 50,000을 넘지 않는지 확인
+- logging 폭주, cleanup retry와 TTL delete 증가가 50%·75%·90% alert와 100%
+  kill switch를 작동시키는지 확인
+- 가격·환율 snapshot 만료, SKU 조회 실패와 billing reconciliation 6시간 초과가
+  비용 발생 요청을 fail closed하는지 확인
 - 응답 유실·timeout 때 예약이 보수적으로 유지되고 자동 retry·fallback이 없는지 확인
 - quota ledger·limiter·provider gate 장애에서 비용 요청이 fail closed하는지 확인
 - 50%/75%/90% alert와 100% hard block, 운영자 우회 불가를 확인

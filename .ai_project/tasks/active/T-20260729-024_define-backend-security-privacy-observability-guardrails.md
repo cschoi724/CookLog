@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-024
 title: Backend 보안·개인정보·관측성·비용 guardrail 정의
-status: approved
+status: verification_ready
 type: docs
 priority: P0
 priority_reason: 사용자 콘텐츠와 provider 비용을 로그·장애·abuse 경계에서 보호해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Backend QA Agent
+target_role: Verification Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -24,6 +24,11 @@ blocks:
 parallel_group: backend-contract-foundation
 allowed_paths:
 - apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md
+- apps/backend/contracts/security/README.md
+- apps/backend/contracts/security/fixtures/raw-metadata-retention-cases.json
+- apps/backend/contracts/security/fixtures/cost-ledger-cases.json
+- apps/backend/contracts/security/fixtures/provider-region-gate-cases.json
+- apps/backend/contracts/security/validate-contracts.sh
 - ".ai_project/tasks/backlog/T-20260729-024_define-backend-security-privacy-observability-guardrails.md"
 - ".ai_project/tasks/active/T-20260729-024_define-backend-security-privacy-observability-guardrails.md"
 - ".ai_project/reports/T-20260729-024_define-backend-security-privacy-observability-guardrails-report.md"
@@ -89,3 +94,6 @@ qa_to: ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observabil
 | 2026-07-31 | Backend QA Agent | unlock | task unlock |
 | 2026-07-31 | Product Owner | approve rework | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 수정 범위 재작업 승인 |
 | 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 재작업 인계, 수정 후 독립 재검증 진행 |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 승인 재작업 시작 |
+| 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 재작업·fixture 검증 완료, Backend QA 독립 재검증 인계 |

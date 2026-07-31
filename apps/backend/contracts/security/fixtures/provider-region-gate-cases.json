@@ -1,0 +1,77 @@
+{
+  "contract_version": "provider-region-gate.v1",
+  "cases": [
+    {
+      "name": "openai_korea_storage_cross_border_approved",
+      "provider": "openai",
+      "storage_region": "KR",
+      "regional_processing_supported": false,
+      "processing_boundary": "outside_KR_possible",
+      "cross_border_processing_approved": true,
+      "mam_or_zdr": true,
+      "modified_retention_amendment": true,
+      "cache_and_optional_storage_disabled": true,
+      "activation_allowed": true
+    },
+    {
+      "name": "openai_korea_storage_cross_border_not_approved",
+      "provider": "openai",
+      "storage_region": "KR",
+      "regional_processing_supported": false,
+      "processing_boundary": "outside_KR_possible",
+      "cross_border_processing_approved": false,
+      "mam_or_zdr": true,
+      "modified_retention_amendment": true,
+      "cache_and_optional_storage_disabled": true,
+      "activation_allowed": false
+    },
+    {
+      "name": "processing_boundary_unknown",
+      "provider": "openai",
+      "storage_region": "KR",
+      "regional_processing_supported": false,
+      "processing_boundary": "unknown",
+      "cross_border_processing_approved": true,
+      "mam_or_zdr": true,
+      "modified_retention_amendment": true,
+      "cache_and_optional_storage_disabled": true,
+      "activation_allowed": false
+    },
+    {
+      "name": "vertex_eu_processing_approved",
+      "provider": "vertex_ai",
+      "storage_region": "EU",
+      "regional_processing_supported": true,
+      "processing_boundary": "EU",
+      "cross_border_processing_approved": true,
+      "abuse_monitoring_exception": true,
+      "cache_and_optional_storage_disabled": true,
+      "endpoint": "eu",
+      "activation_allowed": true
+    },
+    {
+      "name": "vertex_global_endpoint_forbidden",
+      "provider": "vertex_ai",
+      "storage_region": "unknown",
+      "regional_processing_supported": false,
+      "processing_boundary": "global",
+      "cross_border_processing_approved": true,
+      "abuse_monitoring_exception": true,
+      "cache_and_optional_storage_disabled": true,
+      "endpoint": "global",
+      "activation_allowed": false
+    },
+    {
+      "name": "vertex_eu_cache_enabled",
+      "provider": "vertex_ai",
+      "storage_region": "EU",
+      "regional_processing_supported": true,
+      "processing_boundary": "EU",
+      "cross_border_processing_approved": true,
+      "abuse_monitoring_exception": true,
+      "cache_and_optional_storage_disabled": false,
+      "endpoint": "eu",
+      "activation_allowed": false
+    }
+  ]
+}

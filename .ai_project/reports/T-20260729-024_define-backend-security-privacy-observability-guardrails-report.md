@@ -24,6 +24,11 @@ CookLog Backend의 API, worker, cleanup, provider adapter, datastore, queue, CI/
 ## 산출물
 
 - `apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md`
+- `apps/backend/contracts/security/README.md`
+- `apps/backend/contracts/security/fixtures/raw-metadata-retention-cases.json`
+- `apps/backend/contracts/security/fixtures/cost-ledger-cases.json`
+- `apps/backend/contracts/security/fixtures/provider-region-gate-cases.json`
+- `apps/backend/contracts/security/validate-contracts.sh`
 
 ## 주요 계약
 
@@ -44,12 +49,24 @@ request ID는 log·trace 상관관계에만 쓰고 metric label에는 사용하�
 raw 운영·보안 metadata는 최대 30일 뒤 삭제한다. 콘텐츠·원시 ID·희소 segment가 없는
 비가역 aggregate만 이후 보관할 수 있다.
 
+생성 transaction은 +28일 delete task를 원자 등록하고 독립 15분 sweeper가 task 누락,
+worker crash와 queue 장애를 복구한다. +29일 경고, +29일 12시간 신규 raw event·export
+차단, +29일 18시간 incident, +30일 조회·export·aggregate 입력 차단을 적용한다. source,
+error tracker, analytics staging, incident replica, export와 backup의 삭제 receipt가
+모두 성공해야 cleanup 완료다.
+
 ### Provider gate
 
-배포 manifest가 승인 endpoint·고정 model, 처리 지역, 학습 비활성, MAM/ZDR,
+배포 manifest가 승인 endpoint·고정 model, 저장 지역·regional processing 지원·실제
+처리 경계·국외 처리 승인, 학습 비활성, MAM/ZDR,
 `store=false`, 선택 기능 비활성, 삭제·credential·비용·schema·장애 계약을 모두
 증명해야 한다. 설정 조회 실패, 승인값 drift 또는 검증 만료 시 외부 호출을 fail
 closed하고 자동 fallback하지 않는다.
+
+OpenAI 한국 후보는 한국 저장과 한국 내 처리를 동일시하지 않고
+`regional_processing_supported=false`로 고정한다. MAM/ZDR, Modified Retention
+amendment와 한국 밖 처리 승인이 모두 있어야 통과한다. Vertex EU는 EU processing,
+cache 비활성, abuse monitoring 예외와 non-global endpoint를 각각 증명한다.
 
 ### 비용·장애
 
@@ -57,6 +74,44 @@ provider 호출 5,500회, 입력 20M token, 출력 8M token, Backend 외부 추�
 KRW 50,000의 월 상한을 호출 전에 원자 예약한다. 50%·75%·90%에서 알림하고 어느
 한 차원이라도 100%에 도달하면 job·content·queue 생성 전에 차단한다. timeout이나
 응답 유실 시 예약 상한을 해제하지 않으며 운영자와 자동 복구가 우회할 수 없다.
+
+KRW 원장은 AI token뿐 아니라 Cloud Run, Tasks, Firestore read/write/delete·유료 TTL,
+egress, Logging·Trace·Monitoring, Cloud Build와 Artifact Registry SKU를 포함한다.
+월초 5,000원을 billing 지연·cleanup reserve로 선예약하고 모든 비용 발생 동작이 같은
+CAS 원장에서 보수적 상한을 예약한다. 가격·환율 snapshot 만료, SKU 누락 또는 billing
+reconciliation 6시간 초과는 fail closed한다.
+
+## 승인된 재작업 결과
+
+### QA-HIGH-024-001
+
+- raw metadata에 `delete_after=+28일`, +29일/+29일 12시간/+29일 18시간/
+  +29일 23시간 45분/+30일 lifecycle을 추가했다.
+- 생성 record와 cleanup outbox 원자 commit, 독립 15분 sweeper와 +30일 read 전
+  접근 gate를 고정했다.
+- source부터 backup까지 동일 deadline과 삭제 receipt를 요구했다.
+- 정상·task 누락·worker crash·queue 장애·sink delete 실패·TTL 지연 6개 fixture에서
+  +30일 이후 read·export·aggregate 입력 0건을 검사한다.
+
+### QA-HIGH-024-002
+
+- AI provider와 Cloud Run, Tasks, Firestore·TTL, egress, observability, build·artifact를
+  단일 KRW 원장 SKU manifest에 포함했다.
+- 단가·환율·세금 buffer, 월별·배포별 갱신과 6시간 billing reconciliation 상한을
+  정의했다.
+- provider와 비provider 비용이 같은 ledger version CAS로 경합하며
+  `actual + reservation + delayed reserve <= KRW 50,000`을 고정했다.
+- logging·cleanup retry·TTL delete 급증의 50%/75%/90% alert와 100% kill switch,
+  가격·SKU·환율·billing 지연 fail-closed fixture를 추가했다.
+
+### QA-MEDIUM-024-001
+
+- `storage_region`, `regional_processing_supported`, `processing_boundary`,
+  `cross_border_processing_approved`를 독립 gate로 분리했다.
+- OpenAI 한국 저장·한국 밖 처리 승인과 Vertex EU regional processing을 별도
+  fixture로 고정했다.
+- unknown 처리 위치, 국외 처리 승인 누락, Vertex global endpoint와 cache 활성은
+  모두 fail closed한다.
 
 콘텐츠·secret telemetry 탐지, provider gate drift, 중복 provider 호출, 삭제 SLA
 위험은 기능 kill switch와 privacy/cost incident를 시작한다. incident evidence에도
@@ -70,6 +125,12 @@ KRW 50,000의 월 상한을 호출 전에 원자 예약한다. 50%·75%·90%에�
 | `sh apps/backend/contracts/common/validate-contracts.sh` | PASS |
 | `sh apps/backend/contracts/stt/validate-contracts.sh` | PASS |
 | `sh apps/backend/contracts/ai/validate-contracts.sh` | PASS |
+| `sh -n apps/backend/contracts/security/validate-contracts.sh` | PASS |
+| `sh apps/backend/contracts/security/validate-contracts.sh` | PASS |
+| security fixture JSON 전체 `jq empty` | PASS |
+| raw metadata 삭제 lifecycle·장애 6개 fixture | PASS |
+| 전체 외부비 동시 경합·급증·fail-closed fixture | PASS |
+| provider 저장·처리·국외 승인 gate 6개 fixture | PASS |
 | 콘텐츠·secret telemetry 0건과 allowlist/redaction 계약 검색 | PASS |
 | provider 지역·학습·보관·`store=false` activation gate 검색 | PASS |
 | 5,500회·20M·8M·KRW 50,000 원자 예약 hard cutoff 검색 | PASS |
@@ -106,7 +167,7 @@ account 권한 분리와 회전, provider activation drift 차단, 보존·삭�
 
 ## 최신 develop 통합
 
-- 기준 `origin/develop`: `cbbe2ab`
+- 기준 `origin/develop`: `0014935`
 - T-20260729-020~023 `done`: 보존
 - T-20260729-025 `approved`·T-024 선행 대기: 보존
 - 최신 `origin/develop` 대비 뒤처짐: 0
