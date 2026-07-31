@@ -745,3 +745,9 @@ job-level `env`에서는 `runner` context를 사용하지 않습니다. CI 작�
 `GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT`를 조합해 만들고 `GITHUB_ENV`로 후속
 step에 전달합니다. 이를 통해 build와 artifact가 같은 실행별 격리 경로를
 사용하면서 workflow validation 제약을 준수합니다.
+
+2026-07-31 PR #24의 수정 커밋 `3243da6`을 GitHub-hosted `macos-26`에서
+실행한 run `30592350218`은 `ios-build` preflight, 앱 build, test build,
+artifact upload를 모두 통과했습니다. build log artifact
+`cooklog-ios-build-30592350218-1`도 실제 생성되어 hosted 경로와 업로드
+계약을 확인했습니다.

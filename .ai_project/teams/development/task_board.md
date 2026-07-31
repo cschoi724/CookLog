@@ -29,7 +29,7 @@
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-020`과 `021`은 승인 후 병렬 실행 가능하며 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 모든 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
 | `T-20260730-001` | `done` | CI | 환경·명령·check 계약 | - | `T-004`, `T-007` 완료 | PR #20 squash merge·완료 확정 |
-| `T-20260730-002` | `in_progress` | CI | ios-build workflow | Development Lead Agent | `T-20260730-001` 완료 | PR #24 validation 결함 재작업 승인, hosted 재검증 대기 |
+| `T-20260730-002` | `completion_review` | CI | ios-build workflow | Development Lead Agent | `T-20260730-001` 완료 | PR #24 hosted check·artifact 통과, develop 병합 대기 |
 | `T-20260730-003` | `proposed` | CI | ios-xctest workflow | iOS Agent | `T-20260730-001` 완료 | T-002 완료 후 승인 기록 분리 적용 |
 | `T-20260730-004` | `proposed` | CI | concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` | 선행·승인 대기 |
 | `T-20260730-005` | `proposed` | CI | PR dry run·실패 감지 검증 | iOS Agent | `T-20260730-004` | 선행·승인 대기 |

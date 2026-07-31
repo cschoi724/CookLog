@@ -3,7 +3,7 @@
 작성일: 2026-07-30
 작성자: iOS QA Agent
 대상 Task: `T-20260730-002`
-판정: `PASS_WITH_RISK`
+판정: `PASS`
 
 ## 1. 검증 환경
 
@@ -191,3 +191,25 @@ Development Lead가 QA 대상 미커밋 내용을 `62fc031`로 보존한 뒤 최
 - 승인된 수정: 첫 step에서 `RUNNER_TEMP` 기반 경로를 계산해 `GITHUB_ENV`로
   후속 step에 전달
 - 재검증 조건: 수정 push가 실제 `ios-build` job을 생성하고 최종 통과해야 함
+
+## 11. 재작업 hosted 재검증 결과
+
+수정 커밋 `3243da6`에 대한 PR #24 GitHub Actions run `30592350218`을
+확인했다.
+
+| 검증 항목 | 결과 |
+|---|---|
+| workflow event | `pull_request` |
+| check·job 이름 | `ios-build` |
+| Xcode·Simulator preflight | 성공 |
+| 앱 build | 성공 |
+| test build | 성공 |
+| build log artifact upload | 성공 |
+| 전체 결론 | `success` |
+
+artifact `cooklog-ios-build-30592350218-1`이 실제 생성됐고 미만료 상태임을
+확인했다. 최초 validation 결함은 재현 원인에 맞게 수정됐으며
+`QA-RISK-002-001`의 hosted check·preflight·artifact 확인 조건도 충족했다.
+
+최종 판정은 `PASS`다. Development Lead 완료 검토와 `develop` 병합을
+진행할 수 있다.
