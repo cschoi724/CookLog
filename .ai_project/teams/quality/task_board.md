@@ -141,8 +141,9 @@ PR #34 hosted `ios-build`·`ios-xctest`, preflight·summary·artifact와 XCTest
 T-20260730-005는 정상 PR #36과 미병합 검증 PR #37~#39에서 두 check 이름,
 정상 33/33, build·XCTest 실패 65, timeout 124, 원인별 artifact를
 GitHub-hosted runner로 확인했습니다. 연속 push의 이전 `ios-build`와
-`ios-xctest` run이 각각 취소되고 다른 PR은 유지됐습니다. iOS QA Agent는
-고정 run·artifact와 #37~#39의 `closed`, `merged: false`를 독립 확인합니다.
+`ios-xctest` run이 각각 취소되고 다른 PR은 유지됐습니다. iOS QA Agent가 고정
+run·artifact와 #37~#39의 `closed`, `merged: false`를 독립 확인해 통과시켰고,
+PR #36과 완료 기록 PR #46이 `develop`에 병합되어 `done`으로 확정됐습니다.
 
 `T-20260729-012` 최종 독립 재검증에서 재생·다음·다시 듣기·마지막 단계 다시
 듣기의 자동 완료 뒤 갱신된 재생 control로 포커스가 유지되는 것을 확인했습니다.

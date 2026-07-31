@@ -29,8 +29,10 @@ allowed_paths:
   - .ai_project/tasks/active/T-20260730-005_verify-ios-ci-pr-dry-run.md
   - .ai_project/reports/T-20260730-005_verify-ios-ci-pr-dry-run-report.md
   - .ai_project/qa/T-20260730-005_verify-ios-ci-pr-dry-run-qa.md
+  - .ai_project/task_board.md
   - .ai_project/teams/development/task_board.md
   - .ai_project/teams/quality/task_board.md
+  - .ai_project/current_context.md
 source_of_truth:
   - docs/GIT_WORKFLOW.md
   - apps/ios/docs/TESTING.md
@@ -78,8 +80,6 @@ qa_to: .ai_project/qa/T-20260730-005_verify-ios-ci-pr-dry-run-qa.md
 | 2026-07-31 | Development Lead Agent | approve execution | iOS Agent 실행, iOS QA Agent 독립 검증, T-006 required check 인계 기준 확정 |
 | 2026-07-31 | iOS Agent | transition: approved -> in_progress | 정상 Task PR과 격리된 build 실패·test 실패·timeout 검증 PR 실행 시작 |
 | 2026-07-31 | iOS Agent | transition: in_progress -> verification_ready | 정상·build 실패·XCTest 실패·timeout·concurrency 취소와 artifact를 실제 PR에서 확인하고 검증 PR 3개를 미병합 종료 |
-<<<<<<< HEAD
-=======
 | 2026-07-31 | iOS QA Agent | transition: verification_ready -> verification_in_progress | 최신 develop 재정렬·PR #36 CLEAN 및 최신 ios-build·ios-xctest 성공 확인 후 고정 run·artifact 독립 재검증 |
 | 2026-07-31 | iOS QA Agent | transition: verification_in_progress -> verification_passed | 독립 QA PASS: 최신 PR #36 CLEAN·checks 성공·33/33, build/XCTest 실패 65, timeout 124, concurrency 취소, artifact·미병합 경계 확인 |
 | 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | QA PASS, PR #36 CLEAN, 성공·실패·timeout·concurrency·artifact 기준과 allowed paths를 확인하고 develop 통합 대기로 전환 |
@@ -93,4 +93,3 @@ qa_to: .ai_project/qa/T-20260730-005_verify-ios-ci-pr-dry-run-qa.md
 - 변경 경로는 Task `allowed_paths` 안에 있고, 검증용 실패 PR #37~#39는 미병합 종료 상태다.
 - PR #36을 `develop`에 squash 병합했고 merge commit `a5c65039c3218c0321eed29cd2533709e9a60271`을 확인했다.
 - T-005를 `done`으로 확정하며, required check 외부 설정은 후속 T-006 범위로 인계한다.
->>>>>>> 5136a79 (docs: T-20260730-005 develop 병합 및 완료 확정)
