@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-022
 title: 기본 비활성 원격 STT adapter 계약 정의
-status: approved
+status: in_progress
 type: docs
 priority: P1
 priority_reason: 첫 출시 기본 경로를 바꾸지 않고 향후 원격 STT 교체 경계를 보존해야 한다.
@@ -36,9 +36,9 @@ source_of_truth:
 - docs/PROJECT_DECISIONS.md
 created_by: Development Lead Agent
 approved_by: Product Owner
-locked_by:
-locked_at:
-lock_session:
+locked_by: Backend Agent
+locked_at: '2026-07-31'
+lock_session: codex-backend-t022-rework-20260731
 lock_timeout_minutes: 240
 created_at: 2026-07-30
 updated_at: '2026-07-31'
@@ -74,6 +74,10 @@ qa_to: ".ai_project/qa/T-20260729-022_define-disabled-remote-stt-adapter-contrac
   콘텐츠 복제 금지와 로그·오류·receipt 비노출을 정의했다.
 - `validate-contracts.sh`로 비활성 profile, negative gate, 삭제 시간 순서와 공통 오류
   code 연결을 자체 검증했다.
+- QA-HIGH-022-001 재작업으로 `UPSTREAM_UNAVAILABLE`만 동일 request에서 최대 1회
+  재처리하고 `UPSTREAM_TIMEOUT`은 첫 발생에 terminal·삭제하도록 통일했다.
+- QA-HIGH-022-002 재작업으로 body read 전 deadline delete task 원자 등록, T+55분
+  worker, 5분 독립 sweeper와 정상·비정상 삭제 8개 fixture를 추가했다.
 
 ## 자체 검증
 
@@ -130,3 +134,8 @@ T-20260729-022의 기본 비활성 원격 STT adapter 계약을 독립 검증해
 | 2026-07-31 | Backend QA Agent | unlock | task unlock |
 | 2026-07-31 | Product Owner | approve rework | QA-HIGH-022-001~002 해소를 위한 provider retry/terminal 통일과 deadline 전 cleanup 보강 재작업 승인 |
 | 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 승인된 T-022 재작업 범위와 독립 재검증 인계 |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-022-001~002 승인 재작업 시작 |
+| 2026-07-31 | Backend Agent | self-verification | 오류별 retry/terminal 4개·삭제 lifecycle 8개·deadline worker/sweeper 계약 검사 통과 |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-022-001~002 승인 재작업 시작 |

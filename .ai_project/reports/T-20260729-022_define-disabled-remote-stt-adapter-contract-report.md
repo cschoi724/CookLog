@@ -29,10 +29,13 @@
 - `apps/backend/contracts/stt/remote-stt-release-config.schema.json`
 - `apps/backend/contracts/stt/remote-stt-transcription-request.schema.json`
 - `apps/backend/contracts/stt/remote-stt-transcription-result.schema.json`
+- `apps/backend/contracts/stt/remote-stt-cleanup-task.schema.json`
 - `apps/backend/contracts/stt/remote-stt-deletion-receipt.schema.json`
 - `apps/backend/contracts/stt/fixtures/disabled-release.json`
 - `apps/backend/contracts/stt/fixtures/activation-negative.json`
-- `apps/backend/contracts/stt/fixtures/deletion-receipt.json`
+- `apps/backend/contracts/stt/fixtures/retry-terminal-cases.json`
+- `apps/backend/contracts/stt/fixtures/cleanup-policy.json`
+- `apps/backend/contracts/stt/fixtures/deletion-lifecycle-cases.json`
 - `apps/backend/contracts/stt/validate-contracts.sh`
 
 ## 주요 계약
@@ -56,6 +59,31 @@ terminal 상태에서 음성 접근을 즉시 차단하고 삭제를 시작한�
 비정상 종료 backstop일 뿐 즉시 삭제를 대신하지 않는다. 삭제 deadline은 최초 접수
 시각에서 최대 1시간이며 retry·idempotency·앱 수신 실패가 이를 연장할 수 없다.
 
+## 승인된 재작업 결과
+
+### QA-HIGH-022-001
+
+- `UPSTREAM_UNAVAILABLE`만 동일 request·provider·audio handle·provider
+  idempotency key로 최대 1회 재처리하도록 단일화했다.
+- 두 번째 unavailable에서 `UPSTREAM_UNAVAILABLE` terminal, 첫 timeout에서 재처리
+  없이 `UPSTREAM_TIMEOUT` terminal로 전환하고 삭제를 시작한다.
+- 성공 복구, unavailable 2회, 첫 timeout, non-retryable provider 오류의 provider
+  호출 횟수·terminal·삭제 시작 fixture를 추가했다.
+
+### QA-HIGH-022-002
+
+- body read 전에 audio handle, deadline cleanup record와 delete task/outbox를 원자
+  등록하도록 고정했다.
+- terminal 직후부터 T+55분까지의 deadline worker retry와 최대 5분 주기의 독립
+  sweeper를 정의했다.
+- sweeper가 cleanup record, object prefix와 multipart upload를 대조하고 queue
+  전달 실패·worker crash·multipart 잔존을 복구하도록 했다.
+- 성공·최종 실패·취소·timeout·worker crash·첫 delete 실패·queue 실패·multipart
+  잔존 8개 fixture가 모두 `deletion_completed_at <= received_at + 1시간`을
+  만족하는지 검사한다.
+- provider가 1시간 이내 물리 삭제 확인을 지원하지 않거나 deadline breach가 발생하면
+  kill switch, P0 privacy incident와 원격 STT 활성화·출시 차단을 적용한다.
+
 ### iOS 교체 경계
 
 공통 `SpeechTranscribing` 인터페이스 뒤에 Apple 기기 내 adapter와 비활성 원격
@@ -71,7 +99,9 @@ adapter를 분리한다. 첫 출시 resolver는 Apple adapter만 반환한다. �
 | STT 계약 JSON 전체 `jq empty` | PASS |
 | 첫 출시 강제 비활성 fixture | PASS |
 | 무승인·provider 보관 미승인·fallback·grant replay 6개 negative case | PASS |
-| 삭제 receipt 최대 1시간·시각 순서 | PASS |
+| retry/terminal 오류 4개 fixture 호출 횟수·삭제 시작 | PASS |
+| cleanup 사전 원자 등록·T+55분 worker·5분 sweeper 정책 | PASS |
+| 정상·비정상 삭제 8개 fixture 최대 1시간·시각 순서 | PASS |
 | request JSON audio payload·provider URL 부재 | PASS |
 | deletion receipt transcript·provider ID·storage URI 부재 | PASS |
 | T-021 공개 오류 catalog code 연결 | PASS |
@@ -91,8 +121,7 @@ adapter를 분리한다. 첫 출시 resolver는 Apple adapter만 반환한다. �
 
 - JSON Schema runtime validator와 iOS·Backend fixture 실행은 T-20260729-025가 담당한다.
 - 개인정보·로그·비용 guardrail의 공통 운영 기준은 T-20260729-024가 담당한다.
-- provider가 물리 삭제 확인을 지원하지 않는 경우 활성화 가능 여부를 Privacy/Security와
-  Product Owner가 별도 결정해야 한다.
+- provider가 1시간 안의 물리 삭제 확인을 지원하지 않으면 원격 STT를 활성화할 수 없다.
 - Object Storage lifecycle/TTL만으로 즉시 삭제를 증명할 수 없으므로 활성 구현은
   explicit delete 결과와 cleanup SLA를 staging에서 검증해야 한다.
 
@@ -104,8 +133,8 @@ Backend QA Agent는 문서의 9절을 기준으로 기본 상태에서 원격 �
 
 ## 최신 develop 통합
 
-- 기준 `origin/develop`: `22fe75f`
-- T-022~024 병렬 실행 승인 커밋: `36cf8ee`
-- 최신 T-20260730-004 공용 보드 상태: 보존
+- 재작업 전 기준 `origin/develop`: `22fe75f`
+- 재작업 전 T-022~024 병렬 실행 승인 커밋: `36cf8ee`
+- 최신 T-20260730-004 공용 보드 상태: 재정렬 시 보존
 - 형제 T-20260729-023·024 승인 상태: 보존
-- 최신 `origin/develop` 대비 뒤처짐: 0
+- 재작업 완료 후 최신 `origin/develop` 위로 재정렬한다.

@@ -98,14 +98,26 @@ RemoteSTTAdapter.deleteProviderCopy(providerRequestHandle)
 
 adapter는 provider SDK 오류를 공통 공개 오류로 정규화한다.
 
-| adapter 결과 | 공개 오류 | retry |
-|---|---|---|
-| 비활성·kill switch | `SERVICE_DISABLED` | 자동 retry 금지 |
-| 승인·grant 오류 | `INVALID_REQUEST` | 자동 retry 금지 |
-| payload 크기·길이 초과 | `PAYLOAD_TOO_LARGE` | 자동 retry 금지 |
-| provider 일시 장애 | `UPSTREAM_UNAVAILABLE` | 사용자 새 요청만 허용 |
-| provider timeout | `UPSTREAM_TIMEOUT` | 사용자 새 요청만 허용 |
-| 내부 삭제·안전 경계 실패 | `INTERNAL_ERROR` | 자동 retry 금지 |
+| adapter 결과 | 공개 오류 | 같은 요청 자동 retry | terminal 전환과 삭제 시작 |
+|---|---|---:|---|
+| 비활성·kill switch | `SERVICE_DISABLED` | 0회 | body read 전 종료, audio 없음 |
+| 승인·grant 오류 | `INVALID_REQUEST` | 0회 | body read 전 종료, audio 없음 |
+| payload 크기·길이 초과 | `PAYLOAD_TOO_LARGE` | 0회 | 즉시 terminal, 수신 fragment 삭제 |
+| 연결 거부·503 등 provider 일시 장애 | `UPSTREAM_UNAVAILABLE` | 최대 1회 | 두 번째 실패 또는 retry window 부족 시 terminal·삭제 |
+| provider/gateway deadline timeout | `UPSTREAM_TIMEOUT` | 0회 | 첫 timeout 즉시 terminal·접근 차단·삭제 |
+| 내부 삭제·안전 경계 실패 | `INTERNAL_ERROR` | 0회 | 즉시 terminal·deadline cleanup 유지 |
+
+`UPSTREAM_UNAVAILABLE` 자동 재처리는 첫 호출이 명시적인 retryable transport/503 범주이고
+두 번째 시도가 전체 gateway deadline과 `delete_deadline_at`을 침범하지 않을 때만
+허용한다. 같은 `request_id`, provider adapter, `audio_handle`과 provider
+idempotency key를 재사용하며 provider 호출은 총 2회 이하다. 공개 오류는 두 번째
+시도까지 실패해 terminal이 된 뒤에만 반환한다.
+
+`UPSTREAM_TIMEOUT`은 결과가 불명확하고 늦은 provider 처리가 계속될 수 있으므로
+retryable 내부 오류가 아니다. 첫 timeout에서 terminal로 전환하고 local audio 접근을
+차단한 뒤 Backend와 provider 사본 삭제를 시작한다. 사용자에게 반환하는 공통 오류의
+`retryable=true`는 사용자가 삭제 완료 후 새 clip·grant·idempotency key로 새 요청을
+시작할 수 있다는 뜻이며, 서버가 같은 요청을 자동 재개한다는 뜻이 아니다.
 
 provider payload, 모델명, request handle, transcript, audio hash와 secret은 외부 오류
 envelope에 포함하지 않는다. 공개 오류 mapping은 T-021
@@ -117,44 +129,64 @@ envelope에 포함하지 않는다. 공개 오류 mapping은 T-021
 
 | 시점 | 필수 동작 |
 |---|---|
-| 승인된 upload 접수 | `received_at`과 `delete_deadline_at <= received_at + 1시간` 기록 |
+| body read 허용 전 | audio handle·deadline cleanup record·delete task를 원자 등록 |
+| 승인된 upload 접수 | `received_at`과 `delete_deadline_at = received_at + 1시간 이내` 확정 |
 | 처리 중 | 암호화된 격리 임시 영역 또는 memory stream만 사용 |
 | 성공·최종 실패·취소·timeout | 즉시 접근 차단하고 삭제 시작 |
 | 삭제 성공 | object·multipart part·buffer·provider copy 삭제 확인 후 receipt 기록 |
-| 삭제 실패 | 접근 불가능한 격리 상태 유지, cleanup retry와 운영 경보 |
-| 생성 후 1시간 | 물리 사본이 남으면 SLA breach로 경보; 처리·다운로드는 계속 금지 |
+| 삭제 실패 | deadline task와 독립 sweeper가 재시도, 접근 불가능한 격리 유지 |
+| T+55분 | high-priority final delete·multipart abort·provider delete 확인 |
+| T+1시간 | 미삭제 또는 provider 미확인은 SLA breach·incident·원격 STT 활성화 차단 |
 
 구체 규칙:
 
 - 가능하면 저장 없이 provider로 stream한다.
-- 임시 저장이 필요하면 object 생성 시점에 암호화, 단일 request ACL과 절대
-  `delete_deadline_at`을 함께 기록한다.
+- gateway는 body stream을 열기 전에 audio handle, 절대 `delete_deadline_at`, cleanup
+  record와 deadline delete task/outbox를 하나의 transaction으로 commit한다. object
+  생성 실패 시 task는 idempotent no-op이고, transaction 실패 시 body를 읽지 않는다.
+- 임시 저장이 필요하면 object·multipart upload를 만들 때 위 handle과 deadline을
+  metadata로 결합하고 암호화·단일 request ACL을 적용한다.
 - terminal 상태가 되면 transcript 응답 전 삭제를 시도한다. provider가 삭제 확인을
   제공하면 확인 완료 후 성공 응답한다.
 - 삭제 확인이 불가능하거나 실패하면 transcript를 성공으로 확정하지 않고
   `INTERNAL_ERROR`로 종료하며 cleanup은 별도 안전 작업으로 계속한다.
-- cleanup retry가 음성 bytes를 queue 또는 dead-letter queue에 복제하면 안 된다.
-  cleanup 작업에는 불투명한 handle과 deadline만 둔다.
-- TTL/lifecycle은 비정상 종료용 backstop이며 즉시 삭제를 대체하지 않는다.
+- deadline worker는 terminal 직후, T+1분, 5분, 15분, 30분, 45분, 55분에 idempotent
+  delete를 시도한다. 각 시도는 local object, 열린 multipart part와 provider copy
+  삭제를 모두 확인하며 T+55분 이후 새 일반 retry를 예약하지 않는다.
+- 별도 sweeper는 최대 5분마다 cleanup record와 격리 object/multipart prefix를
+  대조한다. queue 전달 실패·worker crash·누락 task를 발견하고 deadline 10분 전부터
+  high-priority delete를 실행한다. worker와 sweeper는 서로 다른 실행 경로를 사용한다.
+- cleanup retry와 sweeper가 음성 bytes를 queue 또는 dead-letter queue에 복제하면 안
+  된다. task에는 불투명한 handle, 시각, attempt와 안전 상태 enum만 둔다.
+- Object Storage lifecycle/TTL은 세 번째 비정상 종료 backstop이며 즉시 delete,
+  deadline task와 sweeper를 대체하지 않는다. 실제 lifecycle이 정확히 1시간 이내
+  물리 삭제를 보장하지 못하면 더 짧은 설정만 사용할 수 있다.
+- provider가 모든 사본의 삭제 요청과 T+1시간 이내 물리 삭제 확인을 제공하지 못하면
+  원격 adapter 활성화를 승인하지 않는다.
+- T+1시간에 하나라도 미삭제·미확인이면 P0 privacy incident로 기록하고 kill switch를
+  내려 신규 body read를 차단한다. incident cleanup을 계속하되 위반 상태에서 재활성화
+  또는 출시할 수 없다.
 - 원본 음성을 운영 DB, backup, analytics, crash report, trace, metric label, 일반 로그,
   idempotency 응답 cache와 고객지원 첨부에 넣지 않는다.
 - transcript도 사용자 콘텐츠이므로 운영·오류 로그에 넣지 않는다.
 
-`remote-stt-deletion-receipt.schema.json`은 콘텐츠가 없는 삭제 증적 형태를 정의한다.
-receipt는 request ID, opaque audio handle, 시각, 삭제 결과만 포함하며 provider 식별자나
-storage URI를 포함하지 않는다.
+`remote-stt-cleanup-task.schema.json`과 `remote-stt-deletion-receipt.schema.json`은
+콘텐츠가 없는 cleanup 작업·삭제 증적 형태를 정의한다. receipt는 request ID, opaque
+audio handle, terminal reason, recovery path, 시각과 시도 횟수만 포함하며 provider
+식별자나 storage URI를 포함하지 않는다.
 
 ## 7. timeout·재시도·idempotency
 
 - 전체 gateway deadline은 T-021 공통 API timeout보다 짧거나 같아야 하며, 정확한 값은
   provider 활성화 Task에서 확정한다.
-- timeout은 terminal 상태다. audio 접근을 즉시 차단하고 삭제를 시작한다.
-- 복구 가능한 provider 기술 오류만 같은 request·adapter·audio handle에서 최대 1회
-  자동 재처리할 수 있다. retry는 새 upload·새 temporary object·다른 provider 호출을
-  만들지 않고 기존 삭제 deadline을 연장하지 않는다.
-- 1회 재처리 후 실패하거나 non-retryable 오류이면 terminal 상태로 전환해 즉시
-  삭제한다. 이후 사용자가 다시 선택하면 새 clip, one-time grant와 idempotency key로
-  새 요청을 만든다.
+- `UPSTREAM_TIMEOUT`은 첫 발생에서 terminal 상태다. 자동 재처리하지 않고 audio
+  접근을 즉시 차단해 삭제를 시작한다.
+- `UPSTREAM_UNAVAILABLE`만 같은 request·adapter·audio handle·provider idempotency
+  key에서 최대 1회 자동 재처리한다. 총 provider 호출은 최대 2회이며 새 upload,
+  temporary object, provider 전환과 delete deadline 연장은 금지한다.
+- 두 번째 `UPSTREAM_UNAVAILABLE` 또는 다른 오류는 terminal로 전환해 즉시 삭제한다.
+  이후 사용자가 다시 선택하면 새 clip, one-time grant와 idempotency key로 새 요청을
+  만든다.
 - 동일 idempotency key 재전송은 새 upload나 provider 호출을 만들지 않는다.
 - idempotency record에는 body hash, 상태와 안전한 result pointer만 두고 audio 또는
   transcript를 넣지 않는다.
@@ -191,7 +223,8 @@ Backend QA Agent는 최소한 다음을 독립 검증한다.
 3. 로컬 adapter 실패·미지원·네트워크 복구가 원격 fallback을 만들지 않는지
 4. 승인 revision 또는 one-time grant 하나라도 없으면 body 전 단계에서 거부하는지
 5. 동일 grant 동시 요청이 정확히 한 요청만 통과하는지
-6. 성공·실패·취소·timeout에서 즉시 삭제와 최대 1시간 deadline을 지키는지
-7. 같은 adapter 재처리가 최대 1회이며 provider 전환·audio 복제·TTL 연장이 없는지
+6. 성공·실패·취소·timeout·worker crash·queue 실패·multipart 잔존·delete 실패에서
+   즉시 삭제와 최대 1시간 deadline을 지키는지
+7. `UPSTREAM_UNAVAILABLE`만 최대 1회 재처리하고 timeout은 첫 발생에 terminal인지
 8. 로그·trace·metric·오류·receipt에 audio, transcript, provider 정보와 secret이 없는지
 9. schema·fixture와 `validate-contracts.sh`가 통과하는지

@@ -1,0 +1,61 @@
+{
+  "cases": [
+    {
+      "name": "unavailable_then_success",
+      "internal_failures": [
+        "provider_temporarily_unavailable"
+      ],
+      "public_code": null,
+      "provider_call_count": 2,
+      "same_request": true,
+      "same_provider": true,
+      "same_audio_handle": true,
+      "same_provider_idempotency_key": true,
+      "terminal_state": "succeeded",
+      "delete_started_after_terminal": true
+    },
+    {
+      "name": "unavailable_twice",
+      "internal_failures": [
+        "provider_temporarily_unavailable",
+        "provider_temporarily_unavailable"
+      ],
+      "public_code": "UPSTREAM_UNAVAILABLE",
+      "provider_call_count": 2,
+      "same_request": true,
+      "same_provider": true,
+      "same_audio_handle": true,
+      "same_provider_idempotency_key": true,
+      "terminal_state": "failed",
+      "delete_started_after_terminal": true
+    },
+    {
+      "name": "timeout_first_attempt",
+      "internal_failures": [
+        "provider_timeout"
+      ],
+      "public_code": "UPSTREAM_TIMEOUT",
+      "provider_call_count": 1,
+      "same_request": true,
+      "same_provider": true,
+      "same_audio_handle": true,
+      "same_provider_idempotency_key": true,
+      "terminal_state": "failed",
+      "delete_started_after_terminal": true
+    },
+    {
+      "name": "non_retryable_provider_error",
+      "internal_failures": [
+        "provider_rejected_request"
+      ],
+      "public_code": "UPSTREAM_UNAVAILABLE",
+      "provider_call_count": 1,
+      "same_request": true,
+      "same_provider": true,
+      "same_audio_handle": true,
+      "same_provider_idempotency_key": true,
+      "terminal_state": "failed",
+      "delete_started_after_terminal": true
+    }
+  ]
+}

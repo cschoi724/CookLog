@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cooklog.app/stt/remote-stt-cleanup-task.schema.json",
+  "title": "CookLog ephemeral audio deadline cleanup task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "request_id",
+    "audio_handle",
+    "registered_at",
+    "delete_deadline_at",
+    "final_forced_delete_at",
+    "attempt",
+    "state"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "request_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "audio_handle": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "registered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "delete_deadline_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "final_forced_delete_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 7
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "registered",
+        "delete_pending",
+        "deleted",
+        "incident"
+      ]
+    }
+  }
+}
