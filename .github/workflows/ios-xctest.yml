@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ios-xctest:
     name: ios-xctest
@@ -27,39 +31,22 @@ jobs:
           persist-credentials: false
 
       - name: Verify Xcode and Simulator contract
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          COOKLOG_CI_ROOT="${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          COOKLOG_XCTEST_ARTIFACT_ROOT="${COOKLOG_CI_ROOT}/ios-xctest"
-          printf 'COOKLOG_CI_ROOT=%s\n' "${COOKLOG_CI_ROOT}" >> "${GITHUB_ENV}"
-          printf 'COOKLOG_XCTEST_ARTIFACT_ROOT=%s\n' "${COOKLOG_XCTEST_ARTIFACT_ROOT}" >> "${GITHUB_ENV}"
-          mkdir -p "${COOKLOG_XCTEST_ARTIFACT_ROOT}"
-          test -d /Applications/Xcode_26.6.app
-
-          xcode_version="$(xcodebuild -version)"
-          printf '%s\n' "${xcode_version}"
-          grep -Fxq 'Xcode 26.6' <<<"${xcode_version}"
-          grep -Fxq 'Build version 17F113' <<<"${xcode_version}"
-
-          xcrun simctl list runtimes available
-          xcrun simctl list devices available
-          xcrun simctl list devices available -j \
-            | jq -e '
-                .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-5"]
-                | any(.name == "iPhone 17" and .isAvailable == true)
-              '
-
-          xcodebuild \
-            -project apps/ios/CookLog.xcodeproj \
-            -scheme CookLog \
-            -destination "${COOKLOG_XCTEST_DESTINATION}" \
-            -showdestinations
+        uses: ./.github/actions/prepare-ios-ci
+        with:
+          artifact-subdirectory: ios-xctest
+          destination: ${{ env.COOKLOG_XCTEST_DESTINATION }}
 
       - name: Run XCTest
         shell: bash
         run: apps/ios/Scripts/run-xctest.sh
+
+      - name: Summarize CI diagnostics
+        if: ${{ always() }}
+        uses: ./.github/actions/summarize-ios-ci
+        with:
+          check-name: ios-xctest
+          artifact-subdirectory: ios-xctest
+          result: ${{ job.status }}
 
       - name: Upload XCTest artifacts
         if: ${{ always() }}
@@ -67,6 +54,8 @@ jobs:
         with:
           name: cooklog-ios-xctest-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-xctest/ci-environment.log
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-xctest/ci-summary.md
             ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-xctest/*/xcodebuild.log
             ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-xctest/*/CookLogTests.xcresult
             ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-xctest/*/TIMED_OUT

@@ -1,0 +1,62 @@
+name: Summarize iOS CI
+description: CI 결과와 보존할 진단 artifact를 GitHub Step Summary에 기록합니다.
+
+inputs:
+  check-name:
+    description: 요약할 check 이름
+    required: true
+  artifact-subdirectory:
+    description: CI 실행 루트 아래 artifact 하위 디렉터리
+    required: true
+  result:
+    description: 현재 job 결과
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Write summary
+      shell: bash
+      env:
+        CHECK_NAME: ${{ inputs.check-name }}
+        ARTIFACT_SUBDIRECTORY: ${{ inputs.artifact-subdirectory }}
+        CHECK_RESULT: ${{ inputs.result }}
+      run: |
+        set +e
+
+        ci_root="${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+        artifact_root="${ci_root}/${ARTIFACT_SUBDIRECTORY}"
+        summary_path="${artifact_root}/ci-summary.md"
+        mkdir -p "${artifact_root}"
+
+        {
+          printf '## %s\n\n' "${CHECK_NAME}"
+          printf -- '- result: `%s`\n' "${CHECK_RESULT}"
+          printf -- '- event: `%s`\n' "${GITHUB_EVENT_NAME}"
+          printf -- '- ref: `%s`\n' "${GITHUB_REF}"
+          printf -- '- SHA: `%s`\n' "${GITHUB_SHA}"
+          printf -- '- run: `%s`, attempt `%s`\n' "${GITHUB_RUN_ID}" "${GITHUB_RUN_ATTEMPT}"
+          printf -- '- cache: `%s`\n' "${CI_CACHE_POLICY:-not-evaluated}"
+          printf '\n### Diagnostic artifacts\n\n'
+
+          artifact_count=0
+          while IFS= read -r artifact; do
+            relative_path="${artifact#"${ci_root}/"}"
+            printf -- '- `%s`\n' "${relative_path}"
+            artifact_count=$((artifact_count + 1))
+          done < <(
+            {
+              find "${artifact_root}" -type f \
+                \( -name 'ci-environment.log' -o -name 'xcodebuild-build.log' \
+                -o -name 'xcodebuild-build-for-testing.log' -o -name 'xcodebuild.log' \
+                -o -name 'TIMED_OUT' \) -print
+              find "${artifact_root}" -type d -name 'CookLogTests.xcresult' -prune -print
+            } 2>/dev/null | sort
+          )
+
+          if (( artifact_count == 0 )); then
+            printf -- '- 생성된 진단 artifact 없음\n'
+          fi
+        } | tee "${summary_path}" >> "${GITHUB_STEP_SUMMARY}"
+
+        exit 0
