@@ -21,4 +21,3 @@
 - schema의 `additionalProperties: false`는 provider 오류, stack trace, secret 또는 내부
   분류 코드가 외부 응답에 섞이는 것을 막기 위한 계약이다.
 - fixture는 각 schema의 성공·실패 예제를 모두 검증해야 한다.
-
