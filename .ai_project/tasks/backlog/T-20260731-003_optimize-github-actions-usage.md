@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260731-003
 title: GitHub Actions 사용량 절감 및 실행 정책 최적화
-status: proposed
+status: approved
 type: ops
 priority: P1
 priority_reason: Actions 사용량 90% 경고에 대응하고 iOS CI를 필요한 변경에만 실행해야 한다.
@@ -10,8 +10,8 @@ org_unit: Core Development Team
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Lead Role
+target_agent: iOS Agent
+target_role: Execution Role
 required_capabilities:
 - workflow_governance
 - ios_qa
@@ -37,7 +37,7 @@ source_of_truth:
 - .github/workflows/ios-build.yml
 - .github/workflows/ios-xctest.yml
 created_by: Development Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
@@ -97,3 +97,15 @@ Product Owner의 실행 승인 전 workflow와 repository 설정을 변경하지
 - iOS Agent branch에 직접 commit하거나 공용 보드를 병렬 수정하지 않는다.
 - 완료 시 정책 문서, rollback 절차, 사용량 확인 방법, `git diff --check` 결과를
   Development Lead에 보고하고 독립 Ops 검증을 요청한다.
+
+## iOS Agent 인계
+
+현재 iOS Agent는 WP-1~5만 수행한다. 변경 전 최신 `origin/develop`을 기준으로
+독립 worktree·브랜치를 만들고, 기존 `ios-build`·`ios-xctest` 성공·실패·timeout
+check 경계를 보존한다. WP-6~7 운영 정책과 Budget 설정은 AI Ops Agent가 별도로
+수행하며 iOS Agent가 repository 권한 설정을 변경하지 않는다.
+
+| 날짜 | Actor | Event | Reason |
+|---|---|---|---|
+| 2026-07-31 | Product Owner | transition: proposed -> approved | Actions 사용량 90% 경고 대응을 위한 WP-1~5 iOS Agent 실행 승인 |
+| 2026-07-31 | Development Lead Agent | handoff | iOS Agent에 paths·중복 실행·concurrency·workflow 분리·회귀 검증 인계 |
