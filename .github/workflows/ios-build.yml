@@ -22,6 +22,7 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
       COOKLOG_CI_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.5
+      OTHER_SWIFT_FLAGS: "$(inherited) -cooklog-t005-intentional-build-failure"
 
     steps:
       - name: Checkout repository
