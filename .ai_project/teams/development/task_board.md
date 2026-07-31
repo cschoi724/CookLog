@@ -20,13 +20,36 @@
 | `T-20260729-005` | `proposed` | iOS | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `005`, `T-20260729-003` | 선행 계약·환경 대기 |
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
 | `T-20260729-020` | `done` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | - | `T-20260729-026` 완료 | PR #26 squash merge·완료 확정 |
-| `T-20260729-021` | `proposed` | Backend | 공통 API·인증·제한·오류 계약 | Backend Agent | `T-20260729-026` | 실행 승인 대기 |
+| `T-20260729-021` | `completion_review` | Backend | 공통 API·인증·제한·오류 계약 | Development Lead Agent | `T-20260729-026` 완료 | 완료 검토 통과·push 및 develop PR 통합 대기 |
 | `T-20260729-022` | `proposed` | Backend | 기본 비활성 원격 STT adapter 계약 | Backend Agent | `T-20260729-021` | 선행·승인 대기 |
 | `T-20260729-023` | `proposed` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020` 완료, `021` 대기 | T-021 선행·승인 대기 |
 | `T-20260729-024` | `proposed` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020` 완료, `021` 대기 | T-021 선행·승인 대기 |
 | `T-20260729-025` | `proposed` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | 선행·승인 대기 |
 
-`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-020`과 `021`은 승인 후 병렬 실행 가능하며 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 모든 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+`T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. `T-20260729-021`은 Product Owner가 실행 승인을 재확인했고 기존 공통 API 계약 구현과 자체 검증을 최신 `develop`에 정렬한 뒤 Backend QA 독립 검증에서 재작업 요청을 받았습니다. 원격 STT는 `022`의 기본 비활성 문서 계약으로만 유지합니다. 나머지 하위 Task는 별도 Product Owner 승인 전 실행하지 않습니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+
+Backend QA가 `T-20260729-021`에서 최초 설치 challenge의 동시 소비 원자성 누락
+`QA-HIGH-021-001`, 오류 허용 문자열 내부 민감정보 비노출을 기계적으로 보장하지 못하는
+`QA-HIGH-021-002`를 확인해 `rework_requested`로 인계했습니다. project 누적 비용
+hard cutoff 연결 `QA-MEDIUM-021-001`도 함께 확인했습니다. Product Owner가 세 항목의
+재작업을 승인해 Backend Agent에 다시 인계했으며 완료 후 독립 재검증해야 합니다.
+
+Backend Agent는 최초 설치 challenge 원자 CAS·단일 승자, 공개 오류 고정 catalog와
+negative fixture, T-020 project 월간 비용 hard cutoff 원자 예약을 계약에 반영했습니다.
+공통 계약 검증 script와 JSON 문법·strict Task·diff 자체 검증 후 Backend QA에
+`verification_ready`로 인계합니다.
+
+Backend QA는 승인된 결함 3건 해소, 오류 catalog 20개 mapping·악성 fixture 4개와 기존
+timeout·제한·idempotency·원격 STT 금지 계약의 무회귀를 독립 확인해
+`PASS_WITH_RISK`로 `verification_passed` 인계했습니다. runtime validator·renderer는
+T-025에서 검증하고 최신 `origin/develop`의 T-20260730-003 `done` 기록을 보존한
+재정렬 후 완료 검토해야 합니다.
+
+Development Lead는 QA 결과를 고정하고 최신 `origin/develop` `44c7dd9` 위로
+재정렬해 Backend 계약 산출물 내용 동등성, 허용 경로, 계약 script와 공용 보드
+비회귀를 확인했습니다. 차단 결함이 없어 `completion_review`로 수용했으며
+`develop` 대상 PR 병합 후 `done`으로 확정합니다. runtime validator·renderer
+동일성 검증은 `T-20260729-025`로 인계합니다.
 
 `T-20260729-020`은 Apple 기기 내 STT 기본 정책을 보존한 런타임·AI provider
 결정안으로 재작업됐습니다. Backend QA가 ACK 즉시 삭제, 생성 22시간 cleanup,
