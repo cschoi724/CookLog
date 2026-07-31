@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-022
 title: 기본 비활성 원격 STT adapter 계약 정의
-status: verification_passed
+status: completion_review
 type: docs
 priority: P1
 priority_reason: 첫 출시 기본 경로를 바꾸지 않고 향후 원격 STT 교체 경계를 보존해야 한다.
@@ -144,3 +144,27 @@ T-20260729-022의 기본 비활성 원격 STT adapter 계약을 독립 검증해
 | 2026-07-31 | Backend QA Agent | lock | task lock |
 | 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-022-001~002 해소, retry 4개·삭제 lifecycle 8개·deadline worker/sweeper와 기본 비활성·무승인 전송 금지 무회귀 PASS_WITH_RISK |
 | 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Development Lead Agent | integrate latest develop | QA 결과를 고정한 뒤 origin/develop 0fdfe52 위에 정렬된 계약·fixture·T-004 done·형제 Task 상태 보존 |
+| 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | QA-HIGH-022-001~002 해소, PASS_WITH_RISK 증빙, 허용 경로와 비차단 잔여 위험을 수용해 develop PR 통합 대기로 전환 |
+
+## Development Lead 완료 검토
+
+- Backend QA 최종 판정: `PASS_WITH_RISK`
+- 재작업 구현 기준 커밋: `c960eed`
+- 재검증 결과 고정 커밋: `2179040`
+- retry/terminal fixture 4개와 cleanup lifecycle fixture 8개: PASS
+- deadline worker·5분 sweeper·T+55분 forced delete 계약: PASS
+- 기본 비활성·무승인 upload·자동 fallback 금지 무회귀: PASS
+- 계약 script·JSON·Task strict validation·`git diff --check`: PASS
+- 최신 `origin/develop` 대비 뒤처짐: 0
+- `T-20260730-004 done`, T-023·T-024 형제 상태: 보존
+- 변경 경로: Task `allowed_paths` 안
+- 미해결 차단 결함: 없음
+
+실제 runtime worker/sweeper 장애 복구와 provider 물리 삭제 SLA는 `T-20260729-025`와
+후속 원격 STT 활성화 staging gate에서 검증한다. 원격 STT는 현재 강제 비활성이고
+provider가 물리 삭제 확인을 제공하지 않으면 활성화하지 않으므로 이 위험은 문서
+계약 Task 완료를 차단하지 않는다.
+
+Development Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로
+전환한다. 필수 검토 후 `develop` 병합 대상으로 확정한다.
