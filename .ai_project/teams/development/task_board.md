@@ -23,7 +23,7 @@
 | `T-20260729-021` | `done` | Backend | 공통 API·인증·제한·오류 계약 | - | `T-20260729-026` 완료 | PR #32 squash merge·완료 확정 |
 | `T-20260729-022` | `done` | Backend | 기본 비활성 원격 STT adapter 계약 | - | `T-20260729-021`, `026` 완료 | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260729-023` | `done` | Backend | AI recipe job·상태 조회·결과 복구 계약 | - | `T-20260729-020`, `021` 완료 | 완료 검토·Product Owner 승인 완료, T-025 인계 |
-| `T-20260729-024` | `verification_ready` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend QA Agent | `T-20260729-020`, `021` 완료 | 단일 잔여 결함 재작업·자체 검증 완료, 독립 재검증 |
+| `T-20260729-024` | `completion_review` | Backend | 보안·개인정보·관측성·비용 guardrail | Development Lead Agent | `T-20260729-020`, `021` 완료 | 완료 검토 통과·develop 통합 및 T-025 착수 대기 |
 | `T-20260729-025` | `approved` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | Product Owner 실행 승인, T-024 완료 후 Backend Agent 착수 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
@@ -129,6 +129,11 @@ Backend QA는 최신 `origin/develop` `0014935` 위에서 기존 완료 기록�
 `rework_requested` 판정했습니다. OpenAI 한국 저장·처리 미보장과 provider 처리 지역
 gate의 불일치 `QA-MEDIUM-024-001`도 함께 보완해야 하며 T-025는 T-024 완료 선행을
 계속 기다립니다.
+
+Backend QA 최종 재검증에서 비용 operation 전액 승인·거절과 actual 초과 delayed
+reserve 원자 정산이 KRW 50,000 불변식을 유지함을 확인했습니다. 이전 HIGH 2건과
+MEDIUM 1건이 모두 해소돼 `PASS_WITH_RISK`, `verification_passed`로 인계했습니다.
+실제 runtime·cloud 설정 검증은 T-025 및 staging gate가 담당합니다.
 
 Backend QA 재검증에서 raw metadata 30일 삭제와 provider 저장·처리 지역 gate는
 해소됐습니다. 다만 비용 fixture의 단일 operation 부분 승인과 reservation 초과

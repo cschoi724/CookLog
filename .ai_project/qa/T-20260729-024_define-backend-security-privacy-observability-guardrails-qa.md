@@ -3,10 +3,11 @@
 검증일: 2026-07-31
 검증자: Backend QA Agent / Verification Role
 최초 검증 기준: `task/T-20260729-024-define-backend-security-privacy-observability-guardrails` `d9e0d61`
-재검증 기준: `task/T-20260729-024-define-backend-security-privacy-observability-guardrails` `d66c28b`
+1차 재검증 기준: `task/T-20260729-024-define-backend-security-privacy-observability-guardrails` `d66c28b`
+최종 재검증 기준: `task/T-20260729-024-define-backend-security-privacy-observability-guardrails` `10eee04`
 기준 develop: `origin/develop` `0014935`
-판정: `FAIL`
-상태 인계: `verification_in_progress -> rework_requested`
+현재 판정: `PASS_WITH_RISK`
+현재 상태 인계: `verification_in_progress -> verification_passed`
 
 ## 1. 검증 범위
 
@@ -290,3 +291,65 @@ atomic reservation request/result correspondence: FAIL
 
 재검증 최종 판정은 `FAIL`이다. `QA-HIGH-024-002`의 원자 예약·초과 정산 반례를
 해소한 뒤 다시 독립 재검증해야 한다.
+
+## 11. 최종 독립 재검증
+
+재검증일: 2026-07-31
+
+### `QA-HIGH-024-002` 해소 결과
+
+판정: `RESOLVED`.
+
+- 모든 reservation에 고유 `operation_id`, 전체 요청 금액과 단일
+  `accepted|rejected` 결정을 부여했다.
+- 부분 금액 승인을 금지하고 분할 가능한 bulk 작업도 예약 전에 독립 operation으로
+  나누도록 정의했다.
+- 모든 동시성 fixture에서 accepted와 rejected 금액 multiset의 합이 requests
+  multiset과 정확히 일치한다.
+- 기존 `[6000, 3000, 2000]` 경합은 `[6000, 3000]` 전액 승인과 `[2000]` 전액
+  거절로 수정됐고 원장 합계는 KRW 49,000이다.
+- KRW 49,500 경계에서 501원 요청 전체가 거절되는 fixture가 추가됐다.
+- 실제값이 reservation을 초과하면 차액을 같은 ledger CAS에서 delayed reserve로
+  원자 차감해 `committed + active + delayed reserve` 합계를 증가시키지 않는다.
+- delayed reserve보다 큰 초과 또는 CAS 실패는 가격 manifest integrity P0 incident와
+  신규 비용 operation 차단으로 종료한다.
+
+### 독립 반례 검사
+
+```text
+accepted + rejected multiset == requests multiset: PASS
+operation ID unique·decision/금액 대응: PASS
+boundary 501 KRW request rejected whole: PASS
+actual within reservation settlement invariant: PASS
+actual over reservation delayed reserve CAS invariant: PASS
+settlement before/after total <= KRW 50,000: PASS
+```
+
+### 전체 회귀 결과
+
+```text
+sh apps/backend/contracts/security/validate-contracts.sh: PASS
+sh apps/backend/contracts/common/validate-contracts.sh: PASS
+sh apps/backend/contracts/stt/validate-contracts.sh: PASS
+sh apps/backend/contracts/ai/validate-contracts.sh: PASS
+jq empty apps/backend/contracts/security/fixtures/*.json: PASS
+aiops validate task ... --strict: PASS
+git diff --check: PASS
+origin/develop...HEAD: 0 behind / 6 ahead
+Task ID count: 1
+```
+
+`QA-HIGH-024-001`, `QA-HIGH-024-002`, `QA-MEDIUM-024-001`은 모두 해소됐다.
+secret·telemetry 비노출, AI·Remote STT 삭제, provider 보관·학습·지역 gate,
+호출·token 상한과 incident 계약에도 회귀가 없다. 변경은 Task `allowed_paths` 안이며
+T-023 `done`, T-025 `approved`·T-024 완료 선행 기록을 보존한다.
+
+### 잔여 위험과 최종 인계
+
+실제 runtime allowlist logger·safe renderer, IAM, Cloud Billing SKU 정산, sink 삭제,
+MAM/ZDR·지역 설정과 Secret Manager 회전·incident drill은 기존
+`QA-RISK-024-001`로 유지해 T-20260729-025 및 후속 Backend 구현·staging activation
+gate에서 검증한다.
+
+최종 판정은 `PASS_WITH_RISK`다. Task를 `verification_passed`로 전환하고
+Development Lead Agent / Completion Role에 인계한다.

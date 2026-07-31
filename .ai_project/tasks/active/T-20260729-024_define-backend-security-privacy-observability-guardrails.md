@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-024
 title: Backend 보안·개인정보·관측성·비용 guardrail 정의
-status: verification_ready
+status: completion_review
 type: docs
 priority: P0
 priority_reason: 사용자 콘텐츠와 provider 비용을 로그·장애·abuse 경계에서 보호해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -106,3 +106,16 @@ qa_to: ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observabil
 | 2026-07-31 | Backend Agent | lock | task lock |
 | 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-024-002 원자 예약·초과 정산 단일 결함 승인 재작업 시작 |
 | 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | QA-HIGH-024-002 operation 전액 결정·actual 초과 delayed reserve 원자 정산 재작업 완료, Backend QA 독립 재검증 인계 |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-024-002 operation 전액 결정·actual 초과 delayed reserve 원자 정산 독립 재검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 해소, 보안·개인정보·비용 계약 회귀 없음, PASS_WITH_RISK |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | QA PASS_WITH_RISK, 삭제·비용 hard cutoff·처리 지역 gate와 allowed paths를 확인하고 develop 통합 대기로 전환 |
+
+## Development Lead 완료 검토
+
+- 독립 QA 최종 `PASS_WITH_RISK`와 세 결함 해소 결과를 확인했다.
+- raw metadata 30일 삭제, 전체 외부비 원자 예약·초과 차단, storage/processing region gate를 수용했다.
+- 비용 operation 전액 결정·actual 정산 대응·동시성 fixture와 기존 계약 검증 통과를 확인했다.
+- 잔여 위험은 실제 Cloud runtime·IAM·billing·provider console staging 검증으로 한정된다.
+- `develop` 통합 후 `done` 확정이 필요하며, T-025는 T-024 완료 후 착수한다.
