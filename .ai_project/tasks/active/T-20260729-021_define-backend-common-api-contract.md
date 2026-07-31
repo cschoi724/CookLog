@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-021
 title: Backend 공통 API·인증·제한·오류 계약 정의
-status: rework_requested
+status: approved
 type: docs
 priority: P0
 priority_reason: AI와 선택형 원격 STT가 같은 보안·재시도·오류 경계를 사용해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Development Lead Agent
-target_role: Lead Role
+target_agent: Backend Agent
+target_role: Execution Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -103,6 +103,12 @@ Backend QA Agent는 별도 세션에서 다음을 독립 검증한다.
 | 2026-07-31 | Product Owner | reaffirm approval | T-020 완료 후 T-021 Backend 진행 승인 재확인 |
 | 2026-07-31 | Development Lead Agent | integrate latest develop | 기존 미커밋 구현을 고정하고 최신 origin/develop에 재정렬, T-020 done과 공용 보드 기록 보존 |
 | 2026-07-31 | Development Lead Agent | normalize active task | verification_ready Task를 backlog에서 active 경로로 이동하고 Backend QA 인계 상태 확정 |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | replay·abuse·timeout·제한 초과·idempotency 동시성·오류 비노출·원격 STT fallback 금지 독립 검증 시작 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-021-001 초기 설치 challenge 동시 소비 원자성 누락, QA-HIGH-021-002 오류 title/detail 민감정보 비노출 기계 검증 불가 |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Product Owner | approve rework | QA-HIGH-021-001~002와 QA-MEDIUM-021-001 계약 보완 재작업 승인 |
+| 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 승인된 계약 재작업 범위 인계 |
 
 ## 최신 develop 통합
 
@@ -116,16 +122,16 @@ Backend QA Agent는 별도 세션에서 다음을 독립 검증한다.
 ## Next Agent Handoff
 
 ```text
-너는 Backend QA Agent / Verification Role이야.
-T-20260729-021을 별도 검증 세션에서 확인해줘.
+너는 Backend Agent / Execution Role이야.
+T-20260729-021의 승인된 QA 재작업을 수행해줘.
 
 - 기준 문서: apps/backend/docs/API_CONTRACT.md
 - schema: apps/backend/contracts/common/
-- 필수 검증: replay, abuse, timeout, 제한 초과, idempotency 동시성, 오류 정보 비노출
+- QA-HIGH-021-001: 최초 설치 challenge 소비·등록·token 발급 가능 상태를 원자적
+  단일 승자 경계로 고정하고 동시 요청 수용 기준 추가
+- QA-HIGH-021-002: 공개 오류 code별 고정 mapping·생성기 경계·민감정보 negative
+  fixture를 기계 검증 가능한 원본으로 추가
+- QA-MEDIUM-021-001: T-020 project 일·월 비용 hard cutoff를 공통 quota 계약에 연결
 - 정책 경계: 첫 출시 STT는 Apple 기기 내 처리. 원격 STT endpoint와 자동 fallback 금지
-- 완료 조건: 독립 검증 결과를 qa_to 경로에 기록하고 상태 전이 절차를 따라줘.
+- 완료 조건: 자체 검증 후 verification_ready로 전환하고 Backend QA 독립 재검증 요청
 ```
-| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | replay·abuse·timeout·제한 초과·idempotency 동시성·오류 비노출·원격 STT fallback 금지 독립 검증 시작 |
-| 2026-07-31 | Backend QA Agent | lock | task lock |
-| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-021-001 초기 설치 challenge 동시 소비 원자성 누락, QA-HIGH-021-002 오류 title/detail 민감정보 비노출 기계 검증 불가 |
-| 2026-07-31 | Backend QA Agent | unlock | task unlock |

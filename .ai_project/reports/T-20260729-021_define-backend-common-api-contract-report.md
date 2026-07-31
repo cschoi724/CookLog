@@ -105,3 +105,16 @@ JSON syntax, schema 구조, 예제/문서 필드의 수동 대조까지 수행�
 - Task 위치: `backlog`에서 `active`로 정규화
 - 현재 상태: `verification_ready`
 - 다음 담당: Backend QA Agent
+
+## Backend QA 실패와 재작업 승인
+
+Backend QA는 검증 기준 `068deb2`에서 다음 결함을 확인해 `FAIL`로 판정했다.
+
+- `QA-HIGH-021-001`: 최초 설치 challenge 동시 소비의 원자적 단일 승자 보장 누락
+- `QA-HIGH-021-002`: 오류 허용 문자열 내부의 provider 정보·secret·원문 비노출을
+  schema와 fixture로 기계 검증하지 못함
+- `QA-MEDIUM-021-001`: T-020 project 일·월 비용 hard cutoff와 공통 quota 연결 누락
+
+2026-07-31 Product Owner가 세 항목의 계약 보완 재작업을 승인했다. Backend Agent는
+원자적 challenge 소비, 공개 오류 고정 mapping·negative fixture, project 누적 비용
+차단 연결을 반영하고 자체 검증 후 Backend QA에 독립 재검증을 다시 요청한다.

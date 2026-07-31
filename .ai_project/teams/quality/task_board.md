@@ -15,7 +15,7 @@
 | `T-20260729-020` | `done` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 고정 커밋 동등성·QA-HIGH-020-003·비용·최신 보드 비회귀 | PASS_WITH_RISK 수용·PR #26 squash merge·완료 확정 |
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
-| `T-20260729-021` | `rework_requested` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | QA-HIGH-021-001~002 해소 후 독립 재검증 |
+| `T-20260729-021` | `approved` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | 재작업 승인, Backend Agent 수정 후 독립 재검증 |
 
 향후 검증 예정 Task:
 
@@ -43,7 +43,8 @@
 `T-20260729-021`은 Backend QA 독립 검증에서 최초 설치 challenge의 동시 소비 원자성
 누락과 오류 `title/detail` 내부의 provider detail·secret·원문 비노출을 schema가
 보장하지 못하는 결함을 확인해 `FAIL`로 판정했습니다. project 누적 비용 hard cutoff
-연결도 보완해야 하며, `QA-HIGH-021-001~002` 해소 후 독립 재검증합니다.
+연결도 보완해야 합니다. Product Owner가 `QA-HIGH-021-001~002`와
+`QA-MEDIUM-021-001` 재작업을 승인했으며 수정 완료 후 독립 재검증합니다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 
