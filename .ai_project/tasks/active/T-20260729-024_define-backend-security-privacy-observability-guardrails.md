@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-024
 title: Backend 보안·개인정보·관측성·비용 guardrail 정의
-status: completion_review
+status: done
 type: docs
 priority: P0
 priority_reason: 사용자 콘텐츠와 provider 비용을 로그·장애·abuse 경계에서 보호해야 한다.
@@ -111,6 +111,8 @@ qa_to: ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observabil
 | 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-024-001~002 및 QA-MEDIUM-024-001 해소, 보안·개인정보·비용 계약 회귀 없음, PASS_WITH_RISK |
 | 2026-07-31 | Backend QA Agent | unlock | task unlock |
 | 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | QA PASS_WITH_RISK, 삭제·비용 hard cutoff·처리 지역 gate와 allowed paths를 확인하고 develop 통합 대기로 전환 |
+| 2026-07-31 | Product Owner | approve merge and completion | PR #50을 develop에 squash 병합하고 T-024 완료 확정 승인 |
+| 2026-07-31 | Development Lead Agent | transition: completion_review -> done | PR #50 merge commit `00feb017` 확인, T-024 완료 확정 및 T-025 인계 |
 
 ## Development Lead 완료 검토
 
@@ -118,4 +120,5 @@ qa_to: ".ai_project/qa/T-20260729-024_define-backend-security-privacy-observabil
 - raw metadata 30일 삭제, 전체 외부비 원자 예약·초과 차단, storage/processing region gate를 수용했다.
 - 비용 operation 전액 결정·actual 정산 대응·동시성 fixture와 기존 계약 검증 통과를 확인했다.
 - 잔여 위험은 실제 Cloud runtime·IAM·billing·provider console staging 검증으로 한정된다.
-- `develop` 통합 후 `done` 확정이 필요하며, T-025는 T-024 완료 후 착수한다.
+- PR #50을 `develop`에 squash 병합했고 merge commit `00feb017`을 확인했다.
+- T-024를 `done`으로 확정하며, T-025는 Backend Agent 착수 단계로 인계한다.

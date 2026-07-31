@@ -22,7 +22,7 @@
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260730-005` | `done` | iOS CI PR dry run·실패 감지·회귀 검증 | 최신 PR #36 33/33, #37~#39 실패 65·timeout 124·취소·artifact | PR #36 squash merge `a5c6503`·완료 확정 |
 | `T-20260729-023` | `done` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | 완료 확정, PASS_WITH_RISK 잔여 위험은 staging 인계 |
-| `T-20260729-024` | `completion_review` | Backend 보안·개인정보·관측성·비용 guardrail | 비용 operation 전액 결정·actual 초과 정산 불변식 | QA PASS_WITH_RISK 확인, develop 통합 대기 |
+| `T-20260729-024` | `done` | Backend 보안·개인정보·관측성·비용 guardrail | 비용 operation 전액 결정·actual 초과 정산 불변식 | PR #50 squash merge `00feb017`·완료 확정 |
 
 향후 검증 예정 Task:
 
