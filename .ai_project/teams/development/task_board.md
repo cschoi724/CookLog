@@ -106,7 +106,7 @@ PR #26의 `ios-build` 통과와 squash merge SHA `a8e3a8a`를 확인해 T-020을
 | `T-20260730-002` | `done` | CI | ios-build workflow | - | `T-20260730-001` 완료 | PR #24 squash merge·hosted check 통과·완료 확정 |
 | `T-20260730-003` | `done` | CI | ios-xctest workflow | - | `T-20260730-001`, `T-20260730-002` 완료 | PR #28 squash merge·hosted 33/33·완료 확정 |
 | `T-20260730-004` | `done` | CI | concurrency·진단·cache·artifact 통합 | - | `T-20260730-002`, `003` 완료 | PR #34 checks·artifact 통과·squash merge |
-| `T-20260730-005` | `in_progress` | CI | PR dry run·실패 감지 검증 | iOS Agent | `T-20260730-004` 완료 | 정상·build 실패·XCTest 실패·timeout 실제 PR 검증 진행 |
+| `T-20260730-005` | `verification_ready` | CI | PR dry run·실패 감지 검증 | iOS QA Agent | `T-20260730-004` 완료 | 실제 PR 정상·실패·timeout·취소 증빙 독립 검증 |
 | `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
 | `T-20260730-007` | `done` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | - | T-001 QA-HIGH-001 | PR #18 squash merge 완료 |
 
@@ -129,6 +129,12 @@ PR #34의 `ios-build`·`ios-xctest`, hosted preflight·summary·artifact와 XCTe
 Product Owner가 T-20260730-005 실행을 승인했습니다. iOS Agent는 실제 PR의 정상·실패·
 timeout과 artifact/check gate를 검증용 변경으로 수행하고, iOS QA Agent는 독립
 재현·판정합니다. T-006 required check 외부 설정은 T-005 검증 완료 후 진행합니다.
+
+T-20260730-005는 PR #36에서 정상 `ios-build`·`ios-xctest` 33/33을 확인하고,
+미병합 검증 PR #37~#39에서 build 실패 65, XCTest assertion 실패 65,
+timeout 124와 진단 artifact를 확인했습니다. 같은 PR 연속 push의 이전 두
+workflow run도 각각 취소됐습니다. 검증 PR 3개는 미병합 종료했고 iOS QA
+독립 판정을 위해 `verification_ready`로 인계합니다.
 
 `T-20260730-007`은 SwiftData 테스트가 `ModelContainer`를 테스트 종료까지
 보유하도록 fixture 수명을 최소 수정했습니다. iOS 26.5와 iOS 17.2 전체 XCTest가

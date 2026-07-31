@@ -18,6 +18,7 @@
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
+| `T-20260730-005` | `verification_ready` | iOS CI PR dry run·실패 감지·회귀 검증 | PR #36~#39 정상·실패 65·timeout 124·취소·artifact | 고정 run과 미병합 종료 상태 독립 판정 |
 
 향후 검증 예정 Task:
 
@@ -30,7 +31,6 @@
 | `T-20260729-023` | Backend | Backend QA Agent | AI 상태·복구·schema·timeout |
 | `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
-| `T-20260730-005` | CI | iOS QA Agent | 실제 PR dry run·check gate 준비도 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |
 | `T-20260730-007` | iOS/CI | iOS QA Agent | iOS 26.5 SwiftData crash 원인·최소 수정·33/33 회귀 |
 
@@ -93,3 +93,9 @@ T-20260730-004는 concurrency 격리, cache 미적용 33/33, build 실패 65와 
 PR #34 hosted `ios-build`·`ios-xctest`, preflight·summary·artifact와 XCTest
 33/33 성공을 확인해 `done`으로 확정했습니다. 같은 PR 취소와 hosted
 실패·timeout dry run은 T-20260730-005에서 검증합니다.
+
+T-20260730-005는 정상 PR #36과 미병합 검증 PR #37~#39에서 두 check 이름,
+정상 33/33, build·XCTest 실패 65, timeout 124, 원인별 artifact를
+GitHub-hosted runner로 확인했습니다. 연속 push의 이전 `ios-build`와
+`ios-xctest` run이 각각 취소되고 다른 PR은 유지됐습니다. iOS QA Agent는
+고정 run·artifact와 #37~#39의 `closed`, `merged: false`를 독립 확인합니다.
