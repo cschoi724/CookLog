@@ -14,6 +14,7 @@
 | `T-20260730-002` | `done` | ios-build·build-for-testing workflow 구현 | PR #24 runs 30592350218·30592508288 전 단계 성공, artifact 확인 | 최종 PASS·squash merge·완료 확정 |
 | `T-20260729-020` | `done` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 고정 커밋 동등성·QA-HIGH-020-003·비용·최신 보드 비회귀 | PASS_WITH_RISK 수용·PR #26 squash merge·완료 확정 |
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
+| `T-20260729-011` | `completion_review` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PASS · develop 통합 대기 |
 
 향후 검증 예정 Task:
 
@@ -46,3 +47,5 @@
 `T-20260729-009`의 Home 최근 활동순 계산, 영구 삭제 다이얼로그 키보드 포커스와 실제 재료 검색 상태 전이 결함 3건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #16으로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 
 `T-20260729-010`은 첫 기록 권한 안내, 10초 자동 종료, Apple 기기 내 STT와 자동 재처리 1회, STEP 자동 저장·삭제·되돌리기, 오프라인 기록과 AI snapshot 잠금 구현을 완료했습니다. Design QA Agent는 제품 정책 일치, 실제 상호작용과 접근성을 독립 검증합니다.
+
+`T-20260729-011`의 `변경 버리고 나가기` snapshot 복원, 완료 레시피 갱신과 저장 경계 HIGH 3건, Review 이탈 dialog·STEP 삭제·완료 레시피 메뉴 포커스와 빈 STEP 정규화 MEDIUM 4건은 모두 해소됐습니다. 기존 장기 처리·명시적 Review 진입·AI 실패 복구·입력 검증·완료 삭제 dialog와 375×667 Light·Dark 상태에도 회귀가 없고 Design Lead 완료 검토를 통과해 `completion_review`로 인계됐습니다.

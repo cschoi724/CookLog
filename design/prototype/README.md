@@ -4,7 +4,7 @@ Figma MCP 한도와 무관하게 CookLog MVP UI/UX v1을 검토하기 위한 로
 
 이 디렉토리는 Product Owner가 승인한 CookLog의 공식 UI Source of Truth입니다.
 
-현재 Prototype revision은 `cooking-log-on-device-stt-20260730`이며 `design/figma-build/manifest.json`과 동일합니다.
+현재 Prototype revision은 `ai-review-edit-delete-20260731`이며 `design/figma-build/manifest.json`과 동일합니다.
 
 ## 실행
 
@@ -46,6 +46,14 @@ http://127.0.0.1:8765/?screen=log&state=processing&stt-path=retry-success
 http://127.0.0.1:8765/?screen=log&state=processing&stt-path=retry-failure
 http://127.0.0.1:8765/?screen=player&state=playing&theme=dark
 http://127.0.0.1:8765/?screen=review&state=save-error
+http://127.0.0.1:8765/?screen=review&state=processing-long
+http://127.0.0.1:8765/?screen=review&state=ready-banner
+http://127.0.0.1:8765/?screen=review&state=generation-error
+http://127.0.0.1:8765/?screen=review&state=validation-error
+http://127.0.0.1:8765/?screen=review&state=unsaved-exit
+http://127.0.0.1:8765/?screen=review&state=complete-edit
+http://127.0.0.1:8765/?screen=detail&state=menu-open
+http://127.0.0.1:8765/?screen=detail&state=delete-confirm
 http://127.0.0.1:8765/?screen=home&state=content&viewport=small
 http://127.0.0.1:8765/?screen=home&state=delete-confirm
 http://127.0.0.1:8765/?screen=library&state=all
@@ -72,6 +80,14 @@ http://127.0.0.1:8765/?screen=library&state=no-results&theme=dark
 - 원문 STEP의 녹음 시간순 자동 저장, 왼쪽 스와이프 삭제와 짧은 되돌리기
 - 지원 환경의 오프라인 기록, 오프라인 AI 연결 안내와 AI snapshot 잠금
 - 기기 내 STT 미지원·최종 실패 시 원격 fallback 없이 기존 STEP 보존
+- AI 정리 10초 경과 안내, 다른 화면 이용, 앱 내부 완료 배너와 명시적 Review 진입
+- AI 정리 실패 범주, 자동 재시도 없는 복구와 동일 요청 검토본 중복 방지
+- `확정`·`AI 추정`·`누락` 필드 상태와 단계 카드 추가·삭제·되돌리기·재배열
+- 수동 임시 저장, 저장하지 않은 변경 이탈 확인, 필드 검증과 최종 저장 실패 값 보존
+- 완료 레시피의 동일 폼 수정, AI 재호출 없는 `수정 완료`, 복구 불가 영구 삭제 확인
+- 마지막 성공 임시 저장 snapshot·현재 편집본·완료 레시피 원본 분리와 변경 폐기 복원
+- 완료 수정값의 Recipe Detail 실제 반영, 저장 전 빈 STEP 제외·표시 순서 재번호
+- Review 이탈 modal, STEP 삭제 Undo, 완료 레시피 메뉴의 키보드 초기·복귀 포커스와 Escape
 - 390×844와 실제 375×667 레이아웃
 - Button, Status Banner, Form Field, Recipe Card, Player Control 상태 보드
 

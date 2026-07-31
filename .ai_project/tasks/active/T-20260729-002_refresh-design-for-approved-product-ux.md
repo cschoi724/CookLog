@@ -154,3 +154,11 @@ Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료
 - 2026-07-30: Product Owner가 하위 `T-20260729-010`의 Design QA 결함 4건 재작업을 승인했으며 후속 `T-20260729-011` 차단은 유지한다.
 - 2026-07-30: 하위 `T-20260729-010`이 결함 4건 독립 재검증과 Design Lead 완료 검토를 통과해 `completion_review`로 인계됐다. develop 병합 전 `done`과 후속 `T-20260729-011` 차단 해제는 보류한다.
 - 2026-07-30: 하위 `T-20260729-010`이 PR #22로 `develop`에 병합되어 `done`으로 확정됐다. 다음 순차 후보 `T-20260729-011`은 별도 Product Owner 실행 승인 대기다.
+- 2026-07-30: Design Lead Agent가 하위 `T-20260729-011`의 AI 장기 처리·Review 저장 경계·완료 레시피 수정·삭제 범위를 scope하고 최신 `origin/develop` 기반 전용 worktree를 준비했다. 실행은 별도 Product Owner 승인 대기다.
+- 2026-07-31: Product Owner가 하위 `T-20260729-011` 실행을 승인했으며 UI/UX Design Agent가 준비된 전용 worktree에서 작업 시작 대기다.
+- 2026-07-31: UI/UX Design Agent가 하위 `T-20260729-011` 실행과 자체 검증을 완료해 Design QA 독립 검증으로 인계했다.
+- 2026-07-31: Design QA Agent가 하위 `T-20260729-011`에서 저장 경계 HIGH 3건과 접근성·정규화 MEDIUM 4건을 확인해 `rework_requested`로 UI/UX Design Agent에 반환했으며 후속 `T-20260729-012` 차단을 유지한다.
+- 2026-07-31: Product Owner가 하위 `T-20260729-011`의 Design QA 결함 7건 재작업을 승인했으며 후속 `T-20260729-012` 차단은 유지한다.
+- 2026-07-31: 하위 `T-20260729-011`이 결함 7건 독립 재검증과 Design Lead 완료 검토를 통과해 `completion_review`로 인계됐다. develop 병합 전 `done`과 후속 `T-20260729-012` 차단 해제는 보류한다.
+- 2026-07-31: UI/UX Design Agent가 하위 `T-20260729-011` 결함 7건 재작업과 자체 회귀 검증을 완료해 Design QA 독립 재검증으로 인계했다.
+- 2026-07-31: Design QA Agent가 하위 `T-20260729-011` 결함 7건 해소와 기존 통과 항목 무회귀를 확인해 `verification_passed`로 Design Lead 완료 검토에 인계했으며 `done`과 후속 `T-20260729-012` 차단 해제는 보류한다.
