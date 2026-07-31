@@ -105,4 +105,3 @@ invalid output, ACK·만료 복구와 콘텐츠 비노출을 독립 검증한다
 - T-20260729-022 `done`: 보존
 - 형제 T-20260729-024 `approved`: 보존
 - 최신 `origin/develop` 대비 뒤처짐: 0
-

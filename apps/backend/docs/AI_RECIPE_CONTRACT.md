@@ -271,4 +271,3 @@ Backend QA Agent는 최소 다음을 독립 검증한다.
 8. `now >= expires_at`에서 복호화·본문 반환 전에 접근을 차단하는지
 9. provider·prompt·STEP·draft·secret이 공개 오류와 관측 데이터에 없는지
 10. version mismatch와 만료·중복·수동 재실행 fixture가 계약에 맞는지
-
