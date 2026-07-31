@@ -16,7 +16,7 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
-| `T-20260730-004` | `completion_review` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·실패 진단 독립 확인 | PASS_WITH_RISK 수용·hosted checks merge gate |
+| `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 
 향후 검증 예정 Task:
 
@@ -77,3 +77,7 @@ T-20260730-004는 concurrency 격리, cache 미적용 33/33, build 실패 65와 
 124의 진단 보존을 독립 확인해 `PASS_WITH_RISK`를 받았습니다. Development Lead가
 최신 develop 재정렬과 허용 경로를 확인해 `completion_review`로 수용했으며 hosted
 정상 동작은 T-004 PR, 실제 취소·실패 dry run은 T-20260730-005에서 확인합니다.
+
+PR #34 hosted `ios-build`·`ios-xctest`, preflight·summary·artifact와 XCTest
+33/33 성공을 확인해 `done`으로 확정했습니다. 같은 PR 취소와 hosted
+실패·timeout dry run은 T-20260730-005에서 검증합니다.
