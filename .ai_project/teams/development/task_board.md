@@ -19,7 +19,7 @@
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
 | `T-20260729-005` | `proposed` | iOS | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `005`, `T-20260729-003` | 선행 계약·환경 대기 |
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
-| `T-20260729-020` | `verification_passed` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | Development Lead Agent | `T-20260729-026` 완료 | PASS_WITH_RISK, completion review |
+| `T-20260729-020` | `completion_review` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | Development Lead Agent | `T-20260729-026` 완료 | 완료 검토 통과, develop PR 통합 대기 |
 | `T-20260729-021` | `proposed` | Backend | 공통 API·인증·제한·오류 계약 | Backend Agent | `T-20260729-026` | 실행 승인 대기 |
 | `T-20260729-022` | `proposed` | Backend | 기본 비활성 원격 STT adapter 계약 | Backend Agent | `T-20260729-021` | 선행·승인 대기 |
 | `T-20260729-023` | `proposed` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020`, `021` | 선행·승인 대기 |
@@ -41,6 +41,11 @@ Backend QA가 `f4408d0` 기준 내용 동등성, `QA-HIGH-020-003`, 비용·잔�
 allowed paths, T-001·T-007 완료 기록과 Task ID 단일성을 독립 재검증해
 `PASS_WITH_RISK`로 통과시켰습니다. 현재 origin의 후속 T-010 완료 기록은 병합 전
 최신 develop 동기화·board 충돌 해결에서 보존해야 합니다.
+
+Development Lead가 QA 결과를 고정한 뒤 최신 develop 위로 재정렬해 T-010·T-002
+완료 기록을 보존하고 원 검증 대상과 핵심 Backend 산출물의 내용 동등성을
+확인했습니다. 삭제 SLA·retry 비용 계측은 후속 T-023·T-024와 staging gate로
+인계하고 `completion_review`로 수용했습니다.
 
 | `T-20260730-001` | `done` | CI | 환경·명령·check 계약 | - | `T-004`, `T-007` 완료 | PR #20 squash merge·완료 확정 |
 | `T-20260730-002` | `done` | CI | ios-build workflow | - | `T-20260730-001` 완료 | PR #24 squash merge·hosted check 통과·완료 확정 |

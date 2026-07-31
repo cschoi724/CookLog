@@ -2,7 +2,7 @@
 
 작성일: 2026-07-30
 작성자: Backend Agent
-상태: verification_ready
+상태: completion_review
 
 ## 결과
 
@@ -182,3 +182,28 @@ QA는 provider 계정이나 결제 설정을 변경하지 않고 문서와 공�
 
 위 항목 승인과 Backend QA PASS 전에는 provider 계약·결제·배포·실제 연동을 시작하지
 않는다.
+
+## Development Lead 완료 검토
+
+Backend QA 결과를 커밋 `85c6d0f`로 고정하고 최신 `origin/develop` 위로
+재정렬했다. 원 검증 대상 `f4408d0`의 재정렬 대응 커밋은 `95948dd`다.
+
+- `f4408d0`과 `95948dd`의 결정안·실행 보고서·Task·QA 핵심 내용: 동일
+- 최신 `origin/develop` 대비 behind: 0
+- T-20260729-010·T-20260730-002 `done` 기록: 보존
+- 최종 변경 경로 7개: Task `allowed_paths`와 일치
+- Task strict validation·`git diff --check`: 통과
+- Backend QA: `PASS_WITH_RISK`
+- 차단 결함: 없음
+
+`QA-RISK-020-006`의 실제 삭제 SLA와 `QA-RISK-020-007`의 retry 비용 계측은
+각각 후속 T-20260729-023·024 및 staging 출시 gate로 인계한다.
+`QA-RISK-020-008`의 최신 develop 통합 위험은 재정렬과 보드 비회귀 확인으로
+해소했다.
+
+이 Task의 결과물은 Product Owner가 provider·지역·계약·비용 상한을 선택할 수
+있는 후보 결정안이다. 실제 provider 계약·결제·배포는 별도 승인 전 금지한다는
+경계가 유지되므로 남은 선택 항목은 문서 Task 완료를 차단하지 않는다.
+
+Development Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로
+전환한다. `develop` 대상 PR 병합 후 `done`으로 확정한다.

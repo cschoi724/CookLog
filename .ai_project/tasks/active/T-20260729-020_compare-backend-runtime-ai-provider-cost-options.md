@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-020
 title: Backend 런타임·배포·AI provider·비용 후보 결정안
-status: verification_passed
+status: completion_review
 type: docs
 priority: P0
 priority_reason: 첫 출시 AI gateway의 외부 비용과 운영 경계를 구현 전에 승인해야 한다.
@@ -42,7 +42,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
-updated_at: '2026-07-30'
+updated_at: '2026-07-31'
 report_to: ".ai_project/reports/T-20260729-020_compare-backend-runtime-ai-provider-cost-options-report.md"
 qa_to: ".ai_project/qa/T-20260729-020_compare-backend-runtime-ai-provider-cost-options-qa.md"
 ---
@@ -134,3 +134,28 @@ qa_to: ".ai_project/qa/T-20260729-020_compare-backend-runtime-ai-provider-cost-o
 | 2026-07-30 | Backend QA Agent | lock | task lock |
 | 2026-07-30 | Backend QA Agent | transition: verification_in_progress -> verification_passed | f4408d0 내용 동등성·QA-HIGH-020-003·비용·allowed paths·최신 완료 기록·Task ID 단일성 재검증 PASS_WITH_RISK |
 | 2026-07-30 | Backend QA Agent | unlock | 고정 통합 커밋 독립 재검증 완료 및 Development Lead Completion Role 인계 |
+| 2026-07-31 | Development Lead Agent | integrate latest develop | QA 결과를 고정한 뒤 최신 origin/develop 위로 재정렬하고 T-010·T-002 done 기록과 T-020 핵심 산출물 동등성을 확인 |
+| 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | QA-HIGH-020-003 해소, PASS_WITH_RISK 증빙, allowed paths와 비차단 잔여 위험 인계를 수용해 develop PR 통합 대기로 전환 |
+
+## Development Lead 완료 검토
+
+- Backend QA 최종 판정: `PASS_WITH_RISK`
+- QA 고정 커밋: `85c6d0f`
+- 재정렬된 검증 대상 대응 커밋: `95948dd`
+- 원 검증 대상 `f4408d0`과 핵심 Backend 산출물 내용 동등성: 확인
+- `QA-HIGH-020-003`: 해소
+- 정상 runtime·추천·차선·hard cutoff 비용 독립 계산: 일치
+- Apple 기기 내 STT 기본값·원격 STT 비활성·자동 fallback 금지: 유지
+- 변경 파일 7개와 Task `allowed_paths` 7개: 일치
+- 동일 Task ID: active Task 1개
+- 최신 `origin/develop` 대비 뒤처짐: 0
+- T-20260729-010·T-20260730-002 완료 기록: 보존
+
+`QA-RISK-020-006`은 T-20260729-023·024 구현과 staging 삭제 SLA 검증으로,
+`QA-RISK-020-007`은 T-20260729-024 retry 비용 계측으로 인계한다.
+`QA-RISK-020-008`은 최신 develop 재정렬과 공용 보드 비회귀 확인으로 해소됐다.
+남은 Product Owner 선택 항목은 provider 계약·배포 승인 경계이며 후보 결정안
+문서의 완료를 차단하지 않는다.
+
+차단 결함이 없으므로 `completion_review`로 수용한다. `develop` 대상 PR이
+병합된 뒤 별도 완료 기록에서 `done`으로 확정한다.
