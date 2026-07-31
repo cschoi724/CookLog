@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "runId": "cooklog-mvp-v1-20260728",
-  "revision": "ai-review-edit-delete-20260731",
+  "revision": "audio-guide-focus-rework-20260731",
   "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
   "direction": "A — Warm Kitchen Journal",
   "brandScope": "wordmark-only",
@@ -215,15 +215,16 @@
     },
     "Player Controls": {
       "properties": {
-        "State": ["Paused", "Playing"],
+        "State": ["Ready", "Paused", "Playing", "Step Complete", "Last Step", "Interrupted"],
         "Previous": ["Enabled", "Disabled"],
-        "Next": ["Enabled", "Disabled"]
+        "Next": ["Enabled", "Last Step Feedback"],
+        "Speed": ["Slow", "Normal", "Fast"]
       },
       "minimumTouchTarget": 44
     },
     "Handsfree Control": {
       "properties": {
-        "State": ["Inactive", "Active", "Listening", "Failed", "Interrupted"],
+        "State": ["Inactive", "First-use Rationale", "Permission Denied", "Active", "Listening", "Command Result", "Uncertain", "Interrupted", "Ended"],
         "Button Fallback": ["Always Available"]
       },
       "rule": "Voice failure preserves playback state and never removes button controls."
@@ -248,7 +249,7 @@
     "Cooking Log": ["First-use Rationale", "Microphone Denied", "Empty", "10-second Recording", "On-device Processing", "Automatic Retry", "STEP Added", "Delete Undo", "Offline Recording", "Recording Error", "On-device STT Unsupported", "STT Final Failure", "AI Snapshot Locked", "Offline AI Notice"],
     "AI Review": ["Processing", "Long Processing", "Review Ready", "Editable", "Draft Saved", "Unsaved Exit", "Validation Error", "Saving", "Save Error", "Generation Error", "Complete Recipe Edit", "Complete Recipe Saving"],
     "Recipe Detail": ["Content", "More Menu", "Delete Confirmation", "Deleted", "Loading", "Error", "Not Found"],
-    "Audio Player": ["Paused", "Playing", "Loading", "Error", "No Steps"]
+    "Audio Player": ["Ready", "Paused", "Playing", "Step Complete", "Last Step", "Ingredients", "Reading Speed", "Handsfree First-use", "Handsfree Permission Denied", "Handsfree Active", "Listening", "Command Next", "Command Previous", "Command Pause", "Command Resume", "Command Replay", "Command Ingredients", "Command Exit", "Command Uncertain", "Audio Interrupted", "Background or Lock Ended", "Loading", "Error", "No Steps"]
   },
   "prototype": {
     "homeRules": {
@@ -402,6 +403,89 @@
       "deleteConfirmation": "Explicitly names the completed recipe and irreversible loss",
       "deleteRecovery": false
     },
+    "audioGuideRules": {
+      "dataSource": {
+        "singleSource": "Current saved completedRecipe",
+        "steps": "Derive spoken copy, total count, current count, progress, and boundaries from completedRecipe.steps.",
+        "ingredients": "Derive ingredient speech from completedRecipe.ingredients.",
+        "stalePlayerCopy": false
+      },
+      "entry": {
+        "initialStep": 1,
+        "automaticPlayback": false,
+        "handsfreeInitiallyActive": false,
+        "automaticScreenLockPreventedWhileVisible": true
+      },
+      "buttonActions": ["Previous", "Play or Pause", "Next", "Replay Current", "Read Ingredients", "End Guide"],
+      "progression": {
+        "stepCompletion": "Pause on the current step and wait for an explicit action.",
+        "previousAndNext": "Move and read the destination step from the beginning.",
+        "pauseBoundary": "Finish the current word, then pause.",
+        "resume": "Continue from the paused position.",
+        "replay": "Read the current step from the beginning.",
+        "firstStep": "Previous button and 이전 voice command both remain paused and announce 첫 단계예요.",
+        "lastStep": "Next button and 다음 voice command both remain paused and announce 마지막 단계예요.",
+        "guideExit": "Return to Recipe Detail."
+      },
+      "ingredients": {
+        "automaticPlayback": false,
+        "action": "재료 듣기",
+        "stepChange": false,
+        "result": "Pause on the current step after reading.",
+        "unitNormalization": ["g", "kg", "ml", "L", "개", "큰술", "작은술", "분", "시간", "°C"],
+        "llmRewrite": false
+      },
+      "speed": {
+        "options": ["느리게", "보통", "빠르게"],
+        "default": "보통",
+        "persistence": "Use the selected speed in the next Audio Guide.",
+        "changeWhilePlaying": "Apply after the current sentence."
+      },
+      "handsfree": {
+        "start": "Explicit 핸즈프리 시작 only",
+        "firstUse": "Explain context before requesting microphone and speech-recognition permissions.",
+        "permissionState": "Track rationale-seen, microphone permission, and speech-recognition permission independently. Never activate listening before both explicit permissions are granted.",
+        "permissionDenied": "Keep handsfree inactive, do not repeat the system prompt, offer Settings, and preserve every button.",
+        "wakeWord": false,
+        "outsideAudioGuide": false,
+        "listensWhilePaused": true,
+        "listensForPauseWhileTTSPlays": true,
+        "commands": {
+          "다음": "Next button",
+          "이전": "Previous button",
+          "멈춰": "Pause button",
+          "계속": "Play or Resume button",
+          "다시 들려줘": "Replay Current button",
+          "재료 알려줘": "Read Ingredients button",
+          "핸즈프리 종료": "Disable microphone only"
+        },
+        "uncertainCommand": "Execute nothing; preserve playback position and the existing normal completion deadline.",
+        "confirmation": "Use visible state, actual playback, and only necessary short effects instead of long spoken confirmations.",
+        "buttonFallback": "Every command has an always-visible equivalent button.",
+        "endResult": "Disable only the microphone; preserve audio playback, its normal completion deadline, and buttons."
+      },
+      "focusAfterRender": {
+        "sameAction": "After play, pause, previous, next, replay, ingredients, speed, and handsfree toggles, focus the equivalent rendered control.",
+        "automaticCompletion": "When timed playback completion renders step-complete or last-step, restore focus to the equivalent Play control.",
+        "newChoice": "Move focus to the safe first action when the handsfree rationale or permission recovery choice appears.",
+        "manualResume": "After interruption recovery, focus the play or pause control."
+      },
+      "ttsErrorFallback": {
+        "message": "Voice playback is unavailable; recipe content, step movement, and guide exit remain available.",
+        "preserved": ["Current saved step content", "Previous", "Next", "End Guide", "Speed preference"],
+        "disabledUntilRetry": ["Play or Pause", "Replay Current", "Read Ingredients"],
+        "retry": "Offer 음성 다시 시도 without removing the preserved recipe controls."
+      },
+      "interruptions": {
+        "sources": ["Phone call", "Siri", "Other audio", "Bluetooth or earphone disconnect"],
+        "result": "Pause at the current position and preserve the step.",
+        "speakerFallbackOnDisconnect": false,
+        "automaticResume": false,
+        "automaticHandsfreeReactivation": false,
+        "manualResume": true,
+        "backgroundOrDirectLock": "End handsfree; keep playback paused and require explicit restart."
+      }
+    },
     "recordFlow": [
       "Home / Mixed Recent",
       "Cooking Log / First-use Rationale",
@@ -419,13 +503,15 @@
       "AI Review / Editable",
       "AI Review / Saving",
       "Recipe Detail / Content",
-      "Audio Player / Paused",
+      "Audio Player / Ready",
       "Audio Player / Playing"
     ],
     "reuseFlow": [
       "Home / Mixed Recent",
       "Recipe Detail / Content",
-      "Audio Player / Paused"
+      "Audio Player / Ready",
+      "Audio Player / Handsfree First-use",
+      "Audio Player / Handsfree Active"
     ],
     "completedEditFlow": [
       "Recipe Detail / Content",

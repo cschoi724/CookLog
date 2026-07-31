@@ -15,7 +15,7 @@ const screenStates = {
   log: ["intro", "permission-denied", "empty", "recording", "processing", "retrying", "steps", "undo-delete", "offline", "record-error", "stt-unsupported", "stt-error", "ai-lock", "ai-offline"],
   review: ["processing", "processing-long", "ready-banner", "editable", "draft-saved", "unsaved-exit", "validation-error", "saving", "save-error", "generation-error", "complete-edit", "complete-saving"],
   detail: ["content", "menu-open", "delete-confirm", "deleted", "loading", "error", "not-found"],
-  player: ["paused", "playing", "loading", "error", "no-steps"]
+  player: ["ready", "paused", "playing", "step-complete", "last-step", "ingredients", "speed", "handsfree-intro", "permission-denied", "handsfree-active", "listening", "command-next", "command-previous", "command-pause", "command-resume", "command-replay", "command-ingredients", "command-exit", "command-uncertain", "interrupted", "background-ended", "loading", "error", "no-steps"]
 };
 
 const stateLabels = {
@@ -28,7 +28,11 @@ const stateLabels = {
   "unsaved-exit": "이탈 확인", "validation-error": "입력 검증", saving: "최종 저장 중", "save-error": "최종 저장 오류",
   "generation-error": "AI 정리 실패", "complete-edit": "완료 레시피 수정", "complete-saving": "수정 저장 중",
   deleted: "삭제 완료", "not-found": "찾을 수 없음",
-  paused: "일시정지", playing: "재생 중", "no-steps": "단계 없음"
+  ready: "1단계 준비", paused: "일시정지", playing: "재생 중", "step-complete": "단계 완료·대기", "last-step": "마지막 단계",
+  ingredients: "재료 듣기", speed: "읽기 속도", "handsfree-intro": "첫 핸즈프리 안내", "handsfree-active": "핸즈프리 켜짐", listening: "명령 듣는 중",
+  "command-next": "명령·다음", "command-previous": "명령·이전", "command-pause": "명령·멈춰", "command-resume": "명령·계속",
+  "command-replay": "명령·다시 듣기", "command-ingredients": "명령·재료", "command-exit": "명령·종료", "command-uncertain": "명령 불확실",
+  interrupted: "오디오 중단", "background-ended": "백그라운드·잠금", "no-steps": "단계 없음"
 };
 
 const params = new URLSearchParams(window.location.search);
@@ -38,8 +42,16 @@ if (isEmbedded) document.body.classList.add("embed");
 let screen = screenStates[params.get("screen")] ? params.get("screen") : "home";
 let state = screenStates[screen].includes(params.get("state")) ? params.get("state") : screenStates[screen][0];
 let dark = params.get("theme") === "dark";
-let playerStep = 1;
+let playerStep = 0;
 let playerFeedback = "";
+let playerPlayback = state === "playing" ? "playing" : "paused";
+let playerPlaybackEndsAt = 0;
+let playerCommandBoundary = "";
+let handsfreeActive = ["handsfree-active", "listening", "command-next", "command-previous", "command-pause", "command-resume", "command-replay", "command-ingredients"].includes(state);
+let handsfreeIntroSeen = false;
+let handsfreePermission = state === "permission-denied" ? "denied" : "prompt";
+let playerSpeed = "보통";
+let pendingPlayerSpeed = "";
 const stepSamples = [
   "삼겹살을 팬에 넣고 노릇하게 볶았어.",
   "양파 반 개와 간장 두 스푼을 넣었어.",
@@ -580,7 +592,7 @@ function renderDetail() {
       <p class="eyebrow">MY COOKLOG</p><h2>${escapeHTML(completedRecipe.title)}</h2>
       <div class="pill-row"><span class="pill">${escapeHTML(completedRecipe.time || "시간 미정")}</span><span class="pill">${visibleIngredients.length}개 재료</span><span class="pill">${visibleSteps.length}단계</span></div>
     </div>
-    <button class="button button-primary" data-nav="player" data-state="paused">${icons.play}<span>오디오 가이드 시작</span></button>
+    <button class="button button-primary" data-nav="player" data-state="ready">${icons.play}<span>오디오 가이드 시작</span></button>
     <section class="content-section"><h3>재료</h3><ul class="ingredient-list">${visibleIngredients.map(item => `<li><span>${escapeHTML(item.name)}</span><span>${escapeHTML(item.amount)}</span></li>`).join("")}</ul></section>
     <section class="content-section"><h3>조리 순서</h3><ol class="method-list">${visibleSteps.map(step => `<li>${escapeHTML(step)}</li>`).join("")}</ol></section>
     <section class="content-section"><h3>메모</h3><div class="card note-card">${escapeHTML(completedRecipe.memo || "남긴 메모가 없어요.")}</div></section>
@@ -588,42 +600,173 @@ function renderDetail() {
   </section>`;
 }
 
-const playerSteps = [
-  "달군 팬에 삼겹살을 넣고 겉면이 노릇해질 때까지 볶아요.",
-  "양파 반 개를 넣고 투명해질 때까지 함께 볶아요.",
-  "간장과 설탕을 넣고 불을 줄여 양념을 입혀요.",
-  "윤기가 돌면 불을 끄고 접시에 담아요."
-];
+function playerSteps() {
+  return completedRecipe.steps.filter(step => step.trim());
+}
+
+function playerIngredients() {
+  return completedRecipe.ingredients
+    .filter(item => item.name.trim())
+    .map(item => `${item.name}${item.amount.trim() ? ` ${item.amount}` : ""}`)
+    .join(", ");
+}
+
+function startPlayerPlayback({ restart = true } = {}) {
+  playerPlayback = "playing";
+  if (restart || playerPlaybackEndsAt <= Date.now()) playerPlaybackEndsAt = Date.now() + 2200;
+}
+
+function pausePlayerPlayback() {
+  playerPlayback = "paused";
+  playerPlaybackEndsAt = 0;
+}
+
+function preparePlayerState(nextState, initial = false) {
+  const steps = playerSteps();
+  const lastIndex = Math.max(steps.length - 1, 0);
+  playerStep = Math.min(playerStep, lastIndex);
+  playerCommandBoundary = "";
+  if (nextState === "ready") {
+    playerStep = 0;
+    pausePlayerPlayback();
+    handsfreeActive = false;
+    playerFeedback = "STEP 1이 준비됐어요. 자동 재생하지 않습니다.";
+  } else if (nextState === "playing") {
+    startPlayerPlayback();
+  } else if (nextState === "paused" || nextState === "step-complete") {
+    pausePlayerPlayback();
+  } else if (nextState === "last-step") {
+    playerStep = lastIndex;
+    pausePlayerPlayback();
+  } else if (nextState === "ingredients" || nextState === "command-ingredients") {
+    pausePlayerPlayback();
+    if (nextState === "command-ingredients") handsfreeActive = true;
+  } else if (nextState === "handsfree-active" || nextState === "listening") {
+    handsfreeActive = true;
+  } else if (nextState === "command-next") {
+    handsfreeActive = true;
+    if (playerStep >= lastIndex) {
+      playerCommandBoundary = "last";
+      pausePlayerPlayback();
+      playerFeedback = "마지막 단계예요. 다음 단계는 없습니다.";
+    } else {
+      if (initial || playerStep < lastIndex) playerStep = Math.min(playerStep + 1, lastIndex);
+      startPlayerPlayback();
+    }
+  } else if (nextState === "command-previous") {
+    handsfreeActive = true;
+    if (playerStep === 0) {
+      playerCommandBoundary = "first";
+      pausePlayerPlayback();
+      playerFeedback = "첫 단계예요. 이전 단계는 없습니다.";
+    } else {
+      if (initial || playerStep > 0) playerStep = Math.max(playerStep - 1, 0);
+      startPlayerPlayback();
+    }
+  } else if (nextState === "command-pause") {
+    pausePlayerPlayback();
+    handsfreeActive = true;
+  } else if (nextState === "command-resume" || nextState === "command-replay") {
+    startPlayerPlayback({ restart: nextState === "command-replay" });
+    handsfreeActive = true;
+  } else if (nextState === "command-exit") {
+    handsfreeActive = false;
+  } else if (nextState === "command-uncertain") {
+    handsfreeActive = true;
+  } else if (nextState === "permission-denied") {
+    handsfreeActive = false;
+    handsfreePermission = "denied";
+  } else if (nextState === "interrupted" || nextState === "background-ended") {
+    pausePlayerPlayback();
+    handsfreeActive = false;
+  }
+}
+
+if (screen === "player") preparePlayerState(state, true);
 
 function renderPlayer() {
-  if (state === "loading") return `<section class="screen">${header({ back: "detail", title: "오디오 가이드" })}${feedbackCard("loading", "가이드를 준비하는 중", "단계별 음성을 만들고 있어요.")}</section>`;
-  if (state === "error") return `<section class="screen">${header({ back: "detail", title: "오디오 가이드" })}${feedbackCard("error", "오디오를 준비하지 못했어요", "잠시 후 다시 시도해주세요.", "paused")}</section>`;
+  if (state === "loading") return `<section class="screen">${header({ back: "detail", title: "오디오 가이드" })}${feedbackCard("loading", "가이드를 준비하는 중", "기기에 저장된 레시피로 로컬 음성을 준비하고 있어요.")}</section>`;
   if (state === "no-steps") return `<section class="screen">${header({ back: "detail", title: "오디오 가이드" })}${feedbackCard("empty", "재생할 단계가 없어요", "조리 순서가 있는 레시피만 오디오로 들을 수 있습니다.")}</section>`;
-  const playing = state === "playing";
+  const steps = playerSteps();
+  const lastIndex = Math.max(steps.length - 1, 0);
+  playerStep = Math.min(playerStep, lastIndex);
+  const ttsError = state === "error";
+  const commandCopy = {
+    "command-next": playerCommandBoundary === "last"
+      ? ["마지막 단계예요", "다음 단계가 없어 현재 단계에서 일시정지합니다."]
+      : ["“다음”을 실행했어요", "이동한 단계를 처음부터 읽습니다."],
+    "command-previous": playerCommandBoundary === "first"
+      ? ["첫 단계예요", "이전 단계가 없어 현재 단계에서 일시정지합니다."]
+      : ["“이전”을 실행했어요", "이전 단계를 처음부터 읽습니다."],
+    "command-pause": ["“멈춰”를 실행했어요", "읽던 단어가 끝난 위치에서 멈췄습니다."],
+    "command-resume": ["“계속”을 실행했어요", "멈춘 위치부터 이어서 읽습니다."],
+    "command-replay": ["“다시 들려줘”를 실행했어요", "현재 단계를 처음부터 읽습니다."],
+    "command-ingredients": ["“재료 알려줘”를 실행했어요", "단계는 바꾸지 않고 재료만 읽습니다."],
+    "command-exit": ["핸즈프리를 종료했어요", "마이크만 꺼졌어요. 버튼과 현재 오디오는 유지됩니다."]
+  };
+  const isCommand = Boolean(commandCopy[state]);
+  const playing = playerPlayback === "playing" && !ttsError && !["step-complete", "last-step", "ingredients", "interrupted", "background-ended", "command-pause"].includes(state);
+  const notice = ttsError
+    ? ["음성 재생을 준비하지 못했어요", "레시피 내용과 단계 이동·가이드 종료는 사용할 수 있어요. 다시 시도하거나 화면을 보며 계속하세요.", "error"]
+    : state === "ready"
+    ? ["재생 준비가 되었어요", "자동으로 재생하지 않아요. 재생 또는 핸즈프리 시작을 선택하세요.", "info"]
+    : state === "step-complete"
+      ? ["현재 단계를 모두 들었어요", "자동으로 다음 단계로 넘어가지 않습니다.", "success"]
+      : state === "last-step"
+        ? ["마지막 단계예요", "이 화면에 머물러요. 필요하면 다시 듣거나 가이드를 종료하세요.", "info"]
+        : state === "ingredients" || state === "command-ingredients"
+          ? ["재료를 읽고 있어요", `${escapeHTML(playerIngredients() || "저장된 재료가 없습니다.")}. 현재 단계는 바뀌지 않으며 낭독 후 일시정지합니다.`, "info"]
+          : state === "interrupted"
+            ? ["다른 오디오로 일시정지했어요", "전화·Siri·다른 오디오 또는 Bluetooth 연결이 끝나도 자동 재생하지 않습니다.", "warning"]
+            : state === "background-ended"
+              ? ["핸즈프리가 종료됐어요", "앱을 백그라운드로 보내거나 기기를 직접 잠갔습니다. 돌아와도 자동으로 켜지지 않아요.", "warning"]
+              : state === "command-uncertain"
+                ? ["명령을 이해하지 못했어요", "아무 행동도 실행하지 않았고 재생 위치는 그대로입니다. 아래 버튼으로 바로 이어가세요.", "error"]
+                : isCommand
+                  ? [...commandCopy[state], "success"]
+                  : null;
+  const denied = state === "permission-denied";
+  const intro = state === "handsfree-intro";
+  const listening = state === "listening";
+  const active = handsfreeActive && !["command-exit", "interrupted", "background-ended", "permission-denied"].includes(state);
   return `<section class="screen player-screen">
-    ${header({ back: "detail", title: "오디오 가이드" })}
-    <div class="player-progress" aria-label="${playerStep + 1} / 4 단계"><span style="width:${(playerStep + 1) * 25}%"></span></div>
-    <div class="player-stage">
-      <span class="step-chip">STEP ${playerStep + 1} / 4</span>
-      <h2>현재 단계</h2>
-      <p>${playerSteps[playerStep]}</p>
+    ${header({ back: "detail", title: "오디오 가이드", action: `<button class="text-action guide-exit" data-action="end-guide">종료</button>` })}
+    <div class="player-progress" aria-label="${playerStep + 1} / ${steps.length} 단계"><span style="width:${((playerStep + 1) / steps.length) * 100}%"></span></div>
+    <div class="player-stage player-stage-compact">
+      <span class="step-chip">STEP ${playerStep + 1} / ${steps.length}</span>
+      <h2>${playerStep === lastIndex ? "마지막 단계" : "현재 단계"}</h2>
+      <p>${escapeHTML(steps[playerStep])}</p>
       <div class="wave ${playing ? "playing" : ""}" aria-hidden="true">${"<i></i>".repeat(15)}</div>
       <p class="player-feedback" aria-live="polite">${playerFeedback || (playing ? "현재 단계를 재생하고 있어요." : "재생 준비가 되었어요.")}</p>
     </div>
+    ${notice ? `<div class="toast is-${notice[2]}" role="${notice[2] === "error" ? "alert" : "status"}"><strong aria-hidden="true">${notice[2] === "error" ? "!" : notice[2] === "warning" ? "Ⅱ" : "✓"}</strong><p><strong>${notice[0]}</strong><br>${notice[1]}</p>${state === "interrupted" || state === "background-ended" ? `<button class="toast-action" data-action="resume-manually">수동 재개</button>` : ""}</div>` : ""}
+    ${intro ? `<div class="alert-card"><div class="alert-heading"><span class="alert-icon">${icons.mic}</span><div><h3>${handsfreeIntroSeen ? "권한을 허용해주세요" : "손을 쓰지 않고 조리해요"}</h3><p>말로 다음·이전·멈춤을 조작하려면 마이크와 음성인식 권한이 필요합니다. Audio Guide 밖에서는 듣지 않아요.</p></div></div><div class="alert-actions"><button class="button button-secondary" data-action="cancel-handsfree-intro">나중에</button><button class="button button-primary" data-action="allow-handsfree">권한 계속</button></div></div>` : ""}
+    ${denied ? `<div class="alert-card is-error"><div class="alert-heading"><span class="alert-icon">!</span><div><h3>핸즈프리 권한이 꺼져 있어요</h3><p>시스템 권한창을 반복하지 않습니다. 설정에서 마이크·음성인식을 허용하거나 버튼으로 계속하세요.</p></div></div><div class="alert-actions"><button class="button button-secondary" data-action="dismiss-handsfree-error">버튼으로 계속</button><button class="button button-primary" data-action="open-handsfree-settings">설정으로 이동</button></div></div>` : ""}
+    ${!intro && !denied ? `<div class="handsfree-card ${active ? listening ? "is-listening" : "" : "is-inactive"} ${["interrupted", "background-ended"].includes(state) ? "is-interrupted" : ""} ${state === "command-uncertain" ? "is-failed" : ""}">
+      <div class="handsfree-status"><span class="handsfree-orb" aria-hidden="true">${active ? listening ? "◉" : "✓" : "○"}</span><div class="handsfree-copy"><strong>${active ? listening ? "명령을 듣고 있어요" : "핸즈프리 켜짐" : "핸즈프리 꺼짐"}</strong><p>${active ? "다음 · 이전 · 멈춰 · 계속 · 다시 들려줘 · 재료 알려줘 · 핸즈프리 종료" : "사용자가 시작하기 전에는 마이크를 사용하지 않습니다."}</p></div></div>
+      <button class="button ${active ? "button-secondary" : "button-primary"}" data-action="${active ? "end-handsfree" : "start-handsfree"}">${active ? "핸즈프리 종료" : "핸즈프리 시작"}</button>
+    </div>` : ""}
+    <div class="player-secondary-actions">
+      <button class="button button-secondary" data-action="read-ingredients" ${ttsError ? "disabled" : ""}>재료 듣기</button>
+      <div class="speed-control" role="group" aria-label="읽기 속도">${["느리게", "보통", "빠르게"].map(speed => `<button data-speed="${speed}" aria-pressed="${playerSpeed === speed}">${speed}</button>`).join("")}</div>
+    </div>
+    ${ttsError ? `<button class="button button-primary" data-action="retry-player-audio">음성 다시 시도</button>` : ""}
     <div class="player-controls">
       <button class="player-control" data-player="prev" aria-label="이전 단계" ${playerStep === 0 ? "disabled" : ""}>‹</button>
-      <button class="player-control" data-player="replay" aria-label="현재 단계 다시 듣기">↺</button>
-      <button class="player-control main" data-state="${playing ? "paused" : "playing"}" aria-label="${playing ? "일시정지" : "재생"}">${playing ? "Ⅱ" : "▶"}</button>
-      <button class="player-control" data-player="next" aria-label="다음 단계" ${playerStep === 3 ? "disabled" : ""}>›</button>
+      <button class="player-control" data-player="replay" aria-label="현재 단계 다시 듣기" ${ttsError ? "disabled" : ""}>↺</button>
+      <button class="player-control main" data-action="toggle-playback" aria-label="${playing ? "일시정지" : "재생"}" ${ttsError ? "disabled" : ""}>${playing ? "Ⅱ" : "▶"}</button>
+      <button class="player-control" data-player="next" aria-label="다음 단계">›</button>
     </div>
     <div class="control-labels" aria-hidden="true"><span>이전</span><span>다시</span><span>${playing ? "정지" : "재생"}</span><span>다음</span></div>
+    <p class="wake-lock-note">화면을 보고 조리하는 동안 자동 잠금을 방지합니다. 직접 잠그면 핸즈프리는 종료돼요.</p>
   </section>`;
 }
 
 function renderStateList() {
   const contextualLabels = {
     review: { processing: "AI 정리 중", editable: "검토·수정", saving: "최종 저장 중" },
-    detail: { content: "레시피 상세", "menu-open": "완료 레시피 메뉴", "delete-confirm": "완료 레시피 삭제 확인" }
+    detail: { content: "레시피 상세", "menu-open": "완료 레시피 메뉴", "delete-confirm": "완료 레시피 삭제 확인" },
+    player: { "permission-denied": "핸즈프리 권한 거부", error: "로컬 TTS 오류", loading: "로컬 TTS 준비" }
   };
   stateList.innerHTML = screenStates[screen].map(item =>
     `<button class="state-button" data-state="${item}" aria-pressed="${state === item}">${contextualLabels[screen]?.[item] || stateLabels[item]}</button>`
@@ -655,7 +798,18 @@ function applyFocusIntent() {
     "unsaved-dialog-cancel": "[data-unsaved-dialog-focus]",
     "completed-dialog-cancel": "[data-completed-dialog-focus]",
     "detail-menu-trigger": "[data-action=\"toggle-detail-menu\"]",
-    "detail-menu-item": "[data-action=\"edit-completed-recipe\"]"
+    "detail-menu-item": "[data-action=\"edit-completed-recipe\"]",
+    "player-playback": "[data-action=\"toggle-playback\"]",
+    "player-ingredients": "[data-action=\"read-ingredients\"]",
+    "player-prev": "[data-player=\"prev\"]",
+    "player-next": "[data-player=\"next\"]",
+    "player-replay": "[data-player=\"replay\"]",
+    "player-speed": `[data-speed="${intent.speed || ""}"]`,
+    "handsfree-toggle": "[data-action=\"start-handsfree\"], [data-action=\"end-handsfree\"]",
+    "handsfree-intro-action": "[data-action=\"cancel-handsfree-intro\"]",
+    "handsfree-denied-action": "[data-action=\"dismiss-handsfree-error\"]",
+    "player-resume": "[data-action=\"toggle-playback\"]",
+    "player-retry": "[data-action=\"retry-player-audio\"]"
   };
   const target = document.querySelector(selectors[intent.type]);
   if (target) target.focus({ preventScroll: true });
@@ -711,6 +865,19 @@ function render() {
       pendingRecipeSave = null;
       navigate("detail", "content");
     }, 1400);
+  } else if (!isEmbedded && screen === "player" && playerPlayback === "playing" && playerPlaybackEndsAt > 0) {
+    const remainingPlaybackMs = Math.max(playerPlaybackEndsAt - Date.now(), 0);
+    transitionTimer = window.setTimeout(() => {
+      pausePlayerPlayback();
+      if (pendingPlayerSpeed) {
+        playerSpeed = pendingPlayerSpeed;
+        pendingPlayerSpeed = "";
+      }
+      state = playerStep === playerSteps().length - 1 ? "last-step" : "step-complete";
+      playerFeedback = playerStep === playerSteps().length - 1 ? "마지막 단계를 모두 들었어요." : "다음 행동을 기다리고 있어요.";
+      focusIntent = { type: "player-playback" };
+      render();
+    }, remainingPlaybackMs);
   }
   if (!isEmbedded && screen === "log" && state === "undo-delete" && deletedStep) scheduleUndoExpiration();
 }
@@ -729,7 +896,8 @@ function navigate(nextScreen, nextState) {
     else searchQuery = "";
   }
   if (screen === "log") prepareLogState(state);
-  if (screen !== "player") playerFeedback = "";
+  if (screen === "player") preparePlayerState(state);
+  else playerFeedback = "";
   render();
 }
 
@@ -961,6 +1129,77 @@ document.addEventListener("click", event => {
     completedDeleteOpen = false;
     state = "deleted";
     render();
+  } else if (target.dataset.action === "end-guide") {
+    handsfreeActive = false;
+    pausePlayerPlayback();
+    navigate("detail", "content");
+  } else if (target.dataset.action === "toggle-playback") {
+    if (playerPlayback === "playing") pausePlayerPlayback();
+    else startPlayerPlayback({ restart: false });
+    state = playerPlayback;
+    playerFeedback = playerPlayback === "playing" ? "멈춘 위치부터 이어서 읽어요." : "읽던 단어가 끝난 위치에서 멈췄어요.";
+    focusIntent = { type: "player-playback" };
+    render();
+  } else if (target.dataset.action === "read-ingredients") {
+    pausePlayerPlayback();
+    state = "ingredients";
+    playerFeedback = "재료 낭독 후 현재 단계에서 일시정지합니다.";
+    focusIntent = { type: "player-ingredients" };
+    render();
+  } else if (target.dataset.action === "start-handsfree") {
+    if (handsfreePermission !== "granted") {
+      state = "handsfree-intro";
+    } else {
+      handsfreeActive = true;
+      state = "handsfree-active";
+      playerFeedback = "핸즈프리를 시작했어요.";
+    }
+    focusIntent = state === "handsfree-intro" ? { type: "handsfree-intro-action" } : { type: "handsfree-toggle" };
+    render();
+  } else if (target.dataset.action === "allow-handsfree") {
+    handsfreeIntroSeen = true;
+    handsfreePermission = "granted";
+    handsfreeActive = true;
+    state = "handsfree-active";
+    playerFeedback = "7개 명령을 사용할 수 있어요.";
+    focusIntent = { type: "handsfree-toggle" };
+    render();
+  } else if (target.dataset.action === "cancel-handsfree-intro") {
+    handsfreeIntroSeen = true;
+    handsfreeActive = false;
+    state = "paused";
+    playerFeedback = "버튼으로 가이드를 계속할 수 있어요.";
+    focusIntent = { type: "handsfree-toggle" };
+    render();
+  } else if (target.dataset.action === "end-handsfree") {
+    handsfreeActive = false;
+    state = "command-exit";
+    playerFeedback = "마이크만 껐어요. 현재 오디오는 그대로 유지됩니다.";
+    focusIntent = { type: "handsfree-toggle" };
+    render();
+  } else if (target.dataset.action === "dismiss-handsfree-error") {
+    handsfreeActive = false;
+    state = "paused";
+    playerFeedback = "버튼 기반 Audio Guide를 계속 사용합니다.";
+    focusIntent = { type: "handsfree-toggle" };
+    render();
+  } else if (target.dataset.action === "open-handsfree-settings") {
+    playerFeedback = "설정에서 마이크와 음성인식 권한을 허용해주세요.";
+    focusIntent = { type: "handsfree-denied-action" };
+    render();
+  } else if (target.dataset.action === "resume-manually") {
+    handsfreeActive = false;
+    startPlayerPlayback({ restart: false });
+    state = "playing";
+    playerFeedback = "현재 위치부터 수동으로 재개했어요.";
+    focusIntent = { type: "player-resume" };
+    render();
+  } else if (target.dataset.action === "retry-player-audio") {
+    pausePlayerPlayback();
+    state = "ready";
+    playerFeedback = "음성을 다시 준비했어요. 재생을 선택하면 시작합니다.";
+    focusIntent = { type: "player-playback" };
+    render();
   } else if (target.dataset.action === "start-recording") startRecording();
   else if (target.dataset.action === "continue-mic-permission") {
     state = "empty";
@@ -1041,18 +1280,43 @@ document.addEventListener("click", event => {
       else searchQuery = "";
     }
     if (screen === "log") prepareLogState(state);
+    if (screen === "player") preparePlayerState(state);
     render();
-  } else if (target.dataset.player === "next" && playerStep < 3) {
-    playerStep += 1;
-    playerFeedback = `STEP ${playerStep + 1}로 이동했습니다.`;
+  } else if (target.dataset.player === "next") {
+    if (playerStep >= playerSteps().length - 1) {
+      pausePlayerPlayback();
+      state = "last-step";
+      playerFeedback = "마지막 단계예요. 다음 단계는 없습니다.";
+    } else {
+      playerStep += 1;
+      startPlayerPlayback();
+      state = "playing";
+      playerFeedback = `STEP ${playerStep + 1}을 처음부터 읽습니다.`;
+    }
+    focusIntent = { type: "player-next" };
     render();
   } else if (target.dataset.player === "prev" && playerStep > 0) {
     playerStep -= 1;
-    playerFeedback = `STEP ${playerStep + 1}로 이동했습니다.`;
+    startPlayerPlayback();
+    state = "playing";
+    playerFeedback = `STEP ${playerStep + 1}을 처음부터 읽습니다.`;
+    focusIntent = { type: "player-prev" };
     render();
   } else if (target.dataset.player === "replay") {
+    startPlayerPlayback();
     state = "playing";
     playerFeedback = `STEP ${playerStep + 1}을 처음부터 다시 재생합니다.`;
+    focusIntent = { type: "player-replay" };
+    render();
+  } else if (target.dataset.speed) {
+    if (playerPlayback === "playing") {
+      pendingPlayerSpeed = target.dataset.speed;
+      playerFeedback = `${target.dataset.speed} 속도는 현재 문장이 끝난 뒤 적용됩니다.`;
+    } else {
+      playerSpeed = target.dataset.speed;
+      playerFeedback = `읽기 속도를 ${playerSpeed}로 저장했어요. 다음 가이드에도 유지됩니다.`;
+    }
+    focusIntent = { type: "player-speed", speed: target.dataset.speed };
     render();
   }
 });

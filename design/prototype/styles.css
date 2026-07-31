@@ -587,7 +587,7 @@ button.card { width: 100%; color: inherit; text-align: left; }
 .method-list li::before { content: counter(step); width: 34px; height: 34px; display: grid; place-items: center; border-radius: 12px; color: var(--bg-accent); background: var(--bg-subtle); font-size: 12px; font-weight: 850; }
 .note-card { color: var(--text-secondary); line-height: 22px; font-size: 14px; background: var(--bg-subtle); box-shadow: none; }
 
-.player-screen { display: flex; flex-direction: column; overflow: hidden; }
+.player-screen { display: flex; flex-direction: column; overflow-y: auto; }
 .player-progress { height: 4px; margin: 8px 0 30px; overflow: hidden; border-radius: 999px; background: var(--border); }
 .player-progress span { display: block; width: 25%; height: 100%; border-radius: inherit; background: var(--bg-accent); transition: width .25s ease; }
 .player-stage { flex: 1; display: grid; align-content: center; text-align: center; }
@@ -595,6 +595,7 @@ button.card { width: 100%; color: inherit; text-align: left; }
 .player-stage h2 { margin: 0; font-size: 29px; line-height: 1.28; letter-spacing: -.045em; }
 .player-stage p { margin: 17px auto 0; max-width: 285px; color: var(--text-secondary); font-size: 15px; line-height: 24px; }
 .player-stage .player-feedback { min-height: 18px; margin-top: 12px; color: var(--text-tertiary); font-size: 12px; line-height: 18px; font-weight: 700; }
+.player-stage-compact { flex: none; min-height: 280px; padding: 12px 0; }
 .wave { height: 48px; margin: 30px auto 0; display: flex; align-items: center; justify-content: center; gap: 5px; }
 .wave i { width: 4px; height: 12px; border-radius: 999px; background: var(--bg-accent); opacity: .75; }
 .wave.playing i { animation: wave .9s ease-in-out infinite alternate; }
@@ -606,6 +607,15 @@ button.card { width: 100%; color: inherit; text-align: left; }
 .player-control.main { width: 76px; height: 76px; border-radius: 26px; color: var(--text-on-accent); background: var(--bg-accent); font-size: 24px; box-shadow: 0 12px 24px color-mix(in srgb, var(--bg-accent) 25%, transparent); }
 .player-control:disabled { opacity: .35; cursor: not-allowed; }
 .control-labels { margin-top: -18px; padding: 0 2px; display: grid; grid-template-columns: 52px 52px 76px 52px; justify-content: space-between; text-align: center; color: var(--text-tertiary); font-size: 9px; font-weight: 750; }
+.guide-exit { width: 44px; min-width: 44px; flex: 0 0 44px; color: var(--error); }
+.player-secondary-actions { margin-top: 12px; display: grid; gap: 8px; }
+.speed-control { padding: 4px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; border-radius: 15px; background: var(--bg-subtle); }
+.speed-control button { min-height: 44px; border: 0; border-radius: 11px; color: var(--text-secondary); background: transparent; font-size: 12px; font-weight: 800; }
+.speed-control button[aria-pressed="true"] { color: var(--text-on-accent); background: var(--bg-accent); }
+.wake-lock-note { margin: 0 4px; color: var(--text-tertiary); font-size: 11px; line-height: 17px; text-align: center; }
+.handsfree-card .button { width: 100%; }
+.handsfree-card .handsfree-orb svg { width: 20px; height: 20px; }
+.dialog-icon.is-warning { color: var(--warning); }
 
 .state-panel { align-self: center; max-width: 220px; }
 .state-list { margin-top: 14px; display: grid; gap: 8px; }
@@ -663,6 +673,9 @@ body[data-viewport="small"] .progress-card { min-height: 390px; }
 body[data-viewport="small"] .form { gap: 16px; }
 body[data-viewport="small"] .player-progress { margin-bottom: 18px; }
 body[data-viewport="small"] .player-controls { padding-bottom: 20px; }
+body[data-viewport="small"] .player-stage-compact { min-height: 246px; }
+body[data-viewport="small"] .handsfree-card { padding: 14px; gap: 10px; }
+body[data-viewport="small"] .player-controls { position: sticky; bottom: -14px; z-index: 4; margin: 8px -4px 0; padding: 14px 4px 18px; background: linear-gradient(transparent, var(--bg-base) 22%); }
 body[data-viewport="small"] .sticky-action { bottom: -14px; margin-bottom: -12px; padding-bottom: 12px; }
 body[data-text-scale="accessibility"] .component-board { font-size: 1.18em; }
 body[data-text-scale="accessibility"] .alert-actions,

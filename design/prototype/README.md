@@ -4,7 +4,7 @@ Figma MCP 한도와 무관하게 CookLog MVP UI/UX v1을 검토하기 위한 로
 
 이 디렉토리는 Product Owner가 승인한 CookLog의 공식 UI Source of Truth입니다.
 
-현재 Prototype revision은 `ai-review-edit-delete-20260731`이며 `design/figma-build/manifest.json`과 동일합니다.
+현재 Prototype revision은 `audio-guide-focus-rework-20260731`이며 `design/figma-build/manifest.json`과 동일합니다.
 
 ## 실행
 
@@ -45,6 +45,15 @@ http://127.0.0.1:8765/?screen=log&state=processing&stt-path=success
 http://127.0.0.1:8765/?screen=log&state=processing&stt-path=retry-success
 http://127.0.0.1:8765/?screen=log&state=processing&stt-path=retry-failure
 http://127.0.0.1:8765/?screen=player&state=playing&theme=dark
+http://127.0.0.1:8765/?screen=player&state=ready
+http://127.0.0.1:8765/?screen=player&state=step-complete
+http://127.0.0.1:8765/?screen=player&state=last-step
+http://127.0.0.1:8765/?screen=player&state=handsfree-intro
+http://127.0.0.1:8765/?screen=player&state=permission-denied
+http://127.0.0.1:8765/?screen=player&state=listening
+http://127.0.0.1:8765/?screen=player&state=command-uncertain
+http://127.0.0.1:8765/?screen=player&state=interrupted
+http://127.0.0.1:8765/?screen=player&state=background-ended
 http://127.0.0.1:8765/?screen=review&state=save-error
 http://127.0.0.1:8765/?screen=review&state=processing-long
 http://127.0.0.1:8765/?screen=review&state=ready-banner
@@ -88,6 +97,14 @@ http://127.0.0.1:8765/?screen=library&state=no-results&theme=dark
 - 마지막 성공 임시 저장 snapshot·현재 편집본·완료 레시피 원본 분리와 변경 폐기 복원
 - 완료 수정값의 Recipe Detail 실제 반영, 저장 전 빈 STEP 제외·표시 순서 재번호
 - Review 이탈 modal, STEP 삭제 Undo, 완료 레시피 메뉴의 키보드 초기·복귀 포커스와 Escape
+- 진입 시 STEP 1 준비·자동 재생 없음, 단계 완료 대기와 마지막 단계 유지
+- 저장된 완료 레시피 하나에서 Audio Guide 단계·진행률·재료 낭독을 동적으로 생성
+- 이전·재생/일시정지·다음·다시 듣기·재료 듣기·가이드 종료 버튼과 3단계 읽기 속도
+- 첫 핸즈프리 맥락 안내와 마이크·음성인식 권한 상태 분리, 권한 허용·거부·설정 이동과 버튼 Audio Guide 보존
+- 핸즈프리 7개 명령의 첫·마지막 경계를 포함한 버튼 1:1 동등성, 불확실 명령·마이크 종료 중 재생 완료 시점 보존
+- Player 행동 후 동등 control 포커스 유지와 로컬 TTS 오류 시 레시피 내용·단계 이동·가이드 종료 fallback
+- 재생·단계 이동·다시 듣기의 자동 완료 렌더링 뒤에도 재생 control로 키보드 포커스 복원
+- 전화·Siri·다른 오디오·Bluetooth 중단과 백그라운드·직접 잠금 후 수동 재개
 - 390×844와 실제 375×667 레이아웃
 - Button, Status Banner, Form Field, Recipe Card, Player Control 상태 보드
 
