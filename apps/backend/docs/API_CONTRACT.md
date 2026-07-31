@@ -143,6 +143,28 @@ challenge는 hash만 저장하고 한 번 사용하거나 검증 실패 3회 시
 - challenge ID, installation ID, app version과 요청 목적을 canonical client data로
   묶는다. challenge 재사용은 `ATTESTATION_REPLAYED`로 거부한다.
 
+최초 설치의 challenge 소비는 일반 idempotency key와 별개의 원자적 replay 경계다.
+서버는 proof 검증이 끝난 뒤 다음 상태를 하나의 datastore transaction 또는 같은
+단일 승자 보장을 제공하는 원자적 경계에서 처리해야 한다.
+
+1. challenge hash, 목적, app ID, 만료와 `state=unused`를 조건부 검사한다.
+2. `unused -> consumed` compare-and-set을 수행하고 `consumed_by_installation_id`와
+   canonical request ID를 기록한다.
+3. App Attest credential/key ID의 전역 유일성을 확인하고 installation과 공개키를
+   등록한다. Firebase 경로는 `consume=true` 검증 결과의
+   `alreadyConsumed=false`를 필수로 확인하며 `true`이면 transaction에 진입하지 않고
+   `ATTESTATION_REPLAYED`로 거부한다.
+4. idempotency record와 access token을 만들 수 있는 committed token grant
+   (`jti`, subject, app ID, provider, expiry)을 함께 기록한다.
+5. commit에 성공한 단일 요청만 committed grant로 access token을 서명할 수 있다.
+   commit 전에는 token을 발급하지 않는다.
+
+같은 challenge를 서로 다른 `Idempotency-Key`로 동시에 제출해도 정확히 한 transaction만
+`unused -> consumed`에 성공해야 한다. 패배한 요청은 installation이나 token grant를
+만들지 않고 401 `ATTESTATION_REPLAYED`를 반환한다. commit 후 token 서명 또는 응답
+전송이 실패하면 같은 idempotency key로 committed grant를 재사용해 원래 응답을
+복구한다. 새 challenge 소비나 두 번째 installation 등록은 금지한다.
+
 성공 시 `installation-token.schema.json` 형태의 access token을 반환한다.
 
 #### `POST /v1/installations/token`
@@ -203,11 +225,25 @@ emergency project limit을 `0`으로 만들 수 있어야 한다.
 | installation | AI job 생성 | 20 | 1일 |
 | project | 전체 요청 | 600 | 1분 |
 | project | AI job 생성 | 100 | 1분 |
+| project | AI provider 호출 | 5,500 | 매월 1일 00:00 UTC 초기화 |
+| project | AI 입력 token | 20,000,000 | 매월 1일 00:00 UTC 초기화 |
+| project | AI 출력 token | 8,000,000 | 매월 1일 00:00 UTC 초기화 |
+| project | 추정 Backend 외부비 | KRW 50,000 | 매월 1일 00:00 UTC 초기화 |
 
 동일 요청은 가장 먼저 초과한 scope에서 차단한다. 429 응답은 `RATE_LIMITED` 또는
 일일 비용 quota인 `QUOTA_EXCEEDED`, `Retry-After`(초), body의
 `retry_after_seconds`를 동일하게 반환한다. 응답에는 다른 installation이나 project의
 정확한 사용량을 노출하지 않는다.
+
+월간 project hard cutoff는 T-20260729-020의 승인된 비용 원장을 그대로 참조하며 모든
+installation과 IP를 합산한다. 비용 endpoint는 provider 호출 전에 호출 1회, 요청
+입력 token 상한, 요청에 설정한 최대 출력 token과 추정 외부비를 원자적으로 예약한다. 어느
+원장이라도 상한을 넘으면 outbound provider 호출과 domain job side effect를 시작하지
+않고 429 `QUOTA_EXCEEDED`를 반환한다. provider 응답 후 실제 사용량으로 예약을
+정산하되 응답을 받지 못한 예약은 자동 해제하지 않는다. 원장 저장소나 원자 예약이
+unavailable하면 비용 endpoint는 503 `LIMITER_UNAVAILABLE`로 fail closed한다.
+T-20260729-024는 경고 임계값과 더 낮은 운영 상한을 정할 수 있지만 위 hard cutoff를
+상향하거나 우회할 수 없다.
 
 성공 응답에는 선택적으로 현재 IETF Internet-Draft 형식의 `RateLimit-Policy`와
 `RateLimit`을 제공할 수 있다. 이 형식은 아직 RFC가 아니므로 iOS의 정확성은 이 header에
@@ -282,6 +318,10 @@ job의 provider 재처리는 해당 도메인 Task가 소유하며, 공통 layer
 
 ## 9. 공개 오류 목록
 
+`apps/backend/contracts/common/public-error-catalog.json`이 공개 오류 code별
+`type/title/status/detail/user_message_key/retryable/retry_after_policy`의 기계 검증
+원본이다. 아래 표와 catalog가 충돌하면 배포를 차단한다.
+
 | HTTP | code | retryable | user message key | 의미 |
 |---:|---|---|---|---|
 | 400 | `INVALID_REQUEST` | false | `error.invalid_request` | JSON/header 형식 오류 |
@@ -309,6 +349,31 @@ resource 존재 여부를 누출할 수 있는 인증·권한 실패는 가능�
 `RESOURCE_NOT_FOUND`로 정규화한다. validation의 `violations`에는 공개 field name과
 안정 reason code만 넣고 실제 값은 넣지 않는다.
 
+### 9.1 안전 오류 생성기 경계
+
+공개 오류 renderer가 입력으로 받을 수 있는 값은 다음뿐이다.
+
+- catalog에 존재하는 공개 `code`
+- 서버가 생성한 canonical `request_id`
+- catalog가 허용한 경우의 검증된 `retry_after_seconds`
+- schema가 허용한 공개 field name과 안정 reason code로 구성된 `violations`
+
+renderer는 `type/title/status/detail/user_message_key/retryable`을 caller에게 받지 않고
+catalog에서만 복사한다. raw exception, provider response, provider/model 이름, stack,
+authorization header, token, secret, 사용자 STEP·레시피 원문과 내부 resource ID를
+renderer 인자로 전달하거나 문자열 보간하는 것을 금지한다. catalog에 없는 code,
+허용되지 않은 violation field/reason 또는 mapping과 다른 HTTP status는 500
+`INTERNAL_ERROR`의 고정 mapping으로 치환하고 내부 redacted 로그만 남긴다.
+`violations`는 `VALIDATION_FAILED`에서만 사용할 수 있으며 catalog·schema가 허용한
+field와 reason enum만 renderer에 전달한다.
+
+`error-envelope.schema.json`은 `title/detail/code/user_message_key`를 allowlist로
+제한하고 `violations.field`도 공개 공통 field만 허용한다. code 사이의 조합 정합성과
+악성 입력 비노출은 `public-error-catalog.json`,
+`fixtures/error-generation-negative.json`과 `validate-contracts.sh`가 검증한다.
+후속 runtime 구현은 동일 catalog에서 renderer를 생성하거나 동일성 테스트를
+통과해야 하며, provider adapter가 공개 envelope를 직접 만들면 안 된다.
+
 ## 10. QA 인계 기준
 
 Backend QA Agent는 실행 Agent와 분리된 세션에서 최소 다음을 독립 검증한다.
@@ -323,6 +388,12 @@ Backend QA Agent는 실행 Agent와 분리된 세션에서 최소 다음을 독�
 8. iOS retryable 조합이 non-idempotent 중복 작업을 만들지 않는지
 9. 모든 오류가 schema를 통과하고 내부 코드·provider detail·secret·원문이 없는지
 10. STT 실패가 Backend 음성 요청이나 원격 fallback을 만들지 않는지
+11. 같은 challenge·서로 다른 idempotency key의 동시 설치 요청에서 정확히 한 요청만
+    성공하고 나머지는 `ATTESTATION_REPLAYED`인지
+12. project 월간 호출·입력·출력 token·외부비 원장이 모든 installation을 합산해
+    provider 호출 전에 원자적으로 차단하는지
+13. `sh apps/backend/contracts/common/validate-contracts.sh`가 공개 오류 mapping과
+    악성 fixture 비노출을 통과하는지
 
 ## 11. 공식 참고
 

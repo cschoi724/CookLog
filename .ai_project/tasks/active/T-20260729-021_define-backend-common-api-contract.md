@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-021
 title: Backend 공통 API·인증·제한·오류 계약 정의
-status: approved
+status: verification_ready
 type: docs
 priority: P0
 priority_reason: AI와 선택형 원격 STT가 같은 보안·재시도·오류 경계를 사용해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Backend QA Agent
+target_role: Verification Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -77,6 +77,12 @@ qa_to: ".ai_project/qa/T-20260729-021_define-backend-common-api-contract-qa.md"
 - 외부 공개 오류 코드·사용자 현지화 key와 내부 오류·provider detail·secret을 분리했다.
 - 첫 출시 STT는 Apple 기기 내 처리라는 정책을 유지했으며 원격 STT endpoint나 자동
   fallback은 추가하지 않았다.
+- 최초 설치 challenge CAS, installation·token grant 원자 경계와 동시 요청 단일 승자
+  수용 기준을 추가했다.
+- 공개 오류 catalog, allowlist schema, negative fixture와 자체 검증 script로 raw
+  provider 오류·secret·사용자 원문 비노출을 기계 검증 가능하게 했다.
+- T-020의 project 월 호출·token·외부비 hard cutoff를 모든 installation 합산 원자
+  예약 계약으로 연결했다.
 
 ## Backend QA 인계
 
@@ -109,6 +115,10 @@ Backend QA Agent는 별도 세션에서 다음을 독립 검증한다.
 | 2026-07-31 | Backend QA Agent | unlock | task unlock |
 | 2026-07-31 | Product Owner | approve rework | QA-HIGH-021-001~002와 QA-MEDIUM-021-001 계약 보완 재작업 승인 |
 | 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 승인된 계약 재작업 범위 인계 |
+| 2026-07-31 | Backend Agent | lock | task lock |
+| 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-021-001~002와 QA-MEDIUM-021-001 승인 재작업 시작 |
+| 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | challenge 원자 CAS·공개 오류 catalog/negative fixture·project 누적 hard cutoff 재작업과 자체 검증 완료 |
+| 2026-07-31 | Backend Agent | unlock | task unlock |
 
 ## 최신 develop 통합
 
@@ -122,16 +132,15 @@ Backend QA Agent는 별도 세션에서 다음을 독립 검증한다.
 ## Next Agent Handoff
 
 ```text
-너는 Backend Agent / Execution Role이야.
-T-20260729-021의 승인된 QA 재작업을 수행해줘.
+너는 Backend QA Agent / Verification Role이야.
+T-20260729-021의 승인된 재작업을 독립 재검증해줘.
 
 - 기준 문서: apps/backend/docs/API_CONTRACT.md
 - schema: apps/backend/contracts/common/
-- QA-HIGH-021-001: 최초 설치 challenge 소비·등록·token 발급 가능 상태를 원자적
-  단일 승자 경계로 고정하고 동시 요청 수용 기준 추가
-- QA-HIGH-021-002: 공개 오류 code별 고정 mapping·생성기 경계·민감정보 negative
-  fixture를 기계 검증 가능한 원본으로 추가
-- QA-MEDIUM-021-001: T-020 project 일·월 비용 hard cutoff를 공통 quota 계약에 연결
+- QA-HIGH-021-001 challenge CAS·installation/token grant 단일 승자
+- QA-HIGH-021-002 공개 오류 catalog·allowlist schema·negative fixture 비노출
+- QA-MEDIUM-021-001 T-020 project 월 호출·token·외부비 hard cutoff 원자 예약
+- 자체 검증: sh apps/backend/contracts/common/validate-contracts.sh
 - 정책 경계: 첫 출시 STT는 Apple 기기 내 처리. 원격 STT endpoint와 자동 fallback 금지
-- 완료 조건: 자체 검증 후 verification_ready로 전환하고 Backend QA 독립 재검증 요청
+- 공식 판정은 Backend QA Agent가 수행
 ```
