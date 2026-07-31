@@ -158,3 +158,14 @@ Backend QA 재검증 결과를 커밋 `2179040`으로 고정하고 최신 `origi
 실제 runtime cleanup 장애 복구와 provider 물리 삭제 SLA는 T-025와 후속 활성화
 staging gate로 인계한다. 현재 원격 STT 강제 비활성 경계가 유지되므로 비차단 위험이다.
 Development Lead가 완료 검토를 통과시켜 `completion_review`로 수용한다.
+
+## 완료
+
+- PR: [#40](https://github.com/cschoi724/CookLog/pull/40)
+- merge SHA: `93f577ee137a4bcf0017d426d6334010294bfff3`
+- hosted checks: `ios-build`, `ios-xctest` 성공
+- 병합 방식: `develop` 대상 squash merge
+
+Development Lead가 구현·QA PR의 checks와 merge SHA를 확인해 `done`으로
+확정했다. runtime cleanup 장애 복구와 provider 물리 삭제 SLA는 T-025 및 후속
+staging gate로 인계한다.

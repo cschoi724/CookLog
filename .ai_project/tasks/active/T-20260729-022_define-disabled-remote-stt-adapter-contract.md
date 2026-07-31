@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-022
 title: 기본 비활성 원격 STT adapter 계약 정의
-status: completion_review
+status: done
 type: docs
 priority: P1
 priority_reason: 첫 출시 기본 경로를 바꾸지 않고 향후 원격 STT 교체 경계를 보존해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Development Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -168,3 +168,16 @@ provider가 물리 삭제 확인을 제공하지 않으면 활성화하지 않�
 
 Development Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로
 전환한다. 필수 검토 후 `develop` 병합 대상으로 확정한다.
+
+## 완료
+
+- PR: [#40](https://github.com/cschoi724/CookLog/pull/40)
+- 대상 브랜치: `develop`
+- 병합 방식: squash merge
+- merge SHA: `93f577ee137a4bcf0017d426d6334010294bfff3`
+- hosted checks: `ios-build`, `ios-xctest` 성공
+- 완료 판정: `done`
+
+구현·QA PR의 checks와 squash merge를 확인해 Task를 `done`으로 확정한다.
+실제 runtime cleanup 장애 복구와 provider 물리 삭제 SLA는 T-025 및 후속 staging
+gate에서 검증한다.
