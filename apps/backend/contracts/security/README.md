@@ -5,7 +5,8 @@ T-20260729-024의 장애·동시성 반례를 기계 검증한다.
 - `raw-metadata-retention-cases.json`: 28일 cleanup부터 30일 접근 차단까지의 수명과
   task 누락·worker crash·queue 장애·sink 삭제 실패·TTL 지연
 - `cost-ledger-cases.json`: provider와 Cloud Run·Tasks·Firestore·TTL·logging·egress·
-  build 비용의 단일 KRW 원장 경합, 가격·환율·billing 지연 fail-closed
+  build 비용의 단일 KRW 원장 경합, operation 전액 승인·거절, actual 초과 delayed
+  reserve 정산과 가격·환율·billing 지연 fail-closed
 - `provider-region-gate-cases.json`: 저장 region, regional processing과 국외 처리
   승인의 독립 gate
 

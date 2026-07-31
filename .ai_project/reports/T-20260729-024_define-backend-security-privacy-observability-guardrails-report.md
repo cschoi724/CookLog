@@ -104,6 +104,21 @@ reconciliation 6시간 초과는 fail closed한다.
 - logging·cleanup retry·TTL delete 급증의 50%/75%/90% alert와 100% kill switch,
   가격·SKU·환율·billing 지연 fail-closed fixture를 추가했다.
 
+두 번째 독립 재검증에서 확인된 원자 예약·초과 정산 반례도 보완했다.
+
+- 모든 reservation에 고유 operation ID와 요청 금액을 부여하고 operation 전체를
+  `accepted` 또는 `rejected`로 결정한다. partial acceptance는 금지했다.
+- bulk 작업은 예약 전에 독립 operation으로 분할하며 rejected operation은 billable
+  side effect를 시작하지 않는다.
+- accepted와 rejected 요청 금액 multiset이 전체 요청 multiset과 정확히 일치하는지
+  검증 script에서 검사한다.
+- SKU별 최대 billable quantity, 고정 단가·환율과 10% buffer로 보수적 예약 상한을
+  계산하고 유한한 상한을 강제할 수 없는 작업은 차단한다.
+- actual 초과분은 같은 ledger CAS에서 delayed reserve를 원자 차감해 committed,
+  active reservation과 reserve 합계 불변식을 유지한다.
+- actual 정상 정산, actual 초과 정산, provider·logging 경합과 경계 직전 전액 거절
+  fixture를 추가했다.
+
 ### QA-MEDIUM-024-001
 
 - `storage_region`, `regional_processing_supported`, `processing_boundary`,
@@ -130,6 +145,9 @@ reconciliation 6시간 초과는 fail closed한다.
 | security fixture JSON 전체 `jq empty` | PASS |
 | raw metadata 삭제 lifecycle·장애 6개 fixture | PASS |
 | 전체 외부비 동시 경합·급증·fail-closed fixture | PASS |
+| operation accepted·rejected multiset 일치 | PASS |
+| actual 정상·초과 delayed reserve 원자 정산 | PASS |
+| 경계 직전 요청 전액 거절 | PASS |
 | provider 저장·처리·국외 승인 gate 6개 fixture | PASS |
 | 콘텐츠·secret telemetry 0건과 allowlist/redaction 계약 검색 | PASS |
 | provider 지역·학습·보관·`store=false` activation gate 검색 | PASS |

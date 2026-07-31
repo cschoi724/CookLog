@@ -36,9 +36,14 @@
       "committed_actual_krw": 30000,
       "active_reservations_before_krw": 5000,
       "requests_krw": [6000, 3000, 2000],
-      "accepted_krw": [6000, 3000, 1000],
-      "rejected_krw": [1000],
-      "guarded_total_krw": 50000,
+      "accepted_krw": [6000, 3000],
+      "rejected_krw": [2000],
+      "operations": [
+        {"operation_id": "provider-001", "requested_reservation_krw": 6000, "decision": "accepted"},
+        {"operation_id": "logging-001", "requested_reservation_krw": 3000, "decision": "accepted"},
+        {"operation_id": "cleanup-001", "requested_reservation_krw": 2000, "decision": "rejected"}
+      ],
+      "guarded_total_krw": 49000,
       "hard_cutoff_exceeded": false
     },
     {
@@ -48,6 +53,10 @@
       "requests_krw": [1000, 4000],
       "accepted_krw": [1000],
       "rejected_krw": [4000],
+      "operations": [
+        {"operation_id": "logging-spike-accepted", "requested_reservation_krw": 1000, "decision": "accepted"},
+        {"operation_id": "logging-spike-rejected", "requested_reservation_krw": 4000, "decision": "rejected"}
+      ],
       "guarded_total_krw": 50000,
       "alert_percent": 100,
       "alerts_observed_percent": [50, 75, 90, 100],
@@ -61,6 +70,10 @@
       "requests_krw": [1000, 3000],
       "accepted_krw": [1000],
       "rejected_krw": [3000],
+      "operations": [
+        {"operation_id": "cleanup-retry-accepted", "requested_reservation_krw": 1000, "decision": "accepted"},
+        {"operation_id": "cleanup-retry-rejected", "requested_reservation_krw": 3000, "decision": "rejected"}
+      ],
       "guarded_total_krw": 50000,
       "alert_percent": 100,
       "alerts_observed_percent": [50, 75, 90, 100],
@@ -75,11 +88,57 @@
       "requests_krw": [1000, 2000],
       "accepted_krw": [1000],
       "rejected_krw": [2000],
+      "operations": [
+        {"operation_id": "ttl-delete-accepted", "requested_reservation_krw": 1000, "decision": "accepted"},
+        {"operation_id": "ttl-delete-rejected", "requested_reservation_krw": 2000, "decision": "rejected"}
+      ],
       "guarded_total_krw": 50000,
       "alert_percent": 100,
       "alerts_observed_percent": [50, 75, 90, 100],
       "kill_switch": true,
       "hard_cutoff_exceeded": false
+    },
+    {
+      "name": "boundary_request_rejected_whole",
+      "committed_actual_krw": 39500,
+      "active_reservations_before_krw": 5000,
+      "requests_krw": [501],
+      "accepted_krw": [],
+      "rejected_krw": [501],
+      "operations": [
+        {"operation_id": "boundary-501", "requested_reservation_krw": 501, "decision": "rejected"}
+      ],
+      "guarded_total_krw": 49500,
+      "hard_cutoff_exceeded": false
+    }
+  ],
+  "settlement_cases": [
+    {
+      "name": "actual_within_reservation",
+      "committed_before_krw": 30000,
+      "active_reservation_before_krw": 1200,
+      "delayed_reserve_before_krw": 5000,
+      "requested_reservation_krw": 1200,
+      "actual_krw": 1000,
+      "committed_after_krw": 31000,
+      "active_reservation_after_krw": 0,
+      "delayed_reserve_after_krw": 5000,
+      "unused_reservation_released_krw": 200,
+      "atomic_ledger_version_cas": true
+    },
+    {
+      "name": "actual_over_reservation_consumes_delayed_reserve",
+      "committed_before_krw": 30000,
+      "active_reservation_before_krw": 1000,
+      "delayed_reserve_before_krw": 5000,
+      "requested_reservation_krw": 1000,
+      "actual_krw": 1100,
+      "committed_after_krw": 31100,
+      "active_reservation_after_krw": 0,
+      "delayed_reserve_after_krw": 4900,
+      "overflow_delta_krw": 100,
+      "atomic_ledger_version_cas": true,
+      "price_manifest_integrity_incident": true
     }
   ],
   "fail_closed_cases": [

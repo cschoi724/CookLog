@@ -22,7 +22,7 @@
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260730-005` | `done` | iOS CI PR dry run·실패 감지·회귀 검증 | 최신 PR #36 33/33, #37~#39 실패 65·timeout 124·취소·artifact | PR #36 squash merge `a5c6503`·완료 확정 |
 | `T-20260729-023` | `done` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | 완료 확정, PASS_WITH_RISK 잔여 위험은 staging 인계 |
-| `T-20260729-024` | `approved` | Backend 보안·개인정보·관측성·비용 guardrail | raw metadata 30일 장애 경계·전체 외부비 원장·provider 처리 지역 gate | QA-HIGH-024-002 재작업 후 QA 독립 재검증 |
+| `T-20260729-024` | `verification_ready` | Backend 보안·개인정보·관측성·비용 guardrail | 비용 operation 전액 결정·actual 초과 정산 불변식 | Backend QA 독립 재검증 |
 
 향후 검증 예정 Task:
 
@@ -138,6 +138,12 @@ egress 비용 반영이 없는 `QA-HIGH-024-002`를 확인해 `FAIL`,
 fixture가 2,000원 operation을 1,000원 승인·1,000원 거절로 부분 처리하고 예약 초과
 실제값의 50,000원 불변식 유지 규칙도 없어 `QA-HIGH-024-002`는 미해소입니다.
 재검증 `FAIL`, `rework_requested`로 다시 인계했습니다.
+
+두 번째 재작업은 operation ID별 요청 금액을 부분 처리 없이 전액 accepted 또는
+rejected로 결정하고 그 multiset이 전체 요청과 일치하도록 검증합니다. actual 초과분은
+delayed reserve를 같은 ledger version CAS에서 소비하며, provider·logging 동시 경합,
+경계 직전 전액 거절과 actual 정상·초과 정산 fixture가 통과했습니다. Backend QA는
+`QA-HIGH-024-002` 해소와 기존 해소 항목의 무회귀를 독립 재검증합니다.
 
 승인 재작업은 raw metadata +28일 cleanup·15분 독립 sweeper·+30일 read/export/
 aggregate 차단과 sink receipt, 전체 외부비 SKU 단일 원장, 저장 region·regional

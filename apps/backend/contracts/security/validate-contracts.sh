@@ -65,14 +65,60 @@ jq -e '
     (.catalog_sku_id | length) > 0 and
     (.unit | length) > 0 and .unit_price_usd > 0) and
   all(.concurrency_cases[];
-    .guarded_total_krw <= 50000 and .hard_cutoff_exceeded == false) and
+    .guarded_total_krw <= 50000 and
+    .hard_cutoff_exceeded == false and
+    ((.accepted_krw + .rejected_krw) | sort) ==
+      (.requests_krw | sort) and
+    ([.operations[].operation_id] | unique | length) ==
+      (.operations | length) and
+    ([.operations[].requested_reservation_krw] | sort) ==
+      (.requests_krw | sort) and
+    ([.operations[] | select(.decision == "accepted") |
+      .requested_reservation_krw] | sort) ==
+      (.accepted_krw | sort) and
+    ([.operations[] | select(.decision == "rejected") |
+      .requested_reservation_krw] | sort) ==
+      (.rejected_krw | sort) and
+    all(.operations[];
+      .decision == "accepted" or .decision == "rejected") and
+    (.committed_actual_krw + .active_reservations_before_krw +
+      5000 + ((.accepted_krw | add) // 0)) ==
+      .guarded_total_krw) and
   all(.concurrency_cases[] | select(.alert_percent == 100);
     .alerts_observed_percent == [50, 75, 90, 100] and
     .kill_switch == true and (.rejected_krw | length) >= 1) and
   (.concurrency_cases[] |
     select(.name == "provider_and_nonprovider_compete") |
-    ((.committed_actual_krw + .active_reservations_before_krw +
-      5000 + (.accepted_krw | add)) == .guarded_total_krw)) and
+    .accepted_krw == [6000, 3000] and .rejected_krw == [2000] and
+    .guarded_total_krw == 49000) and
+  (.concurrency_cases[] |
+    select(.name == "boundary_request_rejected_whole") |
+    .requests_krw == [501] and .accepted_krw == [] and
+    .rejected_krw == [501] and .guarded_total_krw == 49500) and
+  (.settlement_cases | map(.name) | sort) ==
+    ["actual_over_reservation_consumes_delayed_reserve",
+     "actual_within_reservation"] and
+  all(.settlement_cases[];
+    .atomic_ledger_version_cas == true and
+    (.committed_after_krw + .active_reservation_after_krw +
+      .delayed_reserve_after_krw) <=
+    (.committed_before_krw + .active_reservation_before_krw +
+      .delayed_reserve_before_krw) and
+    .committed_after_krw == (.committed_before_krw + .actual_krw) and
+    .active_reservation_after_krw == 0) and
+  (.settlement_cases[] |
+    select(.name == "actual_within_reservation") |
+    .actual_krw <= .requested_reservation_krw and
+    .unused_reservation_released_krw ==
+      (.requested_reservation_krw - .actual_krw) and
+    .delayed_reserve_after_krw == .delayed_reserve_before_krw) and
+  (.settlement_cases[] |
+    select(.name == "actual_over_reservation_consumes_delayed_reserve") |
+    .actual_krw > .requested_reservation_krw and
+    .overflow_delta_krw == (.actual_krw - .requested_reservation_krw) and
+    .delayed_reserve_after_krw ==
+      (.delayed_reserve_before_krw - .overflow_delta_krw) and
+    .price_manifest_integrity_incident == true) and
   (.fail_closed_cases | map(.name) | sort) ==
     ["billing_reconciliation_over_six_hours", "catalog_sku_missing",
      "fx_snapshot_expired", "price_snapshot_expired"] and

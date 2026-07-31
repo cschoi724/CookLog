@@ -337,6 +337,17 @@ committed_actual_krw
 
 - 월 개설 시 계측 지연, 가격 반올림과 cleanup 비상 실행을 위한
   `delayed_billing_reserve_krw=5,000`을 먼저 예약하고 월중 해제하지 않는다.
+- 각 reservation은 불변 `operation_id`, `requested_reservation_krw`, SKU별 최대
+  billable quantity와 하나의 `accepted|rejected` 결정을 가진다. 요청 금액 전체가
+  남은 원장 안에 들어올 때만 accepted이며 일부 금액만 예약하는 partial acceptance는
+  금지한다. 분할 실행이 가능한 bulk 작업은 예약 전에 독립 operation ID와 독립 실행
+  단위로 나눈다. rejected operation은 어떤 billable side effect도 시작하지 않는다.
+- USD SKU의 요청 상한은
+  `ceil(max_billable_quantity × pinned_unit_price_usd × usd_krw × 1.10)`으로,
+  KRW SKU는 `ceil(max_billable_quantity × pinned_unit_price_krw × 1.10)`으로
+  계산한다. token·실행 초·operation 수·전송 byte·보존량의 runtime hard limit가
+  `max_billable_quantity`를 넘기 전에 작업을 종료한다. 유한한 최대치를 강제할 수
+  없는 operation은 production에서 실행하지 않는다.
 - provider 호출은 최대 input·output token과 timeout까지의 Cloud Run, Tasks,
   Firestore read·write·delete, 예상 egress를 하나의 operation reservation으로 묶는다.
 - API·worker·sweeper invocation은 최대 실행 시간의 CPU·memory·request 비용을 시작
@@ -348,14 +359,25 @@ committed_actual_krw
 - internet egress, build와 artifact 작업도 전송 byte·최대 build time·보존량을 실행
   전에 예약한다. 예약 API를 사용하지 않는 production 경로는 금지한다.
 - provider usage와 Cloud Billing export가 도착하면 실제 SKU별 비용으로 정산한다.
-  예상보다 큰 실제값은 즉시 committed actual에 반영하고 다른 active reservation을
-  해제하지 않는다.
+  정상 경로는 runtime hard limit와 10% buffer 때문에
+  `actual_krw <= requested_reservation_krw`여야 한다. 정산 transaction은 reservation
+  전체를 active에서 제거하고 actual을 committed에 더하며 미사용 차액만 반환한다.
+- 가격 반올림·billing correction으로 actual이 reservation을 초과하면
+  `delta = actual - requested_reservation`을 계산한다. `delta`가 남은
+  delayed billing reserve 이하여야만 같은 ledger version CAS에서 active reservation
+  전체 제거, committed actual 반영과 delayed reserve의 delta 차감을 함께 commit한다.
+  이 전이는 원장 합계를 늘리지 않는다. 다른 active reservation은 해제하지 않는다.
+- `delta`가 delayed reserve보다 크거나 정산 CAS가 실패하면 가격 manifest integrity
+  P0 incident로 모든 신규 비용 operation을 차단한다. production 활성화 전 최대
+  quantity·10% buffer가 이 상태를 만들지 않는다는 경계 시험이 필수다.
 - billing export는 최소 시간마다 ingest하되 최대 6시간 지연을 가정한다. 마지막 성공
   reconciliation이 6시간을 넘으면 새 비용 발생 요청을 fail closed한다.
 
 서로 다른 service의 예약도 같은 `(billing_month, ledger_version)` compare-and-set을
 사용한다. provider와 logging·cleanup·TTL delete가 동시에 경합해도 단일 승자만 남은
-KRW를 예약한다. soft alert는
+KRW를 전액 예약한다. 동시 요청의 순서가 달라도 각 operation은 전액 accepted 또는
+전액 rejected 중 하나이고, accepted·rejected operation ID의 합집합은 요청 ID 집합과
+정확히 같아야 한다. soft alert는
 `committed_actual + active_reservations + delayed_billing_reserve` 합계로 계산한다.
 
 ### 9.3 고정 상한
