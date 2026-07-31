@@ -190,3 +190,16 @@ Backend QA 결과를 커밋 `36ef1b4`로 고정한 뒤 최신 `origin/develop`
 `T-20260729-025`로 인계할 수 있는 비차단 위험이다. Development Lead가 성공
 기준과 독립 QA 증빙을 수용해 `completion_review`로 전환한다. `develop` 대상
 PR 병합 후 `done`으로 확정한다.
+
+## 완료
+
+- PR: [#32](https://github.com/cschoi724/CookLog/pull/32)
+- merge SHA: `527a431420f476949c1a50e83e8183c5ecd4caa2`
+- `ios-build` run `30598724690`: 성공
+- `ios-xctest` run `30598724683`: 성공
+- 병합 방식: `develop` 대상 squash merge
+
+Development Lead가 PR 통합과 merge SHA를 확인해 `done`으로 확정했다.
+`T-20260729-022`, `T-20260729-023`, `T-20260729-024`의 T-021 선행 조건은
+해소됐지만 각 Task의 Product Owner 실행 승인은 별도로 유지한다. runtime
+validator와 catalog renderer 동일성 테스트는 `T-20260729-025`로 인계한다.
