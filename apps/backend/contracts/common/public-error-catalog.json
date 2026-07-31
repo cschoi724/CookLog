@@ -1,0 +1,205 @@
+{
+  "schema_version": "v1",
+  "errors": [
+    {
+      "code": "INVALID_REQUEST",
+      "type": "https://api.cooklog.app/problems/invalid-request",
+      "title": "Invalid request",
+      "status": 400,
+      "detail": "The request format is invalid.",
+      "user_message_key": "error.invalid_request",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "AUTH_REQUIRED",
+      "type": "https://api.cooklog.app/problems/auth-required",
+      "title": "Authentication required",
+      "status": 401,
+      "detail": "Authentication is required.",
+      "user_message_key": "error.auth_required",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "TOKEN_EXPIRED",
+      "type": "https://api.cooklog.app/problems/token-expired",
+      "title": "Session expired",
+      "status": 401,
+      "detail": "The installation session expired.",
+      "user_message_key": "error.session_expired",
+      "retryable": true,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "ATTESTATION_INVALID",
+      "type": "https://api.cooklog.app/problems/attestation-invalid",
+      "title": "App verification failed",
+      "status": 401,
+      "detail": "App verification failed.",
+      "user_message_key": "error.app_verification_failed",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "ATTESTATION_REPLAYED",
+      "type": "https://api.cooklog.app/problems/attestation-replayed",
+      "title": "App verification failed",
+      "status": 401,
+      "detail": "App verification failed.",
+      "user_message_key": "error.app_verification_failed",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "INSTALLATION_REVOKED",
+      "type": "https://api.cooklog.app/problems/installation-revoked",
+      "title": "Access denied",
+      "status": 403,
+      "detail": "Access to this operation is denied.",
+      "user_message_key": "error.access_denied",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "RESOURCE_NOT_FOUND",
+      "type": "https://api.cooklog.app/problems/resource-not-found",
+      "title": "Resource not found",
+      "status": 404,
+      "detail": "The requested resource was not found.",
+      "user_message_key": "error.not_found",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "API_VERSION_UNSUPPORTED",
+      "type": "https://api.cooklog.app/problems/api-version-unsupported",
+      "title": "API version unsupported",
+      "status": 404,
+      "detail": "This API version is not supported.",
+      "user_message_key": "error.update_required",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "IDEMPOTENCY_KEY_REUSED",
+      "type": "https://api.cooklog.app/problems/idempotency-key-reused",
+      "title": "Idempotency conflict",
+      "status": 409,
+      "detail": "The idempotency key was used for a different request.",
+      "user_message_key": "error.request_conflict",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "REQUEST_IN_PROGRESS",
+      "type": "https://api.cooklog.app/problems/request-in-progress",
+      "title": "Request in progress",
+      "status": 409,
+      "detail": "The same request is still being processed.",
+      "user_message_key": "error.request_in_progress",
+      "retryable": true,
+      "retry_after_policy": "required"
+    },
+    {
+      "code": "REQUEST_OUTCOME_UNKNOWN",
+      "type": "https://api.cooklog.app/problems/request-outcome-unknown",
+      "title": "Request outcome unknown",
+      "status": 409,
+      "detail": "The request outcome is not yet known.",
+      "user_message_key": "error.request_status_unknown",
+      "retryable": true,
+      "retry_after_policy": "required"
+    },
+    {
+      "code": "PAYLOAD_TOO_LARGE",
+      "type": "https://api.cooklog.app/problems/payload-too-large",
+      "title": "Payload too large",
+      "status": 413,
+      "detail": "The request body is too large.",
+      "user_message_key": "error.payload_too_large",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "VALIDATION_FAILED",
+      "type": "https://api.cooklog.app/problems/validation-failed",
+      "title": "Validation failed",
+      "status": 422,
+      "detail": "One or more request fields are invalid.",
+      "user_message_key": "error.invalid_request",
+      "retryable": false,
+      "retry_after_policy": "forbidden"
+    },
+    {
+      "code": "RATE_LIMITED",
+      "type": "https://api.cooklog.app/problems/rate-limited",
+      "title": "Rate limit exceeded",
+      "status": 429,
+      "detail": "The request limit was exceeded.",
+      "user_message_key": "error.rate_limited",
+      "retryable": true,
+      "retry_after_policy": "required"
+    },
+    {
+      "code": "QUOTA_EXCEEDED",
+      "type": "https://api.cooklog.app/problems/quota-exceeded",
+      "title": "Quota exceeded",
+      "status": 429,
+      "detail": "The project usage quota was exceeded.",
+      "user_message_key": "error.quota_exceeded",
+      "retryable": false,
+      "retry_after_policy": "required"
+    },
+    {
+      "code": "UPSTREAM_UNAVAILABLE",
+      "type": "https://api.cooklog.app/problems/upstream-unavailable",
+      "title": "Upstream unavailable",
+      "status": 502,
+      "detail": "A required upstream service is temporarily unavailable.",
+      "user_message_key": "error.service_unavailable",
+      "retryable": true,
+      "retry_after_policy": "optional"
+    },
+    {
+      "code": "SERVICE_DISABLED",
+      "type": "https://api.cooklog.app/problems/service-disabled",
+      "title": "Service disabled",
+      "status": 503,
+      "detail": "This service is temporarily disabled.",
+      "user_message_key": "error.service_unavailable",
+      "retryable": false,
+      "retry_after_policy": "optional"
+    },
+    {
+      "code": "LIMITER_UNAVAILABLE",
+      "type": "https://api.cooklog.app/problems/limiter-unavailable",
+      "title": "Limiter unavailable",
+      "status": 503,
+      "detail": "Request limiting is temporarily unavailable.",
+      "user_message_key": "error.service_unavailable",
+      "retryable": true,
+      "retry_after_policy": "optional"
+    },
+    {
+      "code": "UPSTREAM_TIMEOUT",
+      "type": "https://api.cooklog.app/problems/upstream-timeout",
+      "title": "Request timed out",
+      "status": 504,
+      "detail": "The request timed out before processing could start.",
+      "user_message_key": "error.request_timed_out",
+      "retryable": true,
+      "retry_after_policy": "optional"
+    },
+    {
+      "code": "INTERNAL_ERROR",
+      "type": "https://api.cooklog.app/problems/internal-error",
+      "title": "Internal server error",
+      "status": 500,
+      "detail": "An unexpected error occurred.",
+      "user_message_key": "error.temporary_failure",
+      "retryable": true,
+      "retry_after_policy": "optional"
+    }
+  ]
+}

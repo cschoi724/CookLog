@@ -1,0 +1,101 @@
+{
+  "cases": [
+    {
+      "id": "provider-error-and-authorization",
+      "public_code": "UPSTREAM_UNAVAILABLE",
+      "unsafe_input": {
+        "exception_class": "OpenAIProviderError",
+        "message": "Authorization: Bearer fake-secret-value",
+        "stack": "internal/provider.ts:42"
+      },
+      "expected_public_fields": {
+        "type": "https://api.cooklog.app/problems/upstream-unavailable",
+        "title": "Upstream unavailable",
+        "status": 502,
+        "detail": "A required upstream service is temporarily unavailable.",
+        "code": "UPSTREAM_UNAVAILABLE",
+        "user_message_key": "error.service_unavailable",
+        "retryable": true
+      },
+      "forbidden_substrings": [
+        "OpenAI",
+        "Authorization",
+        "Bearer",
+        "fake-secret-value",
+        "internal/provider.ts"
+      ]
+    },
+    {
+      "id": "user-step-and-model-name",
+      "public_code": "INTERNAL_ERROR",
+      "unsafe_input": {
+        "provider": "example-model-private",
+        "user_content": "삼겹살 넣고 볶았어",
+        "internal_resource_id": "job_internal_123"
+      },
+      "expected_public_fields": {
+        "type": "https://api.cooklog.app/problems/internal-error",
+        "title": "Internal server error",
+        "status": 500,
+        "detail": "An unexpected error occurred.",
+        "code": "INTERNAL_ERROR",
+        "user_message_key": "error.temporary_failure",
+        "retryable": true
+      },
+      "forbidden_substrings": [
+        "example-model-private",
+        "삼겹살 넣고 볶았어",
+        "job_internal_123"
+      ]
+    },
+    {
+      "id": "attestation-proof",
+      "public_code": "ATTESTATION_INVALID",
+      "unsafe_input": {
+        "key_id": "private-key-id-value",
+        "proof": "fake-attestation-proof",
+        "raw_error": "credential replay details"
+      },
+      "expected_public_fields": {
+        "type": "https://api.cooklog.app/problems/attestation-invalid",
+        "title": "App verification failed",
+        "status": 401,
+        "detail": "App verification failed.",
+        "code": "ATTESTATION_INVALID",
+        "user_message_key": "error.app_verification_failed",
+        "retryable": false
+      },
+      "forbidden_substrings": [
+        "private-key-id-value",
+        "fake-attestation-proof",
+        "credential replay details"
+      ]
+    },
+    {
+      "id": "unsafe-violation-field-and-reason",
+      "public_code": "VALIDATION_FAILED",
+      "unsafe_input": {
+        "violations": [
+          {
+            "field": "OpenAI.Authorization",
+            "reason": "BEARER_FAKE_SECRET"
+          }
+        ]
+      },
+      "expected_public_fields": {
+        "type": "https://api.cooklog.app/problems/validation-failed",
+        "title": "Validation failed",
+        "status": 422,
+        "detail": "One or more request fields are invalid.",
+        "code": "VALIDATION_FAILED",
+        "user_message_key": "error.invalid_request",
+        "retryable": false
+      },
+      "forbidden_substrings": [
+        "OpenAI",
+        "Authorization",
+        "BEARER_FAKE_SECRET"
+      ]
+    }
+  ]
+}

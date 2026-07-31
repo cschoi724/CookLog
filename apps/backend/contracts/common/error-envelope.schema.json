@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.cooklog.app/contracts/common/error-envelope.schema.json",
+  "title": "CookLog API 오류 응답",
+  "description": "RFC 9457 Problem Details에 CookLog 공개 오류 필드를 추가한 계약",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "title",
+    "status",
+    "detail",
+    "instance",
+    "request_id",
+    "code",
+    "user_message_key",
+    "retryable"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://api\\.cooklog\\.app/problems/[a-z0-9-]+$"
+    },
+    "title": {
+      "type": "string",
+      "enum": [
+        "Invalid request",
+        "Authentication required",
+        "Session expired",
+        "App verification failed",
+        "Access denied",
+        "Resource not found",
+        "API version unsupported",
+        "Idempotency conflict",
+        "Request in progress",
+        "Request outcome unknown",
+        "Payload too large",
+        "Validation failed",
+        "Rate limit exceeded",
+        "Quota exceeded",
+        "Upstream unavailable",
+        "Service disabled",
+        "Limiter unavailable",
+        "Request timed out",
+        "Internal server error"
+      ]
+    },
+    "status": {
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "detail": {
+      "type": "string",
+      "enum": [
+        "The request format is invalid.",
+        "Authentication is required.",
+        "The installation session expired.",
+        "App verification failed.",
+        "Access to this operation is denied.",
+        "The requested resource was not found.",
+        "This API version is not supported.",
+        "The idempotency key was used for a different request.",
+        "The same request is still being processed.",
+        "The request outcome is not yet known.",
+        "The request body is too large.",
+        "One or more request fields are invalid.",
+        "The request limit was exceeded.",
+        "The project usage quota was exceeded.",
+        "A required upstream service is temporarily unavailable.",
+        "This service is temporarily disabled.",
+        "Request limiting is temporarily unavailable.",
+        "The request timed out before processing could start.",
+        "An unexpected error occurred."
+      ]
+    },
+    "instance": {
+      "type": "string",
+      "pattern": "^urn:cooklog:request:[0-9a-fA-F-]{36}$"
+    },
+    "request_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "code": {
+      "type": "string",
+      "enum": [
+        "INVALID_REQUEST",
+        "AUTH_REQUIRED",
+        "TOKEN_EXPIRED",
+        "ATTESTATION_INVALID",
+        "ATTESTATION_REPLAYED",
+        "INSTALLATION_REVOKED",
+        "RESOURCE_NOT_FOUND",
+        "API_VERSION_UNSUPPORTED",
+        "IDEMPOTENCY_KEY_REUSED",
+        "REQUEST_IN_PROGRESS",
+        "REQUEST_OUTCOME_UNKNOWN",
+        "PAYLOAD_TOO_LARGE",
+        "VALIDATION_FAILED",
+        "RATE_LIMITED",
+        "QUOTA_EXCEEDED",
+        "UPSTREAM_UNAVAILABLE",
+        "SERVICE_DISABLED",
+        "LIMITER_UNAVAILABLE",
+        "UPSTREAM_TIMEOUT",
+        "INTERNAL_ERROR"
+      ]
+    },
+    "user_message_key": {
+      "type": "string",
+      "enum": [
+        "error.invalid_request",
+        "error.auth_required",
+        "error.session_expired",
+        "error.app_verification_failed",
+        "error.access_denied",
+        "error.not_found",
+        "error.update_required",
+        "error.request_conflict",
+        "error.request_in_progress",
+        "error.request_status_unknown",
+        "error.payload_too_large",
+        "error.quota_exceeded",
+        "error.rate_limited",
+        "error.service_unavailable",
+        "error.request_timed_out",
+        "error.temporary_failure"
+      ]
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "retry_after_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2678400
+    },
+    "violations": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "reason"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "authorization",
+              "body",
+              "headers",
+              "installation_id",
+              "challenge_id",
+              "app_version",
+              "provider",
+              "key_id",
+              "proof",
+              "proof_kind",
+              "idempotency_key"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "REQUIRED",
+              "INVALID_FORMAT",
+              "OUT_OF_RANGE",
+              "UNSUPPORTED_VALUE",
+              "TOO_LARGE",
+              "TOO_MANY_ITEMS",
+              "MISMATCH"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.cooklog.app/contracts/common/auth-challenge.schema.json",
+  "title": "설치 무결성 challenge 응답 data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["challenge_id", "challenge", "expires_at"],
+  "properties": {
+    "challenge_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "challenge": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "minLength": 43,
+      "maxLength": 88
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
