@@ -16,6 +16,7 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
+| `T-20260731-001` | `verification_ready` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product QA 독립 검증 대기 |
 
 향후 검증 예정 Task:
 
@@ -33,7 +34,6 @@
 | `T-20260730-005` | CI | iOS QA Agent | 실제 PR dry run·check gate 준비도 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |
 | `T-20260730-007` | iOS/CI | iOS QA Agent | iOS 26.5 SwiftData crash 원인·최소 수정·33/33 회귀 |
-| `T-20260731-001` | Product/Docs | Product QA Agent | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 |
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
 

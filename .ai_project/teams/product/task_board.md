@@ -9,6 +9,6 @@
 |---|---|---|---|---|---|
 | `T-20260729-001` | `done` | 확정 제품 정책과 출시 계획 통합 문서화 | - | 없음 | 완료 |
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | - | `T-20260729-001` | 완료 |
-| `T-20260731-001` | `in_progress` | 활성 문서 Source of Truth 정합성 복구 | Product Lead Agent / Direction Role | `T-20260729-026`, `T-20260729-011`, `T-20260729-020`, `T-20260730-003` | 문서 수정·자체 검증 후 Product QA 인계 |
+| `T-20260731-001` | `verification_ready` | 활성 문서 Source of Truth 정합성 복구 | Product QA Agent / Verification Role | `T-20260729-026`, `T-20260729-011`, `T-20260729-020`, `T-20260730-003` | 독립 문서 정합성 검증 |
 
-첫 공개 출시 STT 정책 변경은 Product QA 재검증과 Product Lead 완료 검토를 통과하고 Product Owner 최종 승인을 받아 `done`으로 확정했습니다. `T-20260731-001`은 제품 정책을 변경하지 않고 활성 안내 문서가 이 기준과 최신 완료 상태를 정확히 참조하도록 정리합니다. 수익화 동결 Workstream은 Core v1 출시선에 포함하지 않습니다.
+첫 공개 출시 STT 정책 변경은 Product QA 재검증과 Product Lead 완료 검토를 통과하고 Product Owner 최종 승인을 받아 `done`으로 확정했습니다. `T-20260731-001`은 제품 정책을 변경하지 않고 활성 안내 문서가 이 기준과 최신 완료 상태를 정확히 참조하도록 정리했으며 Product QA 독립 검증을 기다립니다. 수익화 동결 Workstream은 Core v1 출시선에 포함하지 않습니다.

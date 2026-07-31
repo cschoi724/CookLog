@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260731-001
 title: 활성 문서 Source of Truth 정합성 복구
-status: in_progress
+status: verification_ready
 type: docs
 priority: P0
 priority_reason: 최신 제품 정책과 완료된 Design·Backend·CI 결과가 루트·운영·iOS·디자인 안내 문서에 반영되지 않아 후속 Agent가 잘못된 범위를 구현할 위험이 있다.
@@ -10,12 +10,13 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: docs
-target_agent: Product Lead Agent
-target_role: Direction Role
+target_agent: Product QA Agent
+target_role: Verification Role
 required_capabilities:
   - product_documentation
   - cross_domain_reconciliation
   - source_of_truth_governance
+  - independent_validation
 depends_on:
   - T-20260729-026
   - T-20260729-011
@@ -61,9 +62,9 @@ source_of_truth:
   - docs/PROJECT_DECISIONS.md
 created_by: Product Lead Agent
 approved_by: Product Owner
-locked_by: Product Lead Agent
-locked_at: 2026-07-31T11:16:49+09:00
-lock_session: /root
+locked_by:
+locked_at:
+lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-31
 updated_at: 2026-07-31
@@ -108,16 +109,18 @@ qa_to: .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-q
 
 - 2026-07-31: Product Owner가 1~5번 문서 정합성 범위를 Product Lead Agent가 전담하도록 승인했다.
 - 2026-07-31: Product Lead Agent가 최신 `origin/develop` 전용 worktree에서 Task를 등록하고 `proposed -> scoped -> approved -> in_progress`로 실행을 시작했다.
+- 2026-07-31: Product Owner 승인에 따라 로컬 문서 커밋을 생성하고 최신 `origin/develop`을 병합했다.
+- 2026-07-31: 최신 상태 재집계·링크·strict Task·Backend 계약·diff 검증을 마치고 `in_progress -> verification_ready`로 Product QA Agent에 인계했다.
 
 ## Next Agent Handoff
 
 ```text
-너는 Product Lead Agent / Direction Role이야.
-T-20260731-001 활성 문서 Source of Truth 정합성 복구를 계속 진행해줘.
+너는 Product QA Agent / Verification Role이야.
+T-20260731-001 활성 문서 Source of Truth 정합성 복구를 독립 검증해줘.
 
-- 현재 상태: in_progress
-- 기준: 제품 정책을 바꾸지 말고 최신 제품 Source of Truth와 완료된 Task 결과를 활성 안내 문서에 반영
-- 수정 범위: Task의 allowed_paths
-- 완료 후: 자체 검증과 보고서를 작성하고 verification_ready로 Product QA Agent에 인계
-- 금지: 앱 코드 수정, 다른 Task 상태 전이, commit·push·PR·merge
+- 현재 상태: verification_ready
+- 검증 기준: 제품 정책 무변경, 최신 Task 상태, 문서 우선순위와 링크, 후속 Agent 오해 가능성
+- 검증 기준: 현재 전용 worktree의 최종 로컬 HEAD
+- 결과 기록: .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
+- 금지: Product Lead의 자체 검증을 독립 검증으로 대체, 앱 코드 수정, commit·push·PR·merge
 ```
