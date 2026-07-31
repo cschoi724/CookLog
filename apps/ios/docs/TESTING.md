@@ -751,3 +751,61 @@ step에 전달합니다. 이를 통해 build와 artifact가 같은 실행별 격
 artifact upload를 모두 통과했습니다. build log artifact
 `cooklog-ios-build-30592350218-1`도 실제 생성되어 hosted 경로와 업로드
 계약을 확인했습니다.
+
+## 17. T-20260730-003 `ios-xctest` workflow
+
+`.github/workflows/ios-xctest.yml`은 `develop` 또는 `main` 대상 pull request와
+수동 실행에서 정확히 하나의 `ios-xctest` check를 생성합니다.
+
+구현 경계:
+
+- `macos-26`에서 Xcode 26.6 (`17F113`)과 iPhone 17·iOS 26.5를
+  preflight로 확인하며 다른 버전이나 기기로 자동 대체하지 않는다.
+- workflow는 별도 `xcodebuild test`나 `test-without-building`을 추가하지
+  않고 `apps/ios/Scripts/run-xctest.sh`만 실행한다.
+- script timeout은 600초, job timeout은 15분으로 유지해 script가 먼저
+  종료 코드 124와 `TIMED_OUT`을 남길 시간을 보장한다.
+- script가 고정한 직렬 실행 옵션과 일반 `xcodebuild` 종료 코드를 그대로
+  check 결과로 사용한다.
+- 권한은 `contents: read`만 사용하고 checkout credential을 보존하지 않는다.
+- 원격 STT secret, endpoint 또는 활성화 flag를 사용하지 않는다.
+- 성공·실패와 무관하게 실행별 `xcodebuild.log`, 존재하는
+  `CookLogTests.xcresult`, 존재하는 `TIMED_OUT`만 14일 동안 업로드한다.
+  DerivedData는 artifact에서 제외한다.
+
+### 17.1 개발자 검증
+
+2026-07-31 로컬 Xcode 26.6 (`17F113`), iPhone 17, iOS 26.5
+(`23F77`)에서 workflow와 같은 환경 변수로 기존 script를 실행했습니다.
+
+| 검증 | 결과 | 종료 코드 | artifact |
+|---|---|---:|---|
+| 전체 XCTest | 33/33 통과 | 0 | log, xcresult |
+| 일반 test 실행 실패 | `TEST FAILED` | 65 | log, xcresult |
+| 1초 강제 timeout | `BUILD INTERRUPTED` | 124 | log, 부분 xcresult, `TIMED_OUT` |
+
+정상 실행:
+
+- `/private/tmp/cooklog-t003-success-20260731-0916/20260731-091521-93498/`
+- 전체 33개, 실패 0, `TEST SUCCEEDED`
+- `TIMED_OUT` 없음
+
+일반 실패는 소스 파일을 바꾸지 않고
+`OTHER_SWIFT_FLAGS=$(inherited) -cooklog-intentional-test-failure`를 환경으로
+주입해 `xcodebuild test`의 compile 단계에서 재현했습니다.
+
+- `/private/tmp/cooklog-t003-failure-20260731-0918/20260731-091651-96011/`
+- 종료 코드 65, `TEST FAILED`
+- log와 xcresult 존재, `TIMED_OUT` 없음
+
+timeout은 `COOKLOG_XCTEST_TIMEOUT_SECONDS=1`로 재현했습니다.
+
+- `/private/tmp/cooklog-t003-timeout-20260731-0917/20260731-091559-94674/`
+- 종료 코드 124
+- log, 부분 xcresult와 `TIMED_OUT` 존재
+
+로컬 Xcode 설치 경로는 `/Applications/Xcode.app`이므로 GitHub-hosted
+`/Applications/Xcode_26.6.app` preflight와 Actions artifact의 실제 업로드는
+T-003 PR run에서 확인합니다. 같은 preflight 구조는 T-002 PR #24의
+GitHub-hosted run에서 이미 통과했지만 `ios-xctest` 자체의 hosted 결과는
+별도 증빙이 필요합니다.

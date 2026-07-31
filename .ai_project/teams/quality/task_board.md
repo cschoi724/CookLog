@@ -13,6 +13,7 @@
 | `T-20260729-010` | `done` | Cooking Log·STEP Preview·기기 내 STT·권한·오류 디자인 | 10초 기록, 권한, 기기 내 STT, STEP 삭제·되돌리기, 오프라인과 snapshot 잠금 | PR #22 squash merge·완료 확정 |
 | `T-20260730-002` | `done` | ios-build·build-for-testing workflow 구현 | PR #24 runs 30592350218·30592508288 전 단계 성공, artifact 확인 | 최종 PASS·squash merge·완료 확정 |
 | `T-20260729-020` | `done` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 고정 커밋 동등성·QA-HIGH-020-003·비용·최신 보드 비회귀 | PASS_WITH_RISK 수용·PR #26 squash merge·완료 확정 |
+| `T-20260730-003` | `completion_review` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33, 일반 실패 65, timeout 124와 log·xcresult·marker | PASS_WITH_RISK 수용, hosted 성공 실행은 PR merge gate |
 
 향후 검증 예정 Task:
 
@@ -27,7 +28,6 @@
 | `T-20260729-023` | Backend | Backend QA Agent | AI 상태·복구·schema·timeout |
 | `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
-| `T-20260730-003` | CI | iOS QA Agent | XCTest 성공·실패·timeout artifact |
 | `T-20260730-004` | CI | iOS QA Agent | concurrency·cache 회귀·진단 가능성 |
 | `T-20260730-005` | CI | iOS QA Agent | 실제 PR dry run·check gate 준비도 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |
