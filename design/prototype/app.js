@@ -5,21 +5,24 @@ const icons = {
   sparkles: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.2 3.8L7 8l3.8 1.2L12 13l1.2-3.8L17 8l-3.8-1.2L12 3Z"/><path d="m5 14-.8 2.2L2 17l2.2.8L5 20l.8-2.2L8 17l-2.2-.8L5 14ZM19 13l-.8 2.2-2.2.8 2.2.8L19 19l.8-2.2 2.2-.8-2.2-.8L19 13Z"/></svg>`,
   play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>`,
   search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>`,
+  info: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>`,
   close: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>`,
   more: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>`
 };
 
 const screenStates = {
-  home: ["content", "multiple", "ai-ready", "menu-open", "delete-confirm", "empty", "loading", "error"],
+  home: ["content", "multiple", "ai-ready", "network-error", "menu-open", "delete-confirm", "empty", "loading", "error"],
   library: ["all", "search-title", "search-ingredient", "no-results", "empty"],
   log: ["intro", "permission-denied", "empty", "recording", "processing", "retrying", "steps", "undo-delete", "offline", "record-error", "stt-unsupported", "stt-error", "ai-lock", "ai-offline"],
   review: ["processing", "processing-long", "ready-banner", "editable", "draft-saved", "unsaved-exit", "validation-error", "saving", "save-error", "generation-error", "complete-edit", "complete-saving"],
   detail: ["content", "menu-open", "delete-confirm", "deleted", "loading", "error", "not-found"],
-  player: ["ready", "paused", "playing", "step-complete", "last-step", "ingredients", "speed", "handsfree-intro", "permission-denied", "handsfree-active", "listening", "command-next", "command-previous", "command-pause", "command-resume", "command-replay", "command-ingredients", "command-exit", "command-uncertain", "interrupted", "background-ended", "loading", "error", "no-steps"]
+  player: ["ready", "paused", "playing", "step-complete", "last-step", "ingredients", "speed", "handsfree-intro", "permission-denied", "handsfree-active", "listening", "command-next", "command-previous", "command-pause", "command-resume", "command-replay", "command-ingredients", "command-exit", "command-uncertain", "interrupted", "background-ended", "loading", "error", "no-steps"],
+  info: ["overview", "data-retention", "contact-consent", "contact-ready", "mail-unavailable", "privacy-loading", "privacy-unconfigured", "privacy-error", "terms-loading", "terms-unconfigured", "terms-error"]
 };
 
 const stateLabels = {
   content: "최근 3개", multiple: "여러 진행 기록", "ai-ready": "AI 완료 배너", "menu-open": "진행 기록 메뉴", "delete-confirm": "영구 삭제 확인",
+  "network-error": "인터넷 연결 오류",
   all: "전체 · 최근 활동순", "search-title": "검색 · 제목 우선", "search-ingredient": "검색 · 재료 일치", "no-results": "검색 결과 없음",
   empty: "빈 상태", loading: "로딩", error: "오류",
   intro: "첫 기록 안내", "permission-denied": "마이크 권한 거부", recording: "10초 녹음", processing: "기기 내 변환", retrying: "자동 재처리", steps: "STEP 누적", "undo-delete": "삭제·되돌리기", offline: "오프라인 기록",
@@ -32,13 +35,17 @@ const stateLabels = {
   ingredients: "재료 듣기", speed: "읽기 속도", "handsfree-intro": "첫 핸즈프리 안내", "handsfree-active": "핸즈프리 켜짐", listening: "명령 듣는 중",
   "command-next": "명령·다음", "command-previous": "명령·이전", "command-pause": "명령·멈춰", "command-resume": "명령·계속",
   "command-replay": "명령·다시 듣기", "command-ingredients": "명령·재료", "command-exit": "명령·종료", "command-uncertain": "명령 불확실",
-  interrupted: "오디오 중단", "background-ended": "백그라운드·잠금", "no-steps": "단계 없음"
+  interrupted: "오디오 중단", "background-ended": "백그라운드·잠금", "no-steps": "단계 없음",
+  overview: "앱 정보", "data-retention": "데이터 보관 안내", "contact-consent": "문의 정보 선택", "contact-ready": "문의 준비됨", "mail-unavailable": "이메일 앱 없음",
+  "privacy-loading": "개인정보처리방침 로딩", "privacy-unconfigured": "개인정보 링크 미설정", "privacy-error": "개인정보 링크 오류",
+  "terms-loading": "이용약관 로딩", "terms-unconfigured": "이용약관 링크 미설정", "terms-error": "이용약관 링크 오류"
 };
 
 const params = new URLSearchParams(window.location.search);
 const isEmbedded = params.get("embed") === "1";
 const sttPath = ["success", "retry-success", "retry-failure"].includes(params.get("stt-path")) ? params.get("stt-path") : "success";
 if (isEmbedded) document.body.classList.add("embed");
+if (params.get("text-scale") === "accessibility") document.body.dataset.textScale = "accessibility";
 let screen = screenStates[params.get("screen")] ? params.get("screen") : "home";
 let state = screenStates[screen].includes(params.get("state")) ? params.get("state") : screenStates[screen][0];
 let dark = params.get("theme") === "dark";
@@ -112,6 +119,7 @@ if (reviewMode === "complete") {
 let homeFeedback = "";
 let lastMenuTriggerId = "";
 let focusIntent = null;
+let diagnosticsIncluded = false;
 const deletedRecipeIds = new Set();
 
 const recipes = [
@@ -281,8 +289,9 @@ function escapeHTML(value) {
 
 function feedbackCard(kind, title, copy, retry) {
   const icon = kind === "loading" ? `<div class="loader"></div>` : `<div class="empty-icon">${kind === "error" ? "!" : "·"}</div>`;
+  const infoFocus = screen === "info" ? ` tabindex="-1" data-info-screen-focus` : "";
   return `<div class="card progress-card">
-    <div>${icon}<h3>${title}</h3><p>${copy}</p>
+    <div>${icon}<h3${infoFocus}>${title}</h3><p>${copy}</p>
     ${retry ? `<button class="button button-secondary" style="margin-top:22px" data-state="${retry}">다시 시도</button>` : ""}</div>
   </div>`;
 }
@@ -303,7 +312,7 @@ function renderHome() {
     ? `<div class="card empty-card"><div><div class="empty-icon">${icons.book}</div><h4>아직 요리 기록이 없어요</h4><p>첫 요리를 10초씩 기록하면 진행 기록과 완성한 레시피가 여기에 쌓입니다.</p></div></div>`
     : `<div class="recipe-list">${recent.map(item => recipeCard(item, { menuOpen: recordMenuId === item.id })).join("")}</div>`;
   return `<section class="screen home-screen">
-    ${header({ action: `<button class="icon-button" data-nav="library" data-state="all" aria-label="전체 요리 기록">${icons.book}</button>` })}
+    ${header({ action: `<div class="header-actions"><button class="icon-button" data-nav="info" data-state="overview" aria-label="앱 정보">${icons.info}</button><button class="icon-button" data-nav="library" data-state="all" aria-label="전체 요리 기록">${icons.book}</button></div>` })}
     <div class="hero">
       <p class="eyebrow">나의 주방 기록</p>
       <h2>오늘의 맛을<br>잊지 않도록</h2>
@@ -314,10 +323,92 @@ function renderHome() {
     </button>
     <p class="preservation-note">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</p>
     ${state === "ai-ready" ? `<div class="banner banner-success" role="status"><strong aria-hidden="true">✓</strong><div><strong>AI 정리가 끝났어요</strong><p>달큰한 간장 삼겹살 검토본이 준비됐습니다.</p><button class="banner-action" type="button" data-nav="review" data-state="editable">레시피 검토하기</button></div></div>` : ""}
+    ${state === "network-error" ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>인터넷 연결을 확인해주세요</strong><p>실패한 온라인 행동은 자동으로 다시 실행하지 않았어요. 진행 기록·완료 레시피·검색·버튼 Audio Guide는 계속 사용할 수 있습니다.</p><button class="banner-action" type="button" data-action="retry-network-check">연결 다시 확인</button></div></div>` : ""}
     ${homeFeedback ? `<div class="compact-feedback" role="status">${escapeHTML(homeFeedback)}</div>` : ""}
     <div class="section-head"><div><h3>${state === "empty" ? "나의 요리 기록" : "최근 레시피"}</h3><span>최근 활동순 · 최대 3개</span></div><button class="text-action" data-nav="library" data-state="all">전체 보기</button></div>
     ${content}
     ${deleteDialog()}
+  </section>`;
+}
+
+function infoMenuItem({ symbol, title, copy, state: nextState, action = "" }) {
+  return `<button class="info-menu-item" type="button" ${action ? `data-action="${action}"` : `data-nav="info" data-state="${nextState}"`}>
+    <span class="info-menu-symbol" aria-hidden="true">${symbol}</span>
+    <span><strong>${title}</strong><small>${copy}</small></span>
+    <span class="info-menu-arrow" aria-hidden="true">›</span>
+  </button>`;
+}
+
+function renderInfo() {
+  const infoHeader = header({ back: "home", title: "앱 정보" });
+  if (state === "data-retention") {
+    return `<section class="screen info-screen">${infoHeader}
+      <div class="info-intro"><p class="eyebrow">LOCAL DATA</p><h2 class="screen-title" tabindex="-1" data-info-screen-focus>내 요리 기록은<br>이 기기에 보관돼요</h2><p>첫 출시의 보관 범위와 복구 한계를 정확히 안내합니다.</p></div>
+      <div class="retention-summary" role="note"><span aria-hidden="true">⌂</span><div><strong>CookLog 로컬 저장</strong><p>진행 기록, STEP Preview와 완성 레시피는 현재 기기의 앱 저장소에 보관됩니다.</p></div></div>
+      <div class="info-section"><h3>유실될 수 있는 경우</h3><ul class="boundary-list"><li><strong>앱 삭제</strong><span>앱과 함께 로컬 기록이 삭제될 수 있어요.</span></li><li><strong>기기 초기화·분실</strong><span>CookLog가 다른 기기에서 기록을 복구할 수 없어요.</span></li><li><strong>저장소 손상</strong><span>손상된 로컬 데이터의 복구를 보장하지 않아요.</span></li></ul></div>
+      <div class="alert-card is-warning"><div class="alert-heading"><span class="alert-icon">!</span><div><h3>CookLog 백업·복구·동기화 미제공</h3><p>자체 서버 백업, 기기 간 동기화와 레시피 내보내기는 첫 출시에서 제공하지 않습니다. 운영체제 기기 백업으로 복원될 가능성도 CookLog가 완료 상태로 보장하지 않아요.</p></div></div></div>
+      <button class="button button-secondary" type="button" data-nav="info" data-state="overview">앱 정보로 돌아가기</button>
+    </section>`;
+  }
+
+  if (state === "contact-consent") {
+    return `<section class="screen info-screen">${infoHeader}
+      <div class="info-intro"><p class="eyebrow">EMAIL SUPPORT</p><h2 class="screen-title" tabindex="-1" data-info-screen-focus>어떤 정보와 함께<br>문의할까요?</h2><p>문의 내용은 사용자가 메일에서 직접 작성합니다.</p></div>
+      <div class="privacy-points"><p><strong>사용자 콘텐츠는 첨부하지 않아요</strong><span>음성, STT 본문, 레시피 내용과 검색어를 자동으로 포함하지 않습니다.</span></p><p><strong>앱 버전만 기본 제공</strong><span>CookLog 1.0.0만 기본으로 사용합니다. OS 버전과 진단 정보는 아래에서 선택해야 포함돼요.</span></p></div>
+      <button class="diagnostic-choice" type="button" data-action="toggle-diagnostics" aria-pressed="${diagnosticsIncluded}">
+        <span class="choice-check" aria-hidden="true">${diagnosticsIncluded ? "✓" : ""}</span><span><strong>비콘텐츠 진단 정보 포함</strong><small>OS 버전, 오류 발생 화면·시각과 비콘텐츠 진단 범주를 포함합니다. 요리 내용은 포함하지 않아요.</small></span>
+      </button>
+      <p class="legal-placeholder">실제 문의 이메일 주소는 출시 통합 Task에서 연결합니다.</p>
+      <div class="stack-actions"><button class="button button-primary" type="button" data-action="prepare-contact">문의 이메일 준비</button><button class="button button-secondary" type="button" data-nav="info" data-state="overview">취소</button></div>
+    </section>`;
+  }
+
+  if (state === "contact-ready") {
+    return `<section class="screen info-screen">${infoHeader}
+      <div class="contact-preview"><span class="contact-icon" aria-hidden="true">✉</span><p class="eyebrow">EMAIL DRAFT</p><h2 tabindex="-1" data-info-screen-focus>문의 메일을 준비했어요</h2><p>운영 주소가 연결되면 기기의 이메일 앱에서 아래 정보만 포함해 작성합니다.</p></div>
+      <dl class="metadata-list"><div><dt>받는 사람</dt><dd>출시 전 연결 예정</dd></div><div><dt>앱 버전</dt><dd>CookLog 1.0.0</dd></div><div><dt>진단 정보</dt><dd>${diagnosticsIncluded ? "OS 버전 · 오류 화면/시각 · 비콘텐츠 진단 범주" : "포함 안 함"}</dd></div><div><dt>사용자 콘텐츠</dt><dd>자동 첨부 없음</dd></div></dl>
+      <div class="banner banner-info" role="status"><strong aria-hidden="true">i</strong><div><strong>이 화면은 안전한 구성 예시예요</strong><p>실제 문의 주소가 확정되기 전에는 외부 메일을 보내지 않습니다.</p></div></div>
+      <button class="button button-primary" type="button" data-nav="info" data-state="overview">확인</button>
+      <button class="button button-secondary" type="button" data-nav="info" data-state="mail-unavailable">이메일 앱 사용 불가 상태 보기</button>
+    </section>`;
+  }
+
+  if (state === "mail-unavailable") {
+    return `<section class="screen info-screen">${infoHeader}
+      <div class="failure-hero"><span aria-hidden="true">✉</span><p class="eyebrow">EMAIL UNAVAILABLE</p><h2 tabindex="-1" data-info-screen-focus>이메일 앱을 열 수 없어요</h2><p>메일 앱이 설치되지 않았거나 계정 설정이 필요할 수 있습니다. CookLog 기록에는 영향을 주지 않아요.</p></div>
+      <div class="alert-card"><div class="alert-heading"><span class="alert-icon">i</span><div><h3>문의 내용은 전송되지 않았어요</h3><p>사용자 콘텐츠와 진단 정보도 외부로 보내지지 않았습니다.</p></div></div><div class="alert-actions"><button class="button button-secondary" data-nav="info" data-state="overview">앱 정보로</button><button class="button button-primary" data-nav="info" data-state="contact-consent">다시 준비</button></div></div>
+    </section>`;
+  }
+
+  const legalType = state.startsWith("privacy") ? "개인정보처리방침" : "이용약관";
+  const legalKey = state.startsWith("privacy") ? "privacy" : "terms";
+  if (state.endsWith("-loading")) {
+    return `<section class="screen info-screen">${infoHeader}${feedbackCard("loading", `${legalType}을 여는 중`, "공개 문서 주소와 연결 상태를 확인하고 있어요.")}</section>`;
+  }
+  if (state.endsWith("-unconfigured")) {
+    return `<section class="screen info-screen">${infoHeader}
+      <div class="failure-hero is-neutral"><span aria-hidden="true">↗</span><p class="eyebrow">LINK NOT CONFIGURED</p><h2 tabindex="-1" data-info-screen-focus>${legalType} 주소를<br>준비하고 있어요</h2><p>화면 구조 검토용 placeholder 상태입니다. 공개 출시 전 운영 문서 주소를 연결하고 실제 내용을 검증해야 합니다.</p></div>
+      <div class="banner banner-warning" role="status"><strong aria-hidden="true">!</strong><div><strong>아직 공개 문서로 이동하지 않아요</strong><p>미확정 주소나 임시 문서를 실제 법적 문서처럼 표시하지 않습니다.</p></div></div>
+      <button class="button button-primary" type="button" data-nav="info" data-state="overview">앱 정보로 돌아가기</button>
+    </section>`;
+  }
+  if (state.endsWith("-error")) {
+    return `<section class="screen info-screen">${infoHeader}
+      <div class="failure-hero"><span aria-hidden="true">!</span><p class="eyebrow">LINK ERROR</p><h2 tabindex="-1" data-info-screen-focus>${legalType}을<br>열지 못했어요</h2><p>인터넷 연결 또는 문서 주소 문제일 수 있습니다. 다른 로컬 기능은 그대로 사용할 수 있어요.</p></div>
+      <div class="stack-actions"><button class="button button-primary" type="button" data-nav="info" data-state="${legalKey}-loading">문서만 다시 열기</button><button class="button button-secondary" type="button" data-nav="info" data-state="overview">앱 정보로</button></div>
+    </section>`;
+  }
+
+  return `<section class="screen info-screen">${infoHeader}
+    <div class="app-identity"><span class="app-mark" aria-hidden="true">C</span><div><p class="eyebrow">COOKLOG</p><h2 tabindex="-1" data-info-screen-focus>나의 요리 기록</h2><p>버전 1.0.0 · 첫 공개 출시</p></div></div>
+    <div class="info-menu" aria-label="지원 및 법적 정보">
+      ${infoMenuItem({ symbol: "✉", title: "이메일 문의하기", copy: "콘텐츠 자동 첨부 없이 문의", state: "contact-consent" })}
+      ${infoMenuItem({ symbol: "⌁", title: "개인정보처리방침", copy: "공개 URL 연결 상태 포함", state: "privacy-loading" })}
+      ${infoMenuItem({ symbol: "§", title: "이용약관", copy: "공개 URL 연결 상태 포함", state: "terms-loading" })}
+      ${infoMenuItem({ symbol: "⌂", title: "데이터 보관 안내", copy: "로컬 저장과 복구 한계", state: "data-retention" })}
+    </div>
+    <div class="retention-inline"><strong>기록은 현재 기기에 저장돼요</strong><p>CookLog 자체 백업·복구·기기 간 동기화는 첫 출시에서 제공하지 않습니다.</p><button type="button" data-nav="info" data-state="data-retention">자세히 보기</button></div>
+    <p class="info-footnote">실제 문의 주소와 법적 문서 URL은 출시 통합 전에 연결·검증해야 합니다.</p>
   </section>`;
 }
 
@@ -555,8 +646,9 @@ function renderReview() {
     <button class="button button-secondary" data-nav="home" data-state="content">나중에 Home에서 확인</button>
   </section>`;
   if (state === "generation-error") return `<section class="screen">${header({ back: "log", title: "AI 레시피 정리" })}
-    <div class="alert-card is-error" role="alert"><div class="alert-heading"><span class="alert-icon">!</span><div><h3>레시피로 정리하지 못했어요</h3><p>연결 끊김, 서버 응답 지연, 정리할 내용 부족 중 하나일 수 있어요. STEP Preview는 그대로 보존했고 잠금을 해제했습니다.</p></div></div><div class="alert-actions"><button class="button button-secondary" data-action="back-to-log">기록으로 돌아가기</button><button class="button button-primary" data-action="retry-ai-generation">다시 정리하기</button></div></div>
-    <p class="preservation-note">자동 재시도나 자동 화면 전환은 하지 않습니다.</p>
+    <div class="alert-card is-error" role="alert"><div class="alert-heading"><span class="alert-icon">!</span><div><h3>현재 AI 정리를 사용할 수 없어요</h3><p>인터넷 연결 또는 CookLog AI 서비스 문제일 수 있어요. STEP Preview는 그대로 보존했고 AI snapshot 잠금을 해제했습니다.</p></div></div><div class="alert-actions"><button class="button button-secondary" data-action="back-to-log">기록으로 돌아가기</button><button class="button button-primary" data-action="retry-ai-generation">AI 정리만 다시 시도</button></div></div>
+    <div class="banner banner-info" role="status"><strong aria-hidden="true">i</strong><div><strong>로컬 기능은 계속 사용할 수 있어요</strong><p>진행·완료 레시피, 검색과 버튼 Audio Guide는 이 장애로 차단되지 않습니다.</p></div></div>
+    <p class="preservation-note">서비스가 복구돼도 자동 재시도하거나 화면을 자동 전환하지 않습니다.</p>
   </section>`;
   const completeMode = reviewMode === "complete";
   const saving = state === "saving" || state === "complete-saving";
@@ -571,7 +663,7 @@ function renderReview() {
     ${removedReviewStep ? `<div class="toast" role="status"><strong>−</strong><p>STEP을 삭제했어요. 저장 전까지 되돌릴 수 있습니다.</p><button class="toast-action" data-action="undo-review-step">되돌리기</button></div>` : ""}
     ${validation ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>저장할 내용을 확인해주세요</strong><p>제목과 내용이 있는 조리 단계가 최소 1개 필요합니다.</p></div></div>` : ""}
     ${saving ? `<div class="banner banner-success" role="status"><strong aria-hidden="true">✓</strong><div><strong>저장하고 있어요</strong><p>완료되면 레시피 상세로 이동합니다.</p></div></div>` : ""}
-    ${saveError ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>레시피를 저장하지 못했어요</strong><p>수정한 내용은 그대로 유지됩니다. 다시 저장해주세요.</p><button class="banner-action" type="button" data-action="save-recipe">저장 다시 시도</button></div></div>` : ""}
+    ${saveError ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>기기에 레시피를 저장하지 못했어요</strong><p>네트워크 장애가 아닌 로컬 저장 실패입니다. 현재 편집값은 그대로 유지했어요.</p><button class="banner-action" type="button" data-action="save-recipe">로컬 저장 다시 시도</button></div></div>` : ""}
     ${unsavedExit ? `<div class="dialog-scrim" role="presentation"><section class="delete-dialog unsaved-dialog" role="alertdialog" aria-modal="true" aria-labelledby="unsaved-title" aria-describedby="unsaved-copy" tabindex="-1"><span class="dialog-icon is-warning" aria-hidden="true">!</span><h3 id="unsaved-title">저장하지 않은 변경이 있어요</h3><p id="unsaved-copy">${completeMode ? "수정을 버리면 마지막으로 저장된 완성 레시피로 돌아갑니다." : "마지막 임시 저장 이후의 변경을 어떻게 처리할지 선택해주세요."}</p><div class="exit-actions">${completeMode ? "" : `<button class="button button-primary" data-action="save-draft-leave">임시 저장하고 나가기</button>`}<button class="button button-destructive" data-action="discard-review-leave">${completeMode ? "수정 버리고 상세로" : "변경 버리고 나가기"}</button><button class="button button-secondary" data-action="continue-review-editing" data-unsaved-dialog-focus>계속 편집</button></div></section></div>` : ""}
     ${reviewForm({ disabled: saving || unsavedExit, mode: completeMode ? "complete" : "draft", validation })}
   </section>`;
@@ -766,7 +858,8 @@ function renderStateList() {
   const contextualLabels = {
     review: { processing: "AI 정리 중", editable: "검토·수정", saving: "최종 저장 중" },
     detail: { content: "레시피 상세", "menu-open": "완료 레시피 메뉴", "delete-confirm": "완료 레시피 삭제 확인" },
-    player: { "permission-denied": "핸즈프리 권한 거부", error: "로컬 TTS 오류", loading: "로컬 TTS 준비" }
+    player: { "permission-denied": "핸즈프리 권한 거부", error: "로컬 TTS 오류", loading: "로컬 TTS 준비" },
+    info: { overview: "앱 정보 홈" }
   };
   stateList.innerHTML = screenStates[screen].map(item =>
     `<button class="state-button" data-state="${item}" aria-pressed="${state === item}">${contextualLabels[screen]?.[item] || stateLabels[item]}</button>`
@@ -809,7 +902,12 @@ function applyFocusIntent() {
     "handsfree-intro-action": "[data-action=\"cancel-handsfree-intro\"]",
     "handsfree-denied-action": "[data-action=\"dismiss-handsfree-error\"]",
     "player-resume": "[data-action=\"toggle-playback\"]",
-    "player-retry": "[data-action=\"retry-player-audio\"]"
+    "player-retry": "[data-action=\"retry-player-audio\"]",
+    "diagnostic-choice": "[data-action=\"toggle-diagnostics\"]",
+    "info-screen-start": "[data-info-screen-focus]",
+    "contact-confirm": "[data-nav=\"info\"][data-state=\"overview\"]",
+    "legal-result": "[data-nav=\"info\"][data-state=\"overview\"]",
+    "network-retry": "[data-action=\"retry-network-check\"]"
   };
   const target = document.querySelector(selectors[intent.type]);
   if (target) target.focus({ preventScroll: true });
@@ -828,7 +926,7 @@ function cancelDeleteRecord() {
 function render() {
   window.clearTimeout(transitionTimer);
   window.clearTimeout(undoTimer);
-  const renderers = { home: renderHome, library: renderLibrary, log: renderLog, review: renderReview, detail: renderDetail, player: renderPlayer };
+  const renderers = { home: renderHome, library: renderLibrary, log: renderLog, review: renderReview, detail: renderDetail, player: renderPlayer, info: renderInfo };
   app.innerHTML = renderers[screen]();
   screenSelect.value = screen;
   renderStateList();
@@ -865,6 +963,12 @@ function render() {
       pendingRecipeSave = null;
       navigate("detail", "content");
     }, 1400);
+  } else if (!isEmbedded && screen === "info" && ["privacy-loading", "terms-loading"].includes(state)) {
+    transitionTimer = window.setTimeout(() => {
+      state = state.startsWith("privacy") ? "privacy-unconfigured" : "terms-unconfigured";
+      focusIntent = { type: "legal-result" };
+      render();
+    }, 900);
   } else if (!isEmbedded && screen === "player" && playerPlayback === "playing" && playerPlaybackEndsAt > 0) {
     const remainingPlaybackMs = Math.max(playerPlaybackEndsAt - Date.now(), 0);
     transitionTimer = window.setTimeout(() => {
@@ -885,6 +989,7 @@ function render() {
 function navigate(nextScreen, nextState) {
   screen = nextScreen;
   state = nextState || screenStates[screen][0];
+  if (screen === "info") focusIntent = { type: "info-screen-start" };
   if (screen === "review") reviewMode = state.startsWith("complete-") ? "complete" : "draft";
   completedDeleteOpen = screen === "detail" && state === "delete-confirm";
   recordMenuId = "";
@@ -1036,6 +1141,20 @@ document.addEventListener("click", event => {
   const target = event.target.closest("button");
   if (!target) return;
   if (target.dataset.action === "complete-transcription") completeTranscription();
+  else if (target.dataset.action === "retry-network-check") {
+    state = "content";
+    homeFeedback = "연결 상태를 다시 확인했어요. 실패했던 온라인 행동은 자동 실행하지 않습니다.";
+    focusIntent = { type: "start-new-log" };
+    render();
+  } else if (target.dataset.action === "toggle-diagnostics") {
+    diagnosticsIncluded = !diagnosticsIncluded;
+    focusIntent = { type: "diagnostic-choice" };
+    render();
+  } else if (target.dataset.action === "prepare-contact") {
+    state = "contact-ready";
+    focusIntent = { type: "info-screen-start" };
+    render();
+  }
   else if (target.dataset.action === "save-recipe") startSaving("draft");
   else if (target.dataset.action === "save-completed-edit") startSaving("complete");
   else if (target.dataset.action === "save-review-draft") {
@@ -1266,6 +1385,7 @@ document.addEventListener("click", event => {
   } else if (target.dataset.nav) navigate(target.dataset.nav, target.dataset.state);
   else if (target.dataset.state) {
     state = target.dataset.state;
+    if (screen === "info") focusIntent = { type: "info-screen-start" };
     if (screen === "review") reviewMode = state.startsWith("complete-") ? "complete" : "draft";
     if (screen === "detail") completedDeleteOpen = state === "delete-confirm";
     if (screen === "home") {
