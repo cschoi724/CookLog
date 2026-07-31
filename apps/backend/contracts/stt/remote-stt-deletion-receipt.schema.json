@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cooklog.app/stt/remote-stt-deletion-receipt.schema.json",
+  "title": "CookLog ephemeral audio deletion receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "audio_handle",
+    "received_at",
+    "terminal_at",
+    "access_revoked_at",
+    "deletion_completed_at",
+    "delete_deadline_at",
+    "status"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "audio_handle": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "terminal_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "access_revoked_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deletion_completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "delete_deadline_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "const": "deleted"
+    }
+  }
+}
+
