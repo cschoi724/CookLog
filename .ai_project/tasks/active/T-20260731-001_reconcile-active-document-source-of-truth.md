@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260731-001
 title: 활성 문서 Source of Truth 정합성 복구
-status: rework_requested
+status: verification_ready
 type: docs
 priority: P0
 priority_reason: 최신 제품 정책과 완료된 Design·Backend·CI 결과가 루트·운영·iOS·디자인 안내 문서에 반영되지 않아
@@ -11,11 +11,13 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: docs
-target_agent: Product Lead Agent
-target_role: Lead Role
+target_agent: Product QA Agent
+target_role: Verification Role
 required_capabilities:
-- product_direction
-- priority_management
+- product_documentation
+- cross_domain_reconciliation
+- source_of_truth_governance
+- independent_validation
 depends_on:
 - T-20260729-026
 - T-20260729-011
@@ -127,21 +129,24 @@ qa_to: ".ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-
 - 2026-07-31: Development Board의 T-008 상위 행과 T-004 현재 설명을 최종 `done`으로 단일화하고 자체 검증 후 `in_progress -> verification_ready`로 Product QA Agent에 재재검증을 요청했다.
 - 2026-07-31: 재재검증 인계 직전 최신 `origin/develop` `93f577e`를 병합하고 T-022 `completion_review`, T-023·024 `approved`와 원격 STT 계약 Source of Truth를 반영했다.
 - 2026-07-31: 인계 검증 중 전진한 최신 `origin/develop` `5118712`를 추가 병합하고 T-022 PR #40 squash merge·`done` 완료 확정을 활성 문서에 반영했다.
+- 2026-07-31: Product QA 독립 재재검증에서 T-004 해소·기존 결함 무회귀를 확인했으나 Development Board Backend 상위 요약이 최신 T-022~025 상태를 반영하지 않아 `verification_ready -> verification_in_progress -> rework_requested`로 재인계했다.
+- 2026-07-31: Product Owner가 잔여 Board 요약 재작업을 승인해 Product Lead Agent가 T-020~022 `done`, T-023·024 `approved`, T-025 선행 대기로 현재 안내를 단일화했다.
+- 2026-07-31: T-004 무회귀·T-022~025 상태 단일성·Task graph·계약 검증을 마치고 `in_progress -> verification_ready`로 Product QA Agent에 다시 인계했다.
 
 ## Next Agent Handoff
 
 ```text
-너는 Product Lead Agent / Lead Role이야.
-T-20260731-001의 PQA-HIGH-031-002 잔여 Board 충돌을 재작업해줘.
+너는 Product QA Agent / Verification Role이야.
+T-20260731-001의 PQA-HIGH-031-002 잔여 Board 요약 재작업을 독립 재검증해줘.
 
-- 현재 상태: rework_requested
-- 다음에 해야 할 일: Development Team Board의 Backend 상위 행·현재 설명을 T-020~022 `done`, T-023·024 `approved`, T-025 선행 대기로 정렬해줘.
+- 현재 상태: verification_ready
+- 다음에 해야 할 일: Development Team Board의 Backend 상위 행·현재 설명이 개별 T-020~025 상태와 일치하는지 확인해줘.
 - 기준 문서: .ai_project/source_of_truth.md, 개별 Task 파일, 최신 제품 문서
 - 참고 산출물: .ai_project/reports/T-20260731-001_reconcile-active-document-source-of-truth-report.md, .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
 - 변경/검토 대상: `.ai_project/teams/development/task_board.md`와 상태 인계 문서
 - 검증 기준: T-20260728-005 상위 행과 현재 요약이 개별 T-022~025 상태와 일치하며 T-004 수정은 회귀하지 않음
 - 승인 범위: Product Owner가 운영·Team context 추가 경로와 필수 재작업 4건을 승인
-- 금지: Product QA 재재검증 전 T-20260728-003 차단 해제, 구현 코드 수정, commit·push·PR·merge
+- 금지: Product QA 재검증 전 T-20260728-003 차단 해제, 구현 코드 수정, Product Lead 판정 대행
 ```
 
 ## AI Ops CLI 기록
@@ -160,3 +165,6 @@ T-20260731-001의 PQA-HIGH-031-002 잔여 Board 충돌을 재작업해줘.
 | 2026-07-31 | Product QA Agent | lock | task lock |
 | 2026-07-31 | Product QA Agent | transition: verification_in_progress -> rework_requested | PQA-HIGH-031-002 미해소: Development Board 상위 요약이 T-022 done과 T-023·024 approved 상태를 반영하지 않음 |
 | 2026-07-31 | Product QA Agent | unlock | task unlock |
+| 2026-07-31 | Product Owner | approve rework | Development Board Backend 상위 행·현재 요약을 개별 T-020~025 상태와 정렬하는 잔여 재작업 승인 |
+| 2026-07-31 | Product Lead Agent | transition: rework_requested -> approved -> in_progress | 승인된 PQA-HIGH-031-002 잔여 Board 요약 재작업 시작 |
+| 2026-07-31 | Product Lead Agent | transition: in_progress -> verification_ready | T-020~022 done·T-023·024 approved·T-025 proposed 선행 대기로 단일화하고 자체 검증 완료 |

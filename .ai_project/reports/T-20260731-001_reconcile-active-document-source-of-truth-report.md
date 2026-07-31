@@ -2,7 +2,7 @@
 
 작성일: 2026-07-31
 작성자: Product Lead Agent
-상태: Product QA 재검증 잔여 결함 수정 완료·독립 재재검증 대기
+상태: Product QA 재재검증 잔여 Backend Board 결함 수정 완료·독립 재검증 대기
 
 ## 결과 요약
 
@@ -109,6 +109,19 @@ Product Owner 승인 후 다음과 같이 수정했다.
 - Development Board 전체의 `T-004`, `completion_review`, `최종 완료 확정 대기` 조합 재검색
 - 재재검증 직전 최신 develop `93f577e`를 병합하고 T-022 `completion_review`, T-023·024 `approved`와 원격 STT 계약·검증 script를 Source of Truth에 반영
 - 인계 검증 중 전진한 최신 develop `5118712`를 추가 병합하고 T-022 PR #40 squash merge·`done` 완료 확정을 반영
+
+## Product QA 재재검증과 Backend Board 재작업
+
+Product QA는 T-004 상태 충돌 해소와 기존 결함의 무회귀를 확인했다. 다만
+Development Board의 T-20260728-005 상위 행과 현재 설명이 개별 행과 달리
+T-020·021만 완료로 안내해 PQA-HIGH-031-002를 미해소로 판정했다.
+
+Product Owner 승인 후 다음과 같이 수정했다.
+
+- 상위 행을 T-020~022 완료, T-023·024 승인 실행, T-025 선행 대기로 변경
+- 현재 설명을 T-020~022 `done`, T-023·024 `approved`, T-025 `proposed`로 단일화
+- 과거 승인 전이 기록은 이력으로 보존하고 현재 안내와 분리
+- T-004 무회귀와 T-022~025 개별·상위 상태 일치 여부 재검색
 
 ## 최신 develop 정렬 결과
 
