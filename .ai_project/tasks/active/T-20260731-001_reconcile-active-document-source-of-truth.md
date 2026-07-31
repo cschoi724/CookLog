@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260731-001
 title: 활성 문서 Source of Truth 정합성 복구
-status: verification_ready
+status: rework_requested
 type: docs
 priority: P0
 priority_reason: 최신 제품 정책과 완료된 Design·Backend·CI 결과가 루트·운영·iOS·디자인 안내 문서에 반영되지 않아
@@ -11,13 +11,11 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: docs
-target_agent: Product QA Agent
-target_role: Verification Role
+target_agent: Product Lead Agent
+target_role: Lead Role
 required_capabilities:
-- product_documentation
-- cross_domain_reconciliation
-- source_of_truth_governance
-- independent_validation
+- product_direction
+- priority_management
 depends_on:
 - T-20260729-026
 - T-20260729-011
@@ -128,17 +126,17 @@ qa_to: ".ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-
 ## Next Agent Handoff
 
 ```text
-너는 Product QA Agent / Verification Role이야.
-T-20260731-001의 승인 재작업 4건을 독립 재검증해줘.
+너는 Product Lead Agent / Lead Role이야.
+T-20260731-001의 Product QA 재검증 잔여 결함을 재작업해줘.
 
-- 현재 상태: verification_ready
-- 다음에 해야 할 일: PQA-HIGH-031-001~002·004와 PQA-MEDIUM-031-003 해소, 기존 통과 항목 무회귀를 확인해줘.
+- 현재 상태: rework_requested
+- 다음에 해야 할 일: Development Team Board의 T-20260730-004 상태를 최종 `done` 기준으로 단일화하고 다시 자체 검증해줘.
 - 기준 문서: .ai_project/source_of_truth.md, 개별 Task 파일, 최신 제품 문서
 - 참고 산출물: .ai_project/reports/T-20260731-001_reconcile-active-document-source-of-truth-report.md, .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
-- 변경/검토 대상: 활성 Team context, Ops Issues·Migration Plan, Project·Development·Quality board, Product QA routing
-- 검증 기준: 최신 origin/develop `0fdfe52` 포함, Task 42개 graph, 활성 Team context·Board·Product QA routing·PDF 경계
+- 변경/검토 대상: `.ai_project/teams/development/task_board.md`와 상태 인계 문서
+- 검증 기준: 상위 T-20260728-008 행과 T-004 본문에 `완료 검토`, `최종 완료 확정 대기`가 남지 않고 개별 T-004 Task의 `done`과 일치
 - 승인 범위: Product Owner가 운영·Team context 추가 경로와 필수 재작업 4건을 승인
-- 금지: Product QA 재검증 전 T-20260728-003 차단 해제, 구현 코드 수정, commit·push·PR·merge
+- 금지: Product QA 재재검증 전 T-20260728-003 차단 해제, 구현 코드 수정, commit·push·PR·merge
 ```
 
 ## AI Ops CLI 기록
@@ -148,4 +146,8 @@ T-20260731-001의 승인 재작업 4건을 독립 재검증해줘.
 | 2026-07-31 | Product QA Agent | transition: verification_ready -> verification_in_progress | 활성 문서 Source of Truth 정합성 독립 검증 시작 |
 | 2026-07-31 | Product QA Agent | lock | task lock |
 | 2026-07-31 | Product QA Agent | transition: verification_in_progress -> rework_requested | 활성 Team context와 운영 이슈·Task Board에 구형 Figma·Backend·CI 상태가 남고 Product QA routing이 불완전하여 Product Lead 재작업 필요 |
+| 2026-07-31 | Product QA Agent | unlock | task unlock |
+| 2026-07-31 | Product QA Agent | transition: verification_ready -> verification_in_progress | 승인 재작업 4건 독립 재검증 시작 |
+| 2026-07-31 | Product QA Agent | lock | task lock |
+| 2026-07-31 | Product QA Agent | transition: verification_in_progress -> rework_requested | PQA-HIGH-031-002 미해소: Development Board가 T-004를 done과 완료 확정 대기로 동시에 안내 |
 | 2026-07-31 | Product QA Agent | unlock | task unlock |

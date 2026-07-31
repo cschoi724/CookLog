@@ -3,8 +3,8 @@
 작성일: 2026-07-31
 작성자: Product QA Agent
 대상 Task: `T-20260731-001`
-판정: `FAIL`
-상태 인계: `verification_in_progress -> rework_requested`
+최종 판정: `FAIL` (재검증)
+최종 상태 인계: `verification_in_progress -> rework_requested`
 
 ## 1. 검증 범위
 
@@ -164,7 +164,7 @@
 
 따라서 T-20260728-003의 문서 선행 차단을 해제하면 안 된다.
 
-## 6. 최종 판정
+## 6. 최초 검증 판정
 
 `FAIL`.
 
@@ -172,7 +172,7 @@
 
 Product Lead Agent가 필수 재작업 4건을 최신 `origin/develop` 기준으로 반영한 뒤 Product QA 재검증이 필요하다.
 
-## 7. 다음 Agent에게 전달할 말
+## 7. 최초 재작업 인계
 
 ```text
 Task: T-20260731-001
@@ -186,4 +186,64 @@ Task: T-20260731-001
 - 최신 develop의 T-20260730-004 완료 상태를 병합하고 전체 문서 재검증
 QA 보고서:
 - .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
+```
+
+## 8. 재검증 결과
+
+재검증일: 2026-07-31
+
+| 최초 결함 | 결과 | 재검증 근거 |
+|---|---|---|
+| PQA-HIGH-031-001 활성 운영·Team context Source of Truth 충돌 | 해소 | Design context는 로컬 Prototype·Manifest 원본/Figma 미러로, Development context와 Ops 문서는 T-020·T-021 산출물 기준으로 정렬됐다. Migration Plan은 이력 문서와 현재 상태를 구분하며 Backend 검증 script·후속 계약 경계도 Source of Truth에 등록됐다. |
+| PQA-HIGH-031-002 완료·승인 대기 Task Board 충돌 | **미해소** | Backend 구분과 Quality 향후 목록은 수정됐지만 Development Board의 T-20260728-008 행은 T-004를 `완료 검토`로 안내한다. 같은 문서 본문도 “최종 완료 확정을 기다립니다”라고 안내하면서 아래에서는 T-004를 `done`으로 확정한다. |
+| PQA-MEDIUM-031-003 Product QA 운영 등록 누락 | 해소 | Agent Registry·Operating Model·Quality Team Context·Current Context에 Product QA Agent와 요구 capability가 일치한다. |
+| PQA-HIGH-031-004 최신 develop T-004 완료 드리프트 | 해소 | `origin/develop` `0fdfe52`는 HEAD의 ancestor이며 개별 T-004 Task, Project·Quality Board, Project/iOS Status는 `done`이다. 단, Development Board 내부의 잔여 상태 충돌은 PQA-HIGH-031-002로 판정한다. |
+
+### PQA-HIGH-031-002 미해소 근거
+
+- `.ai_project/teams/development/task_board.md`의 T-20260728-008 상위 행:
+  `T-001~003 완료, T-004 완료 검토, T-005~006 후속 대기`
+- 같은 문서의 T-20260730-004 개별 행: `done`
+- 같은 문서의 T-004 설명: `최종 완료 확정을 기다립니다`
+- 바로 다음 설명: PR #34와 squash merge SHA `22fe75f`로 T-004를 `done` 확정
+- 작업 보고서의 “개별 Task·Project/Development/Quality Board 모두 `done`” 자체 검증 주장은 재현되지 않았다.
+
+필수 재작업:
+
+1. T-20260728-008 상위 행을 `T-001~004 done`, `T-005~006 대기`로 단일화한다.
+2. T-004의 `completion_review` 당시 설명은 역사적 이력임을 명시하거나 제거하고, 현재 안내에서 `최종 완료 확정 대기`를 제거한다.
+3. Development Board 전체에서 T-004 현재 상태가 `done`으로만 해석되는지 재검색한 뒤 Product QA에 다시 인계한다.
+
+## 9. 재검증 회귀 검사
+
+- 최신 `origin/develop` ancestor: 통과
+- T-20260731-001 strict task schema: 통과
+- Task 42개 front matter 파싱: 통과
+- 검증 실행 중 상태 집계: proposed 17, scoped 2, in_progress 1, verification_in_progress 1, done 20, cancelled 1
+- Task ID 중복: 0건
+- 누락 dependency/block 참조: 0건
+- dependency cycle: 0건
+- `origin/develop...HEAD` 변경 31개 경로의 `allowed_paths` 위반: 0건
+- `git diff --check origin/develop...HEAD`: 통과
+- 제품 정책 변경·구현 코드 변경: 발견하지 못함
+
+프로젝트 전역 strict validation의 기존 operating model·agent registry·archive schema 문제는 이번 재검증 판정의 단독 근거로 사용하지 않았다.
+
+## 10. 재검증 최종 판정
+
+`FAIL`.
+
+최초 필수 결함 4건 중 3건은 해소됐지만, 문서 정합성과 Team 인계에 직접 영향을 주는
+PQA-HIGH-031-002가 Development Board 안에 남아 성공 기준을 충족하지 못한다.
+T-20260728-003 차단을 해제하면 안 된다.
+
+```text
+Task: T-20260731-001
+현재 상태: rework_requested
+재검증 판정: FAIL
+다음 담당: Product Lead Agent / Lead Role
+잔여 필수 재작업:
+- Development Board 상위 T-20260728-008 행을 T-001~004 done, T-005~006 대기로 수정
+- T-004의 현재 안내에서 completion_review·최종 완료 확정 대기 문구 제거 또는 역사 이력으로 명시
+- 동일 문서의 T-004 현재 상태를 done으로 단일화하고 Product QA 재재검증 요청
 ```
