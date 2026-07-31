@@ -16,6 +16,7 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
+| `T-20260731-001` | `done` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product Owner 최종 승인·완료 확정 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
 
@@ -32,13 +33,42 @@
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
 | `T-20260730-005` | CI | iOS QA Agent | 실제 PR dry run·check gate 준비도 |
 | `T-20260730-006` | CI/Ops | iOS QA Agent | branch protection 실제 merge 차단 |
-| `T-20260730-007` | iOS/CI | iOS QA Agent | iOS 26.5 SwiftData crash 원인·최소 수정·33/33 회귀 |
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
 
 `T-20260729-001`은 Product QA `PASS_WITH_RISK` 후 Product Lead 완료 검토를 통과해 `done`으로 확정했습니다.
 
 `T-20260729-026`은 기존 Product QA `FAIL` 3건을 모두 해소해 재검증 `PASS`를 받고 Product Owner 최종 승인 후 `done`으로 확정했습니다.
+
+`T-20260731-001`은 Product QA 독립 검증에서 활성 Team context·운영 이슈·Task
+Board·Product QA routing·최신 develop 정렬 결함 4건을 확인해 `FAIL` 판정을
+받았습니다. Product Owner가 필수 재작업과 추가 경로를 승인했으며 Product Lead가
+최신 develop 기준 재작업과 자체 검증을 마쳐 Product QA 재검증을 기다립니다.
+
+Product QA 재검증에서 PQA-HIGH-031-001·004와 PQA-MEDIUM-031-003 해소는
+확인했지만 PQA-HIGH-031-002가 미해소됐습니다. Development Board가
+T-20260730-004를 `done`으로 표시하면서 상위 행과 본문에서는 완료 검토·최종
+완료 확정 대기로 안내해 `rework_requested`로 재인계했습니다.
+
+Product Owner 승인 후 Development Board의 T-008 상위 행을 T-001~004 완료로
+수정하고 T-004의 완료 검토·최종 완료 확정 대기 현재 문구를 제거했습니다.
+PQA-HIGH-031-002와 기존 해소 항목의 무회귀 독립 재재검증을 기다립니다.
+
+Product QA 재재검증에서 T-004 상태 단일화는 통과했습니다. 그러나 최신 develop의
+T-022 `done`·T-023·024 `approved`를 개별 행은 반영했지만 Development Board의
+T-20260728-005 상위 행과 현재 설명은 T-020·021만 완료로 안내해
+PQA-HIGH-031-002를 미해소로 판정하고 `rework_requested`로 재인계했습니다.
+
+Product Owner 승인 후 Development Board의 T-20260728-005 상위 행과 현재 설명을
+T-020~022 `done`, T-023·024 `approved`, T-025 선행 대기 `proposed`로
+단일화했습니다. T-004 무회귀와 Backend 하위 상태의 독립 재검증을 기다립니다.
+
+Product QA 최종 독립 재검증에서 Backend 상위 행·현재 요약·개별 T-020~025 상태
+일치, T-004 무회귀와 기존 PQA-HIGH-031-001·004·PQA-MEDIUM-031-003 해소를
+확인했습니다. Task graph·허용 경로·계약 검증도 통과해 `PASS`,
+`verification_passed`로 Product Lead 완료 검토에 인계했습니다.
+Product Lead는 QA 증빙과 성공 기준을 수용해 `completion_review`로 전환했으며
+Product Owner가 최종 완료와 develop 통합을 승인해 `done`으로 확정했습니다.
 
 `T-20260729-021`은 Backend QA 독립 검증에서 최초 설치 challenge의 동시 소비 원자성
 누락과 오류 `title/detail` 내부의 provider detail·secret·원문 비노출을 schema가

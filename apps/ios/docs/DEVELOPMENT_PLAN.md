@@ -1,48 +1,46 @@
 # CookLog iOS 개발 계획
 
-이 문서는 CookLog iOS MVP 개발의 이정표, 체크리스트, 인수인계 기준을 관리하는 진행 문서입니다. iOS 개발 세션은 작업 시작 전 이 문서를 읽고, 작업 종료 전 진행 상태를 업데이트합니다.
+이 문서는 CookLog iOS의 초기 Mock Core MVP 이정표와 구현 이력을 보존하고, 현재 첫 공개 출시 Task의 진입점을 안내합니다. 현재 실행 범위는 이 문서의 과거 M0~M8 체크리스트가 아니라 배정된 `.ai_project/tasks/`와 최신 제품 Source of Truth를 따릅니다.
 
 작성일: 2026-06-19
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-07-31
 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 
 ## 현재 상태 요약
 
-- 상태: M8 MVP 흐름 검증과 마무리 정리 진행
+- 상태: Mock Core MVP 조건부 통과, 첫 공개 출시 구현 준비
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
-- 프로젝트 기준 Xcode: 15.2
+- 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
 - scheme: `CookLog`
 - 검증 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - 권장 구현: SwiftUI + Feature 중심 MVVM + UseCase + Repository/DataSource + 로컬 저장 + STT 기반 STEP Preview + AI 정리 시점 호출
-- 우선 참고 문서: `../../../docs/product/CookLog_PRD_v2.md`
+- 현재 CI 기준: `macos-26`, Xcode 26.6, iPhone 17·iOS 26.5
+- 우선 참고: 배정 Task, `../../../docs/product/CookLog_PRD_v2.md`, `../../../docs/product/CookLog_MVP_SCOPE.md`
 
 ## 바로 시작 가이드
 
 새 iOS 개발 세션은 다음 순서로 시작합니다.
 
 1. `git status -sb`로 작업트리 상태를 확인합니다.
-2. `docs/GIT_WORKFLOW.md`를 확인합니다.
-3. `apps/ios/agents.md`를 확인합니다.
-4. 이 문서의 `현재 상태 요약`과 `M8. MVP 정리와 검증`을 확인합니다.
-5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
-6. M8 전체 MVP 흐름 수동 검증부터 시작합니다.
+2. 배정된 Task의 상태·의존성·허용 경로와 Source of Truth를 확인합니다.
+3. `docs/GIT_WORKFLOW.md`와 `apps/ios/agents.md`를 확인합니다.
+4. `apps/ios/docs/STATUS.md`와 관련 기술 문서를 확인합니다.
+5. Task가 지정한 제품·Design Source of Truth를 확인합니다.
+6. 승인된 Task 범위만 구현합니다.
 7. 변경 후 기본 빌드와 가능한 테스트를 확인합니다.
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
 
 사용자 직접 검증은 `MANUAL_QA_CHECKLIST.md`를 기준으로 진행합니다.
 
-## 개발 원칙
+## 현재 개발 원칙
 
-- MVP는 iOS 네이티브 앱으로 먼저 완성합니다.
-- 사용자는 레시피를 작성하지 않고 음성으로만 요리 과정을 기록합니다.
-- 10초 기록 1회는 STEP Preview 1개를 만드는 단위입니다.
-- STEP Preview는 STT 결과 기반이며 실제 AI 구조화 결과가 아닙니다.
-- AI는 `AI 정리하기` 시점에만 호출합니다.
-- 로그인, 공유, 커뮤니티, Import, OCR, AI 챗, 음성 명령은 만들지 않습니다.
+- 제품 기능 범위는 `CookLog_MVP_SCOPE.md`의 Core MVP와 첫 App Store 공개 출시 구분을 따릅니다.
+- 과거 Core MVP 제외 항목을 첫 공개 출시 제외 항목으로 해석하지 않습니다.
+- 현재 실행 순서와 성공 기준은 Roadmap과 개별 Task를 따릅니다.
 - 개발 진행 중 이 문서의 체크리스트와 다음 작업 항목을 계속 갱신합니다.
 
-## 핵심 MVP 목표
+## 과거 Core MVP 목표
 
 사용자는 요리 중 10초 음성 기록을 반복해서 남기고, 앱은 각 기록을 STEP Preview로 축적합니다. 사용자가 `AI 정리하기`를 누르면 전체 STEP Preview를 레시피로 정리하고, 저장된 레시피는 오디오 가이드로 다시 소비할 수 있어야 합니다.
 
@@ -57,7 +55,7 @@
 - 저장된 레시피 상세를 볼 수 있습니다.
 - 저장된 레시피를 단계별 오디오 플레이어로 재생할 수 있습니다.
 
-## 개발 순서 요약
+## 과거 Mock Core MVP 개발 순서
 
 권장 진행 순서는 다음과 같습니다.
 
@@ -73,7 +71,7 @@
 10. M7: SwiftData 실제 저장소 연결
 11. M8: 전체 흐름 검증과 정리
 
-MVP 초반에는 실제 Apple Speech, SwiftData, 실제 AI API보다 Mock 흐름을 먼저 완성합니다. 단, 구조는 실제 구현으로 교체하기 쉽게 유지합니다.
+아래 M0~M8은 완료된 초기 구현 이력입니다. 첫 공개 출시 기능을 이 순서로 다시 시작하지 않습니다.
 
 ## 전체 이정표
 
@@ -590,8 +588,8 @@ M8 검증 결과:
 
 ## 열린 질문
 
-- iOS QA Agent가 현재 표준 XCTest 실행 절차를 독립 재현해 `PASS_WITH_RISK`로 판정했습니다.
-- Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했으며, T-20260728-008에서 CI의 Xcode·Simulator 버전을 고정하고 동일 절차를 재검증합니다.
+- `ios-build`, `ios-xctest` 구현과 hosted 검증, T-20260730-004의 concurrency·공통 진단·artifact 통합은 완료됐습니다. T-005 dry run과 T-006 required check 적용이 남아 있습니다.
+- Xcode 15.2 동일 환경 미검증 위험은 Product Owner가 수용했으며 현재 CI 계약은 Xcode 26.6·iPhone 17·iOS 26.5입니다.
 
 ## 관련 문서
 

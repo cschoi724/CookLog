@@ -4,6 +4,11 @@
 프로젝트: CookLog
 상태: Applied with follow-up decisions
 
+이 문서는 운영 체계 도입 과정과 적용 결과를 보존하는 마이그레이션 이력입니다.
+현재 실행 기준은 `.ai_project/operating_model.md`,
+`.ai_project/current_context.md`, `.ai_project/source_of_truth.md`와 개별 Task
+파일을 우선합니다.
+
 ## 1. 목적
 
 이 문서는 CookLog에 AI Agent 운영 체계를 도입하기 위한 프로젝트별 마이그레이션 계획입니다.
@@ -65,7 +70,7 @@ CookLog/
 
 | 영역 | 기준 문서 | 보조 문서 | 비고 |
 |---|---|---|---|
-| 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog PRD v2.pdf`, `docs/product/CookLog_PRODUCT.md` | PRD v2 우선 |
+| 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog_PRODUCT.md` | Markdown PRD v2 우선. `CookLog PRD v2.pdf`는 2026-06-22 역사적 스냅샷 |
 | MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `agents.md`, PRD v2 | MVP 포함/제외 기준 |
 | 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | `agents.md`, 플랫폼별 `agents.md` | 기록 흐름과 다시 요리 흐름 |
 | 전체 현재 상태 | `docs/PROJECT_STATUS.md` | `apps/ios/docs/STATUS.md`, `apps/android/docs/STATUS.md` | 현재 iOS 문서와 차이 있어 동기화 필요 |
@@ -186,11 +191,11 @@ CookLog/
 
 | 항목 | 상태 | 처리 |
 |---|---|---|
-| `AGENTS.md` adapter 정합성 | needs_user_decision | 후속 운영 Task |
-| `docs/GIT_WORKFLOW.md` 동기화 | needs_user_decision | 후속 제품 문서 Task |
-| Backend source of truth | unresolved | Backend 구현 승인 전 |
-| Figma 원본 링크 | unresolved | Design Team 첫 실행 전 |
-| CI merge gate | unresolved | 첫 코드 PR merge 전 |
+| 루트 Agent 안내 정합성 | resolved by `T-20260731-001` | 역할·탐색 경로·Source of Truth 참조 중심 |
+| `docs/GIT_WORKFLOW.md` 동기화 | resolved by `T-20260728-007`, `019` | `develop` 통합·`main` 승격 |
+| Backend source of truth | resolved by `T-20260729-020`, `021` | Architecture Decision·공통 API 계약·contract schema |
+| UI/UX 원본과 Figma | resolved by `T-20260728-002`, `T-20260731-001` | 로컬 Prototype·Manifest 원본, Figma 미러 |
+| CI merge gate | partially resolved by `T-20260730-001~004` | T-001~004 완료, T-005 dry run·T-006 required check 설정 대기 |
 
 ### 롤백
 

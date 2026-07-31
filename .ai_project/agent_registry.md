@@ -1,7 +1,7 @@
 # CookLog Project Agent Registry
 
 작성일: 2026-07-01
-최종 업데이트: 2026-07-28
+최종 업데이트: 2026-07-31
 프로젝트: CookLog
 
 ## 1. 목적
@@ -27,6 +27,7 @@
 | Design QA Agent | `enabled` | Quality Team | Verification Role | 디자인 Task 독립 검증 |
 | iOS QA Agent | `enabled` | Quality Team | Verification Role | iOS Task 독립 검증 |
 | Backend QA Agent | `enabled` | Quality Team | Verification Role | Backend/API Task 독립 검증 |
+| Product QA Agent | `enabled` | Quality Team | Verification Role | 제품 정책·문서·출시 기준과 cross-domain 인계 독립 검증 |
 | AI Ops Agent | `enabled` | AI Ops Team | Ops Governance Role | 제품 Task 실행 라인 제외 |
 
 ## 3. Delegated Capabilities
@@ -51,6 +52,7 @@
 | `design_qa`, `accessibility_review` | Design QA Agent | 디자인 요구·상태·접근성 검증 |
 | `ios_qa`, `regression_test`, `design_fidelity_review` | iOS QA Agent | iOS 기능·회귀·디자인 정합성 검증 |
 | `api_qa`, `contract_test`, `security_check` | Backend QA Agent | API 계약·보안·개인정보 검증 |
+| `product_documentation`, `cross_domain_reconciliation`, `source_of_truth_governance`, `independent_validation` | Product QA Agent | 제품 문서·운영 문서 정합성과 독립 출시 기준 검증 |
 | `rework_request` | 각 Verification Agent | 담당 Team Lead에 재조율 요청 |
 | `ops_audit`, `process_governance` | AI Ops Agent | 제품 실행 흐름 밖에서 점검 |
 | `workflow_governance`, `ops_migration` | AI Ops Agent | core 0.6.4 운영 기준 |
@@ -63,3 +65,4 @@
 | 2026-07-01 | AI Ops Agent를 독립 운영 점검 Agent로 활성화 | Product Owner 요청 기반 |
 | 2026-07-27 | Product/Design/Core Development/Quality/AI Ops 멀티팀 Role 매핑으로 확장 | Product Owner 승인 |
 | 2026-07-28 | Design Lead/Execution과 도메인 QA를 분리하고 Team 하위 Task Completion 범위 추가 | Product Owner 승인 |
+| 2026-07-31 | Product QA Agent와 제품 문서·cross-domain 정합성 독립 검증 capability 등록 | T-20260731-001 재작업 승인 |

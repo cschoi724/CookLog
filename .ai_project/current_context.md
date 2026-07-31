@@ -1,7 +1,7 @@
 # Current Agent Context
 
 작성일: 2026-07-01
-최종 업데이트: 2026-07-28
+최종 업데이트: 2026-07-31
 프로젝트: CookLog
 상태: Active
 
@@ -19,8 +19,8 @@
 | 활성 Team | Product, Design, Core Development, Quality, AI Ops |
 | 활성 개발 영역 | iOS 최우선, Backend foundation |
 | 보류 영역 | Android, Release Role |
-| 활성 Agent | Product Lead, Product Planning, Design Lead, UI/UX Design, Development Lead, iOS, Backend, Design QA, iOS QA, Backend QA, AI Ops |
-| 현재 우선 Task | Product Owner 승인 후 Design·XCTest·Backend Contract 병렬 Foundation scope |
+| 활성 Agent | Product Lead, Product Planning, Design Lead, UI/UX Design, Development Lead, iOS, Backend, Product QA, Design QA, iOS QA, Backend QA, AI Ops |
+| 현재 우선 Task | Design T-012, Backend T-023~024 승인 실행선·T-025 준비, CI T-005 준비와 문서 정합성 T-20260731-001 |
 | 기본 작업 브랜치 | `develop` |
 | 안정·릴리즈 브랜치 | `main` |
 | 다음 확인 위치 | `.ai_project/operating_model.md`, `.ai_project/source_of_truth.md`, `.ai_project/task_board.md` |
@@ -35,9 +35,11 @@
 - 구형 Mock UI 잔여 검증 `T-20260728-001`은 최종 제품 구현·출시 게이트와 중복되어 `cancelled`입니다.
 - 첫 공개 출시 Critical Path는 `docs/product/CookLog_ROADMAP.md`를 따릅니다.
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
-- 현재 실행 중인 제품·개발 Task는 없으며 나머지 출시 Task는 Lead scope·Product Owner 승인 전 `proposed`입니다.
-- 다음 병렬 Wave는 Design `T-20260729-002`, XCTest `T-20260728-004`, Backend Contract `T-20260728-005`입니다.
-- Product QA Agent registry·운영 모델·루트 안내 동기화는 AI Ops 후속 `T-20260729-007`입니다.
+- Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다.
+- Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~011`은 `done`, T-012는 실행 승인 대기입니다.
+- Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다.
+- CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~004는 `done`, T-005~006은 순차 승인·검증 대상입니다.
+- Product QA Agent와 문서·cross-domain 정합성 capability는 T-20260731-001 재작업에서 정식 등록했습니다. 기존 T-20260729-007은 중복 범위의 재조정 또는 폐기 검토 대상입니다.
 - 수익화 문서와 `T-20260728-010~018` 동결 후보는 Core v1 출시선과 분리합니다.
 - 기존 완료 Task는 legacy 위치에 보존하고 신규 실행 후보는 `tasks/active/` 또는 `tasks/backlog/`에 생성합니다.
 - 모든 신규 실행 Task는 `standard_vnext`와 `scoped` 단계를 사용합니다.
@@ -47,7 +49,7 @@
 - push, merge, 배포는 사용자 승인 후 진행합니다.
 - 일반 Task는 최신 `develop`에서 시작하고 `develop` 대상 PR로 병합합니다.
 - `main`은 통합 QA와 Product Lead 수용 검토를 거친 `develop -> main` 승격 또는 승인된 hotfix만 받습니다.
-- 기존 `agents.md`와 adapter 지침의 동기화는 후속 운영 결정입니다.
+- T-20260731-001의 문서 정합성 선행 차단은 해소됐습니다. T-20260728-003은 Design 상위 Task 완료와 별도 실행 승인을 확인해야 합니다.
 
 ## 4. 세션 시작 체크
 
@@ -69,3 +71,10 @@
 | 2026-07-28 | 계층형 Task 완료 권한과 도메인별 병렬 QA 세션 기준 반영 |
 | 2026-07-28 | `develop` 통합과 `main` 안정·릴리즈 승격 기준 반영 |
 | 2026-07-29 | 확정 제품 정책과 첫 공개 출시 Roadmap, 병렬 Foundation과 Critical Path 반영 |
+| 2026-07-31 | Design T-008~011, Backend T-020·T-021, CI T-001~003 완료와 문서 정합성 T-20260731-001 반영 |
+| 2026-07-31 | Product QA FAIL 4건 재작업 승인, Product QA 정식 등록과 CI T-004 done 반영 |
+| 2026-07-31 | 최신 develop의 T-022 completion_review·T-023~024 approved와 원격 STT adapter 계약 반영 |
+| 2026-07-31 | T-022 PR #40 squash merge와 완료 확정을 반영해 `done`으로 동기화 |
+| 2026-07-31 | T-001 Backend 상위 요약 재작업을 마치고 Product QA 독립 재검증 재인계 |
+| 2026-07-31 | T-001 Product QA 최종 PASS 수용·Product Lead `completion_review` 전환 |
+| 2026-07-31 | Product Owner 최종 승인으로 T-001 `done` 확정·develop 통합 시작 |

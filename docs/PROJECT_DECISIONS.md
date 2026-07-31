@@ -2,6 +2,14 @@
 
 이 문서는 플랫폼 공통 제품 및 저장소 운영 결정사항을 관리합니다. 플랫폼별 기술 결정은 각 앱 폴더의 `docs/DECISIONS.md`에 기록합니다.
 
+## 2026-07-31 - 루트 Agent 안내는 세부 정책을 복제하지 않고 Source of Truth를 연결
+
+- 상태: 확정
+- 결정: 루트 `agents.md`에는 역할, 문서 탐색 순서, 충돌 우선순위와 책임 경계만 유지합니다.
+- 제품 세부사항: 기능 범위, 현재 진행률, 기술 선택과 UI 원본 위치는 담당 Source of Truth에서만 관리합니다.
+- 플랫폼 문서: 실행 Task와 최신 제품 Source of Truth가 플랫폼 안내보다 우선하며 충돌을 발견하면 문서 정합성 Task로 보고합니다.
+- 이유: 제품 정책이 바뀔 때 여러 안내 문서의 복제 내용이 서로 달라지는 문제를 줄이기 위해서입니다.
+
 ## 2026-07-29 - 첫 공개 출시 STT는 Apple 기기 내 처리를 기본으로 사용
 
 - 상태: 확정
@@ -184,7 +192,8 @@
 ## 2026-06-22 - PRD v2를 제품 기준으로 사용
 
 - 상태: 확정
-- 결정: CookLog의 현재 제품 기준은 `docs/product/CookLog_PRD_v2.md`와 `docs/product/CookLog PRD v2.pdf`입니다.
+- 결정: CookLog의 현재 제품 계약은 `docs/product/CookLog_PRD_v2.md`입니다.
+- PDF 경계: `docs/product/CookLog PRD v2.pdf`는 2026-06-22 역사적 스냅샷이며 이후 확정 결정이나 Markdown과 충돌하면 구현 기준으로 사용하지 않습니다.
 - 이유: 10초 음성 기록, STEP Preview, A-Lite Strategy, AI Review 시점이 명확하게 정의되었습니다.
 - 영향: 모든 플랫폼 개발 문서는 PRD v2를 기준으로 작성하고 갱신합니다.
 

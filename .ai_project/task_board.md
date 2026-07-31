@@ -14,9 +14,9 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 23 |
+| `proposed` | 14 |
 | `scoped` | 2 |
-| `approved` | 0 |
+| `approved` | 2 |
 | `in_progress` | 1 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
@@ -24,14 +24,14 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 13 |
+| `done` | 22 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-현재 실행 중인 Product Task는 없습니다. 첫 공개 출시 STT 기본 경로 변경 `T-20260729-026`은 Product QA 재검증과 Product Owner 최종 승인을 거쳐 `done`으로 확정했습니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. 다음 순차 후보 `T-20260729-012`는 선행 차단이 해제됐으며 별도 Product Owner 실행 승인 대기입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. Backend T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다. CI T-001~004는 `done`, T-005~006은 후속 승인·검증 대상입니다.
 
 Team별 요약:
 
@@ -39,7 +39,7 @@ Team별 요약:
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
-| Core Development | 2 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
+| Core Development | 4 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 
 ## 4. Next Candidates
@@ -52,11 +52,11 @@ Team별 요약:
 | `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | `done` |
 | `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
-| `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | `scoped`, 하위 `T-20260729-020~025` 승인 대기 |
+| `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | `scoped`; T-020~022 `done`, T-023·024 `approved`, T-025 대기 |
 | `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
-| `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `scoped`, 하위 `T-20260730-001~006` 승인 대기 |
+| `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `scoped`; T-001~004 `done`, T-005~006 대기 |
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
 | `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | Design Lead Agent | `in_progress`, `T-20260729-026`, 하위 `T-20260729-008~014` |
@@ -64,8 +64,9 @@ Team별 요약:
 | `T-20260729-004` | P0 | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` |
 | `T-20260729-005` | P0 | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
 | `T-20260729-006` | P0 | iOS 로컬 TTS·오디오 중단·핸즈프리 Audio Guide 구현 | Development Lead Agent | `T-20260728-003` |
-| `T-20260729-007` | P1 | Product QA Agent 운영 등록과 루트 제품 안내 동기화 | AI Ops Agent | `T-20260729-001` |
+| `T-20260729-007` | P1 | Product QA Agent 운영 등록과 루트 제품 안내 동기화 | AI Ops Agent | T-001 재작업에서 등록 범위 충족, 중복 범위 재조정·폐기 검토 |
 | `T-20260729-026` | P0 | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | - | `done`, Product QA PASS·Product Owner 최종 승인 |
+| `T-20260731-001` | P0 | 활성 문서 Source of Truth 정합성 복구 | - | `done`, Product QA PASS·Product Lead 완료 검토·Product Owner 최종 승인 |
 
 Design `T-20260729-002` 하위 실행 후보:
 
@@ -83,21 +84,21 @@ Backend `T-20260728-005` 하위 실행 후보:
 
 | Task ID | Priority | 제목 | 담당 Agent | 의존성 |
 |---|---|---|---|---|
-| `T-20260729-020` | P0 | Backend 런타임·배포·AI provider·비용 후보 결정안 | Backend Agent | `T-20260729-026` |
-| `T-20260729-021` | P0 | Backend 공통 API·인증·제한·오류 계약 정의 | Backend Agent | `T-20260729-026` |
-| `T-20260729-022` | P1 | 기본 비활성 원격 STT adapter 계약 정의 | Backend Agent | `T-20260729-021` |
-| `T-20260729-023` | P0 | AI 레시피 job·상태 조회·결과 복구 계약 정의 | Backend Agent | `T-20260729-020`, `021` |
-| `T-20260729-024` | P0 | Backend 보안·개인정보·관측성·비용 guardrail 정의 | Backend Agent | `T-20260729-020`, `021` |
+| `T-20260729-020` | P0 | Backend 런타임·배포·AI provider·비용 후보 결정안 | - | `done`, PR #26 squash merge |
+| `T-20260729-021` | P0 | Backend 공통 API·인증·제한·오류 계약 정의 | - | `done`, PR #32 squash merge |
+| `T-20260729-022` | P1 | 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #40 squash merge·완료 확정 |
+| `T-20260729-023` | P0 | AI 레시피 job·상태 조회·결과 복구 계약 정의 | Backend Agent | `approved`, 병렬 실행 승인 |
+| `T-20260729-024` | P0 | Backend 보안·개인정보·관측성·비용 guardrail 정의 | Backend Agent | `approved`, 병렬 실행 승인 |
 | `T-20260729-025` | P0 | iOS·Backend 공용 fixture와 계약 테스트 기준 정의 | Backend Agent | `T-20260729-021~024` |
 
 CI `T-20260728-008` 하위 실행 후보:
 
 | Task ID | Priority | 제목 | 담당 Agent | 의존성 |
 |---|---|---|---|---|
-| `T-20260730-001` | P0 | iOS CI 환경·명령·check 계약 확정 | iOS Agent | `T-20260728-004`, `007` 완료 |
-| `T-20260730-002` | P0 | ios-build·build-for-testing workflow 구현 | iOS Agent | `T-20260730-001` |
-| `T-20260730-003` | P0 | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | iOS Agent | `T-20260730-001` |
-| `T-20260730-004` | P1 | iOS CI concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` |
+| `T-20260730-001` | P0 | iOS CI 환경·명령·check 계약 확정 | - | `done`, PR #20 squash merge |
+| `T-20260730-002` | P0 | ios-build·build-for-testing workflow 구현 | - | `done`, PR #24 squash merge |
+| `T-20260730-003` | P0 | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | - | `done`, PR #28 squash merge |
+| `T-20260730-004` | P1 | iOS CI concurrency·진단·cache·artifact 통합 | - | `done`, PR #34 checks·squash merge·완료 확정 |
 | `T-20260730-005` | P0 | iOS CI PR dry run·실패 감지·회귀 검증 | iOS Agent | `T-20260730-004` |
 | `T-20260730-006` | P0 | ios-build·ios-xctest required check 외부 설정 | AI Ops Agent | `T-20260730-005`, 별도 승인 |
 
@@ -114,6 +115,12 @@ CI `T-20260728-008` 하위 실행 후보:
 | `T-20260728-004` | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | `done` | iOS QA 통과, 위험 수용, PR #8 squash merge 완료 |
 | `T-20260729-008` | 확정 UX용 디자인 Foundation·공통 컴포넌트 갱신 | `done` | Design QA·완료 검토 통과, PR #11 squash merge 완료 |
 | `T-20260729-009` | Home·전체 보기·검색·레시피 상태 routing 디자인 | `done` | Design QA·완료 검토 통과, PR #16 squash merge 완료 |
+| `T-20260729-010` | Cooking Log·STEP Preview·기기 내 STT·권한·오류 디자인 | `done` | Design QA·완료 검토 통과, PR #22 squash merge 완료 |
+| `T-20260729-011` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | `done` | Design QA·완료 검토 통과, PR #30 squash merge 완료 |
+| `T-20260729-020` | Backend 런타임·배포·AI provider·비용 후보 결정안 | `done` | Backend QA·완료 검토 통과, PR #26 squash merge 완료 |
+| `T-20260729-021` | Backend 공통 API·인증·제한·오류 계약 정의 | `done` | Backend QA·완료 검토 통과, PR #32 squash merge 완료 |
+| `T-20260730-001~003` | iOS CI 계약·build·XCTest workflow | `done` | hosted check·33/33·artifact 검증과 PR #20·24·28 통합 완료 |
+| `T-20260730-004` | iOS CI concurrency·진단·cache·artifact 통합 | `done` | PR #34 hosted checks·artifact·33/33과 완료 확정 |
 
 ## 5. Backlog Candidates
 
@@ -227,3 +234,19 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-31 | Design QA Agent가 `T-20260729-011` 결함 7건 해소와 기존 통과 항목 무회귀를 독립 재검증해 verification_passed로 Design Lead Agent에 인계 |
 | 2026-07-31 | Design Lead Agent가 `T-20260729-011` 완료 검토를 통과시켜 completion_review로 인계하고 develop 통합 전 done 전환을 보류 |
 | 2026-07-31 | Product Owner 승인으로 `T-20260729-011` PR #30을 develop에 squash merge하고 merge SHA `c98741a` 확인 후 done 확정 |
+| 2026-07-31 | Product Owner가 루트·운영·iOS·Design·PRD PDF 참조 정합성 복구 T-20260731-001을 승인하고 Product Lead Agent가 실행 시작 |
+| 2026-07-31 | `T-20260729-021` PR #32 squash merge와 완료 확정을 반영하고 Task 상태 집계를 최신화 |
+| 2026-07-31 | `T-20260731-001` 자체 검증과 최신 develop 정렬을 마치고 Product QA `verification_ready`로 인계 |
+| 2026-07-31 | Product QA가 T-20260731-001 활성 문서 충돌 4건을 확인해 `rework_requested`로 인계하고 Product Owner가 재작업·추가 경로를 승인 |
+| 2026-07-31 | 최신 develop의 T-20260730-004 `completion_review`를 병합하고 T-20260731-001 재작업 시작 |
+| 2026-07-31 | T-20260730-004 PR #34 checks·squash merge와 최종 `done` 확정을 최신 develop에서 반영 |
+| 2026-07-31 | T-20260731-001 승인 재작업 4건의 자체 검증을 마치고 Product QA `verification_ready`로 재인계 |
+| 2026-07-31 | Product QA 재검증에서 Development Board의 T-004 `done`·완료 확정 대기 충돌이 남아 `rework_requested`로 재인계 |
+| 2026-07-31 | Product Owner가 PQA-HIGH-031-002 재작업을 승인하고 Development Board T-004 상태를 `done`으로 단일화해 Product QA 재재검증 인계 |
+| 2026-07-31 | 최신 develop `93f577e`의 T-022 `completion_review`, T-023·024 `approved` 상태와 원격 STT 계약 산출물 반영 |
+| 2026-07-31 | 최신 develop `5118712`의 T-022 PR #40 squash merge·`done` 완료 확정 반영 |
+| 2026-07-31 | Product QA 재재검증에서 T-004 해소를 확인했으나 Development Board Backend 상위 요약이 T-022 `done`·T-023·024 `approved`를 반영하지 않아 `rework_requested`로 재인계 |
+| 2026-07-31 | Product Owner 승인으로 Development Board Backend 상위 요약을 T-020~022 `done`, T-023·024 `approved`, T-025 선행 대기로 정렬하고 Product QA 재검증 재인계 |
+| 2026-07-31 | Product QA가 PQA-HIGH-031-001~004 최종 해소와 전체 무회귀를 확인해 `PASS`·`verification_passed`로 Product Lead 완료 검토에 인계 |
+| 2026-07-31 | Product Lead가 QA PASS·허용 경로·최신 develop 정렬을 수용해 `completion_review`로 전환하고 Product Owner 최종 승인 대기 |
+| 2026-07-31 | Product Owner가 T-20260731-001 최종 완료와 develop 통합을 승인해 `completion_review -> done` 확정 |

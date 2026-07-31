@@ -2,7 +2,7 @@
 
 이 문서는 CookLog iOS 앱의 구조, 계층 책임, 의존성 조립 기준을 관리합니다.
 
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-07-31
 상태: 확정
 
 ## 1. 아키텍처 기준
@@ -84,9 +84,9 @@ CookLog/
 - Speech와 AudioGuide처럼 플랫폼 기능을 직접 다루는 구현은 `Services/`에 둡니다.
 - 샘플 데이터, Preview 전용 helper는 `PreviewSupport/`에 둡니다.
 
-## 3. 화면
+## 3. Feature 구성
 
-MVP 화면:
+현재 Feature 예시:
 
 - `HomeView`
 - `CookingLogView`
@@ -100,16 +100,10 @@ MVP 화면:
 - Cooking Log는 10초 음성 기록과 STEP Preview 누적에 집중합니다.
 - AI Review는 AI 정리 결과를 저장 전 수정하는 화면입니다.
 - Recipe Detail은 저장된 레시피 조회와 오디오 가이드 진입을 담당합니다.
-- Audio Player는 버튼 기반 단계 이동과 TTS 재생을 담당합니다.
+- Audio Player는 버튼 기반 단계 이동, TTS 재생과 승인된 핸즈프리 action 연결을 담당합니다.
+- 전체 보기·로컬 검색, 진행 상태 복구와 앱 정보 같은 추가 Feature는 최신 Task와 Design Source of Truth에 따라 구성합니다.
 
-MVP 제외 화면:
-
-- 레시피 검색 화면
-- 로그인/회원가입 화면
-- 공유/커뮤니티 화면
-- Import/OCR 화면
-- AI 챗 화면
-- 음성 명령 화면
+제품 화면 포함·제외 여부는 이 아키텍처 문서에서 결정하지 않고 `CookLog_MVP_SCOPE.md`와 실행 Task를 따릅니다.
 
 ## 4. AppEnvironment와 DI
 

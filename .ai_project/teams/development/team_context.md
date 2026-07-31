@@ -19,7 +19,7 @@ Team: Core Development Team
 | Workstream | 상태 | Agent | 기본 Ownership |
 |---|---|---|---|
 | iOS | active, highest priority | iOS Agent | `apps/ios/` |
-| Backend | active, foundation phase | Backend Agent | 경로·API 계약 생성 후보 |
+| Backend | active, contract foundation | Backend Agent | `apps/backend/`, 공통 API·후속 AI 계약 |
 | Android | deferred | Android Agent | `apps/android/` 문서 보존 |
 
 ## 3. Role / Agent Mapping
@@ -40,7 +40,8 @@ Product Lead Agent는 필수 개발 하위 Task가 모두 완료된 뒤 상위 �
 | iOS 현재 상태 | `apps/ios/docs/STATUS.md` |
 | iOS 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` |
 | iOS 아키텍처 | `apps/ios/docs/ARCHITECTURE.md` |
-| Backend 아키텍처/API | unresolved, 생성 후보 |
+| Backend 런타임·AI provider 추천안 | `apps/backend/docs/ARCHITECTURE_DECISION.md` |
+| Backend 공통 API 계약 | `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/` |
 | Android 상태 | `apps/android/docs/STATUS.md` |
 
 ## 5. Coordination
@@ -48,7 +49,7 @@ Product Lead Agent는 필수 개발 하위 Task가 모두 완료된 뒤 상위 �
 - Team board: `.ai_project/teams/development/task_board.md`
 - 병렬 가능 여부: Development Lead Agent가 `depends_on`, `blocks`, ownership을 확인
 - Backend 계약과 Design 작업은 병렬 가능
-- iOS API 연결은 승인된 Backend API 계약에 의존
+- iOS API 연결은 T-021 공통 계약과 후속 T-023~025 계약·fixture에 의존
 - Android 활성화는 Product Owner 승인 필요
 - 개발 하위 Task 완료: `target_agent: Development Lead Agent`, `target_role: Completion Role`
 - 상위 제품 Task 완료: Product Lead Agent 전용
