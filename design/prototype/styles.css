@@ -235,6 +235,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
 .button-destructive { color: var(--text-on-accent); background: var(--error); }
 .button-fallback { color: var(--text-primary); background: var(--bg-elevated); border: 1px solid var(--border-strong); box-shadow: none; }
 .button:disabled { cursor: not-allowed; color: var(--text-tertiary); background: var(--bg-subtle); box-shadow: none; opacity: .7; }
+.icon-button:disabled { cursor: not-allowed; opacity: .42; }
 .inline-loader { width: 18px; height: 18px; border: 2px solid color-mix(in srgb, currentColor 34%, transparent); border-top-color: currentColor; border-radius: 50%; animation: spin .8s linear infinite; }
 .button-dot { width: 11px; height: 11px; border-radius: 50%; background: currentColor; opacity: .85; }
 
@@ -510,6 +511,23 @@ button.card { width: 100%; color: inherit; text-align: left; }
 .step-edit-content strong { display: block; font-size: 13px; line-height: 18px; }
 .step-edit-content p { margin: 4px 0 0; color: var(--text-secondary); font-size: 13px; line-height: 19px; }
 .step-edit-handle { width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 13px; color: var(--text-secondary); background: var(--bg-subtle); font-size: 18px; }
+.review-step-list { display: grid; gap: 12px; }
+.step-edit-card[draggable="true"] { cursor: grab; }
+.step-edit-card[draggable="true"]:active { cursor: grabbing; }
+.step-edit-content label { display: block; margin-bottom: 7px; font-size: 12px; font-weight: 850; }
+.step-edit-content .textarea { min-height: 92px; }
+.step-edit-actions { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.step-edit-actions button { min-width: 44px; min-height: 44px; padding: 0 11px; border: 1px solid var(--border); border-radius: 12px; color: var(--text-secondary); background: var(--bg-elevated); font-size: 12px; font-weight: 800; }
+.step-edit-actions button.is-destructive { color: var(--error); }
+.step-edit-actions button:disabled { color: var(--text-tertiary); background: var(--bg-subtle); opacity: .6; }
+.review-save-actions { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 8px; }
+.exit-actions { margin-top: 14px; display: grid; gap: 8px; }
+
+.detail-menu-wrap { position: relative; }
+.detail-menu { position: absolute; top: 48px; right: 0; z-index: 12; width: 172px; padding: 7px; border: 1px solid var(--border); border-radius: 15px; background: var(--bg-elevated); box-shadow: 0 14px 34px var(--shadow); }
+.detail-menu button { width: 100%; min-height: 44px; padding: 9px 11px; border: 0; border-radius: 10px; color: var(--text-primary); background: transparent; text-align: left; font-size: 13px; font-weight: 800; }
+.detail-menu button:hover { background: var(--bg-subtle); }
+.detail-menu button.is-destructive { color: var(--error); }
 
 .toast {
   min-height: 56px;

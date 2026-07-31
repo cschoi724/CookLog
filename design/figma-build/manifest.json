@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "runId": "cooklog-mvp-v1-20260728",
-  "revision": "cooking-log-on-device-stt-20260730",
+  "revision": "ai-review-edit-delete-20260731",
   "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
   "direction": "A — Warm Kitchen Journal",
   "brandScope": "wordmark-only",
@@ -209,7 +209,7 @@
     "Alert": {
       "properties": {
         "Category": ["Permission", "Offline", "Service", "Delete Confirmation", "Long Processing"],
-        "Actions": ["Single", "Dual"]
+        "Actions": ["Single", "Dual", "Triple"]
       },
       "rule": "Name the cause category, preserved data, and the user's next action."
     },
@@ -243,11 +243,11 @@
     "fallbackRule": "Permission, network, service, and voice-command failures keep unaffected local actions available."
   },
   "screens": {
-    "Home": ["Mixed Recent", "Multiple Drafts", "Record Menu", "Delete Confirmation", "Empty", "Loading", "Error"],
+    "Home": ["Mixed Recent", "Multiple Drafts", "AI Review Ready", "Record Menu", "Delete Confirmation", "Empty", "Loading", "Error"],
     "All Recipes": ["Recent Activity", "Title Search", "Ingredient Search", "No Results", "Empty"],
     "Cooking Log": ["First-use Rationale", "Microphone Denied", "Empty", "10-second Recording", "On-device Processing", "Automatic Retry", "STEP Added", "Delete Undo", "Offline Recording", "Recording Error", "On-device STT Unsupported", "STT Final Failure", "AI Snapshot Locked", "Offline AI Notice"],
-    "AI Review": ["Processing", "Editable", "Generation Error", "Saving", "Save Error"],
-    "Recipe Detail": ["Content", "Loading", "Error", "Not Found"],
+    "AI Review": ["Processing", "Long Processing", "Review Ready", "Editable", "Draft Saved", "Unsaved Exit", "Validation Error", "Saving", "Save Error", "Generation Error", "Complete Recipe Edit", "Complete Recipe Saving"],
+    "Recipe Detail": ["Content", "More Menu", "Delete Confirmation", "Deleted", "Loading", "Error", "Not Found"],
     "Audio Player": ["Paused", "Playing", "Loading", "Error", "No Steps"]
   },
   "prototype": {
@@ -285,8 +285,11 @@
     },
     "keyboardFocus": {
       "recordMenu": ["Move focus to the menu item on open", "Escape closes and returns focus to the trigger"],
+      "completedRecipeMenu": ["Move focus to Edit on open", "Escape closes and returns focus to the more-menu trigger"],
       "deleteDialog": ["Initial focus on Cancel", "Tab and Shift+Tab remain inside", "Escape cancels", "Cancel returns focus to the menu trigger"],
-      "deleteConfirmation": "After the deleted trigger is removed, focus moves to the primary Home action or Library search."
+      "deleteConfirmation": "After the deleted trigger is removed, focus moves to the primary Home action or Library search.",
+      "reviewUnsavedDialog": ["Modal semantics", "Initial focus on Continue Editing", "Tab and Shift+Tab remain inside", "Escape continues editing and returns focus to Back"],
+      "reviewStepDelete": ["Move focus to Undo after deletion", "Undo returns focus to the restored STEP"]
     },
     "cookingLogRules": {
       "recordingDurationSeconds": 10,
@@ -340,6 +343,65 @@
         "unlockOnAICompletionOrFailure": true
       }
     },
+    "aiOrganizingRules": {
+      "snapshot": "Lock the ordered STEP Preview at explicit AI 정리하기",
+      "duplicatePrevention": "One request identifier creates at most one review result; repeated taps are disabled while in flight.",
+      "longProcessingNoticeSeconds": 10,
+      "longProcessingIsTimeout": false,
+      "backgroundUse": true,
+      "completionNotice": ["In-app banner", "Home Review Ready card"],
+      "completionNavigation": "User explicitly opens Review; never automatically change screen.",
+      "failureCategories": ["Offline", "Service delay", "Insufficient STEP content"],
+      "failureRecovery": ["다시 정리하기", "기록으로 돌아가기"],
+      "automaticRetry": false,
+      "unlockSnapshotOn": ["Completion", "Failure"]
+    },
+    "reviewRules": {
+      "fieldStates": {
+        "Confirmed": "Content directly supported by the user's record.",
+        "AI Estimated": "Editable estimate with an explanation.",
+        "Missing": "Editable absence; optional fields are not technical errors."
+      },
+      "editableFields": ["Title", "Ingredient name", "Ingredient amount", "Expected time", "Memo"],
+      "steps": {
+        "model": "Independent editable cards",
+        "actions": ["Add", "Delete", "Undo delete", "Drag reorder", "Move up", "Move down"],
+        "saveNormalization": ["Exclude empty steps", "Renumber in displayed order"],
+        "minimumNonEmpty": 1
+      },
+      "draftSave": {
+        "automatic": false,
+        "action": "임시 저장",
+        "result": "Replace the last successful draft snapshot, show toast, and remain in Review",
+        "currentEditSeparation": "The current editable copy is separate from the last successful draft snapshot.",
+        "discardResult": "Restore the last successful draft snapshot before leaving."
+      },
+      "unsavedExit": ["임시 저장하고 나가기", "변경 버리고 나가기", "계속 편집"],
+      "finalValidation": {
+        "titleRequired": true,
+        "minimumNonEmptySteps": 1,
+        "ingredientAmountRequiresName": true,
+        "presentation": "Field-level errors plus summary banner"
+      },
+      "finalSave": {
+        "action": "레시피 저장",
+        "duplicateActionDisabledWhileSaving": true,
+        "completion": "Navigate to Recipe Detail only after local save succeeds",
+        "failure": "Retain all current values and offer 저장 다시 시도"
+      }
+    },
+    "completedRecipeRules": {
+      "editEntry": "Recipe Detail more menu",
+      "form": "Reuse AI Review fields and independent STEP cards",
+      "differencesFromReview": ["No AI DRAFT label", "No draft save", "No AI call", "Primary action is 수정 완료"],
+      "dataBoundary": "The current edit copy is separate from the last saved completed recipe.",
+      "unsavedExit": ["수정 버리고 상세로", "계속 편집"],
+      "discardResult": "Restore the last saved completed recipe and return to Recipe Detail.",
+      "saveResult": "Normalize fields and steps, update the existing completed recipe, and render the saved values in Recipe Detail.",
+      "deleteEntry": "Recipe Detail more menu only",
+      "deleteConfirmation": "Explicitly names the completed recipe and irreversible loss",
+      "deleteRecovery": false
+    },
     "recordFlow": [
       "Home / Mixed Recent",
       "Cooking Log / First-use Rationale",
@@ -352,6 +414,8 @@
       "Cooking Log / STEP Added",
       "Cooking Log / AI Snapshot Locked",
       "AI Review / Processing",
+      "AI Review / Long Processing",
+      "AI Review / Review Ready",
       "AI Review / Editable",
       "AI Review / Saving",
       "Recipe Detail / Content",
@@ -362,6 +426,20 @@
       "Home / Mixed Recent",
       "Recipe Detail / Content",
       "Audio Player / Paused"
+    ],
+    "completedEditFlow": [
+      "Recipe Detail / Content",
+      "Recipe Detail / More Menu",
+      "AI Review / Complete Recipe Edit",
+      "AI Review / Complete Recipe Saving",
+      "Recipe Detail / Content"
+    ],
+    "completedDeleteFlow": [
+      "Recipe Detail / Content",
+      "Recipe Detail / More Menu",
+      "Recipe Detail / Delete Confirmation",
+      "Recipe Detail / Deleted",
+      "Home / Mixed Recent"
     ],
     "searchFlow": [
       "Home / Mixed Recent",

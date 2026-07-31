@@ -10,21 +10,24 @@ const icons = {
 };
 
 const screenStates = {
-  home: ["content", "multiple", "menu-open", "delete-confirm", "empty", "loading", "error"],
+  home: ["content", "multiple", "ai-ready", "menu-open", "delete-confirm", "empty", "loading", "error"],
   library: ["all", "search-title", "search-ingredient", "no-results", "empty"],
   log: ["intro", "permission-denied", "empty", "recording", "processing", "retrying", "steps", "undo-delete", "offline", "record-error", "stt-unsupported", "stt-error", "ai-lock", "ai-offline"],
-  review: ["processing", "editable", "error", "saving", "save-error"],
-  detail: ["content", "loading", "error", "not-found"],
+  review: ["processing", "processing-long", "ready-banner", "editable", "draft-saved", "unsaved-exit", "validation-error", "saving", "save-error", "generation-error", "complete-edit", "complete-saving"],
+  detail: ["content", "menu-open", "delete-confirm", "deleted", "loading", "error", "not-found"],
   player: ["paused", "playing", "loading", "error", "no-steps"]
 };
 
 const stateLabels = {
-  content: "최근 3개", multiple: "여러 진행 기록", "menu-open": "진행 기록 메뉴", "delete-confirm": "영구 삭제 확인",
+  content: "최근 3개", multiple: "여러 진행 기록", "ai-ready": "AI 완료 배너", "menu-open": "진행 기록 메뉴", "delete-confirm": "영구 삭제 확인",
   all: "전체 · 최근 활동순", "search-title": "검색 · 제목 우선", "search-ingredient": "검색 · 재료 일치", "no-results": "검색 결과 없음",
   empty: "빈 상태", loading: "로딩", error: "오류",
   intro: "첫 기록 안내", "permission-denied": "마이크 권한 거부", recording: "10초 녹음", processing: "기기 내 변환", retrying: "자동 재처리", steps: "STEP 누적", "undo-delete": "삭제·되돌리기", offline: "오프라인 기록",
   "record-error": "녹음 오류", "stt-unsupported": "기기 내 STT 미지원", "stt-error": "STT 최종 실패", "ai-lock": "AI snapshot 잠금", "ai-offline": "오프라인 AI 안내",
-  editable: "검토·수정", saving: "저장 중", "save-error": "저장 오류", "not-found": "찾을 수 없음",
+  editable: "검토·수정", "processing-long": "10초 이상 처리", "ready-banner": "검토 준비됨", "draft-saved": "임시 저장됨",
+  "unsaved-exit": "이탈 확인", "validation-error": "입력 검증", saving: "최종 저장 중", "save-error": "최종 저장 오류",
+  "generation-error": "AI 정리 실패", "complete-edit": "완료 레시피 수정", "complete-saving": "수정 저장 중",
+  deleted: "삭제 완료", "not-found": "찾을 수 없음",
   paused: "일시정지", playing: "재생 중", "no-steps": "단계 없음"
 };
 
@@ -58,15 +61,42 @@ let reviewDraft = {
     { name: "삼겹살", amount: "300g" },
     { name: "양파", amount: "1/2개" }
   ],
-  steps: "1. 삼겹살을 노릇하게 볶아요.\n2. 양파와 간장을 넣고 더 볶아요.",
+  steps: [
+    "삼겹살을 노릇하게 볶아요.",
+    "양파와 간장을 넣고 더 볶아요.",
+    "불을 줄이고 설탕을 넣어 윤기를 내요."
+  ],
   time: "25분",
   memo: "양파가 살짝 투명해질 때 불을 줄이면 좋아요."
 };
+function cloneRecipeDraft(value) {
+  return {
+    title: value.title,
+    ingredients: value.ingredients.map(item => ({ ...item })),
+    steps: [...value.steps],
+    time: value.time,
+    memo: value.memo
+  };
+}
+let reviewSavedSnapshot = cloneRecipeDraft(reviewDraft);
+let completedRecipe = cloneRecipeDraft(reviewDraft);
+let completeEditSnapshot = cloneRecipeDraft(completedRecipe);
+let pendingRecipeSave = null;
 let transitionTimer = null;
 let searchQuery = "";
 let recordMenuId = "";
 let pendingDeleteId = "";
 let deleteDialogOpen = false;
+let completedDeleteOpen = screen === "detail" && state === "delete-confirm";
+let reviewDirty = false;
+let removedReviewStep = null;
+let finalSaveInFlight = false;
+let completedRecipeCreated = false;
+let reviewMode = state.startsWith("complete-") ? "complete" : "draft";
+if (reviewMode === "complete") {
+  reviewDraft = cloneRecipeDraft(completedRecipe);
+  completeEditSnapshot = cloneRecipeDraft(completedRecipe);
+}
 let homeFeedback = "";
 let lastMenuTriggerId = "";
 let focusIntent = null;
@@ -101,7 +131,7 @@ const recipes = [
     id: "draft-review",
     state: "review",
     title: "달큰한 간장 삼겹살",
-    status: "검토 필요",
+    status: "검토 준비됨",
     activity: "어제",
     lastActivityAt: "2026-07-29T18:10:00+09:00",
     detail: "삼겹살 · 양파 · 간장",
@@ -175,9 +205,9 @@ if (dark) {
   themeLabel.textContent = "Light";
 }
 
-function header({ back, title = "CookLog", action = "" } = {}) {
+function header({ back, backAction = "", backDisabled = false, title = "CookLog", action = "" } = {}) {
   return `<header class="app-header">
-    ${back ? `<button class="icon-button back-button" data-nav="${back}" aria-label="뒤로">${icons.chevronLeft}</button>` : `<span class="wordmark">${title}</span>`}
+    ${back ? `<button class="icon-button back-button" ${backAction ? `data-action="${backAction}"` : `data-nav="${back}"`} aria-label="뒤로" ${backDisabled ? "disabled" : ""}>${icons.chevronLeft}</button>` : `<span class="wordmark">${title}</span>`}
     ${back ? `<span class="wordmark">${title}</span>` : ""}
     ${action || `<span aria-hidden="true" style="width:44px"></span>`}
   </header>`;
@@ -271,6 +301,7 @@ function renderHome() {
       ${icons.mic}<span>10초 요리 기록 시작</span>
     </button>
     <p class="preservation-note">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</p>
+    ${state === "ai-ready" ? `<div class="banner banner-success" role="status"><strong aria-hidden="true">✓</strong><div><strong>AI 정리가 끝났어요</strong><p>달큰한 간장 삼겹살 검토본이 준비됐습니다.</p><button class="banner-action" type="button" data-nav="review" data-state="editable">레시피 검토하기</button></div></div>` : ""}
     ${homeFeedback ? `<div class="compact-feedback" role="status">${escapeHTML(homeFeedback)}</div>` : ""}
     <div class="section-head"><div><h3>${state === "empty" ? "나의 요리 기록" : "최근 레시피"}</h3><span>최근 활동순 · 최대 3개</span></div><button class="text-action" data-nav="library" data-state="all">전체 보기</button></div>
     ${content}
@@ -438,7 +469,27 @@ function renderLog() {
   </section>`;
 }
 
-function reviewForm({ disabled = false } = {}) {
+function reviewStepCards({ disabled = false, validation = false } = {}) {
+  return reviewDraft.steps.map((step, index) => {
+    const empty = validation && !step.trim();
+    return `<article class="step-edit-card ${empty ? "is-error" : ""}" draggable="${!disabled}" data-review-step-card data-index="${index}">
+      <span class="step-edit-number" aria-hidden="true">${index + 1}</span>
+      <div class="step-edit-content">
+        <label for="review-step-${index}">STEP ${index + 1}</label>
+        <textarea class="textarea" id="review-step-${index}" data-draft-field="step" data-draft-index="${index}" ${disabled ? "disabled" : ""}>${escapeHTML(step)}</textarea>
+        ${empty ? `<p class="field-error" id="step-error-${index}">조리 내용을 입력하거나 빈 단계를 삭제해주세요.</p>` : ""}
+        <div class="step-edit-actions" aria-label="STEP ${index + 1} 순서와 삭제">
+          <button type="button" data-action="move-review-step" data-direction="-1" data-index="${index}" ${disabled || index === 0 ? "disabled" : ""} aria-label="STEP ${index + 1} 위로 이동">↑</button>
+          <button type="button" data-action="move-review-step" data-direction="1" data-index="${index}" ${disabled || index === reviewDraft.steps.length - 1 ? "disabled" : ""} aria-label="STEP ${index + 1} 아래로 이동">↓</button>
+          <button type="button" class="is-destructive" data-action="remove-review-step" data-index="${index}" ${disabled ? "disabled" : ""} aria-label="STEP ${index + 1} 삭제">삭제</button>
+        </div>
+      </div>
+      <span class="step-edit-handle" aria-hidden="true">⠿</span>
+    </article>`;
+  }).join("");
+}
+
+function reviewForm({ disabled = false, mode = "draft", validation = false } = {}) {
   const ingredientRows = reviewDraft.ingredients.map((ingredient, index) =>
     `<div class="ingredient-row">
       <input class="input" aria-label="재료 이름" data-draft-field="ingredient-name" data-draft-index="${index}" value="${escapeHTML(ingredient.name)}" ${disabled ? "disabled" : ""}>
@@ -446,31 +497,71 @@ function reviewForm({ disabled = false } = {}) {
       <button class="remove-button" type="button" data-action="remove-ingredient" data-index="${index}" aria-label="${escapeHTML(ingredient.name)} 삭제" ${disabled ? "disabled" : ""}>×</button>
     </div>`
   ).join("");
+  const titleError = validation && !reviewDraft.title.trim();
+  const stepError = validation && !reviewDraft.steps.some(step => step.trim());
+  const amountOnlyError = validation && reviewDraft.ingredients.some(item => !item.name.trim() && item.amount.trim());
   return `<form class="form" onsubmit="return false">
-    <div class="field"><label for="title">제목</label><input class="input" id="title" data-draft-field="title" value="${escapeHTML(reviewDraft.title)}" ${disabled ? "disabled" : ""}></div>
-    <div class="field">
-      <span class="group-label">재료</span>
+    <div class="field ${titleError ? "has-error" : ""}">
+      <span class="field-state-label">확정</span><label for="title">제목</label>
+      <input class="input" id="title" data-draft-field="title" value="${escapeHTML(reviewDraft.title)}" aria-invalid="${titleError}" ${disabled ? "disabled" : ""}>
+      ${titleError ? `<p class="field-error">레시피 제목을 입력해주세요.</p>` : ""}
+    </div>
+    <div class="field is-estimated ${amountOnlyError ? "has-error" : ""}">
+      <span class="field-state-label">AI 추정</span><span class="group-label">재료와 양</span>
       ${ingredientRows}
       <button class="subtle-add" type="button" data-action="add-ingredient" ${disabled ? "disabled" : ""}>+ 재료 추가</button>
+      <p class="field-support is-estimated">말한 기록에서 추정했어요. 이름이 없는 재료의 양은 저장할 수 없습니다.</p>
+      ${amountOnlyError ? `<p class="field-error">양을 입력한 행에는 재료 이름도 입력해주세요.</p>` : ""}
     </div>
-    <div class="field"><label for="steps">조리 순서</label><textarea class="textarea" id="steps" data-draft-field="steps" ${disabled ? "disabled" : ""}>${escapeHTML(reviewDraft.steps)}</textarea></div>
-    <div class="field"><label for="time">예상 시간</label><input class="input" id="time" data-draft-field="time" value="${escapeHTML(reviewDraft.time)}" ${disabled ? "disabled" : ""}></div>
-    <div class="field"><label for="memo">메모</label><textarea class="textarea" id="memo" data-draft-field="memo" ${disabled ? "disabled" : ""}>${escapeHTML(reviewDraft.memo)}</textarea></div>
-    <div class="sticky-action"><button class="button button-primary ${disabled ? "is-loading" : ""}" type="button" data-action="save-recipe" ${disabled ? "disabled" : ""}>${disabled ? `<span class="inline-loader" aria-hidden="true"></span><span>저장 중</span>` : "레시피 저장"}</button></div>
+    <div class="field ${stepError ? "has-error" : ""}">
+      <span class="field-state-label">확정 + AI 추정</span><span class="group-label">조리 순서</span>
+      <p class="field-support">카드를 끌거나 위·아래 버튼으로 순서를 바꿀 수 있어요. 저장 시 빈 단계는 제외되고 번호가 다시 매겨집니다.</p>
+      <div class="review-step-list">${reviewStepCards({ disabled, validation })}</div>
+      <button class="subtle-add" type="button" data-action="add-review-step" ${disabled ? "disabled" : ""}>+ STEP 추가</button>
+      ${stepError ? `<p class="field-error">내용이 있는 조리 단계가 최소 1개 필요합니다.</p>` : ""}
+    </div>
+    <div class="field is-estimated"><span class="field-state-label">AI 추정</span><label for="time">예상 시간</label><input class="input" id="time" data-draft-field="time" value="${escapeHTML(reviewDraft.time)}" ${disabled ? "disabled" : ""}><p class="field-support is-estimated">기록 간격과 조리 표현을 바탕으로 추정했어요.</p></div>
+    <div class="field is-missing"><span class="field-state-label">누락 · 선택</span><label for="memo">메모</label><textarea class="textarea" id="memo" data-draft-field="memo" placeholder="다음 요리를 위한 팁을 남겨보세요" ${disabled ? "disabled" : ""}>${escapeHTML(reviewDraft.memo)}</textarea><p class="field-support">비워두어도 저장할 수 있어요.</p></div>
+    <div class="sticky-action review-save-actions">
+      ${mode === "draft" ? `<button class="button button-secondary" type="button" data-action="save-review-draft" ${disabled ? "disabled" : ""}>임시 저장</button>` : ""}
+      <button class="button button-primary ${disabled ? "is-loading" : ""}" type="button" data-action="${mode === "complete" ? "save-completed-edit" : "save-recipe"}" ${disabled ? "disabled" : ""}>${disabled ? `<span class="inline-loader" aria-hidden="true"></span><span>${mode === "complete" ? "수정 중" : "저장 중"}</span>` : mode === "complete" ? "수정 완료" : "레시피 저장"}</button>
+    </div>
   </form>`;
 }
 
 function renderReview() {
-  if (state === "processing") return `<section class="screen">${header({ back: "log", title: "AI 레시피 정리" })}${feedbackCard("loading", "레시피로 정리하는 중", "STEP Preview를 재료와 조리 순서로 바꾸고 있어요.")}<button class="button button-secondary" data-state="editable">결과 미리 보기</button></section>`;
-  if (state === "error") return `<section class="screen">${header({ back: "log", title: "AI 레시피 정리" })}${feedbackCard("error", "정리하지 못했어요", "기록은 그대로 보관되어 있어요. 다시 시도할 수 있습니다.", "processing")}</section>`;
-  const saving = state === "saving";
+  if (state === "processing" || state === "processing-long") {
+    const isLong = state === "processing-long";
+    return `<section class="screen">${header({ back: "home", title: "AI 레시피 정리" })}
+      ${feedbackCard("loading", isLong ? "정리에 시간이 조금 더 걸리고 있어요" : "레시피로 정리하는 중", isLong ? "10초가 지났지만 실패가 아니에요. STEP snapshot은 잠겨 있고 정리는 계속됩니다." : "같은 요청으로 하나의 검토본만 만들고 있어요. 화면은 자동으로 바뀌지 않습니다.")}
+      <div class="alert-card"><div class="alert-heading"><span class="alert-icon">↗</span><div><h3>다른 화면을 이용해도 괜찮아요</h3><p>완료되면 앱 안에서 알려드리고 Home에 ‘검토 준비됨’ 카드가 나타납니다.</p></div></div><div class="alert-actions is-single"><button class="button button-secondary" data-nav="home" data-state="content">Home으로 가기</button></div></div>
+    </section>`;
+  }
+  if (state === "ready-banner") return `<section class="screen">${header()}
+    <div class="hero"><p class="eyebrow">AI 정리 완료</p><h2 class="screen-title">검토할 레시피가<br>준비됐어요</h2><p>자동으로 화면을 바꾸지 않았어요. 준비됐을 때 직접 열어보세요.</p></div>
+    <div class="banner banner-success" role="status"><strong aria-hidden="true">✓</strong><div><strong>달큰한 간장 삼겹살 · 검토 준비됨</strong><p>STEP snapshot 3개로 만든 검토본 1개입니다.</p><button class="banner-action" type="button" data-action="open-ready-review">레시피 검토하기</button></div></div>
+    <button class="button button-secondary" data-nav="home" data-state="content">나중에 Home에서 확인</button>
+  </section>`;
+  if (state === "generation-error") return `<section class="screen">${header({ back: "log", title: "AI 레시피 정리" })}
+    <div class="alert-card is-error" role="alert"><div class="alert-heading"><span class="alert-icon">!</span><div><h3>레시피로 정리하지 못했어요</h3><p>연결 끊김, 서버 응답 지연, 정리할 내용 부족 중 하나일 수 있어요. STEP Preview는 그대로 보존했고 잠금을 해제했습니다.</p></div></div><div class="alert-actions"><button class="button button-secondary" data-action="back-to-log">기록으로 돌아가기</button><button class="button button-primary" data-action="retry-ai-generation">다시 정리하기</button></div></div>
+    <p class="preservation-note">자동 재시도나 자동 화면 전환은 하지 않습니다.</p>
+  </section>`;
+  const completeMode = reviewMode === "complete";
+  const saving = state === "saving" || state === "complete-saving";
   const saveError = state === "save-error";
+  const validation = state === "validation-error";
+  const draftSaved = state === "draft-saved";
+  const unsavedExit = state === "unsaved-exit";
   return `<section class="screen">
-    ${header({ back: "log", title: "레시피 검토" })}
-    <div class="hero"><p class="eyebrow">AI DRAFT</p><h2 class="screen-title">내 요리와 맞는지<br>한 번만 확인하세요</h2><p>모든 내용은 저장 전에 수정할 수 있어요.</p></div>
+    ${header({ back: completeMode ? "detail" : "log", backAction: "request-review-exit", backDisabled: saving, title: completeMode ? "레시피 수정" : "레시피 검토" })}
+    <div class="hero"><p class="eyebrow">${completeMode ? "SAVED RECIPE" : "AI DRAFT"}</p><h2 class="screen-title">${completeMode ? "완성한 레시피를 수정해요" : "내 요리와 맞는지<br>한 번만 확인하세요"}</h2><p>${completeMode ? "AI를 다시 호출하지 않고 기존 레시피를 바로 갱신합니다." : "확정·AI 추정·누락 표시를 확인하고 자유롭게 수정하세요."}</p></div>
+    ${draftSaved ? `<div class="toast is-info" role="status"><strong>✓</strong><p>임시 저장했어요. 계속 편집할 수 있습니다.</p><button class="toast-action" data-action="dismiss-review-feedback" aria-label="알림 닫기">닫기</button></div>` : ""}
+    ${removedReviewStep ? `<div class="toast" role="status"><strong>−</strong><p>STEP을 삭제했어요. 저장 전까지 되돌릴 수 있습니다.</p><button class="toast-action" data-action="undo-review-step">되돌리기</button></div>` : ""}
+    ${validation ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>저장할 내용을 확인해주세요</strong><p>제목과 내용이 있는 조리 단계가 최소 1개 필요합니다.</p></div></div>` : ""}
     ${saving ? `<div class="banner banner-success" role="status"><strong aria-hidden="true">✓</strong><div><strong>저장하고 있어요</strong><p>완료되면 레시피 상세로 이동합니다.</p></div></div>` : ""}
     ${saveError ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>레시피를 저장하지 못했어요</strong><p>수정한 내용은 그대로 유지됩니다. 다시 저장해주세요.</p><button class="banner-action" type="button" data-action="save-recipe">저장 다시 시도</button></div></div>` : ""}
-    ${reviewForm({ disabled: saving })}
+    ${unsavedExit ? `<div class="dialog-scrim" role="presentation"><section class="delete-dialog unsaved-dialog" role="alertdialog" aria-modal="true" aria-labelledby="unsaved-title" aria-describedby="unsaved-copy" tabindex="-1"><span class="dialog-icon is-warning" aria-hidden="true">!</span><h3 id="unsaved-title">저장하지 않은 변경이 있어요</h3><p id="unsaved-copy">${completeMode ? "수정을 버리면 마지막으로 저장된 완성 레시피로 돌아갑니다." : "마지막 임시 저장 이후의 변경을 어떻게 처리할지 선택해주세요."}</p><div class="exit-actions">${completeMode ? "" : `<button class="button button-primary" data-action="save-draft-leave">임시 저장하고 나가기</button>`}<button class="button button-destructive" data-action="discard-review-leave">${completeMode ? "수정 버리고 상세로" : "변경 버리고 나가기"}</button><button class="button button-secondary" data-action="continue-review-editing" data-unsaved-dialog-focus>계속 편집</button></div></section></div>` : ""}
+    ${reviewForm({ disabled: saving || unsavedExit, mode: completeMode ? "complete" : "draft", validation })}
   </section>`;
 }
 
@@ -478,16 +569,22 @@ function renderDetail() {
   if (state === "loading") return `<section class="screen">${header({ back: "home", title: "레시피" })}${feedbackCard("loading", "레시피를 여는 중", "저장된 요리 기록을 불러오고 있어요.")}</section>`;
   if (state === "error") return `<section class="screen">${header({ back: "home", title: "레시피" })}${feedbackCard("error", "레시피를 열지 못했어요", "잠시 후 다시 시도해주세요.", "content")}</section>`;
   if (state === "not-found") return `<section class="screen">${header({ back: "home", title: "레시피" })}${feedbackCard("empty", "레시피를 찾을 수 없어요", "삭제되었거나 아직 저장되지 않은 레시피입니다.")}</section>`;
+  if (state === "deleted") return `<section class="screen">${header()}${feedbackCard("empty", "레시피를 삭제했어요", "완성된 레시피와 오디오 가이드를 영구 삭제했습니다.")}<button class="button button-primary" data-nav="home" data-state="content">Home으로</button></section>`;
+  const menuOpen = state === "menu-open";
+  const deleteConfirm = state === "delete-confirm";
+  const visibleIngredients = completedRecipe.ingredients.filter(item => item.name.trim());
+  const visibleSteps = completedRecipe.steps.filter(step => step.trim());
   return `<section class="screen">
-    ${header({ back: "home", title: "레시피" })}
+    ${header({ back: "home", title: "레시피", action: `<div class="detail-menu-wrap"><button class="icon-button" type="button" data-action="toggle-detail-menu" aria-label="레시피 메뉴" aria-expanded="${menuOpen}">${icons.more}</button>${menuOpen ? `<div class="detail-menu" role="menu"><button role="menuitem" data-action="edit-completed-recipe">레시피 수정</button><button role="menuitem" class="is-destructive" data-action="request-delete-completed">레시피 삭제</button></div>` : ""}</div>` })}
     <div class="detail-hero">
-      <p class="eyebrow">MY COOKLOG</p><h2>달큰한 간장<br>삼겹살</h2>
-      <div class="pill-row"><span class="pill">약 25분</span><span class="pill">2인분</span><span class="pill">4단계</span></div>
+      <p class="eyebrow">MY COOKLOG</p><h2>${escapeHTML(completedRecipe.title)}</h2>
+      <div class="pill-row"><span class="pill">${escapeHTML(completedRecipe.time || "시간 미정")}</span><span class="pill">${visibleIngredients.length}개 재료</span><span class="pill">${visibleSteps.length}단계</span></div>
     </div>
     <button class="button button-primary" data-nav="player" data-state="paused">${icons.play}<span>오디오 가이드 시작</span></button>
-    <section class="content-section"><h3>재료</h3><ul class="ingredient-list"><li><span>삼겹살</span><span>300g</span></li><li><span>양파</span><span>1/2개</span></li><li><span>간장</span><span>2큰술</span></li><li><span>설탕</span><span>1작은술</span></li></ul></section>
-    <section class="content-section"><h3>조리 순서</h3><ol class="method-list"><li>달군 팬에 삼겹살을 넣고 겉면이 노릇해질 때까지 볶아요.</li><li>양파 반 개를 넣고 투명해질 때까지 함께 볶아요.</li><li>간장과 설탕을 넣고 불을 줄여 양념을 입혀요.</li><li>윤기가 돌면 불을 끄고 접시에 담아요.</li></ol></section>
-    <section class="content-section"><h3>메모</h3><div class="card note-card">양파가 살짝 투명해질 때 불을 줄이면 양념이 타지 않아요.</div></section>
+    <section class="content-section"><h3>재료</h3><ul class="ingredient-list">${visibleIngredients.map(item => `<li><span>${escapeHTML(item.name)}</span><span>${escapeHTML(item.amount)}</span></li>`).join("")}</ul></section>
+    <section class="content-section"><h3>조리 순서</h3><ol class="method-list">${visibleSteps.map(step => `<li>${escapeHTML(step)}</li>`).join("")}</ol></section>
+    <section class="content-section"><h3>메모</h3><div class="card note-card">${escapeHTML(completedRecipe.memo || "남긴 메모가 없어요.")}</div></section>
+    ${deleteConfirm ? `<div class="dialog-scrim" role="presentation"><section class="delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="completed-delete-title" aria-describedby="completed-delete-copy"><span class="dialog-icon" aria-hidden="true">×</span><h3 id="completed-delete-title">완성된 레시피를 영구 삭제할까요?</h3><p id="completed-delete-copy"><strong>${escapeHTML(completedRecipe.title)}</strong>과 오디오 가이드를 삭제합니다. 이 작업은 되돌릴 수 없어요.</p><div class="dialog-actions"><button class="button button-secondary" data-action="cancel-delete-completed" data-completed-dialog-focus>취소</button><button class="button button-destructive" data-action="confirm-delete-completed">영구 삭제</button></div></section></div>` : ""}
   </section>`;
 }
 
@@ -524,8 +621,12 @@ function renderPlayer() {
 }
 
 function renderStateList() {
+  const contextualLabels = {
+    review: { processing: "AI 정리 중", editable: "검토·수정", saving: "최종 저장 중" },
+    detail: { content: "레시피 상세", "menu-open": "완료 레시피 메뉴", "delete-confirm": "완료 레시피 삭제 확인" }
+  };
   stateList.innerHTML = screenStates[screen].map(item =>
-    `<button class="state-button" data-state="${item}" aria-pressed="${state === item}">${stateLabels[item]}</button>`
+    `<button class="state-button" data-state="${item}" aria-pressed="${state === item}">${contextualLabels[screen]?.[item] || stateLabels[item]}</button>`
   ).join("");
 }
 
@@ -533,6 +634,8 @@ function applyFocusIntent() {
   let intent = focusIntent;
   focusIntent = null;
   if (!intent && deleteDialogOpen) intent = { type: "dialog-cancel" };
+  if (!intent && completedDeleteOpen) intent = { type: "completed-dialog-cancel" };
+  if (!intent && screen === "review" && state === "unsaved-exit") intent = { type: "unsaved-dialog-cancel" };
   if (!intent && recordMenuId) intent = { type: "menu-item", id: recordMenuId };
   if (!intent) return;
 
@@ -544,7 +647,15 @@ function applyFocusIntent() {
     "library-search": "#recipe-search",
     "undo-step": "[data-undo-step]",
     "step-delete": `[data-action="delete-step"][data-index="${intent.index ?? ""}"]`,
-    "record-action": "[data-action=\"start-recording\"]"
+    "record-action": "[data-action=\"start-recording\"]",
+    "review-title": "#title",
+    "review-step": `#review-step-${intent.index ?? ""}`,
+    "review-step-undo": "[data-action=\"undo-review-step\"]",
+    "review-back": "[data-action=\"request-review-exit\"]",
+    "unsaved-dialog-cancel": "[data-unsaved-dialog-focus]",
+    "completed-dialog-cancel": "[data-completed-dialog-focus]",
+    "detail-menu-trigger": "[data-action=\"toggle-detail-menu\"]",
+    "detail-menu-item": "[data-action=\"edit-completed-recipe\"]"
   };
   const target = document.querySelector(selectors[intent.type]);
   if (target) target.focus({ preventScroll: true });
@@ -579,10 +690,27 @@ function render() {
     }, 1000);
   } else if (!isEmbedded && screen === "log" && ["processing", "retrying"].includes(state)) {
     transitionTimer = window.setTimeout(advanceTranscription, 1600);
-  } else if (screen === "review" && state === "processing") {
-    transitionTimer = window.setTimeout(() => { state = "editable"; render(); }, 1800);
+  } else if (!isEmbedded && screen === "review" && state === "processing") {
+    transitionTimer = window.setTimeout(() => { state = "processing-long"; render(); }, 10000);
   } else if (screen === "review" && state === "saving") {
-    transitionTimer = window.setTimeout(() => navigate("detail", "content"), 1400);
+    transitionTimer = window.setTimeout(() => {
+      finalSaveInFlight = false;
+      completedRecipeCreated = true;
+      reviewDirty = false;
+      if (pendingRecipeSave) completedRecipe = cloneRecipeDraft(pendingRecipeSave);
+      pendingRecipeSave = null;
+      navigate("detail", "content");
+    }, 1400);
+  } else if (screen === "review" && state === "complete-saving") {
+    transitionTimer = window.setTimeout(() => {
+      finalSaveInFlight = false;
+      reviewDirty = false;
+      if (pendingRecipeSave) completedRecipe = cloneRecipeDraft(pendingRecipeSave);
+      reviewDraft = cloneRecipeDraft(completedRecipe);
+      completeEditSnapshot = cloneRecipeDraft(completedRecipe);
+      pendingRecipeSave = null;
+      navigate("detail", "content");
+    }, 1400);
   }
   if (!isEmbedded && screen === "log" && state === "undo-delete" && deletedStep) scheduleUndoExpiration();
 }
@@ -590,6 +718,8 @@ function render() {
 function navigate(nextScreen, nextState) {
   screen = nextScreen;
   state = nextState || screenStates[screen][0];
+  if (screen === "review") reviewMode = state.startsWith("complete-") ? "complete" : "draft";
+  completedDeleteOpen = screen === "detail" && state === "delete-confirm";
   recordMenuId = "";
   if (state !== "delete-confirm") deleteDialogOpen = false;
   if (screen === "library") {
@@ -701,8 +831,36 @@ function undoStepDeletion() {
   render();
 }
 
-function startSaving() {
-  state = "saving";
+function reviewIsValid() {
+  return reviewDraft.title.trim()
+    && reviewDraft.steps.some(step => step.trim())
+    && !reviewDraft.ingredients.some(item => !item.name.trim() && item.amount.trim());
+}
+
+function normalizedRecipeDraft(value) {
+  const normalized = cloneRecipeDraft(value);
+  normalized.title = normalized.title.trim();
+  normalized.ingredients = normalized.ingredients
+    .map(item => ({ name: item.name.trim(), amount: item.amount.trim() }))
+    .filter(item => item.name || item.amount);
+  normalized.steps = normalized.steps.map(step => step.trim()).filter(Boolean);
+  normalized.time = normalized.time.trim();
+  normalized.memo = normalized.memo.trim();
+  return normalized;
+}
+
+function startSaving(mode = reviewMode) {
+  if (finalSaveInFlight || completedRecipeCreated && mode === "draft") return;
+  if (!reviewIsValid()) {
+    state = "validation-error";
+    render();
+    return;
+  }
+  finalSaveInFlight = true;
+  removedReviewStep = null;
+  reviewDraft = normalizedRecipeDraft(reviewDraft);
+  pendingRecipeSave = cloneRecipeDraft(reviewDraft);
+  state = mode === "complete" ? "complete-saving" : "saving";
   render();
 }
 
@@ -710,8 +868,100 @@ document.addEventListener("click", event => {
   const target = event.target.closest("button");
   if (!target) return;
   if (target.dataset.action === "complete-transcription") completeTranscription();
-  else if (target.dataset.action === "save-recipe") startSaving();
-  else if (target.dataset.action === "start-recording") startRecording();
+  else if (target.dataset.action === "save-recipe") startSaving("draft");
+  else if (target.dataset.action === "save-completed-edit") startSaving("complete");
+  else if (target.dataset.action === "save-review-draft") {
+    reviewSavedSnapshot = cloneRecipeDraft(reviewDraft);
+    reviewDirty = false;
+    removedReviewStep = null;
+    state = "draft-saved";
+    render();
+  } else if (target.dataset.action === "dismiss-review-feedback") {
+    state = reviewMode === "complete" ? "complete-edit" : "editable";
+    render();
+  } else if (target.dataset.action === "request-review-exit") {
+    if (reviewDirty && !finalSaveInFlight) {
+      state = "unsaved-exit";
+      focusIntent = { type: "unsaved-dialog-cancel" };
+      render();
+    } else {
+      navigate(reviewMode === "complete" ? "detail" : "log", reviewMode === "complete" ? "content" : "steps");
+    }
+  } else if (target.dataset.action === "save-draft-leave") {
+    if (reviewMode === "complete") return;
+    reviewSavedSnapshot = cloneRecipeDraft(reviewDraft);
+    reviewDirty = false;
+    navigate("log", "steps");
+  } else if (target.dataset.action === "discard-review-leave") {
+    reviewDraft = cloneRecipeDraft(reviewMode === "complete" ? completeEditSnapshot : reviewSavedSnapshot);
+    reviewDirty = false;
+    navigate(reviewMode === "complete" ? "detail" : "log", reviewMode === "complete" ? "content" : "steps");
+  } else if (target.dataset.action === "continue-review-editing") {
+    state = reviewMode === "complete" ? "complete-edit" : "editable";
+    focusIntent = { type: "review-title" };
+    render();
+  } else if (target.dataset.action === "open-ready-review") {
+    reviewMode = "draft";
+    reviewDirty = false;
+    state = "editable";
+    render();
+  } else if (target.dataset.action === "retry-ai-generation") {
+    state = "processing";
+    render();
+  } else if (target.dataset.action === "back-to-log") {
+    navigate("log", "steps");
+  } else if (target.dataset.action === "add-review-step") {
+    reviewDraft.steps.push("");
+    reviewDirty = true;
+    focusIntent = { type: "review-step", index: reviewDraft.steps.length - 1 };
+    render();
+  } else if (target.dataset.action === "remove-review-step") {
+    const index = Number(target.dataset.index);
+    if (!reviewDraft.steps[index] && reviewDraft.steps[index] !== "") return;
+    removedReviewStep = { value: reviewDraft.steps[index], index };
+    reviewDraft.steps.splice(index, 1);
+    reviewDirty = true;
+    focusIntent = { type: "review-step-undo" };
+    render();
+  } else if (target.dataset.action === "undo-review-step" && removedReviewStep) {
+    reviewDraft.steps.splice(removedReviewStep.index, 0, removedReviewStep.value);
+    focusIntent = { type: "review-step", index: removedReviewStep.index };
+    removedReviewStep = null;
+    reviewDirty = true;
+    render();
+  } else if (target.dataset.action === "move-review-step") {
+    const index = Number(target.dataset.index);
+    const nextIndex = index + Number(target.dataset.direction);
+    if (nextIndex < 0 || nextIndex >= reviewDraft.steps.length) return;
+    [reviewDraft.steps[index], reviewDraft.steps[nextIndex]] = [reviewDraft.steps[nextIndex], reviewDraft.steps[index]];
+    reviewDirty = true;
+    focusIntent = { type: "review-step", index: nextIndex };
+    render();
+  } else if (target.dataset.action === "toggle-detail-menu") {
+    state = state === "menu-open" ? "content" : "menu-open";
+    focusIntent = state === "menu-open" ? { type: "detail-menu-item" } : { type: "detail-menu-trigger" };
+    render();
+  } else if (target.dataset.action === "edit-completed-recipe") {
+    reviewMode = "complete";
+    reviewDirty = false;
+    completeEditSnapshot = cloneRecipeDraft(completedRecipe);
+    reviewDraft = cloneRecipeDraft(completedRecipe);
+    navigate("review", "complete-edit");
+  } else if (target.dataset.action === "request-delete-completed") {
+    state = "delete-confirm";
+    completedDeleteOpen = true;
+    focusIntent = { type: "completed-dialog-cancel" };
+    render();
+  } else if (target.dataset.action === "cancel-delete-completed") {
+    state = "content";
+    completedDeleteOpen = false;
+    focusIntent = { type: "detail-menu-trigger" };
+    render();
+  } else if (target.dataset.action === "confirm-delete-completed") {
+    completedDeleteOpen = false;
+    state = "deleted";
+    render();
+  } else if (target.dataset.action === "start-recording") startRecording();
   else if (target.dataset.action === "continue-mic-permission") {
     state = "empty";
     render();
@@ -768,13 +1018,17 @@ document.addEventListener("click", event => {
     render();
   } else if (target.dataset.action === "add-ingredient") {
     reviewDraft.ingredients.push({ name: "새 재료", amount: "적당량" });
+    reviewDirty = true;
     render();
   } else if (target.dataset.action === "remove-ingredient") {
     reviewDraft.ingredients.splice(Number(target.dataset.index), 1);
+    reviewDirty = true;
     render();
   } else if (target.dataset.nav) navigate(target.dataset.nav, target.dataset.state);
   else if (target.dataset.state) {
     state = target.dataset.state;
+    if (screen === "review") reviewMode = state.startsWith("complete-") ? "complete" : "draft";
+    if (screen === "detail") completedDeleteOpen = state === "delete-confirm";
     if (screen === "home") {
       recordMenuId = state === "menu-open" ? "draft-step" : "";
       pendingDeleteId = state === "delete-confirm" ? "draft-step" : "";
@@ -819,16 +1073,46 @@ document.addEventListener("input", event => {
   }
   const field = target.dataset.draftField;
   if (!field) return;
+  reviewDirty = true;
   if (field === "ingredient-name" || field === "ingredient-amount") {
     const ingredient = reviewDraft.ingredients[Number(target.dataset.draftIndex)];
     if (!ingredient) return;
     ingredient[field === "ingredient-name" ? "name" : "amount"] = target.value;
     return;
   }
+  if (field === "step") {
+    reviewDraft.steps[Number(target.dataset.draftIndex)] = target.value;
+    return;
+  }
   reviewDraft[field] = target.value;
 });
 
 let stepSwipe = null;
+let draggedReviewStep = null;
+document.addEventListener("dragstart", event => {
+  const card = event.target.closest("[data-review-step-card]");
+  if (!card) return;
+  draggedReviewStep = Number(card.dataset.index);
+  event.dataTransfer.effectAllowed = "move";
+});
+document.addEventListener("dragover", event => {
+  if (draggedReviewStep === null || !event.target.closest("[data-review-step-card]")) return;
+  event.preventDefault();
+});
+document.addEventListener("drop", event => {
+  const card = event.target.closest("[data-review-step-card]");
+  if (!card || draggedReviewStep === null) return;
+  event.preventDefault();
+  const destination = Number(card.dataset.index);
+  const [moved] = reviewDraft.steps.splice(draggedReviewStep, 1);
+  reviewDraft.steps.splice(destination, 0, moved);
+  draggedReviewStep = null;
+  reviewDirty = true;
+  focusIntent = { type: "review-step", index: destination };
+  render();
+});
+document.addEventListener("dragend", () => { draggedReviewStep = null; });
+
 document.addEventListener("pointerdown", event => {
   const row = event.target.closest(".step-row[data-step-index]");
   if (!row || event.target.closest("button") || state === "ai-lock") return;
@@ -844,12 +1128,24 @@ document.addEventListener("pointerup", event => {
 });
 
 document.addEventListener("keydown", event => {
-  if (deleteDialogOpen) {
+  const unsavedDialogOpen = screen === "review" && state === "unsaved-exit";
+  if (deleteDialogOpen || completedDeleteOpen || unsavedDialogOpen) {
     const dialog = document.querySelector('[role="alertdialog"]');
     if (!dialog) return;
     if (event.key === "Escape") {
       event.preventDefault();
-      cancelDeleteRecord();
+      if (unsavedDialogOpen) {
+        state = reviewMode === "complete" ? "complete-edit" : "editable";
+        focusIntent = { type: "review-back" };
+        render();
+      } else if (completedDeleteOpen) {
+        completedDeleteOpen = false;
+        state = "content";
+        focusIntent = { type: "detail-menu-trigger" };
+        render();
+      } else {
+        cancelDeleteRecord();
+      }
       return;
     }
     if (event.key !== "Tab") return;
@@ -881,14 +1177,23 @@ document.addEventListener("keydown", event => {
     if (screen === "home") state = "content";
     focusIntent = { type: "menu-trigger", id: triggerId };
     render();
+    return;
+  }
+
+  if (screen === "detail" && state === "menu-open" && event.key === "Escape") {
+    event.preventDefault();
+    state = "content";
+    focusIntent = { type: "detail-menu-trigger" };
+    render();
   }
 });
 
 document.addEventListener("focusin", event => {
-  if (!deleteDialogOpen) return;
+  const unsavedDialogOpen = screen === "review" && state === "unsaved-exit";
+  if (!deleteDialogOpen && !completedDeleteOpen && !unsavedDialogOpen) return;
   const dialog = document.querySelector('[role="alertdialog"]');
   if (!dialog || dialog.contains(event.target)) return;
-  document.querySelector("[data-dialog-initial-focus]")?.focus({ preventScroll: true });
+  document.querySelector("[data-dialog-initial-focus], [data-completed-dialog-focus], [data-unsaved-dialog-focus]")?.focus({ preventScroll: true });
 });
 
 screenSelect.addEventListener("change", event => navigate(event.target.value));
