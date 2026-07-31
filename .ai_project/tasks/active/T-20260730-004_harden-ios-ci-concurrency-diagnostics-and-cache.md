@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-004
 title: iOS CI concurrency·진단·cache·artifact 통합
-status: verification_passed
+status: completion_review
 type: feature
 priority: P1
 priority_reason: 중복 실행 비용을 줄이고 실패 원인을 보존하되 불안정한 cache를 피해야 한다.
@@ -99,3 +99,30 @@ qa_to: ".ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-
   모두 종료 코드 0으로 통과했다.
 | 2026-07-31 | iOS QA Agent | transition: verification_ready -> verification_in_progress | concurrency 격리·공통 진단·cache 미적용 build/XCTest 회귀·artifact 경계 독립 검증 |
 | 2026-07-31 | iOS QA Agent | transition: verification_in_progress -> verification_passed | 독립 QA PASS_WITH_RISK: concurrency 격리, cache 미적용 build·XCTest 33/33, 실패 진단·summary·artifact 확인; QA-RISK-004-001 hosted 취소 동작 후속 |
+| 2026-07-31 | Development Lead Agent | integrate latest develop | QA 결과를 고정한 뒤 origin/develop dedfa74 위로 재정렬하고 T-20260729-021 done과 CI 산출물 동등성 보존 |
+| 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | 성공 기준, 독립 QA PASS_WITH_RISK, 허용 경로와 비차단 잔여 위험 인계를 수용해 hosted PR 검증 대기로 전환 |
+
+## Development Lead 완료 검토
+
+- iOS QA 최종 판정: `PASS_WITH_RISK`
+- 재정렬 전 검증 대상 커밋: `f2efd4f`
+- 재정렬 후 구현 커밋: `bd109e6`
+- 재정렬 후 QA 고정 커밋: `3ace799`
+- workflow·composite action·TESTING·Task·보고서 내용 동등성: 확인
+- concurrency group의 workflow·event·PR/ref 격리: 적합
+- cache 미적용 build·build-for-testing·XCTest: 33/33 PASS
+- 의도적 build 실패 65·XCTest timeout 124 진단 보존: PASS
+- DerivedData·secret·사용자 입력 artifact 제외: 확인
+- workflow·action YAML·XCTest runner 문법: PASS
+- Task strict validation·`git diff --check`: PASS
+- 변경 11개 경로: Task `allowed_paths` 안
+- 최신 `origin/develop` 대비 뒤처짐: 0
+- `T-20260729-021 done`과 공용 보드: 보존
+- 미해결 차단 결함: 없음
+
+`QA-RISK-004-001`의 hosted 정상 preflight·summary·artifact는 T-004 PR의
+`ios-build`·`ios-xctest` 성공을 merge gate로 확인한다. 같은 PR 연속 실행 취소와
+의도적 실패의 hosted 진단은 계획된 `T-20260730-005` dry run으로 인계한다.
+
+Development Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로
+전환한다. 필수 hosted check 통과 후 `develop` 병합 대상으로 확정한다.

@@ -16,7 +16,7 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
-| `T-20260730-004` | `verification_passed` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·실패 진단 독립 확인 | PASS_WITH_RISK, hosted 취소는 QA-RISK-004-001 |
+| `T-20260730-004` | `completion_review` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·실패 진단 독립 확인 | PASS_WITH_RISK 수용·hosted checks merge gate |
 
 향후 검증 예정 Task:
 
@@ -72,3 +72,8 @@ renderer·validator 동일성 검증은 `T-20260729-025`에서 수행합니다.
 `T-20260729-010`은 첫 기록 권한 안내, 10초 자동 종료, Apple 기기 내 STT와 자동 재처리 1회, STEP 자동 저장·삭제·되돌리기, 오프라인 기록과 AI snapshot 잠금 구현을 완료했습니다. Design QA Agent는 제품 정책 일치, 실제 상호작용과 접근성을 독립 검증합니다.
 
 `T-20260729-011`의 `변경 버리고 나가기` snapshot 복원, 완료 레시피 갱신과 저장 경계 HIGH 3건, Review 이탈 dialog·STEP 삭제·완료 레시피 메뉴 포커스와 빈 STEP 정규화 MEDIUM 4건은 모두 해소됐습니다. 기존 통과 항목에도 회귀가 없고 Design Lead 완료 검토와 PR #30의 `ios-build`·`ios-xctest`를 통과해 `develop`에 squash merge됐으며 `done`으로 확정됐습니다.
+
+T-20260730-004는 concurrency 격리, cache 미적용 33/33, build 실패 65와 timeout
+124의 진단 보존을 독립 확인해 `PASS_WITH_RISK`를 받았습니다. Development Lead가
+최신 develop 재정렬과 허용 경로를 확인해 `completion_review`로 수용했으며 hosted
+정상 동작은 T-004 PR, 실제 취소·실패 dry run은 T-20260730-005에서 확인합니다.
