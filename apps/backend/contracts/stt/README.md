@@ -23,4 +23,3 @@ schema가 존재한다는 사실은 원격 upload endpoint 또는 활성화 승�
 ```sh
 sh apps/backend/contracts/stt/validate-contracts.sh
 ```
-
