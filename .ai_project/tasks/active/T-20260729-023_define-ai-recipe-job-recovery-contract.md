@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-023
 title: AI 레시피 job·상태 조회·결과 복구 계약 정의
-status: verification_ready
+status: approved
 type: docs
 priority: P0
 priority_reason: 온라인 AI 정리의 비동기 처리와 실패 복구가 첫 출시 핵심 경로다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Backend Agent
+target_role: Execution Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -123,3 +123,9 @@ T-20260729-023 AI recipe job·상태 조회·결과 복구 계약을 독립 검�
 | 2026-07-31 | Backend Agent | self-verification | 상태·idempotency·invalid output·22/24시간 복구 삭제 계약 검사 통과 |
 | 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | AI job 상태·idempotency·provider 단일 호출·결과 22/24시간 복구 삭제 계약과 자체 검증 완료 |
 | 2026-07-31 | Backend Agent | unlock | task unlock |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | AI recipe job 상태·동시 idempotency·worker crash/timeout·결과 복구·24시간 삭제 계약 독립 검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-023-001 ACK 필수 result_version 응답 누락, QA-HIGH-023-002 provider 시작 후 timeout의 AI_TIMEOUT/OUTCOME_UNKNOWN 분류 상충 |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Product Owner | approve rework | QA-HIGH-023-001~002 및 QA-MEDIUM-023-001 수정 범위 재작업 승인 |
+| 2026-07-31 | Development Lead Agent | transition: rework_requested -> approved | Backend Agent에 재작업 인계, 수정 후 독립 재검증 진행 |

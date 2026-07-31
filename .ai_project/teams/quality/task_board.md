@@ -106,6 +106,12 @@ retry 4개·삭제 lifecycle 8개 fixture와 기존 비활성·무승인 전송 
 `PASS_WITH_RISK`, `verification_passed`로 인계했다. 실제 runtime·provider 삭제 SLA는
 T-025와 별도 활성화 staging gate에서 검증한다.
 
+`T-20260729-023`은 provider 단일 호출, 동시 idempotency, invalid output 차단과
+22/24시간 삭제 계약은 통과했습니다. 그러나 ACK 요청에 필수인 `result_version`이
+status/result 응답에 없는 `QA-HIGH-023-001`, provider 시작 후 timeout이
+`AI_TIMEOUT`과 `OUTCOME_UNKNOWN`으로 상충하는 `QA-HIGH-023-002`를 확인해
+`FAIL`, `rework_requested`로 인계했습니다.
+
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 
 `T-20260729-008`은 완료 Recipe Card badge와 Manifest–Gallery variant 누락 해소 및 무회귀 독립 재검증, Design Lead 완료 검토를 통과했습니다. PR #11로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
