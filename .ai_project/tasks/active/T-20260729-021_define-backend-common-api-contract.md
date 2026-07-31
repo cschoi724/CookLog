@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-021
 title: Backend 공통 API·인증·제한·오류 계약 정의
-status: verification_passed
+status: completion_review
 type: docs
 priority: P0
 priority_reason: AI와 선택형 원격 STT가 같은 보안·재시도·오류 경계를 사용해야 한다.
@@ -149,3 +149,29 @@ T-20260729-021의 승인된 재작업을 독립 재검증해줘.
 | 2026-07-31 | Backend QA Agent | lock | task lock |
 | 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-021-001~002와 QA-MEDIUM-021-001 해소, 계약 검증 script·20개 오류 mapping·4개 악성 fixture·기존 통과 항목 무회귀 PASS_WITH_RISK |
 | 2026-07-31 | Backend QA Agent | unlock | task unlock |
+| 2026-07-31 | Development Lead Agent | integrate latest develop | QA 결과를 고정한 뒤 origin/develop 44c7dd9 위로 재정렬하고 T-20260730-003 done·T-20260729-011 done과 Backend 계약 산출물 동등성 보존 |
+| 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | 승인된 결함 3건 해소, 독립 QA PASS_WITH_RISK, allowed paths와 비차단 잔여 위험 인계를 수용해 develop PR 통합 대기로 전환 |
+
+## Development Lead 완료 검토
+
+- Backend QA 최종 판정: `PASS_WITH_RISK`
+- 재정렬 전 QA 고정 커밋: `36ef1b4`
+- 재정렬 후 QA 고정 커밋: `8e222cc`
+- 재정렬 후 계약 재작업 커밋: `92b471f`
+- 계약·Task·실행 보고서·QA 보고서 내용 동등성: 확인
+- `QA-HIGH-021-001`, `QA-HIGH-021-002`, `QA-MEDIUM-021-001`: 해소
+- 공통 계약 검증 script: PASS
+- 공개 오류 catalog: 20개 mapping 일치
+- 악성 negative fixture: 4개 비노출 검증 PASS
+- Task strict validation·JSON 문법·`git diff --check`: PASS
+- 전체 변경 경로: Task `allowed_paths` 안
+- 최신 `origin/develop` 대비 뒤처짐: 0
+- `T-20260730-003 done`, `T-20260729-011 done`: 보존
+- 미해결 차단 결함: 없음
+
+실제 runtime JSON Schema validator와 catalog renderer 동일성 검증은
+`T-20260729-025`로 인계한다. 현재 Task는 구현 가능한 공통 계약과 기계 검증 원본을
+정의하는 문서 Task이므로 이 잔여 위험은 완료를 차단하지 않는다.
+
+Development Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로
+전환한다. `develop` 대상 PR 병합 후 별도 완료 기록에서 `done`으로 확정한다.
