@@ -250,7 +250,7 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | Figma 원본 링크 | resolved, 로컬 Prototype 원본·Figma 미러 | - |
 | Backend runtime·AI provider | T-020 추천안 완료, Product Owner 최종 선택 대기 | 실제 provider 계약·배포 전 |
 | Backend 공통 API 계약 | T-021 산출물·QA develop 통합과 완료 확정 | 후속 T-022~025 실행 전 |
-| 기본 비활성 원격 STT adapter 계약 | T-022 QA 재검증 통과·`completion_review` | develop PR 통합·완료 확정 전 |
+| 기본 비활성 원격 STT adapter 계약 | T-022 `done` | PR #40 squash merge·완료 확정 |
 | CI 구성과 필수 check | T-001~004 완료, branch protection 적용 대기 | T-005~006 검증·승인 후 |
 | Android Workstream 활성화 | deferred | iOS 우선 이정표 완료 후 |
 | Release Role 활성화 | inactive | TestFlight 또는 운영 배포 준비 전 |

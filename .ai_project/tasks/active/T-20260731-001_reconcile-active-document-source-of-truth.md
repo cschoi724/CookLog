@@ -128,6 +128,7 @@ qa_to: ".ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-
 - 2026-07-31: Product Owner가 잔여 PQA-HIGH-031-002 재작업을 승인해 Product Lead Agent가 `rework_requested -> approved -> in_progress`로 수정했다.
 - 2026-07-31: Development Board의 T-008 상위 행과 T-004 현재 설명을 최종 `done`으로 단일화하고 자체 검증 후 `in_progress -> verification_ready`로 Product QA Agent에 재재검증을 요청했다.
 - 2026-07-31: 재재검증 인계 직전 최신 `origin/develop` `93f577e`를 병합하고 T-022 `completion_review`, T-023·024 `approved`와 원격 STT 계약 Source of Truth를 반영했다.
+- 2026-07-31: 인계 검증 중 전진한 최신 `origin/develop` `5118712`를 추가 병합하고 T-022 PR #40 squash merge·`done` 완료 확정을 활성 문서에 반영했다.
 
 ## Next Agent Handoff
 
@@ -140,7 +141,7 @@ T-20260731-001의 PQA-HIGH-031-002 잔여 재작업을 독립 재재검증해줘
 - 기준 문서: .ai_project/source_of_truth.md, 개별 Task 파일, 최신 제품 문서
 - 참고 산출물: .ai_project/reports/T-20260731-001_reconcile-active-document-source-of-truth-report.md, .ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-qa.md
 - 변경/검토 대상: `.ai_project/teams/development/task_board.md`와 상태 인계 문서
-- 검증 기준: 상위 T-20260728-008 행은 T-001~004 완료·T-005~006 대기이며 T-004 현재 본문에는 `완료 검토`, `최종 완료 확정 대기`가 없음. 최신 develop `93f577e` 상태 집계와 T-022 계약 경계도 일치
+- 검증 기준: 상위 T-20260728-008 행은 T-001~004 완료·T-005~006 대기이며 T-004 현재 본문에는 `완료 검토`, `최종 완료 확정 대기`가 없음. 최신 develop `5118712` 상태 집계와 T-022 `done`·계약 경계도 일치
 - 승인 범위: Product Owner가 운영·Team context 추가 경로와 필수 재작업 4건을 승인
 - 금지: Product QA 재재검증 전 T-20260728-003 차단 해제, 구현 코드 수정, commit·push·PR·merge
 ```
