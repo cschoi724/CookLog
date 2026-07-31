@@ -1,0 +1,46 @@
+{
+  "cases": [
+    {
+      "name": "release_profile_disabled",
+      "attempt": "direct_upload",
+      "missing_gate": "runtime_activation",
+      "expected_decision": "reject_before_body_read",
+      "expected_public_code": "SERVICE_DISABLED"
+    },
+    {
+      "name": "local_stt_failed",
+      "attempt": "automatic_remote_fallback",
+      "missing_gate": "explicit_remote_selection",
+      "expected_decision": "reject_before_body_read",
+      "expected_public_code": "SERVICE_DISABLED"
+    },
+    {
+      "name": "approval_revision_missing",
+      "attempt": "direct_upload",
+      "missing_gate": "product_cost_approval",
+      "expected_decision": "reject_before_body_read",
+      "expected_public_code": "SERVICE_DISABLED"
+    },
+    {
+      "name": "provider_retention_not_approved",
+      "attempt": "direct_upload",
+      "missing_gate": "privacy_provider_approval",
+      "expected_decision": "reject_before_body_read",
+      "expected_public_code": "SERVICE_DISABLED"
+    },
+    {
+      "name": "one_time_grant_missing",
+      "attempt": "direct_upload",
+      "missing_gate": "one_time_authorization",
+      "expected_decision": "reject_before_body_read",
+      "expected_public_code": "INVALID_REQUEST"
+    },
+    {
+      "name": "grant_replayed",
+      "attempt": "concurrent_upload",
+      "missing_gate": "unused_grant",
+      "expected_decision": "reject_before_body_read",
+      "expected_public_code": "INVALID_REQUEST"
+    }
+  ]
+}

@@ -21,9 +21,9 @@
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
 | `T-20260729-020` | `done` | Backend | 런타임·배포·AI provider·비용 후보 결정안 | - | `T-20260729-026` 완료 | PR #26 squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend | 공통 API·인증·제한·오류 계약 | - | `T-20260729-026` 완료 | PR #32 squash merge·완료 확정 |
-| `T-20260729-022` | `proposed` | Backend | 기본 비활성 원격 STT adapter 계약 | Backend Agent | `T-20260729-021` 완료 | 실행 승인 대기 |
-| `T-20260729-023` | `proposed` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020`, `021` 완료 | 실행 승인 대기 |
-| `T-20260729-024` | `proposed` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020`, `021` 완료 | 실행 승인 대기 |
+| `T-20260729-022` | `completion_review` | Backend | 기본 비활성 원격 STT adapter 계약 | Development Lead Agent | `T-20260729-021`, `026` 완료 | 완료 검토 통과·develop PR 통합 대기 |
+| `T-20260729-023` | `approved` | Backend | AI recipe job·상태 조회·결과 복구 계약 | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
+| `T-20260729-024` | `approved` | Backend | 보안·개인정보·관측성·비용 guardrail | Backend Agent | `T-20260729-020`, `021` 완료 | 병렬 실행 승인·독립 worktree/세션 필요 |
 | `T-20260729-025` | `proposed` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | 선행·승인 대기 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다. T-020 런타임·provider 추천안과 T-021 공통 API 계약은 `done`입니다. 원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지하며 T-022~024는 선행 조건과 별도 Product Owner 승인, T-025는 T-022~024 완료 후 실행합니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
@@ -54,6 +54,26 @@ Development Lead는 QA 결과를 고정하고 최신 `origin/develop` `44c7dd9` 
 PR #32의 `ios-build`·`ios-xctest` 통과와 squash merge SHA `527a431`을 확인해
 T-20260729-021을 `done`으로 확정했습니다. T-20260729-022·023·024의 T-021
 선행 조건은 해소됐지만 각 Task는 별도 Product Owner 실행 승인을 기다립니다.
+
+Product Owner가 T-20260729-022·023·024 실행을 함께 승인했습니다. 세 Task는
+`backend-contract-foundation` 병렬 그룹이며 STT 계약, AI job 계약, 보안·비용
+guardrail의 핵심 경로가 분리돼 병렬 실행할 수 있습니다. 각 Task는 독립
+worktree·브랜치·Backend Agent 세션을 사용하고, 공유 Development·Quality 보드는
+QA 인계와 PR 직전에 최신 `develop` 재정렬로 형제 Task 상태를 보존합니다.
+
+T-20260729-022 재작업은 Backend QA `PASS_WITH_RISK`를 받고 Development Lead 완료
+검토로 전환했습니다. retry/terminal 충돌과 1시간 삭제 보장 누락을 해소했으며,
+runtime cleanup 장애 복구와 provider 물리 삭제 SLA는 T-025·staging gate로 인계합니다.
+
+Backend QA가 T-022의 기본 비활성·무승인 업로드·자동 fallback 금지는 통과시켰으나,
+provider 오류 retry/terminal 계약 상충 `QA-HIGH-022-001`과 삭제 실패 시 최대 1시간
+자동 삭제 보장 누락 `QA-HIGH-022-002`를 확인해 `rework_requested`로 인계했습니다.
+T-023·T-024의 승인·병렬 상태는 변경하지 않습니다.
+
+Backend QA 독립 재검증에서 두 HIGH 결함 해소, retry 4개·삭제 lifecycle 8개,
+T+55분 deadline worker·5분 독립 sweeper와 기존 비활성 경계 무회귀를 확인해
+`PASS_WITH_RISK`, `verification_passed`로 인계했습니다. 실제 runtime·provider 물리
+삭제 확인은 T-025와 별도 원격 STT 활성화 staging gate가 담당합니다.
 
 `T-20260729-020`은 Apple 기기 내 STT 기본 정책을 보존한 런타임·AI provider
 결정안으로 재작업됐습니다. Backend QA가 ACK 즉시 삭제, 생성 22시간 cleanup,

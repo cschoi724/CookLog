@@ -18,6 +18,7 @@
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
 | `T-20260731-001` | `verification_ready` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | PQA-HIGH-031-002 독립 재재검증 대기 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
+| `T-20260729-022` | `completion_review` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PASS_WITH_RISK 수용·develop PR 통합 대기 |
 
 향후 검증 예정 Task:
 
@@ -27,7 +28,6 @@
 | `T-20260728-005` | Backend | Backend QA Agent | API 계약, 보안, 개인정보 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
-| `T-20260729-022` | Backend | Backend QA Agent | 기본 비활성·무승인 업로드 방지·조건부 TTL |
 | `T-20260729-023` | Backend | Backend QA Agent | AI 상태·복구·schema·timeout |
 | `T-20260729-024` | Backend | Backend QA Agent | secret·개인정보·redaction·비용 guardrail |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
@@ -76,6 +76,18 @@ runtime renderer·validator 동일성 검증은 `T-20260729-025`로 인계합니
 PR #32의 `ios-build`·`ios-xctest` 성공과 squash merge SHA `527a431`을 확인해
 `done`으로 확정했습니다. 추가 독립 QA는 필요하지 않으며 실제 runtime
 renderer·validator 동일성 검증은 `T-20260729-025`에서 수행합니다.
+
+`T-20260729-022`는 첫 출시 강제 비활성, 무승인 body-read 차단과 자동 원격 fallback
+금지는 통과했습니다. 다만 provider 오류의 사용자 새 요청·자동 재처리·timeout terminal
+규칙이 상충하는 `QA-HIGH-022-001`과 삭제 실패 시 최대 1시간 자동 삭제를 보장할
+cleanup task·sweeper·실패 fixture가 없는 `QA-HIGH-022-002`를 확인해 `FAIL`,
+`rework_requested`로 인계했습니다.
+
+재작업 독립 재검증에서 `UPSTREAM_UNAVAILABLE` 최대 1회·timeout 첫 발생 terminal
+규칙, body read 전 delete task 원자 등록, T+55분 worker와 5분 독립 sweeper를 확인했다.
+retry 4개·삭제 lifecycle 8개 fixture와 기존 비활성·무승인 전송 금지 무회귀가 통과해
+`PASS_WITH_RISK`, `verification_passed`로 인계했다. 실제 runtime·provider 삭제 SLA는
+T-025와 별도 활성화 staging gate에서 검증한다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 
