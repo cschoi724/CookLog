@@ -50,10 +50,12 @@
 
 개별 Task 파일 기준 집계를 다시 계산해 기존 요약 보드의 상태를 최신화했다. 최신 `origin/develop`의 T-20260730-004 `done`까지 병합한 재작업 기준 집계는 다음과 같다.
 
-- proposed 17
+- proposed 14
 - scoped 2
+- approved 2
 - in_progress 1
 - verification_ready 1
+- completion_review 1
 - done 20
 - cancelled 1
 
@@ -68,7 +70,8 @@
 - 제품 핵심 정책 비교: STT·저장·삭제·핸즈프리 변경 없음
 - Product QA 지적 문구 동일 조건 재검색: 활성 안내 문서 0건. QA 보고서와 Task 상태 이력의 증거 문구만 보존
 - Product QA 등록 대조: Agent Registry·Operating Model·Quality Team Context·Current Context 일치
-- 최신 develop 포함: `origin/develop` `0fdfe52`가 현재 HEAD의 ancestor임을 확인
+- 최신 develop 포함: `origin/develop` `93f577e`가 현재 HEAD의 ancestor임을 확인
+- Backend 계약 검증: 공통 계약과 기본 비활성 원격 STT adapter 계약 script PASS
 - T-004 상태 대조: 개별 Task·Project/Development/Quality Board·Project/iOS Status 모두 `done`
 - 프로젝트 전역 strict 검증: 기존 `operating_model.md`·`agent_registry.md` front matter와 archive T-019 `schema` 누락으로 FAIL. T-001 변경에서 새로 만든 결함은 아니며 이번 Product QA 필수 결함 4건과 분리한 운영 schema 정비 대상으로 인계
 
@@ -104,11 +107,12 @@ Product Owner 승인 후 다음과 같이 수정했다.
 - T-004의 과거 `completion_review` 설명과 최종 완료 확정 대기 현재 문구 제거
 - T-004 현재 설명을 PR #34·squash merge·`done` 확정과 T-005 인계로 단일화
 - Development Board 전체의 `T-004`, `completion_review`, `최종 완료 확정 대기` 조합 재검색
+- 재재검증 직전 최신 develop `93f577e`를 병합하고 T-022 `completion_review`, T-023·024 `approved`와 원격 STT 계약·검증 script를 Source of Truth에 반영
 
 ## 최신 develop 정렬 결과
 
 Product Owner 승인에 따라 최초 문서 변경과 Product QA FAIL 판정을 각각 로컬
-커밋으로 보존한 뒤 최신 `origin/develop` `0fdfe52`를 병합했다.
+커밋으로 보존한 뒤 최신 `origin/develop` `93f577e`까지 병합했다.
 
 - 병합 결과: T-021 Task·Development·Quality Board와 Backend API 계약 보존
 - T-021 최종 상태: `done`

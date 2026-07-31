@@ -50,6 +50,7 @@
 | iOS QA 기준 | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` | `apps/ios/docs/TESTING.md`, `.ai_project/qa/` | iOS QA Agent가 리스크 분류 |
 | Backend 런타임·AI provider 추천안 | `apps/backend/docs/ARCHITECTURE_DECISION.md` | T-20260729-020 report·QA | Task 완료와 최종 provider 선택을 구분하며 실제 계약·배포 전 Product Owner 승인 필요 |
 | Backend 공통 API 계약 | `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/` | T-20260729-021 report·QA | T-021 완료 상태와 후속 job·보안·fixture 계약을 함께 확인 |
+| 기본 비활성 원격 STT adapter 계약 | `apps/backend/docs/REMOTE_STT_ADAPTER.md`, `apps/backend/contracts/stt/` | T-20260729-022 report·QA | 첫 출시 기본 비활성·자동 fallback 없음, 활성화는 별도 제품 승인 |
 | Android 세션 기준 | `apps/android/agents.md` | 루트 `agents.md` | Android 착수 전 Android 문서 우선 |
 | Android 현재 상태 | `apps/android/docs/STATUS.md` | Android 개발 문서 | Android는 iOS MVP 안정화 후 착수 |
 | AI Knowledge | `.ai_knowledge/` | 이 Source Of Truth 매트릭스 | Wiki는 원본이 아니며 충돌 시 이 문서의 원본 우선 |
@@ -76,6 +77,7 @@ apps/android/docs/
 | iOS 테스트 | `apps/ios/Scripts/run-xctest.sh`와 `.github/workflows/ios-xctest.yml`; 단일 worker·timeout·로그·xcresult 기준 | iOS Agent / iOS QA Agent |
 | iOS 수동 QA | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` 기준 | iOS QA Agent |
 | Backend 공통 계약 검증 | `apps/backend/contracts/common/validate-contracts.sh`, T-20260729-021 report·QA | Backend Agent / Backend QA Agent |
+| 원격 STT adapter 계약 검증 | `apps/backend/contracts/stt/validate-contracts.sh`, T-20260729-022 report·QA | Backend Agent / Backend QA Agent |
 | Backend 후속 계약 검증 | T-20260729-023~025의 job·보안·fixture 계약과 runtime renderer·validator 동일성 | Backend Agent / Backend QA Agent |
 | Android 검증 | Android 착수 후 확정 | Android 착수 후 Execution/Verification Agent 확정 |
 

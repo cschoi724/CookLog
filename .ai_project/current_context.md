@@ -20,7 +20,7 @@
 | 활성 개발 영역 | iOS 최우선, Backend foundation |
 | 보류 영역 | Android, Release Role |
 | 활성 Agent | Product Lead, Product Planning, Design Lead, UI/UX Design, Development Lead, iOS, Backend, Product QA, Design QA, iOS QA, Backend QA, AI Ops |
-| 현재 우선 Task | Design T-012, Backend T-022~024, CI T-005 준비와 문서 정합성 T-20260731-001 |
+| 현재 우선 Task | Design T-012, Backend T-022 완료 검토·T-023~024 승인 실행선, CI T-005 준비와 문서 정합성 T-20260731-001 |
 | 기본 작업 브랜치 | `develop` |
 | 안정·릴리즈 브랜치 | `main` |
 | 다음 확인 위치 | `.ai_project/operating_model.md`, `.ai_project/source_of_truth.md`, `.ai_project/task_board.md` |
@@ -37,7 +37,7 @@
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
 - Product `T-20260731-001`은 Product QA 재검증에서 남은 Development Board T-004 상태 충돌을 수정하고 독립 재재검증 대기 상태입니다.
 - Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~011`은 `done`, T-012는 실행 승인 대기입니다.
-- Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020·T-021은 `done`, T-022 이후는 순차 승인 대상입니다.
+- Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020·T-021은 `done`, T-022는 `completion_review`, T-023·024는 `approved`, T-025는 선행 대기입니다.
 - CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~004는 `done`, T-005~006은 순차 승인·검증 대상입니다.
 - Product QA Agent와 문서·cross-domain 정합성 capability는 T-20260731-001 재작업에서 정식 등록했습니다. 기존 T-20260729-007은 중복 범위의 재조정 또는 폐기 검토 대상입니다.
 - 수익화 문서와 `T-20260728-010~018` 동결 후보는 Core v1 출시선과 분리합니다.
@@ -73,3 +73,4 @@
 | 2026-07-29 | 확정 제품 정책과 첫 공개 출시 Roadmap, 병렬 Foundation과 Critical Path 반영 |
 | 2026-07-31 | Design T-008~011, Backend T-020·T-021, CI T-001~003 완료와 문서 정합성 T-20260731-001 반영 |
 | 2026-07-31 | Product QA FAIL 4건 재작업 승인, Product QA 정식 등록과 CI T-004 done 반영 |
+| 2026-07-31 | 최신 develop의 T-022 completion_review·T-023~024 approved와 원격 STT adapter 계약 반영 |
