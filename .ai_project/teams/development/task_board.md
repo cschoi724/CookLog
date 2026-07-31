@@ -81,7 +81,7 @@ PR #26의 `ios-build` 통과와 squash merge SHA `a8e3a8a`를 확인해 T-020을
 | `T-20260730-001` | `done` | CI | 환경·명령·check 계약 | - | `T-004`, `T-007` 완료 | PR #20 squash merge·완료 확정 |
 | `T-20260730-002` | `done` | CI | ios-build workflow | - | `T-20260730-001` 완료 | PR #24 squash merge·hosted check 통과·완료 확정 |
 | `T-20260730-003` | `done` | CI | ios-xctest workflow | - | `T-20260730-001`, `T-20260730-002` 완료 | PR #28 squash merge·hosted 33/33·완료 확정 |
-| `T-20260730-004` | `proposed` | CI | concurrency·진단·cache·artifact 통합 | iOS Agent | `T-20260730-002`, `003` 완료 | 실행 승인 대기 |
+| `T-20260730-004` | `completion_review` | CI | concurrency·진단·cache·artifact 통합 | Development Lead Agent | `T-20260730-002`, `003` 완료 | 완료 리뷰 통과·hosted checks 후 develop 통합 |
 | `T-20260730-005` | `proposed` | CI | PR dry run·실패 감지 검증 | iOS Agent | `T-20260730-004` | 선행·승인 대기 |
 | `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
 | `T-20260730-007` | `done` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | - | T-001 QA-HIGH-001 | PR #18 squash merge 완료 |
@@ -92,6 +92,11 @@ PR #26의 `ios-build` 통과와 squash merge SHA `a8e3a8a`를 확인해 T-020을
 포함하지 않고, T-002 `done` 확정 후 최신 `develop`에서 사용자의 기존 승인
 기록을 T-003 전용 브랜치에 적용합니다. required check 외부 설정 `006`은
 dry run·iOS QA와 별도 Product Owner 승인 후에만 수행합니다.
+
+T-20260730-004는 독립 QA `PASS_WITH_RISK`, 최신 develop 재정렬, YAML·Task·허용
+경로 검증을 통과해 Development Lead가 `completion_review`로 수용했습니다.
+hosted 정상 preflight·summary·artifact는 T-004 PR merge gate로 확인하고 같은 PR
+취소·hosted 실패 진단은 T-20260730-005로 인계합니다.
 
 `T-20260730-007`은 SwiftData 테스트가 `ModelContainer`를 테스트 종료까지
 보유하도록 fixture 수명을 최소 수정했습니다. iOS 26.5와 iOS 17.2 전체 XCTest가
