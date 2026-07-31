@@ -17,7 +17,7 @@
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
-| `T-20260729-022` | `verification_ready` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | Backend QA Agent 독립 재검증 |
+| `T-20260729-022` | `verification_passed` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PASS_WITH_RISK, Development Lead 완료 검토 |
 
 향후 검증 예정 Task:
 
@@ -68,6 +68,12 @@ renderer·validator 동일성 검증은 `T-20260729-025`에서 수행합니다.
 규칙이 상충하는 `QA-HIGH-022-001`과 삭제 실패 시 최대 1시간 자동 삭제를 보장할
 cleanup task·sweeper·실패 fixture가 없는 `QA-HIGH-022-002`를 확인해 `FAIL`,
 `rework_requested`로 인계했습니다.
+
+재작업 독립 재검증에서 `UPSTREAM_UNAVAILABLE` 최대 1회·timeout 첫 발생 terminal
+규칙, body read 전 delete task 원자 등록, T+55분 worker와 5분 독립 sweeper를 확인했다.
+retry 4개·삭제 lifecycle 8개 fixture와 기존 비활성·무승인 전송 금지 무회귀가 통과해
+`PASS_WITH_RISK`, `verification_passed`로 인계했다. 실제 runtime·provider 삭제 SLA는
+T-025와 별도 활성화 staging gate에서 검증한다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 

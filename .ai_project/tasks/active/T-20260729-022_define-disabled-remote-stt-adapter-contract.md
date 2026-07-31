@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-022
 title: 기본 비활성 원격 STT adapter 계약 정의
-status: verification_ready
+status: verification_passed
 type: docs
 priority: P1
 priority_reason: 첫 출시 기본 경로를 바꾸지 않고 향후 원격 STT 교체 경계를 보존해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -140,3 +140,7 @@ T-20260729-022의 기본 비활성 원격 STT adapter 계약을 독립 검증해
 | 2026-07-31 | Backend Agent | integrate latest develop | origin/develop 0fdfe52 위로 재정렬하고 T-004 done·T-023·T-024 공용 보드 상태 보존 |
 | 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | QA-HIGH-022-001~002 retry/terminal 통일·deadline cleanup 이중 경로와 실패 fixture 재작업 완료 |
 | 2026-07-31 | Backend Agent | unlock | task unlock |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-022-001~002 해소와 기본 비활성·무승인 업로드·자동 fallback 금지 무회귀 독립 재검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-022-001~002 해소, retry 4개·삭제 lifecycle 8개·deadline worker/sweeper와 기본 비활성·무승인 전송 금지 무회귀 PASS_WITH_RISK |
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |

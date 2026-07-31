@@ -3,8 +3,11 @@
 검증일: 2026-07-31
 검증자: Backend QA Agent / Verification Role
 검증 기준: `task/T-20260729-022-define-disabled-remote-stt-adapter-contract` `65e6424`
-판정: `FAIL`
-상태 인계: `verification_in_progress -> rework_requested`
+최종 재검증 판정: `PASS_WITH_RISK`
+최종 상태 인계: `verification_in_progress -> verification_passed`
+
+이 문서의 1~7절은 최초 독립 검증의 `FAIL`과 재작업 요청 기록이다. 8절부터는
+Product Owner가 승인한 `QA-HIGH-022-001~002` 재작업의 독립 재검증 결과다.
 
 ## 1. 검증 범위
 
@@ -160,3 +163,104 @@ terminal 상태가 상충하고 최대 1시간 자동 삭제를 실패 경로에
 
 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 lock을 해제해
 Development Lead Agent / Lead Role에 인계한다.
+
+## 8. 승인된 재작업 독립 재검증
+
+검증일: 2026-07-31
+재검증 기준 커밋: `c960eed`
+기준 브랜치: `task/T-20260729-022-define-disabled-remote-stt-adapter-contract`
+
+### 8.1 QA-HIGH-022-001 해소
+
+provider 오류별 자동 재처리와 terminal 전환이 단일 규칙으로 통일됐다.
+
+- 연결 거부·503 등 명시적인 `UPSTREAM_UNAVAILABLE`만 같은 request, provider,
+  audio handle과 provider idempotency key에서 최대 1회 재처리한다.
+- provider 호출은 총 2회 이하며 두 번째 실패 또는 retry window 부족 시 terminal로
+  전환하고 삭제를 시작한다.
+- `UPSTREAM_TIMEOUT`은 결과 불명확 가능성 때문에 첫 발생에서 terminal로 전환하고
+  자동 재처리하지 않는다.
+- payload·승인·내부 안전 경계 오류도 자동 재처리하지 않는다.
+- 공개 `retryable=true`와 서버 동일 요청 자동 재처리를 분리해, timeout 이후에는 삭제
+  완료 후 사용자 선택으로 새 clip·grant·idempotency key를 만드는 것만 허용한다.
+
+독립 fixture 대조:
+
+| 사례 | provider 호출 | terminal | 공개 코드 | 결과 |
+|---|---:|---|---|---|
+| unavailable 후 성공 | 2 | succeeded | 없음 | PASS |
+| unavailable 2회 | 2 | failed | `UPSTREAM_UNAVAILABLE` | PASS |
+| 첫 timeout | 1 | failed | `UPSTREAM_TIMEOUT` | PASS |
+| non-retryable provider 오류 | 1 | failed | `UPSTREAM_UNAVAILABLE` | PASS |
+
+판정: 해소.
+
+### 8.2 QA-HIGH-022-002 해소
+
+삭제 실패·비정상 종료에서도 deadline 전에 삭제를 복구하는 이중 경로가 추가됐다.
+
+- body stream을 열기 전에 audio handle, 절대 deadline, cleanup record와 delete
+  task/outbox를 하나의 transaction으로 등록한다.
+- deadline worker는 terminal 직후부터 T+55분까지 7회 idempotent delete를 시도한다.
+- 최대 5분 주기의 독립 sweeper가 cleanup record, object prefix와 multipart upload를
+  대조하고 worker crash·queue 실패·누락 task를 복구한다.
+- T+50분부터 high-priority delete, T+55분 final forced delete를 실행한다.
+- provider가 1시간 내 물리 삭제 확인을 제공하지 못하면 활성화를 금지한다.
+- deadline breach는 P0 privacy incident와 kill switch, 출시·재활성화 차단으로
+  연결된다.
+
+정상·비정상 lifecycle 8개를 독립 계산한 결과 모든 사례가
+`deletion_completed_at <= delete_deadline_at <= received_at + 3600초`를 만족했다.
+
+- 성공
+- 최종 실패
+- 취소
+- timeout
+- worker crash
+- 첫 delete 실패
+- queue delivery 실패
+- multipart 잔존
+
+판정: 해소.
+
+## 9. 기존 통과 항목 무회귀
+
+| 항목 | 결과 |
+|---|---|
+| 첫 출시 강제 비활성 | PASS — route·provider·egress·automatic fallback false가 유지됐다. |
+| 무승인 upload 차단 | PASS — 승인·grant 실패 시 body read·object·provider call·outbox 0 계약이 유지됐다. |
+| 자동 원격 fallback 금지 | PASS — 로컬 실패·미지원·네트워크 복구·remote config가 원격 전송을 시작하지 못한다. |
+| grant replay·동시성 | PASS — one-time grant 원자 소비 단일 요청 경계가 유지됐다. |
+| 콘텐츠 비노출 | PASS — audio·transcript·provider ID·URI·secret의 로그·오류·queue·receipt 저장 금지가 유지됐다. |
+| 공통 오류·비용 | PASS — T-021 catalog·project hard cutoff와 T-024 guardrail 연결이 유지됐다. |
+| allowed paths·Task ID | PASS — 재작업 변경은 T-022 허용 경로 안이며 Task ID는 1개다. |
+| 최신 develop | PASS — `origin/develop` 대비 뒤처짐 0이며 T-004 done과 T-023·T-024 승인 상태를 보존했다. |
+
+## 10. 수행 결과
+
+```text
+remote STT contract validation: PASS
+INDEPENDENT_T022_REVERIFY: PASS
+  (4 retry cases, 8 deletion cases, forced delete T+3300s, sweeper 300s)
+AI Ops strict Task validation: PASS
+JSON syntax: PASS
+git diff --check: PASS
+```
+
+## 11. 잔여 위험
+
+### QA-RISK-022-001 — 실제 runtime·provider 삭제 SLA 검증
+
+현재 산출물은 문서·schema·fixture 계약이다. 실제 runtime worker/sweeper의 독립 장애
+복구, provider 물리 삭제 확인과 1시간 SLA는 T-025 계약 테스트 및 별도 원격 STT
+활성화 Task의 staging gate에서 검증해야 한다. 확인을 제공하지 않는 provider는 계약상
+활성화할 수 없다.
+
+이 위험은 원격 STT가 강제 비활성인 현재 Task를 차단하지 않는다.
+
+## 12. 최종 판정과 인계
+
+`QA-HIGH-022-001`, `QA-HIGH-022-002`는 모두 해소됐고 기존 통과 항목에도 회귀가 없다.
+
+최종 판정은 `PASS_WITH_RISK`다. Task를 `verification_passed`로 전환하고 lock을
+해제해 Development Lead Agent / Completion Role에 인계한다.
