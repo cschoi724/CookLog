@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-023
 title: AI 레시피 job·상태 조회·결과 복구 계약 정의
-status: verification_ready
+status: completion_review
 type: docs
 priority: P0
 priority_reason: 온라인 AI 정리의 비동기 처리와 실패 복구가 첫 출시 핵심 경로다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -140,3 +140,15 @@ T-20260729-023 AI recipe job·상태 조회·결과 복구 계약을 독립 검�
 | 2026-07-31 | Backend Agent | self-verification | result version ACK 4개·timeout decision 6개·quota HTTP 경계 검사 통과 |
 | 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | result_version ACK·timeout decision·quota HTTP 경계 재작업과 자체 검증 완료 |
 | 2026-07-31 | Backend Agent | unlock | task unlock |
+| 2026-07-31 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-023-001~002 및 QA-MEDIUM-023-001 재작업 독립 재검증 |
+| 2026-07-31 | Backend QA Agent | lock | task lock |
+| 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-023-001~002 및 QA-MEDIUM-023-001 해소, 계약 회귀 없음, PASS_WITH_RISK |
+| 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | 재검증 PASS_WITH_RISK, 허용 경로·계약 검사·후속 T-025 인계 조건을 확인하고 develop 통합 대기로 전환 |
+
+## Development Lead 완료 검토
+
+- Backend QA 독립 재검증 `PASS_WITH_RISK`와 세 결함 해소 결과를 확인했다.
+- 계약 validator, JSON·ACK·timeout·quota 회귀 검증과 Task 허용 경로를 확인했다.
+- 잔여 위험은 실제 runtime/provider 연동 staging 검증으로 한정되며 계약 산출물 완료를 막지 않는다.
+- `develop` 통합 후 `done` 확정이 필요하다. 다음 계약 테스트 작업 `T-20260729-025`는 T-024까지 완료된 뒤 공용 fixture·계약 테스트 기준을 인계한다.
+| 2026-07-31 | Backend QA Agent | unlock | task unlock |
