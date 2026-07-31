@@ -17,7 +17,7 @@
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
-| `T-20260729-022` | `verification_ready` | 기본 비활성 원격 STT adapter 계약 | 강제 비활성·무승인 upload 차단·자동 fallback 금지·삭제 최대 1시간 | Backend QA Agent 독립 검증 |
+| `T-20260729-022` | `approved` | 기본 비활성 원격 STT adapter 계약 | 강제 비활성·무승인 upload 차단·자동 fallback 금지·삭제 최대 1시간 | Backend Agent 재작업 후 독립 재검증 |
 
 향후 검증 예정 Task:
 
@@ -62,6 +62,12 @@ runtime renderer·validator 동일성 검증은 `T-20260729-025`로 인계합니
 PR #32의 `ios-build`·`ios-xctest` 성공과 squash merge SHA `527a431`을 확인해
 `done`으로 확정했습니다. 추가 독립 QA는 필요하지 않으며 실제 runtime
 renderer·validator 동일성 검증은 `T-20260729-025`에서 수행합니다.
+
+`T-20260729-022`는 첫 출시 강제 비활성, 무승인 body-read 차단과 자동 원격 fallback
+금지는 통과했습니다. 다만 provider 오류의 사용자 새 요청·자동 재처리·timeout terminal
+규칙이 상충하는 `QA-HIGH-022-001`과 삭제 실패 시 최대 1시간 자동 삭제를 보장할
+cleanup task·sweeper·실패 fixture가 없는 `QA-HIGH-022-002`를 확인해 `FAIL`,
+`rework_requested`로 인계했습니다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 
