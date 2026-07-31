@@ -16,7 +16,7 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
-| `T-20260730-004` | `verification_ready` | iOS CI concurrency·진단·cache·artifact 통합 | PR별 취소 격리, cache 미적용 회귀, 환경·summary·artifact | iOS QA 독립 검증 |
+| `T-20260730-004` | `verification_passed` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·실패 진단 독립 확인 | PASS_WITH_RISK, hosted 취소는 QA-RISK-004-001 |
 
 향후 검증 예정 Task:
 

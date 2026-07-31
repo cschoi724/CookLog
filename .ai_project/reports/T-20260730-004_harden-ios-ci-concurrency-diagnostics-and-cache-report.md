@@ -2,7 +2,7 @@
 
 작성일: 2026-07-31
 작성자: iOS Agent
-상태: `verification_ready`
+상태: `verification_passed`
 
 ## 결과
 
@@ -137,3 +137,21 @@ iOS QA Agent는 다음을 독립 확인한다.
 
 실제 GitHub concurrency 취소와 hosted artifact·Step Summary는 T-004 PR
 실행과 후속 T-005 dry run에서 확인해야 한다.
+
+## 독립 QA 결과
+
+iOS QA Agent가 최신 `origin/develop` 기반 고정 커밋 `f2efd4f`를 독립
+검증했다.
+
+- concurrency group의 workflow·event·PR 또는 ref 격리: 정합
+- 공통 preflight: 로컬 경로 치환 정상 0, hosted 경로 누락 1, 잘못된 artifact
+  하위 경로 2
+- cache 미적용 `build`, `build-for-testing`: 성공
+- 전체 XCTest: 33/33, 종료 코드 0
+- 의도적 build 실패: 종료 코드 65, 환경·build log·summary 보존
+- XCTest timeout: 종료 코드 124, 환경·log·부분 xcresult·marker·summary 보존
+- 판정: `PASS_WITH_RISK`
+
+실제 GitHub concurrency 취소와 hosted artifact·Step Summary 확인을
+`QA-RISK-004-001`로 남겼다. T-004 PR과 후속 `T-20260730-005` dry run에서
+확인한다.

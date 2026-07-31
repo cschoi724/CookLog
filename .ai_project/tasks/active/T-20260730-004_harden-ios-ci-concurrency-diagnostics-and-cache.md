@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-004
 title: iOS CI concurrency·진단·cache·artifact 통합
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P1
 priority_reason: 중복 실행 비용을 줄이고 실패 원인을 보존하되 불안정한 cache를 피해야 한다.
@@ -10,32 +10,32 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
-  - ios_qa
-  - regression_test
+- ios_qa
+- regression_test
 depends_on:
-  - T-20260730-002
-  - T-20260730-003
+- T-20260730-002
+- T-20260730-003
 blocks:
-  - T-20260728-008
-  - T-20260730-005
+- T-20260728-008
+- T-20260730-005
 parallel_group:
 allowed_paths:
-  - .github/workflows/ios-build.yml
-  - .github/workflows/ios-xctest.yml
-  - .github/actions/
-  - apps/ios/docs/TESTING.md
-  - .ai_project/tasks/backlog/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache.md
-  - .ai_project/tasks/active/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache.md
-  - .ai_project/reports/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache-report.md
-  - .ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache-qa.md
-  - .ai_project/teams/development/task_board.md
-  - .ai_project/teams/quality/task_board.md
+- ".github/workflows/ios-build.yml"
+- ".github/workflows/ios-xctest.yml"
+- ".github/actions/"
+- apps/ios/docs/TESTING.md
+- ".ai_project/tasks/backlog/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache.md"
+- ".ai_project/tasks/active/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache.md"
+- ".ai_project/reports/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache-report.md"
+- ".ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache-qa.md"
+- ".ai_project/teams/development/task_board.md"
+- ".ai_project/teams/quality/task_board.md"
 source_of_truth:
-  - docs/GIT_WORKFLOW.md
-  - apps/ios/docs/TESTING.md
+- docs/GIT_WORKFLOW.md
+- apps/ios/docs/TESTING.md
 created_by: Development Lead Agent
 approved_by: Product Owner
 locked_by:
@@ -43,9 +43,9 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
-updated_at: 2026-07-31
-report_to: .ai_project/reports/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache-report.md
-qa_to: .ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache-qa.md
+updated_at: '2026-07-31'
+report_to: ".ai_project/reports/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache-report.md"
+qa_to: ".ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-cache-qa.md"
 ---
 
 # iOS CI concurrency·진단·cache·artifact 통합
@@ -97,3 +97,5 @@ qa_to: .ai_project/qa/T-20260730-004_harden-ios-ci-concurrency-diagnostics-and-c
   정책을 `disabled-no-dependency-lockfile`로 명시했다.
 - cache 미적용 상태에서 build, build-for-testing과 전체 XCTest 33/33이
   모두 종료 코드 0으로 통과했다.
+| 2026-07-31 | iOS QA Agent | transition: verification_ready -> verification_in_progress | concurrency 격리·공통 진단·cache 미적용 build/XCTest 회귀·artifact 경계 독립 검증 |
+| 2026-07-31 | iOS QA Agent | transition: verification_in_progress -> verification_passed | 독립 QA PASS_WITH_RISK: concurrency 격리, cache 미적용 build·XCTest 33/33, 실패 진단·summary·artifact 확인; QA-RISK-004-001 hosted 취소 동작 후속 |
