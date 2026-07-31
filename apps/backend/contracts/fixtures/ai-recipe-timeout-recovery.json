@@ -1,0 +1,81 @@
+{
+  "fixture_version": "ios-backend-fixture.v1",
+  "case_id": "ai_recipe_timeout_recovery",
+  "cases": [
+    {
+      "name": "queue_start_timeout",
+      "provider_started": false,
+      "provider_calls": 0,
+      "status": {
+        "job_id": "70000000-0000-4000-8000-000000000001",
+        "contract_version": "ai-recipe-job.v1",
+        "state": "failed",
+        "state_version": 2,
+        "result_state": "none",
+        "result_version": null,
+        "created_at": "2026-07-31T10:00:00Z",
+        "updated_at": "2026-07-31T10:02:00Z",
+        "expires_at": "2026-08-01T10:00:00Z",
+        "poll_after_seconds": null,
+        "failure": {"code": "QUEUE_TIMEOUT", "user_action": "retry_manually"},
+        "result": null
+      },
+      "ios_expectation": {
+        "preserve_snapshot": true,
+        "automatic_retry": false,
+        "new_job_requires_user_action": true
+      }
+    },
+    {
+      "name": "provider_not_executed_timeout",
+      "provider_started": true,
+      "provider_execution_absent_confirmed": true,
+      "provider_calls": 1,
+      "status": {
+        "job_id": "70000000-0000-4000-8000-000000000002",
+        "contract_version": "ai-recipe-job.v1",
+        "state": "failed",
+        "state_version": 3,
+        "result_state": "none",
+        "result_version": null,
+        "created_at": "2026-07-31T10:10:00Z",
+        "updated_at": "2026-07-31T10:11:00Z",
+        "expires_at": "2026-08-01T10:10:00Z",
+        "poll_after_seconds": null,
+        "failure": {"code": "AI_TIMEOUT", "user_action": "retry_manually"},
+        "result": null
+      },
+      "ios_expectation": {
+        "preserve_snapshot": true,
+        "automatic_retry": false,
+        "new_job_requires_user_action": true
+      }
+    },
+    {
+      "name": "provider_outcome_unknown",
+      "provider_started": true,
+      "provider_execution_absent_confirmed": false,
+      "provider_calls": 1,
+      "status": {
+        "job_id": "70000000-0000-4000-8000-000000000003",
+        "contract_version": "ai-recipe-job.v1",
+        "state": "failed",
+        "state_version": 3,
+        "result_state": "none",
+        "result_version": null,
+        "created_at": "2026-07-31T10:20:00Z",
+        "updated_at": "2026-07-31T10:21:00Z",
+        "expires_at": "2026-08-01T10:20:00Z",
+        "poll_after_seconds": null,
+        "failure": {"code": "OUTCOME_UNKNOWN", "user_action": "retry_manually"},
+        "result": null
+      },
+      "ios_expectation": {
+        "preserve_snapshot": true,
+        "automatic_retry": false,
+        "late_result_ignored": true,
+        "new_job_requires_user_action": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "fixture_version": "ios-backend-fixture.v1",
+  "case_id": "remote_stt_disabled",
+  "release_config": {
+    "profile": "first_public_release",
+    "mode": "disabled",
+    "upload_route_registered": false,
+    "provider_configured": false,
+    "audio_egress_allowed": false,
+    "automatic_fallback": false,
+    "activation_requires_new_approval": true
+  },
+  "scenarios": [
+    {
+      "name": "local_stt_final_failure",
+      "ios_action": "offer_record_again",
+      "remote_requests": 0,
+      "audio_bytes_read_by_backend": 0,
+      "audio_bytes_egressed": 0,
+      "step_created": false
+    },
+    {
+      "name": "unapproved_remote_upload_attempt",
+      "backend_action": "reject_before_body_read",
+      "public_error_code": "SERVICE_DISABLED",
+      "remote_requests": 0,
+      "audio_bytes_read_by_backend": 0,
+      "audio_bytes_egressed": 0,
+      "step_created": false
+    },
+    {
+      "name": "provider_config_injected_without_approval",
+      "backend_action": "deployment_gate_fail",
+      "public_error_code": "SERVICE_DISABLED",
+      "remote_requests": 0,
+      "audio_bytes_read_by_backend": 0,
+      "audio_bytes_egressed": 0,
+      "step_created": false
+    }
+  ]
+}

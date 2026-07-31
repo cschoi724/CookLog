@@ -1,0 +1,74 @@
+{
+  "fixture_version": "ios-backend-fixture.v1",
+  "synthetic_only": true,
+  "consumers": [
+    "backend_contract_tests",
+    "ios_mock_client_tests"
+  ],
+  "cases": [
+    {
+      "case_id": "ai_recipe_success",
+      "file": "ai-recipe-success.json",
+      "source_contracts": [
+        "apps/backend/contracts/common/success-envelope.schema.json",
+        "apps/backend/contracts/ai/recipe-job-create.schema.json",
+        "apps/backend/contracts/ai/recipe-job-status.schema.json",
+        "apps/backend/contracts/ai/recipe-draft.schema.json",
+        "apps/backend/contracts/ai/recipe-job-acknowledgement.schema.json"
+      ],
+      "ios_assertion": "create_poll_save_ack",
+      "sensitivity": "synthetic_content_no_secret"
+    },
+    {
+      "case_id": "ai_recipe_public_errors",
+      "file": "ai-recipe-error-cases.json",
+      "source_contracts": [
+        "apps/backend/contracts/common/error-envelope.schema.json",
+        "apps/backend/contracts/common/public-error-catalog.json"
+      ],
+      "ios_assertion": "public_error_mapping_only",
+      "sensitivity": "content_free"
+    },
+    {
+      "case_id": "ai_recipe_timeout_recovery",
+      "file": "ai-recipe-timeout-recovery.json",
+      "source_contracts": [
+        "apps/backend/contracts/ai/recipe-job-status.schema.json",
+        "apps/backend/contracts/ai/fixtures/timeout-decision-cases.json"
+      ],
+      "ios_assertion": "preserve_snapshot_and_manual_retry",
+      "sensitivity": "content_free"
+    },
+    {
+      "case_id": "ai_recipe_expired",
+      "file": "ai-recipe-expired.json",
+      "source_contracts": [
+        "apps/backend/contracts/ai/recipe-job-status.schema.json",
+        "apps/backend/contracts/ai/fixtures/recovery-lifecycle.json"
+      ],
+      "ios_assertion": "expired_without_draft",
+      "sensitivity": "content_free"
+    },
+    {
+      "case_id": "remote_stt_disabled",
+      "file": "remote-stt-disabled.json",
+      "source_contracts": [
+        "apps/backend/contracts/stt/remote-stt-release-config.schema.json",
+        "apps/backend/contracts/stt/fixtures/disabled-release.json"
+      ],
+      "ios_assertion": "local_stt_only_no_upload",
+      "sensitivity": "content_free"
+    },
+    {
+      "case_id": "negative_contract_cases",
+      "file": "negative-contract-cases.json",
+      "source_contracts": [
+        "apps/backend/contracts/common/error-envelope.schema.json",
+        "apps/backend/contracts/ai/recipe-job-status.schema.json",
+        "apps/backend/contracts/stt/remote-stt-release-config.schema.json"
+      ],
+      "ios_assertion": "decode_or_request_rejected_without_fallback",
+      "sensitivity": "content_free"
+    }
+  ]
+}
