@@ -15,7 +15,7 @@
 | `T-20260729-020` | `done` | Backend 런타임·배포·AI provider·비용 후보 결정안 | 고정 커밋 동등성·QA-HIGH-020-003·비용·최신 보드 비회귀 | PASS_WITH_RISK 수용·PR #26 squash merge·완료 확정 |
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
-| `T-20260729-021` | `completion_review` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PASS_WITH_RISK 수용·develop PR 통합 대기 |
+| `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
 
 향후 검증 예정 Task:
 
@@ -58,6 +58,10 @@ Development Lead가 최신 `origin/develop` 재정렬, 계약 산출물 동등�
 공용 보드 비회귀를 확인해 `completion_review`로 수용했습니다.
 `T-20260730-003 done`과 `T-20260729-011 done` 기록은 보존됐으며,
 runtime renderer·validator 동일성 검증은 `T-20260729-025`로 인계합니다.
+
+PR #32의 `ios-build`·`ios-xctest` 성공과 squash merge SHA `527a431`을 확인해
+`done`으로 확정했습니다. 추가 독립 QA는 필요하지 않으며 실제 runtime
+renderer·validator 동일성 검증은 `T-20260729-025`에서 수행합니다.
 
 `T-20260729-010`의 자동 재처리 실제 전이, 짧은 Undo 수명주기·키보드 포커스, 오프라인 기록 행동 중복과 공식 Prototype revision 결함 4건은 모두 해소됐고 기존 통과 항목에도 회귀가 없습니다. Design Lead 완료 검토 후 PR #22로 `develop`에 squash merge되어 `done`으로 확정됐으며 추가 Design QA는 필요하지 않습니다.
 

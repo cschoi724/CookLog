@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-021
 title: Backend 공통 API·인증·제한·오류 계약 정의
-status: completion_review
+status: done
 type: docs
 priority: P0
 priority_reason: AI와 선택형 원격 STT가 같은 보안·재시도·오류 경계를 사용해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
-target_agent: Development Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
 - backend_architecture
 - api_contract
@@ -151,6 +151,7 @@ T-20260729-021의 승인된 재작업을 독립 재검증해줘.
 | 2026-07-31 | Backend QA Agent | unlock | task unlock |
 | 2026-07-31 | Development Lead Agent | integrate latest develop | QA 결과를 고정한 뒤 origin/develop 44c7dd9 위로 재정렬하고 T-20260730-003 done·T-20260729-011 done과 Backend 계약 산출물 동등성 보존 |
 | 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | 승인된 결함 3건 해소, 독립 QA PASS_WITH_RISK, allowed paths와 비차단 잔여 위험 인계를 수용해 develop PR 통합 대기로 전환 |
+| 2026-07-31 | Development Lead Agent | transition: completion_review -> done | PR #32의 ios-build·ios-xctest 통과와 squash merge SHA 527a431 확인, Backend 공통 계약 완료 확정 |
 
 ## Development Lead 완료 검토
 
@@ -175,3 +176,18 @@ T-20260729-021의 승인된 재작업을 독립 재검증해줘.
 
 Development Lead가 성공 기준과 독립 QA 증빙을 수용해 `completion_review`로
 전환한다. `develop` 대상 PR 병합 후 별도 완료 기록에서 `done`으로 확정한다.
+
+## 완료
+
+- PR: [#32](https://github.com/cschoi724/CookLog/pull/32)
+- 대상 브랜치: `develop`
+- 병합 방식: squash merge
+- merge SHA: `527a431420f476949c1a50e83e8183c5ecd4caa2`
+- `ios-build` run: `30598724690`, 성공
+- `ios-xctest` run: `30598724683`, 성공
+- 완료 판정: `done`
+
+필수 체크와 `develop` 병합을 확인해 Task를 `done`으로 확정한다. 실제 runtime
+validator와 catalog renderer 동일성 테스트는 계획대로 `T-20260729-025`가 담당한다.
+`T-20260729-022`, `T-20260729-023`, `T-20260729-024`의 T-021 선행 조건은
+해소됐으며 각 Task의 별도 실행 승인은 유지한다.
