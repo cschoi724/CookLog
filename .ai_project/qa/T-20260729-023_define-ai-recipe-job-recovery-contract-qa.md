@@ -167,4 +167,3 @@ provider 단일 호출, idempotency, invalid output 차단과 22/24시간 삭제
 
 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 lock을 해제해
 Development Lead Agent / Lead Role에 인계한다.
-
