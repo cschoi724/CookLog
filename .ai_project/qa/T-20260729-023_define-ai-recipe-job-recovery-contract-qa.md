@@ -2,9 +2,10 @@
 
 검증일: 2026-07-31
 검증자: Backend QA Agent / Verification Role
-검증 기준: `task/T-20260729-023-define-ai-recipe-job-recovery-contract` `bf83ec0`
-판정: `FAIL`
-상태 인계: `verification_in_progress -> rework_requested`
+최초 검증 기준: `task/T-20260729-023-define-ai-recipe-job-recovery-contract` `bf83ec0`
+재검증 기준: `task/T-20260729-023-define-ai-recipe-job-recovery-contract` `3aca3a3`
+현재 판정: `PASS_WITH_RISK`
+현재 상태 인계: `verification_in_progress -> verification_passed`
 
 ## 1. 검증 범위
 
@@ -167,3 +168,52 @@ provider 단일 호출, idempotency, invalid output 차단과 22/24시간 삭제
 
 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 lock을 해제해
 Development Lead Agent / Lead Role에 인계한다.
+
+## 9. 독립 재검증
+
+재검증일: 2026-07-31
+
+### 결함 해소 결과
+
+| 결함 | 결과 | 독립 재검증 근거 |
+|---|---|---|
+| `QA-HIGH-023-001` | RESOLVED | status schema가 `result_version`을 필수화하고 `succeeded/available`에서 양의 정수, 그 외 상태에서 `null`로 제한한다. 문서는 최초 validated draft commit에서 1을 할당하고 logical job 동안 불변이며 `state_version`과 별개임을 정의한다. GET version ACK 성공, mismatch 거부, 동시 단일 삭제, 삭제 후 replay 4개 fixture가 통과했다. |
+| `QA-HIGH-023-002` | RESOLVED | provider 시작 여부와 실행 부재 확정 여부를 기준으로 timeout decision table을 단일화했다. 시작 후 결과 가능성이 남은 deadline·connection loss·worker deadline은 모두 `OUTCOME_UNKNOWN`, 미실행이 확정된 경우만 `AI_TIMEOUT`이다. 6개 decision fixture와 기존 상태 전이 fixture가 같은 분류를 사용한다. |
+| `QA-MEDIUM-023-001` | RESOLVED | quota 초과를 job/content/outbox 생성 전 T-021 HTTP 429 `QUOTA_EXCEEDED`로 단일화했다. status failure enum과 사용자 action에서 quota job failure를 제거하고 worker 단계에서 생성하지 않음을 명시했다. |
+
+### 회귀 검증
+
+- logical job당 provider 호출 최대 1회와 provider 시작 후 자동 재호출 금지가 유지됐다.
+- 같은 key 동시 create, 다른 body 충돌, 반복 GET provider 호출 0, 사용자 수동 새
+  job 계약이 유지됐다.
+- schema·semantic invalid 결과 저장·반환 금지와 안전값 evidence 규칙이 유지됐다.
+- ACK 즉시 삭제, 생성 22시간 task, 15분 sweeper, 24시간 복호화 전 접근 차단이
+  유지됐다.
+- provider·prompt·STEP·draft·secret 비노출 계약이 유지됐다.
+- 변경 경로는 Task `allowed_paths` 안이며 Task front matter ID는 1개다.
+- `origin/develop...HEAD`는 `0 behind / 6 ahead`이고 T-022 `done`, T-024
+  `approved` 기록을 되돌리지 않는다.
+
+### 수행 결과
+
+```text
+sh -n apps/backend/contracts/ai/validate-contracts.sh: PASS
+sh apps/backend/contracts/ai/validate-contracts.sh: AI recipe contract validation: PASS
+jq empty apps/backend/contracts/ai/*.json apps/backend/contracts/ai/fixtures/*.json: PASS
+result_version schema·ACK 4개 반례 검사: PASS
+timeout decision 6개·provider call 상한 검사: PASS
+quota job failure enum 제거 검사: PASS
+aiops validate task ... --strict: PASS
+git diff --check: PASS
+Task ID count: 1
+```
+
+### 재검증 판정과 인계
+
+이전 HIGH 2건과 MEDIUM 1건은 모두 해소됐고 기존 통과 계약에도 회귀가 없다.
+`QA-RISK-023-001`은 실제 runtime JSON Schema/semantic validator, worker CAS,
+ACK/delete transaction과 staging cleanup SLA를 T-025 및 후속 구현·staging에서
+검증하는 비차단 위험으로 유지한다.
+
+최종 판정은 `PASS_WITH_RISK`다. Task를 `verification_passed`로 전환하고
+Development Lead Agent / Completion Role에 인계한다.
