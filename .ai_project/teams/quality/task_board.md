@@ -16,7 +16,7 @@
 | `T-20260730-003` | `done` | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | 독립 33/33·실패 65·timeout 124, hosted 33/33·artifact | PR #28 squash merge·완료 확정, 실패 dry run은 T-005 |
 | `T-20260729-011` | `done` | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | snapshot 복원·완료 갱신·저장 경계·dialog/STEP/menu 포커스·STEP 정규화 | PR #30 checks 통과·squash merge·완료 확정 |
 | `T-20260729-021` | `done` | Backend 공통 API·인증·제한·오류 계약 정의 | replay·abuse·timeout·제한 초과·idempotency·오류 정보 비노출 | PR #32 checks 통과·squash merge·완료 확정 |
-| `T-20260731-001` | `rework_requested` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | 재검증 `FAIL`, Development Board T-004 상태 충돌 재작업 |
+| `T-20260731-001` | `verification_ready` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | PQA-HIGH-031-002 독립 재재검증 대기 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 
 향후 검증 예정 Task:
@@ -49,6 +49,10 @@ Product QA 재검증에서 PQA-HIGH-031-001·004와 PQA-MEDIUM-031-003 해소는
 확인했지만 PQA-HIGH-031-002가 미해소됐습니다. Development Board가
 T-20260730-004를 `done`으로 표시하면서 상위 행과 본문에서는 완료 검토·최종
 완료 확정 대기로 안내해 `rework_requested`로 재인계했습니다.
+
+Product Owner 승인 후 Development Board의 T-008 상위 행을 T-001~004 완료로
+수정하고 T-004의 완료 검토·최종 완료 확정 대기 현재 문구를 제거했습니다.
+PQA-HIGH-031-002와 기존 해소 항목의 무회귀 독립 재재검증을 기다립니다.
 
 `T-20260729-021`은 Backend QA 독립 검증에서 최초 설치 challenge의 동시 소비 원자성
 누락과 오류 `title/detail` 내부의 provider detail·secret·원문 비노출을 schema가

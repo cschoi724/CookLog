@@ -13,7 +13,7 @@
 | `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | T-020·021 완료, T-022~025 선행·승인 상태에 따라 순차 실행 |
 | `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` | 선행 Task 대기 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
-| `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~003 완료, T-004 완료 검토, T-005~006 후속 대기 |
+| `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~004 완료, T-005~006 후속 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
 | `T-20260729-003` | `proposed` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` | AI provider 승인 후 하위 패키지 |
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
@@ -93,14 +93,10 @@ PR #26의 `ios-build` 통과와 squash merge SHA `a8e3a8a`를 확인해 T-020을
 기록을 T-003 전용 브랜치에 적용합니다. required check 외부 설정 `006`은
 dry run·iOS QA와 별도 Product Owner 승인 후에만 수행합니다.
 
-T-20260730-004는 독립 QA `PASS_WITH_RISK`, 최신 develop 재정렬, YAML·Task·허용
-경로 검증을 통과해 Development Lead가 `completion_review`로 수용했습니다.
-PR #34의 hosted checks와 develop 통합은 완료됐고 최종 완료 확정을 기다립니다.
-연속 실행 취소·hosted 실패 진단은 T-20260730-005로 인계합니다.
-
 PR #34의 `ios-build`·`ios-xctest`, hosted preflight·summary·artifact와 XCTest
 33/33 성공을 확인하고 squash merge SHA `22fe75f`로 T-20260730-004를 `done`으로
-확정했습니다. T-20260730-005의 선행 조건은 해소됐지만 별도 실행 승인을 기다립니다.
+확정했습니다. 연속 실행 취소·hosted 실패 진단은 T-20260730-005로 인계했으며
+T-005의 선행 조건은 해소됐지만 별도 실행 승인을 기다립니다.
 
 `T-20260730-007`은 SwiftData 테스트가 `ModelContainer`를 테스트 종료까지
 보유하도록 fixture 수명을 최소 수정했습니다. iOS 26.5와 iOS 17.2 전체 XCTest가

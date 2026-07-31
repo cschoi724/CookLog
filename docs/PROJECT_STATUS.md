@@ -48,7 +48,7 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - Backend T-20260729-021 공통 API·인증·제한·오류 계약과 독립 QA develop 통합·완료 확정
 - CI T-20260730-001~003 계약·ios-build·ios-xctest workflow와 hosted 검증 완료
 - CI T-20260730-004 concurrency·공통 진단·artifact 통합과 독립 QA·PR #34 완료 확정
-- T-20260731-001 최초 Product QA `FAIL` 4건 중 3건 해소, Development Board의 T-004 `done`·완료 확정 대기 충돌로 재검증 `FAIL`·재작업 요청
+- T-20260731-001 Product QA 재검증 잔여 PQA-HIGH-031-002 수정 완료, 독립 재재검증 대기
 
 ### 첫 공개 출시 실행 순서
 

@@ -2,7 +2,7 @@
 
 작성일: 2026-07-31
 작성자: Product Lead Agent
-상태: Product QA FAIL 필수 결함 4건 재작업 완료·독립 재검증 대기
+상태: Product QA 재검증 잔여 결함 수정 완료·독립 재재검증 대기
 
 ## 결과 요약
 
@@ -92,10 +92,23 @@ QA 판정을 커밋으로 보존하고 최신 develop을 병합한 뒤 다음과
 - Product QA Agent와 독립 문서·cross-domain 검증 capability를 Registry·Operating Model·Quality Context에 등록
 - 최초 병합 시 T-004를 개별 Task의 실제 `completion_review`로 보존한 뒤, 후속 최신 develop의 최종 `done` 확정을 다시 반영
 
+## Product QA 재검증과 잔여 재작업
+
+Product QA 재검증에서 PQA-HIGH-031-001·004와 PQA-MEDIUM-031-003 해소를
+확인했으나, Development Board 안에 T-004의 `done`과 완료 검토·최종 완료 확정
+대기 안내가 함께 남아 PQA-HIGH-031-002를 미해소로 판정했다.
+
+Product Owner 승인 후 다음과 같이 수정했다.
+
+- T-20260728-008 상위 행을 T-001~004 완료, T-005~006 후속 대기로 통일
+- T-004의 과거 `completion_review` 설명과 최종 완료 확정 대기 현재 문구 제거
+- T-004 현재 설명을 PR #34·squash merge·`done` 확정과 T-005 인계로 단일화
+- Development Board 전체의 `T-004`, `completion_review`, `최종 완료 확정 대기` 조합 재검색
+
 ## 최신 develop 정렬 결과
 
 Product Owner 승인에 따라 최초 문서 변경과 Product QA FAIL 판정을 각각 로컬
-커밋으로 보존한 뒤 최신 `origin/develop` `22fe75f`를 병합했다.
+커밋으로 보존한 뒤 최신 `origin/develop` `0fdfe52`를 병합했다.
 
 - 병합 결과: T-021 Task·Development·Quality Board와 Backend API 계약 보존
 - T-021 최종 상태: `done`

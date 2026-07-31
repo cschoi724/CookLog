@@ -35,7 +35,7 @@
 - 구형 Mock UI 잔여 검증 `T-20260728-001`은 최종 제품 구현·출시 게이트와 중복되어 `cancelled`입니다.
 - 첫 공개 출시 Critical Path는 `docs/product/CookLog_ROADMAP.md`를 따릅니다.
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
-- Product `T-20260731-001`은 최초 `FAIL` 4건 중 3건을 해소했지만 Development Board의 T-004 상태 충돌이 남아 Product QA 재검증 `FAIL`·재작업 상태입니다.
+- Product `T-20260731-001`은 Product QA 재검증에서 남은 Development Board T-004 상태 충돌을 수정하고 독립 재재검증 대기 상태입니다.
 - Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~011`은 `done`, T-012는 실행 승인 대기입니다.
 - Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020·T-021은 `done`, T-022 이후는 순차 승인 대상입니다.
 - CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~004는 `done`, T-005~006은 순차 승인·검증 대상입니다.
@@ -49,7 +49,7 @@
 - push, merge, 배포는 사용자 승인 후 진행합니다.
 - 일반 Task는 최신 `develop`에서 시작하고 `develop` 대상 PR로 병합합니다.
 - `main`은 통합 QA와 Product Lead 수용 검토를 거친 `develop -> main` 승격 또는 승인된 hotfix만 받습니다.
-- T-20260731-001은 Development Board의 T-004 `done`·완료 확정 대기 충돌을 제거한 뒤 Product QA 독립 재재검증을 받아야 합니다.
+- T-20260731-001은 Development Board의 T-004 현재 상태를 `done`으로 단일화했으며 Product QA 독립 재재검증을 받아야 합니다.
 
 ## 4. 세션 시작 체크
 
