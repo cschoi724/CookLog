@@ -23,7 +23,7 @@
 | `T-20260729-021` | `done` | Backend | 공통 API·인증·제한·오류 계약 | - | `T-20260729-026` 완료 | PR #32 squash merge·완료 확정 |
 | `T-20260729-022` | `done` | Backend | 기본 비활성 원격 STT adapter 계약 | - | `T-20260729-021`, `026` 완료 | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260729-023` | `done` | Backend | AI recipe job·상태 조회·결과 복구 계약 | - | `T-20260729-020`, `021` 완료 | 완료 검토·Product Owner 승인 완료, T-025 인계 |
-| `T-20260729-024` | `completion_review` | Backend | 보안·개인정보·관측성·비용 guardrail | Development Lead Agent | `T-20260729-020`, `021` 완료 | 완료 검토 통과·develop 통합 및 T-025 착수 대기 |
+| `T-20260729-024` | `done` | Backend | 보안·개인정보·관측성·비용 guardrail | - | `T-20260729-020`, `021` 완료 | PR #50 squash merge `00feb017`·완료 확정, T-025 착수 |
 | `T-20260729-025` | `approved` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend Agent | `T-20260729-021~024` | Product Owner 실행 승인, T-024 완료 후 Backend Agent 착수 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
