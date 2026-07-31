@@ -1,0 +1,92 @@
+name: ios-build
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ios-build:
+    name: ios-build
+    runs-on: macos-26
+    timeout-minutes: 15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      COOKLOG_CI_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Verify Xcode and Simulator contract
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          COOKLOG_CI_ROOT="${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          printf 'COOKLOG_CI_ROOT=%s\n' "${COOKLOG_CI_ROOT}" >> "${GITHUB_ENV}"
+          mkdir -p "${COOKLOG_CI_ROOT}/ios-build"
+          test -d /Applications/Xcode_26.6.app
+
+          xcode_version="$(xcodebuild -version)"
+          printf '%s\n' "${xcode_version}"
+          grep -Fxq 'Xcode 26.6' <<<"${xcode_version}"
+          grep -Fxq 'Build version 17F113' <<<"${xcode_version}"
+
+          xcrun simctl list runtimes available
+          xcrun simctl list devices available
+          xcrun simctl list devices available -j \
+            | jq -e '
+                .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-5"]
+                | any(.name == "iPhone 17" and .isAvailable == true)
+              '
+
+          xcodebuild \
+            -project apps/ios/CookLog.xcodeproj \
+            -scheme CookLog \
+            -destination "${COOKLOG_CI_DESTINATION}" \
+            -showdestinations
+
+      - name: Build app
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          xcodebuild \
+            -project apps/ios/CookLog.xcodeproj \
+            -scheme CookLog \
+            -destination "${COOKLOG_CI_DESTINATION}" \
+            -derivedDataPath "${COOKLOG_CI_ROOT}/ios-build/DerivedData" \
+            build 2>&1 \
+            | tee "${COOKLOG_CI_ROOT}/ios-build/xcodebuild-build.log"
+
+      - name: Build tests
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          xcodebuild \
+            -project apps/ios/CookLog.xcodeproj \
+            -scheme CookLog \
+            -destination "${COOKLOG_CI_DESTINATION}" \
+            -derivedDataPath "${COOKLOG_CI_ROOT}/ios-build/DerivedData" \
+            build-for-testing 2>&1 \
+            | tee "${COOKLOG_CI_ROOT}/ios-build/xcodebuild-build-for-testing.log"
+
+      - name: Upload build logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: cooklog-ios-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-build/xcodebuild-build.log
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-build/xcodebuild-build-for-testing.log
+          if-no-files-found: warn
+          retention-days: 14
