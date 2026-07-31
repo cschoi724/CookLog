@@ -103,10 +103,11 @@ JSON Schema runtime validator dependency는 여전히 T-025 범위다. 이번 �
 ## 최신 develop 통합
 
 2026-07-31 Product Owner가 T-021 실행 승인을 재확인했다. Development Lead가
-기존 미커밋 구현을 커밋 `de04b6a`로 보존한 뒤 최신 `origin/develop`
-`ad06bb9` 위로 재정렬했다.
+기존 미커밋 구현을 커밋 `de04b6a`로 보존한 뒤 `origin/develop` 위로 재정렬했다.
+승인된 재작업 완료 후에는 최신 `origin/develop` `e939b78` 위로 다시 재정렬해
+CI T-20260730-003 변경과 T-021 변경을 함께 보존했다.
 
-- 재정렬된 구현 보존 커밋: `a1eb57f`
+- 현재 재정렬된 구현 보존 커밋: `a7c638f`
 - API 계약·공통 JSON Schema·실행 보고서의 의미 변경: 없음
 - T-20260729-020 `done`과 최신 공용 보드 기록: 보존
 - Task 위치: `backlog`에서 `active`로 정규화

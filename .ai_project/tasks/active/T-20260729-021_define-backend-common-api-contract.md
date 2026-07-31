@@ -119,11 +119,12 @@ Backend QA Agent는 별도 세션에서 다음을 독립 검증한다.
 | 2026-07-31 | Backend Agent | transition: approved -> in_progress | QA-HIGH-021-001~002와 QA-MEDIUM-021-001 승인 재작업 시작 |
 | 2026-07-31 | Backend Agent | transition: in_progress -> verification_ready | challenge 원자 CAS·공개 오류 catalog/negative fixture·project 누적 hard cutoff 재작업과 자체 검증 완료 |
 | 2026-07-31 | Backend Agent | unlock | task unlock |
+| 2026-07-31 | Backend Agent | integrate latest develop | 최신 origin/develop e939b78 위로 재정렬하고 CI T-20260730-003 보드 기록과 T-021 verification_ready 상태 보존 |
 
 ## 최신 develop 통합
 
-- 기준 `origin/develop`: `ad06bb9`
-- 재정렬된 구현 보존 커밋: `a1eb57f`
+- 기준 `origin/develop`: `e939b78`
+- 재정렬된 구현 보존 커밋: `a7c638f`
 - 기존 구현 커밋 `de04b6a`과 API 계약·JSON Schema·실행 보고서 내용 동등성: 확인
 - T-20260729-020 `done` 기록: 보존
 - 최신 `origin/develop` 대비 뒤처짐: 0
