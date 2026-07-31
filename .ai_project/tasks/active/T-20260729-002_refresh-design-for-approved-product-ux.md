@@ -171,3 +171,4 @@ Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료
 - 2026-07-31: Product Owner가 하위 `T-20260729-012`의 잔존 포커스 결함 1건 재작업을 승인했으며, Design Lead가 최신 SHA `93f577e` 기반 전용 worktree를 준비해 UI/UX Design Agent에 재라우팅했다.
 - 2026-07-31: Design QA Agent가 하위 `T-20260729-012`의 자동 재생 완료 포커스와 기존 결함 6건·접근성 무회귀를 독립 재검증해 `verification_passed`로 Design Lead 완료 검토에 인계했으며, `done`과 후속 `T-20260729-013` 차단 해제는 보류한다.
 - 2026-07-31: Design Lead Agent가 하위 `T-20260729-012`의 성공 기준, 최종 QA, allowed paths, Figma 비차단 근거와 iOS 핸드오프를 확인해 `completion_review`로 인계했다. develop 통합 전이므로 하위 `done`, 후속 `T-20260729-013` 차단 해제와 상위 Task 완료는 보류한다.
+- 2026-07-31: Product Owner 승인으로 하위 `T-20260729-012` PR #42를 `develop`에 squash merge하고 두 CI 성공과 merge SHA `2b9b750`을 확인해 `done`으로 확정했다. 후속 `T-20260729-013`은 선행 차단이 해제됐지만 별도 실행 승인 대기이며 상위 Task는 `in_progress`를 유지한다.

@@ -21,30 +21,30 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `verification_ready` | 1 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
-| `completion_review` | 1 |
+| `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 22 |
+| `done` | 23 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~011`은 `done`입니다. `T-20260729-012`는 독립 Design QA와 Design Lead 완료 검토를 통과해 `completion_review`, develop 통합 대기 상태입니다. Backend T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다. CI T-001~004는 `done`, T-005는 `verification_ready`, T-006은 후속 승인 대상입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~012`는 `done`입니다. Backend T-020~022는 `done`, T-023·024는 `approved`, T-025는 선행 대기입니다. CI T-001~004는 `done`, T-005는 `verification_ready`, T-006은 후속 승인 대상입니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 1 | 1 | 0 | `.ai_project/teams/design/task_board.md` |
+| Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 4 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 
 ## 4. Next Candidates
 
-출시 Critical Path는 `T-20260729-001` 제품 기준 고정 후 Design, XCTest와 Backend Contract를 병렬 진행하고, iOS 로컬 제품·Backend production·실서비스 연동을 거쳐 `T-20260728-009`에서 통합합니다. `T-20260728-004`는 PR #8 squash merge와 완료 검토를 마쳐 `done`이며 Xcode·Simulator 고정 검증은 T-008로 인계했습니다. 구형 Mock UI 잔여 검증 `T-20260728-001`은 중복으로 폐기했습니다. `T-20260729-008~011`은 `done`이고 `T-20260729-012`는 `completion_review`, develop 통합 대기입니다.
+출시 Critical Path는 `T-20260729-001` 제품 기준 고정 후 Design, XCTest와 Backend Contract를 병렬 진행하고, iOS 로컬 제품·Backend production·실서비스 연동을 거쳐 `T-20260728-009`에서 통합합니다. `T-20260728-004`는 PR #8 squash merge와 완료 검토를 마쳐 `done`이며 Xcode·Simulator 고정 검증은 T-008로 인계했습니다. 구형 Mock UI 잔여 검증 `T-20260728-001`은 중복으로 폐기했습니다. `T-20260729-008~012`는 `done`이고 다음 순차 후보 `T-20260729-013`은 별도 실행 승인 대기입니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
@@ -76,8 +76,8 @@ Design `T-20260729-002` 하위 실행 후보:
 | `T-20260729-009` | P0 | Home·전체 보기·검색·레시피 상태 routing 디자인 | - | `done`, PR #16 squash merge |
 | `T-20260729-010` | P0 | Cooking Log·STEP Preview·기기 내 STT·권한·오류 디자인 | - | `done`, PR #22 squash merge |
 | `T-20260729-011` | P0 | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | - | `done`, PR #30 squash merge |
-| `T-20260729-012` | P0 | Audio Guide·핸즈프리·오디오 중단 상태 디자인 | Design Lead Agent | `completion_review` · develop 통합 대기 |
-| `T-20260729-013` | P0 | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | UI/UX Design Agent | `T-20260729-012` |
+| `T-20260729-012` | P0 | Audio Guide·핸즈프리·오디오 중단 상태 디자인 | - | `done`, PR #42 squash merge |
+| `T-20260729-013` | P0 | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | UI/UX Design Agent | 선행 완료, 별도 실행 승인 대기 |
 | `T-20260729-014` | P0 | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | UI/UX Design Agent | `T-20260729-013` |
 
 Backend `T-20260728-005` 하위 실행 후보:
@@ -263,3 +263,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-31 | UI/UX Design Agent가 T-012 자동 완료 포커스 결함 수정과 무회귀 검증을 완료하고 Design QA 독립 재검증 대기로 전환 |
 | 2026-07-31 | Design QA Agent가 T-012 자동 완료 포커스와 기존 결함 6건·접근성 무회귀를 독립 재검증해 verification_passed로 Design Lead Agent에 인계 |
 | 2026-07-31 | Design Lead Agent가 T-012 성공 기준·최종 QA·allowed paths·Figma 비차단·iOS 핸드오프를 확인해 completion_review로 인계 |
+| 2026-07-31 | Product Owner 승인으로 T-012 PR #42를 develop에 squash merge하고 merge SHA `2b9b750`·두 CI 성공 확인 후 done 확정 |

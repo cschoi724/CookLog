@@ -1,7 +1,7 @@
 ---
 id: T-20260729-012
 title: Audio Guide·핸즈프리·오디오 중단 상태 디자인
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 버튼과 사용자가 시작하는 핸즈프리는 첫 공개 출시의 핵심 재사용 경험이며 실패해도 조리를 계속할 fallback이 필요하다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
   - ux_flow
   - ui_design
@@ -128,6 +128,7 @@ qa_to: .ai_project/qa/T-20260729-012_design-audio-guide-and-handsfree-states-qa.
 - 2026-07-31: 실행 lock을 해제하고 `Design QA Agent / Verification Role`에 잔존 `DQA-MEDIUM-012-001` 독립 재검증을 요청했다.
 - 2026-07-31: Design QA Agent가 재생·다음·다시 듣기·마지막 단계 다시 듣기의 자동 완료 포커스와 기존 결함 6건·접근성 무회귀를 독립 재검증해 `verification_ready -> verification_passed`로 전환하고 Design Lead Agent에 인계했다.
 - 2026-07-31: Design Lead Agent가 성공 기준, 최종 Design QA, allowed paths, Figma 비차단 근거와 iOS 구현 핸드오프를 완료 검토해 `verification_passed -> completion_review`로 인계했다. develop 통합 전이므로 `done` 전환과 후속 `T-20260729-013` 차단 해제는 보류했다.
+- 2026-07-31: Product Owner 승인으로 PR #42를 `develop`에 squash merge하고 merge SHA `2b9b7502d521db64f2ce11ac3e6a249e7cabf210`과 `ios-build`·`ios-xctest` 성공을 확인해 `completion_review -> done`으로 확정했다.
 
 ## Design QA 재작업 요구
 
@@ -170,3 +171,11 @@ qa_to: .ai_project/qa/T-20260729-012_design-audio-guide-and-handsfree-states-qa.
 - Prototype·README·Manifest revision `audio-guide-focus-rework-20260731`이 일치하고 실행 보고서·최종 QA가 iOS 핸드오프 근거를 제공한다.
 - Task 브랜치는 최신 `origin/develop`보다 1커밋 뒤지만 upstream은 Backend T-022와 공용 보드 변경으로 디자인 판정에 영향이 없다. Quality Board 정합화는 병합 전 Git gate에서 수행한다.
 - 완료 검토를 통과해 `completion_review`로 인계한다. develop 병합 전에는 `done`으로 변경하지 않으며 `T-20260729-013`과 상위 `T-20260729-002`를 완료하지 않는다.
+
+## 완료 확정
+
+- PR #42가 `develop`에 squash merge됐고 merge SHA는 `2b9b7502d521db64f2ce11ac3e6a249e7cabf210`이다.
+- 최신 develop 재정렬 과정에서 Product T-20260731-001과 CI T-20260730-005의 공용 보드 기록을 보존했다.
+- PR의 `ios-build`와 `ios-xctest`가 모두 통과했고 최종 Design QA `PASS`와 완료 검토 결과에 회귀가 없다.
+- 후속 `T-20260729-013`의 선행 차단은 해제됐지만 실행은 별도 Product Owner 승인이 필요하다.
+- 상위 `T-20260729-002`는 후속 `T-20260729-013~014`가 남아 있으므로 `in_progress`를 유지한다.
