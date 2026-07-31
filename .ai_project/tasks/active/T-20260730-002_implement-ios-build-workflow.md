@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-002
 title: ios-build·build-for-testing workflow 구현
-status: completion_review
+status: in_progress
 type: feature
 priority: P0
 priority_reason: 모든 develop PR에서 컴파일과 테스트 빌드 실패를 자동 차단해야 한다.
@@ -40,7 +40,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
-updated_at: '2026-07-30'
+updated_at: '2026-07-31'
 report_to: ".ai_project/reports/T-20260730-002_implement-ios-build-workflow-report.md"
 qa_to: ".ai_project/qa/T-20260730-002_implement-ios-build-workflow-qa.md"
 ---
@@ -91,3 +91,6 @@ qa_to: ".ai_project/qa/T-20260730-002_implement-ios-build-workflow-qa.md"
 | 2026-07-30 | iOS QA Agent | transition: verification_in_progress -> verification_passed | preflight·정상 build/build-for-testing·컴파일 실패 종료 코드 65·권한·artifact 계약 독립 검증 PASS_WITH_RISK, hosted dry run은 T-005 인계 |
 | 2026-07-30 | Development Lead Agent | integrate latest develop | 최신 origin/develop의 T-010 완료 기록을 보존해 재정렬하고 고정 구현 커밋 d40ff5d가 QA 검증 내용과 byte-for-byte 동일함을 확인 |
 | 2026-07-30 | Development Lead Agent | transition: verification_passed -> completion_review | 성공 기준, 독립 QA PASS_WITH_RISK, 허용 경로와 공용 보드 비회귀를 수용하고 hosted 실행 위험은 계획된 T-005 dry run으로 인계 |
+| 2026-07-31 | GitHub Actions | validation failure | PR #24 push 실행이 job 생성 전에 실패. job-level env에서 허용되지 않는 runner context 사용을 확인 |
+| 2026-07-31 | Product Owner | approve rework | CI 설정 최소 수정과 실제 GitHub Actions 재검증 승인 |
+| 2026-07-31 | Development Lead Agent | transition: completion_review -> in_progress | COOKLOG_CI_ROOT를 RUNNER_TEMP 기반 step 실행 시점에 생성하고 GITHUB_ENV로 전달하는 재작업 착수 |

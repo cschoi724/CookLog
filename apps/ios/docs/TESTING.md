@@ -737,3 +737,11 @@ T-004가 확인한 것은 Xcode 26.6·iOS 17.2 조합이며 Xcode 15.2 호환성
 `/Applications/Xcode_26.6.app` 경로 preflight의 실제 성공 여부는 후속 PR
 dry run에서 확인합니다. 버전, build 번호와 destination 계약은 로컬에서
 동일하게 검증했습니다.
+
+### 16.2 GitHub Actions 환경 경로
+
+job-level `env`에서는 `runner` context를 사용하지 않습니다. CI 작업 루트는
+첫 preflight step에서 GitHub Actions 기본 환경 변수 `RUNNER_TEMP`,
+`GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT`를 조합해 만들고 `GITHUB_ENV`로 후속
+step에 전달합니다. 이를 통해 build와 artifact가 같은 실행별 격리 경로를
+사용하면서 workflow validation 제약을 준수합니다.

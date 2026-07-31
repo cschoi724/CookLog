@@ -18,7 +18,6 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
       COOKLOG_CI_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.5
-      COOKLOG_CI_ROOT: ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}
 
     steps:
       - name: Checkout repository
@@ -31,6 +30,8 @@ jobs:
         run: |
           set -euo pipefail
 
+          COOKLOG_CI_ROOT="${RUNNER_TEMP}/cooklog-ci/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          printf 'COOKLOG_CI_ROOT=%s\n' "${COOKLOG_CI_ROOT}" >> "${GITHUB_ENV}"
           mkdir -p "${COOKLOG_CI_ROOT}/ios-build"
           test -d /Applications/Xcode_26.6.app
 
@@ -85,7 +86,7 @@ jobs:
         with:
           name: cooklog-ios-build-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            ${{ env.COOKLOG_CI_ROOT }}/ios-build/xcodebuild-build.log
-            ${{ env.COOKLOG_CI_ROOT }}/ios-build/xcodebuild-build-for-testing.log
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-build/xcodebuild-build.log
+            ${{ runner.temp }}/cooklog-ci/${{ github.run_id }}-${{ github.run_attempt }}/ios-build/xcodebuild-build-for-testing.log
           if-no-files-found: warn
           retention-days: 14

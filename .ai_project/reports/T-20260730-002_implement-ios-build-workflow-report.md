@@ -2,7 +2,7 @@
 
 작성일: 2026-07-30
 작성자: iOS Agent
-상태: `completion_review`
+상태: `in_progress`
 
 ## 결과
 
@@ -109,3 +109,15 @@ iOS QA Agent는 다음을 독립 확인한다.
 `T-20260730-005` PR dry run으로 인계할 수 있는 잔여 위험이다. 현재 Task 성공
 기준과 독립 검증 기준을 충족해 `verification_passed -> completion_review`로
 수용하며, `develop` 대상 PR 병합 후 `done`으로 확정한다.
+
+## GitHub Actions 재작업
+
+2026-07-31 PR #24의 최초 push 실행은 job 생성 전에 workflow validation으로
+실패했다. job-level `env`는 `runner` context를 허용하지 않는데
+`COOKLOG_CI_ROOT`에서 `${{ runner.temp }}`를 참조한 것이 원인이다.
+
+Product Owner의 재작업 승인에 따라 `COOKLOG_CI_ROOT`는 첫 preflight step에서
+기본 환경 변수 `RUNNER_TEMP`, `GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT`로 계산하고
+`GITHUB_ENV`에 기록하도록 수정했다. 후속 build와 artifact 단계의 기존 경로
+계약은 유지한다. 실제 hosted 실행 통과 전까지 Task를 `in_progress`로
+되돌리고 PR 병합을 보류한다.

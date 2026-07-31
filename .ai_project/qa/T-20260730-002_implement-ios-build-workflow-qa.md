@@ -178,3 +178,16 @@ Development Lead가 QA 대상 미커밋 내용을 `62fc031`로 보존한 뒤 최
 
 재정렬로 QA 판정 대상을 바꾸는 구현 내용 변경이 없으므로 기존 독립
 `PASS_WITH_RISK` 판정을 고정 커밋 `d40ff5d`에 적용한다.
+
+## 10. PR #24 hosted 검증에서 발견된 결함
+
+2026-07-31 최초 push 실행은 job과 check를 만들기 전에 workflow validation
+단계에서 실패했다.
+
+- 원인: job-level `env`에서 허용되지 않는 `${{ runner.temp }}` context 참조
+- 영향: preflight, build, build-for-testing, artifact 단계가 모두 미실행
+- 판정 영향: 기존 로컬 검증 결과는 유효하지만 hosted 실행 잔여 위험을 실제
+  결함으로 확인했으므로 병합을 중단하고 `in_progress` 재작업으로 전환
+- 승인된 수정: 첫 step에서 `RUNNER_TEMP` 기반 경로를 계산해 `GITHUB_ENV`로
+  후속 step에 전달
+- 재검증 조건: 수정 push가 실제 `ios-build` job을 생성하고 최종 통과해야 함
