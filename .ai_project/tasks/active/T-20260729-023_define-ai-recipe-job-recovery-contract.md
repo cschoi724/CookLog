@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-023
 title: AI 레시피 job·상태 조회·결과 복구 계약 정의
-status: completion_review
+status: done
 type: docs
 priority: P0
 priority_reason: 온라인 AI 정리의 비동기 처리와 실패 복구가 첫 출시 핵심 경로다.
@@ -144,6 +144,8 @@ T-20260729-023 AI recipe job·상태 조회·결과 복구 계약을 독립 검�
 | 2026-07-31 | Backend QA Agent | lock | task lock |
 | 2026-07-31 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-023-001~002 및 QA-MEDIUM-023-001 해소, 계약 회귀 없음, PASS_WITH_RISK |
 | 2026-07-31 | Development Lead Agent | transition: verification_passed -> completion_review | 재검증 PASS_WITH_RISK, 허용 경로·계약 검사·후속 T-025 인계 조건을 확인하고 develop 통합 대기로 전환 |
+| 2026-07-31 | Product Owner | approve completion | T-023 완료 검토 결과와 PASS_WITH_RISK 잔여 위험을 수용하고 완료 확정 승인 |
+| 2026-07-31 | Development Lead Agent | transition: completion_review -> done | 완료 검토와 Product Owner 승인을 확인하고 T-023 완료 확정, T-025 인계 |
 
 ## Development Lead 완료 검토
 

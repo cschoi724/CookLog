@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-025
 title: iOS·Backend 공용 fixture와 계약 테스트 기준 정의
-status: proposed
+status: approved
 type: test
 priority: P0
 priority_reason: 구현 전에 양쪽이 같은 정상·오류·복구 schema를 검증해야 한다.
@@ -39,7 +39,7 @@ source_of_truth:
   - apps/backend/docs/REMOTE_STT_ADAPTER.md
   - apps/ios/docs/SERVICES.md
 created_by: Development Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
