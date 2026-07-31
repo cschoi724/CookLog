@@ -118,7 +118,7 @@ PR #26의 `ios-build` 통과와 squash merge SHA `a8e3a8a`를 확인해 T-020을
 | `T-20260730-002` | `done` | CI | ios-build workflow | - | `T-20260730-001` 완료 | PR #24 squash merge·hosted check 통과·완료 확정 |
 | `T-20260730-003` | `done` | CI | ios-xctest workflow | - | `T-20260730-001`, `T-20260730-002` 완료 | PR #28 squash merge·hosted 33/33·완료 확정 |
 | `T-20260730-004` | `done` | CI | concurrency·진단·cache·artifact 통합 | - | `T-20260730-002`, `003` 완료 | PR #34 checks·artifact 통과·squash merge |
-| `T-20260730-005` | `verification_ready` | CI | PR dry run·실패 감지 검증 | iOS QA Agent | `T-20260730-004` 완료 | 실제 PR 정상·실패·timeout·취소 증빙 독립 검증 |
+| `T-20260730-005` | `done` | CI | PR dry run·실패 감지 검증 | - | `T-20260730-004` 완료 | PR #36 squash merge `a5c6503`·완료 확정, T-006 required check 설정으로 인계 |
 | `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
 | `T-20260730-007` | `done` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | - | T-001 QA-HIGH-001 | PR #18 squash merge 완료 |
 

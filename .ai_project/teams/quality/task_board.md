@@ -20,7 +20,7 @@
 | `T-20260731-001` | `done` | 활성 문서 Source of Truth 정합성 복구 | 제품·운영·iOS·Design 문서 우선순위, 최신 상태와 잔여 충돌 문구 | Product Owner 최종 승인·완료 확정 |
 | `T-20260730-004` | `done` | iOS CI concurrency·진단·cache·artifact 통합 | 격리·cache 미적용 build·33/33·hosted 진단·artifact | PR #34 checks 통과·squash merge·완료 확정 |
 | `T-20260729-022` | `done` | 기본 비활성 원격 STT adapter 계약 | 오류별 retry/terminal·deadline worker·5분 sweeper·비정상 삭제 8개 fixture | PR #40 checks 통과·squash merge·완료 확정 |
-| `T-20260730-005` | `verification_ready` | iOS CI PR dry run·실패 감지·회귀 검증 | PR #36~#39 정상·실패 65·timeout 124·취소·artifact | 고정 run과 미병합 종료 상태 독립 판정 |
+| `T-20260730-005` | `done` | iOS CI PR dry run·실패 감지·회귀 검증 | 최신 PR #36 33/33, #37~#39 실패 65·timeout 124·취소·artifact | PR #36 squash merge `a5c6503`·완료 확정 |
 | `T-20260729-023` | `done` | AI recipe job·상태 조회·결과 복구 계약 | result version ACK·provider 시작 전후 timeout 6개·quota create HTTP 429 | 완료 확정, PASS_WITH_RISK 잔여 위험은 staging 인계 |
 
 향후 검증 예정 Task:
