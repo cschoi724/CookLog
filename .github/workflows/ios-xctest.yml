@@ -36,6 +36,16 @@ jobs:
           artifact-subdirectory: ios-xctest
           destination: ${{ env.COOKLOG_XCTEST_DESTINATION }}
 
+      - name: Inject intentional XCTest failure
+        shell: bash
+        run: |
+          set -euo pipefail
+          perl -0pi -e \
+            's/XCTAssertTrue\\(true\\)/XCTFail("T-20260730-005 intentional failure")/' \
+            apps/ios/CookLogTests/CookLogTests.swift
+          grep -Fq 'T-20260730-005 intentional failure' \
+            apps/ios/CookLogTests/CookLogTests.swift
+
       - name: Run XCTest
         shell: bash
         run: apps/ios/Scripts/run-xctest.sh
