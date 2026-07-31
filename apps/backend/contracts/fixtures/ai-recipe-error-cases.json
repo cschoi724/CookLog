@@ -1,0 +1,95 @@
+{
+  "fixture_version": "ios-backend-fixture.v1",
+  "case_id": "ai_recipe_public_errors",
+  "cases": [
+    {
+      "name": "quota_exceeded_before_job_creation",
+      "http_status": 429,
+      "job_created": false,
+      "body": {
+        "type": "https://api.cooklog.app/problems/quota-exceeded",
+        "title": "Quota exceeded",
+        "status": 429,
+        "detail": "The project usage quota was exceeded.",
+        "instance": "urn:cooklog:request:60000000-0000-4000-8000-000000000001",
+        "request_id": "60000000-0000-4000-8000-000000000001",
+        "code": "QUOTA_EXCEEDED",
+        "user_message_key": "error.quota_exceeded",
+        "retryable": false,
+        "retry_after_seconds": 3600
+      },
+      "ios_action": "preserve_snapshot_show_unavailable"
+    },
+    {
+      "name": "idempotency_key_reused",
+      "http_status": 409,
+      "job_created": false,
+      "body": {
+        "type": "https://api.cooklog.app/problems/idempotency-key-reused",
+        "title": "Idempotency conflict",
+        "status": 409,
+        "detail": "The idempotency key was used for a different request.",
+        "instance": "urn:cooklog:request:60000000-0000-4000-8000-000000000002",
+        "request_id": "60000000-0000-4000-8000-000000000002",
+        "code": "IDEMPOTENCY_KEY_REUSED",
+        "user_message_key": "error.request_conflict",
+        "retryable": false
+      },
+      "ios_action": "create_new_key_only_after_user_retry"
+    },
+    {
+      "name": "result_version_mismatch",
+      "http_status": 422,
+      "job_created": true,
+      "body": {
+        "type": "https://api.cooklog.app/problems/validation-failed",
+        "title": "Validation failed",
+        "status": 422,
+        "detail": "One or more request fields are invalid.",
+        "instance": "urn:cooklog:request:60000000-0000-4000-8000-000000000003",
+        "request_id": "60000000-0000-4000-8000-000000000003",
+        "code": "VALIDATION_FAILED",
+        "user_message_key": "error.invalid_request",
+        "retryable": false,
+        "violations": [
+          {"field": "body", "reason": "MISMATCH"}
+        ]
+      },
+      "ios_action": "get_latest_status_without_new_provider_call"
+    },
+    {
+      "name": "service_disabled",
+      "http_status": 503,
+      "job_created": false,
+      "body": {
+        "type": "https://api.cooklog.app/problems/service-disabled",
+        "title": "Service disabled",
+        "status": 503,
+        "detail": "This service is temporarily disabled.",
+        "instance": "urn:cooklog:request:60000000-0000-4000-8000-000000000004",
+        "request_id": "60000000-0000-4000-8000-000000000004",
+        "code": "SERVICE_DISABLED",
+        "user_message_key": "error.service_unavailable",
+        "retryable": false
+      },
+      "ios_action": "preserve_snapshot_no_automatic_retry"
+    },
+    {
+      "name": "token_expired",
+      "http_status": 401,
+      "job_created": false,
+      "body": {
+        "type": "https://api.cooklog.app/problems/token-expired",
+        "title": "Session expired",
+        "status": 401,
+        "detail": "The installation session expired.",
+        "instance": "urn:cooklog:request:60000000-0000-4000-8000-000000000005",
+        "request_id": "60000000-0000-4000-8000-000000000005",
+        "code": "TOKEN_EXPIRED",
+        "user_message_key": "error.session_expired",
+        "retryable": true
+      },
+      "ios_action": "refresh_installation_token_then_replay_same_idempotency_key"
+    }
+  ]
+}

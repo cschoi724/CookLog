@@ -1,0 +1,137 @@
+{
+  "fixture_version": "ios-backend-fixture.v1",
+  "case_id": "ai_recipe_success",
+  "synthetic_content": true,
+  "request": {
+    "method": "POST",
+    "path_template": "/v1/ai/recipe-jobs",
+    "required_headers": [
+      "Authorization",
+      "Idempotency-Key",
+      "X-CookLog-App-Attest-Assertion"
+    ],
+    "body": {
+      "contract_version": "ai-recipe-job.v1",
+      "snapshot_id": "01365c74-28b5-4aa9-a9d1-f9c7f12b8792",
+      "snapshot_revision": 3,
+      "snapshot_sha256": "fede90d1e0e1c53df3b6108f474ef6857179d08ac360fa1328b7b8d2ff872805",
+      "locale": "ko-KR",
+      "steps": [
+        {
+          "step_id": "11111111-1111-4111-8111-111111111111",
+          "order": 0,
+          "recorded_at": "2026-07-31T01:00:00Z",
+          "transcript": "삼겹살을 팬에 넣고 볶았어"
+        },
+        {
+          "step_id": "22222222-2222-4222-8222-222222222222",
+          "order": 1,
+          "recorded_at": "2026-07-31T01:01:00Z",
+          "transcript": "양파 반 개를 넣었어"
+        }
+      ]
+    }
+  },
+  "create_response": {
+    "http_status": 202,
+    "content_type": "application/json",
+    "body": {
+      "data": {
+        "job_id": "33333333-3333-4333-8333-333333333333",
+        "contract_version": "ai-recipe-job.v1",
+        "state": "queued",
+        "state_version": 1,
+        "result_state": "none",
+        "result_version": null,
+        "created_at": "2026-07-31T09:01:00Z",
+        "updated_at": "2026-07-31T09:01:00Z",
+        "expires_at": "2026-08-01T09:01:00Z",
+        "poll_after_seconds": 2,
+        "failure": null,
+        "result": null
+      },
+      "meta": {
+        "request_id": "44444444-4444-4444-8444-444444444444",
+        "api_version": "v1"
+      }
+    }
+  },
+  "poll_response": {
+    "http_status": 200,
+    "content_type": "application/json",
+    "body": {
+      "data": {
+        "job_id": "33333333-3333-4333-8333-333333333333",
+        "contract_version": "ai-recipe-job.v1",
+        "state": "succeeded",
+        "state_version": 3,
+        "result_state": "available",
+        "result_version": 1,
+        "created_at": "2026-07-31T09:01:00Z",
+        "updated_at": "2026-07-31T09:01:08Z",
+        "expires_at": "2026-08-01T09:01:00Z",
+        "poll_after_seconds": null,
+        "failure": null,
+        "result": {
+          "schema_version": "recipe-draft.v1",
+          "title": "삼겹살 양파볶음",
+          "ingredients": [
+            {
+              "name": "삼겹살",
+              "quantity": null,
+              "unit": null,
+              "evidence_step_ids": ["11111111-1111-4111-8111-111111111111"],
+              "inferred_fields": []
+            },
+            {
+              "name": "양파",
+              "quantity": "0.5",
+              "unit": "개",
+              "evidence_step_ids": ["22222222-2222-4222-8222-222222222222"],
+              "inferred_fields": []
+            }
+          ],
+          "steps": [
+            {
+              "order": 0,
+              "instruction": "삼겹살을 팬에 넣고 볶는다.",
+              "evidence_step_ids": ["11111111-1111-4111-8111-111111111111"],
+              "estimated_duration_minutes": null,
+              "duration_provenance": "unknown"
+            },
+            {
+              "order": 1,
+              "instruction": "양파 반 개를 넣는다.",
+              "evidence_step_ids": ["22222222-2222-4222-8222-222222222222"],
+              "estimated_duration_minutes": null,
+              "duration_provenance": "unknown"
+            }
+          ],
+          "estimated_total_minutes": null,
+          "estimated_time_provenance": "unknown",
+          "notes": [],
+          "review_flags": []
+        }
+      },
+      "meta": {
+        "request_id": "55555555-5555-4555-8555-555555555555",
+        "api_version": "v1"
+      }
+    }
+  },
+  "acknowledgement_request": {
+    "method": "POST",
+    "path_template": "/v1/ai/recipe-jobs/{job_id}/result-acknowledgements",
+    "required_headers": ["Authorization", "Idempotency-Key"],
+    "body": {
+      "result_version": 1,
+      "saved_locally_at": "2026-07-31T09:01:09Z"
+    }
+  },
+  "expectation": {
+    "provider_calls_max": 1,
+    "save_locally_before_ack": true,
+    "content_delete_after_ack": true,
+    "automatic_retry": false
+  }
+}
