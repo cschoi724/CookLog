@@ -1,6 +1,6 @@
 # CookLog Git Workflow
 
-최종 업데이트: 2026-07-30
+최종 업데이트: 2026-07-31
 상태: 확정
 
 이 문서는 CookLog 저장소에서 사람이 실제로 수행하는 Git·PR 절차의 최종 기준입니다. 전략 선택값은 `.ai_project/branch_pr_strategy.md`에 기록하며, 두 문서는 서로 일치해야 합니다.
@@ -49,20 +49,48 @@ Task 승인
 -> Product Owner merge 승인
 -> develop에 squash merge
 -> completion_review 및 done
--> 작업 브랜치 삭제
+-> 미커밋·미push·PR 상태와 patch 동등성 확인
+-> 정리 후보 전환
+-> Product Owner 정리 승인 후 worktree·작업 브랜치 제거
 ```
 
 Task 시작 전 확인:
 
 ```bash
 git status -sb
-git fetch origin
-git switch develop
-git pull --ff-only origin develop
-git switch -c task/T-YYYYMMDD-NNN-short-slug
+git branch --show-current
+git fetch origin develop
+git rev-parse --short origin/develop
+git worktree add -b task/T-YYYYMMDD-NNN-short-slug <WORKTREE_PATH> origin/develop
 ```
 
 다른 Task의 변경이 현재 작업 폴더에 남아 있으면 checkout이나 stash로 이동하지 않습니다. 해당 변경을 보존한 채 별도 worktree 또는 깨끗한 clone을 사용합니다.
+
+### 공용 상태와 로컬 실행 상태
+
+- 공용 현재 상태는 fetch를 마친 최신 `origin/develop`입니다.
+- 루트 WIP, 로컬 `develop`, Task worktree의 문서는 해당 브랜치 시점의 스냅샷입니다.
+- 다른 Task의 착수·의존성·차단 해제 판단은 다음처럼 공용 문서를 직접 조회합니다.
+
+```bash
+git show origin/develop:.ai_project/task_board.md
+git show origin/develop:<TASK_FILE>
+```
+
+- PR 병합 전 로컬 `done`은 공용 완료가 아닙니다.
+- `approved`, dependency·blocks 변경, `rework_requested`, 최종 `done`, 후속 Task 차단 해제는 `develop` 병합 후에만 공용 효력이 있습니다.
+- `in_progress`와 로컬 검증 진행 상태는 다른 Task의 의존성을 해제하지 않습니다.
+- 모든 상태 보고에는 `public_source: origin/develop@<SHA>`와 worktree, branch, local HEAD, 공용·로컬 Task 상태, 미커밋 여부를 포함합니다.
+- fetch 또는 SHA 확인에 실패하면 `PUBLIC_STATE_UNVERIFIED`로 보고하고 공용 상태 판단을 중단합니다.
+
+기존 worktree에서 작업을 시작하거나 재개하기 전에는 다음을 추가로 확인합니다.
+
+```bash
+git rev-list --left-right --count origin/develop...HEAD
+git merge-base --is-ancestor origin/develop HEAD
+```
+
+새 worktree 또는 아직 변경하지 않은 깨끗한 worktree가 최신 `origin/develop`을 포함하지 않으면 최신 기준으로 다시 준비합니다. 이미 실행 중이거나 미커밋 변경이 있는 worktree가 최신 기준을 포함하지 않으면 변경을 보존하고 중단 보고하며, 자동 `reset`, `rebase`, `stash`로 재정렬하지 않습니다.
 
 ### develop에서 main으로 승격
 
@@ -174,7 +202,36 @@ Task PR의 `develop` merge 조건:
 - required check가 모두 통과하고 최신 `main`과 충돌이 없습니다.
 - Product Owner가 승격 merge를 승인했습니다.
 
-merge 방식은 squash로 통일하며, merge 후 Task·hotfix 브랜치를 삭제합니다. `develop`은 장기 통합 브랜치이므로 삭제하지 않습니다. 자동 merge와 force push는 기본적으로 허용하지 않습니다.
+merge 방식은 squash로 통일합니다. merge 후 Task·hotfix worktree와 브랜치는 즉시 삭제하지 않고 안전 검사를 통과한 정리 후보로 전환합니다. `develop`은 장기 통합 브랜치이므로 삭제하지 않습니다. 자동 merge와 force push는 기본적으로 허용하지 않습니다.
+
+### worktree 종료와 안전한 정리
+
+다음 생명주기를 따릅니다.
+
+```text
+Task 승인
+-> 최신 origin/develop 확인과 기준 SHA 기록
+-> 전용 worktree 생성
+-> 작업과 독립 검증
+-> 완료 승인
+-> push와 develop 대상 PR
+-> merge 확인
+-> 미커밋·미push 작업 검사
+-> 정리 후보 전환
+-> Product Owner 승인
+-> worktree·작업 브랜치 제거
+```
+
+별도 비파괴 감사와 Product Owner 승인 전에는 기존 worktree 또는 branch를 삭제하지 않습니다. 정리 후보를 만들 때 다음을 모두 확인합니다.
+
+- 미커밋 변경과 untracked 파일
+- 원격에 push되지 않은 커밋
+- 열린 PR과 PR merge 상태
+- squash merge 여부와 branch patch의 develop 반영 여부
+- 별도 검증 재현 용도
+- 수익화 draft 또는 보존 WIP 여부
+
+Squash merge된 branch의 원래 commit은 `develop`의 ancestor가 아닐 수 있습니다. 따라서 `git merge-base --is-ancestor` 결과만으로 미병합 작업이라고 판정하지 않고, PR merge 상태와 patch 동등성을 함께 확인합니다.
 
 ## 8. 문서 변경과 예외
 
@@ -196,7 +253,9 @@ merge 방식은 squash로 통일하며, merge 후 Task·hotfix 브랜치를 삭�
 - [ ] Product Owner 승인 후 push와 `develop` 대상 PR 생성
 - [ ] 독립 검증 및 required check 통과
 - [ ] Product Owner 승인 후 `develop`에 squash merge
-- [ ] 완료 확정 후 작업 브랜치 삭제
+- [ ] 미커밋·untracked·미push·PR·squash merge·보존 목적 확인
+- [ ] 완료 확정 후 worktree와 작업 브랜치를 정리 후보로 전환
+- [ ] Product Owner의 별도 정리 승인 후 제거
 
 `main` 승격 추가 체크:
 
@@ -214,3 +273,4 @@ merge 방식은 squash로 통일하며, merge 후 Task·hotfix 브랜치를 삭�
 | 2026-07-28 | `T-20260728-007` 승인에 따라 Task branch·PR·독립 검증·사용자 승인 기반 절차로 전환 |
 | 2026-07-28 | `T-20260728-019` 승인에 따라 `develop` 통합, `main` 안정·릴리즈, hotfix backport 흐름으로 전환 |
 | 2026-07-30 | `T-20260730-001`에서 iOS CI 환경·명령·check·timeout·artifact 계약 확정 |
+| 2026-07-31 | `T-20260731-002`에서 다중 worktree 공용 상태를 최신 `origin/develop`로 고정하고 stale worktree 중단·상태 보고·안전한 정리 생명주기 규칙 추가 |

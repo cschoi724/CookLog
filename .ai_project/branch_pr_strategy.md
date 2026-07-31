@@ -58,7 +58,9 @@ pull_request:
 ```yaml
 merge:
   method: squash
-  delete_task_and_hotfix_branch_after_merge: true
+  delete_task_and_hotfix_branch_after_merge: false
+  cleanup_requires_safety_audit: true
+  cleanup_requires_product_owner_approval: true
   keep_develop_branch: true
   protected_long_lived_branches:
     - develop
@@ -69,6 +71,11 @@ merge:
   force_push: false
   hotfix_backport_to_develop: required
 ```
+
+Task·hotfix branch와 worktree는 merge 직후 자동 삭제하지 않는다. 미커밋 변경,
+untracked 파일, 미push commit, 열린 PR, squash merge와 patch 동등성, 검증 재현
+용도와 보존 WIP를 비파괴 감사한 뒤 정리 후보로 전환하며, Product Owner의 별도
+승인을 받은 대상만 제거한다.
 
 ## 5. Exception Rules
 
@@ -90,3 +97,4 @@ merge:
 | 2026-07-27 | 멀티팀 병렬 운영을 위한 `feature_branch_pr` 전략 기록 |
 | 2026-07-28 | `T-20260728-007` 승인에 따라 문서 PR, 초기 `ios-build`, `ios-xctest` 승격 조건과 예외 기준 확정 |
 | 2026-07-28 | `T-20260728-019` 승인에 따라 `develop_integration_pr`와 `develop -> main` 승격·hotfix backport 기준 적용 |
+| 2026-07-31 | `T-20260731-002`에 따라 merge 직후 자동 삭제를 금지하고 안전 감사·Product Owner 별도 승인 후 정리하도록 변경 |
