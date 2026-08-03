@@ -167,12 +167,46 @@ PR 원칙:
 | `ios-build` | workflow·dry run·iOS QA 대기 | check 실패 시 merge 후보 제외 |
 | `ios-xctest` | workflow·dry run·iOS QA 대기 | check 실패 시 merge 후보 제외 |
 
-workflow가 생성하는 check 이름은 정확히 `ios-build`, `ios-xctest`로 고정합니다. 두 check를 repository ruleset 또는 branch protection의 required check로 등록하는 외부 변경은 `T-20260730-005` dry run과 iOS QA를 통과한 뒤 `T-20260730-006`에서 Product Owner의 별도 실행 승인을 받아 수행합니다.
+workflow가 생성하는 required check 이름은 정확히 `ios-build`, `ios-xctest`로
+고정합니다. 두 check를 repository ruleset 또는 branch protection의 required
+check로 등록하는 외부 변경은 `T-20260730-005` dry run과 iOS QA를 통과한 뒤
+`T-20260730-006`에서 Product Owner의 별도 실행 승인을 받아 수행합니다.
 
 두 workflow는 `develop`, `main` 대상 Pull Request에서 `macos-26` ARM64, Xcode
-26.6, iPhone 17 / iOS 26.5 조합을 사용합니다. workflow 표시 이름과 단일 job의
-이름·id도 고정 check 이름과 일치시키며 matrix suffix를 붙이지 않습니다. 세부
-명령, timeout과 artifact 계약은 `apps/ios/docs/TESTING.md`를 따릅니다.
+26.6, iPhone 17 / iOS 26.5 조합을 사용합니다. 단, macOS 실행 전에 read-only
+`GITHUB_TOKEN`과 Pull Request files API를 사용하는 Linux 판정 job이 다음
+runtime-impact 경로를 확인합니다.
+
+- `apps/ios/CookLog/**`
+- `apps/ios/CookLogTests/**`
+- `apps/ios/CookLog.xcodeproj/**`
+- `apps/ios/Scripts/**`
+- `apps/ios/*.xcconfig`, `apps/ios/*.entitlements`
+- `.github/actions/**`
+- `.github/workflows/ios-*.yml`
+
+하나라도 해당하면 required job을 `macos-26`으로 라우팅해 기존 build·XCTest를
+모두 실행합니다. 모두 해당하지 않으면 같은 required job을 `ubuntu-latest`로
+라우팅해 macOS·Xcode·Simulator·artifact 단계를 생략하고 skip 사유만 기록합니다.
+문서, `.ai_project`, Backend, Design만 바뀐 PR은 이 경량 경로를 사용합니다.
+수동 `workflow_dispatch`는 항상 전체 macOS 검증을 실행합니다.
+
+workflow 수준 `paths`/`paths-ignore`는 사용하지 않습니다. GitHub 공식 기준상
+required workflow 자체가 path filter로 생략되면 check가 `Pending`에 남아 병합을
+막을 수 있지만, job 내부 조건과 실행 결과는 required check로 안전하게 사용할 수
+있기 때문입니다.
+
+- [GitHub required check 생략 처리](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks)
+- [GitHub job 조건](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-jobs-with-conditions)
+
+workflow 표시 이름과 required job 이름·id는 각각 `ios-build`, `ios-xctest`를
+유지하고 matrix suffix를 붙이지 않습니다. 판정 job 실패나 유효하지 않은 출력은
+required job 실패로 전파합니다. 세부 명령, timeout과 artifact 계약은
+`apps/ios/docs/TESTING.md`를 따릅니다.
+
+같은 workflow·event·PR 또는 수동 branch의 이전 실행은 기존 concurrency group과
+`cancel-in-progress: true`로 취소합니다. workflow 이름을 group에 포함하므로
+`ios-build`와 `ios-xctest`, 다른 PR과 branch는 서로 취소하지 않습니다.
 
 적용 순서:
 
@@ -274,3 +308,4 @@ Squash merge된 branch의 원래 commit은 `develop`의 ancestor가 아닐 수 �
 | 2026-07-28 | `T-20260728-019` 승인에 따라 `develop` 통합, `main` 안정·릴리즈, hotfix backport 흐름으로 전환 |
 | 2026-07-30 | `T-20260730-001`에서 iOS CI 환경·명령·check·timeout·artifact 계약 확정 |
 | 2026-07-31 | `T-20260731-002`에서 다중 worktree 공용 상태를 최신 `origin/develop`로 고정하고 stale worktree 중단·상태 보고·안전한 정리 생명주기 규칙 추가 |
+| 2026-07-31 | `T-20260731-003`에서 required check 호환 경량 path 판정과 문서·Backend·Design PR의 macOS 실행 제외 정책 추가 |

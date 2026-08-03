@@ -971,3 +971,69 @@ GitHub에서 동작함을 확인했습니다.
 branch protection required check 후보는 정확히 `ios-build`,
 `ios-xctest`입니다. 실제 required check 설정은 T-20260730-006에서 별도
 승인 후 수행합니다.
+
+## 20. T-20260731-003 Actions 사용량 최적화
+
+두 workflow는 required check와 path 최적화를 동시에 보장하기 위해 workflow
+수준 `paths`를 사용하지 않습니다. Pull Request마다 먼저 Linux 판정 job이
+변경 파일을 조회하고, 기존 required job `ios-build`, `ios-xctest`의 runner를
+동적으로 선택합니다.
+
+| 변경 범위 | required check | runner | macOS 단계 |
+|---|---|---|---|
+| 앱 소스·테스트·프로젝트·runner script | 성공/실패 그대로 | `macos-26` | 전체 실행 |
+| iOS workflow·공통 CI action | 성공/실패 그대로 | `macos-26` | 전체 실행 |
+| 문서·Task 상태만 변경 | 성공 | `ubuntu-latest` | 전체 생략 |
+| Backend만 변경 | 성공 | `ubuntu-latest` | 전체 생략 |
+| Design만 변경 | 성공 | `ubuntu-latest` | 전체 생략 |
+| 혼합 변경에 iOS runtime path 포함 | 성공/실패 그대로 | `macos-26` | 전체 실행 |
+| `workflow_dispatch` | 성공/실패 그대로 | `macos-26` | 전체 실행 |
+
+runtime-impact 경로:
+
+```text
+apps/ios/CookLog/**
+apps/ios/CookLogTests/**
+apps/ios/CookLog.xcodeproj/**
+apps/ios/Scripts/**
+apps/ios/*.xcconfig
+apps/ios/*.entitlements
+.github/actions/**
+.github/workflows/ios-*.yml
+```
+
+판정 job은 `contents: read`, `pull-requests: read`만 사용하고 checkout 없이
+Pull Request files API를 조회합니다. 판정 API 실패, job 실패, 빈 값이나
+`true`/`false` 이외 출력은 required job에서 실패시킵니다. 관련 없는 변경은
+skip 사유만 출력하며 Xcode preflight, build, XCTest, artifact upload를 실행하지
+않습니다.
+
+GitHub는 required workflow 자체가 path filter로 생략되면 check를 `Pending`으로
+남길 수 있다고 안내합니다. 반면 job 내부 실행은 check 결론을 남길 수 있으므로
+T-006 required check 설정과 정합성을 유지합니다.
+
+- [GitHub required status check 문제 해결](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks)
+- [GitHub context 사용 가능 위치](https://docs.github.com/en/enterprise-cloud@latest/actions/reference/workflows-and-actions/contexts)
+
+concurrency group은 기존 검증을 통과한 다음 값을 유지합니다.
+
+```yaml
+group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+cancel-in-progress: true
+```
+
+따라서 같은 PR의 오래된 동일 workflow만 취소하고 다른 PR, branch,
+`ios-build`와 `ios-xctest`는 서로 취소하지 않습니다.
+
+개발자 trigger fixture 검증:
+
+- 앱 소스, 테스트, xcodeproj, script, 공통 action, iOS workflow: `true`
+- root·iOS 문서, Backend, Design, Task 상태: `false`
+- 문서와 앱 소스 혼합: `true`
+- 실제 PR #18(iOS 변경): `true`
+- 실제 PR #36(문서·Task 상태): `false`
+- 실제 PR #50(Backend 변경): `false`
+
+기존 build 명령, XCTest script, 실패 65·timeout 124, environment·summary,
+조건부 xcresult·`TIMED_OUT`, 14일 artifact 경계는 변경하지 않습니다.
+수동·야간 전체 회귀 운영과 사용량 Budget 경고는 WP-6~7 AI Ops Agent 범위입니다.

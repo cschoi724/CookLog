@@ -9,15 +9,69 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  detect-ios-changes:
+    name: detect-ios-xctest-changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      should_run: ${{ steps.filter.outputs.should_run }}
+
+    steps:
+      - name: Detect iOS runtime-impacting changes
+        id: filter
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_EVENT_NAME}" != "pull_request" ]]; then
+            echo "should_run=true" >> "${GITHUB_OUTPUT}"
+            echo "Manual execution always runs the full iOS XCTest suite."
+            exit 0
+          fi
+
+          changed_files="${RUNNER_TEMP}/cooklog-changed-files.txt"
+          gh api \
+            --paginate \
+            -H "Accept: application/vnd.github+json" \
+            "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" \
+            --jq '.[].filename' \
+            > "${changed_files}"
+
+          should_run=false
+          while IFS= read -r changed_path; do
+            case "${changed_path}" in
+              apps/ios/CookLog/*|\
+              apps/ios/CookLogTests/*|\
+              apps/ios/CookLog.xcodeproj/*|\
+              apps/ios/Scripts/*|\
+              apps/ios/*.xcconfig|\
+              apps/ios/*.entitlements|\
+              .github/actions/*|\
+              .github/workflows/ios-*.yml)
+                should_run=true
+                break
+                ;;
+            esac
+          done < "${changed_files}"
+
+          echo "should_run=${should_run}" >> "${GITHUB_OUTPUT}"
+          echo "macOS ios-xctest required: ${should_run}"
+
   ios-xctest:
     name: ios-xctest
-    runs-on: macos-26
+    needs: detect-ios-changes
+    if: ${{ !cancelled() }}
+    runs-on: ${{ needs.detect-ios-changes.outputs.should_run == 'true' && 'macos-26' || 'ubuntu-latest' }}
     timeout-minutes: 15
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
@@ -25,23 +79,49 @@ jobs:
       COOKLOG_XCTEST_TIMEOUT_SECONDS: "600"
 
     steps:
+      - name: Verify trigger decision
+        shell: bash
+        env:
+          DETECTION_RESULT: ${{ needs.detect-ios-changes.result }}
+          SHOULD_RUN: ${{ needs.detect-ios-changes.outputs.should_run }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${DETECTION_RESULT}" != "success" ]]; then
+            echo "iOS change detection failed: ${DETECTION_RESULT}" >&2
+            exit 1
+          fi
+
+          if [[ "${SHOULD_RUN}" != "true" && "${SHOULD_RUN}" != "false" ]]; then
+            echo "Invalid iOS change decision: ${SHOULD_RUN}" >&2
+            exit 1
+          fi
+
+      - name: Skip macOS XCTest for unrelated changes
+        if: ${{ needs.detect-ios-changes.outputs.should_run == 'false' }}
+        shell: bash
+        run: echo "No iOS runtime-impacting paths changed; macOS XCTest is not required."
+
       - name: Checkout repository
+        if: ${{ needs.detect-ios-changes.outputs.should_run == 'true' }}
         uses: actions/checkout@v7
         with:
           persist-credentials: false
 
       - name: Verify Xcode and Simulator contract
+        if: ${{ needs.detect-ios-changes.outputs.should_run == 'true' }}
         uses: ./.github/actions/prepare-ios-ci
         with:
           artifact-subdirectory: ios-xctest
           destination: ${{ env.COOKLOG_XCTEST_DESTINATION }}
 
       - name: Run XCTest
+        if: ${{ needs.detect-ios-changes.outputs.should_run == 'true' }}
         shell: bash
         run: apps/ios/Scripts/run-xctest.sh
 
       - name: Summarize CI diagnostics
-        if: ${{ always() }}
+        if: ${{ always() && needs.detect-ios-changes.outputs.should_run == 'true' }}
         uses: ./.github/actions/summarize-ios-ci
         with:
           check-name: ios-xctest
@@ -49,7 +129,7 @@ jobs:
           result: ${{ job.status }}
 
       - name: Upload XCTest artifacts
-        if: ${{ always() }}
+        if: ${{ always() && needs.detect-ios-changes.outputs.should_run == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           name: cooklog-ios-xctest-${{ github.run_id }}-${{ github.run_attempt }}
