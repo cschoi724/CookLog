@@ -217,6 +217,159 @@ required job 실패로 전파합니다. 세부 명령, timeout과 artifact 계�
 
 CI가 아직 구축되지 않은 동안에는 Task에 지정된 build, test, 수동 QA 결과를 PR 본문에 기록하며, 검증 실패나 결과 누락이 있으면 merge하지 않습니다.
 
+### 재실행 기준
+
+재실행은 실패 원인을 지우는 수단이 아니라 일시적인 실행 환경 문제를 확인하는
+수단으로만 사용합니다. 재실행 전 run URL·run ID·attempt·실패 job·종료 코드와
+로그를 Task 보고서 또는 PR에 기록합니다.
+
+| 상황 | 조치 |
+|---|---|
+| 코드·테스트·workflow 계약의 재현 가능한 실패 | 재실행하지 않고 새 commit으로 수정 |
+| GitHub API 5xx, runner 할당 실패, 네트워크 단절처럼 코드와 무관한 일시 장애 | 실패 job만 1회 재실행 |
+| 원인이 불명확한 실패 | 로그·artifact를 먼저 보존하고 Development Lead 승인 후 1회 재실행 |
+| `concurrency`에 의해 취소된 이전 run | stale run이므로 재실행하지 않고 최신 commit의 run 확인 |
+| path 판정 실패 또는 유효하지 않은 출력 | required check 실패로 유지하고 workflow 결함으로 처리 |
+| 동일 SHA에서 두 번째 재실행 필요 | 반복 장애로 보고하고 자동·수동 재실행 중지 후 운영 이슈 등록 |
+
+재실행은 원래 event의 actor·SHA·ref를 사용하므로 다른 commit의 검증을 대신하지
+않습니다. 전체 재실행보다 실패 job 재실행을 우선하며, debug logging은 민감정보가
+노출되지 않는지 확인한 뒤 사용합니다.
+
+- [GitHub workflow와 job 재실행](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs)
+
+### 문서·Backend·Design PR의 iOS CI 제외 정책
+
+문서, `.ai_project/`, Backend, Design만 변경한 PR도 `ios-build`와 `ios-xctest`
+workflow 자체는 시작합니다. Linux 판정 job과 같은 이름의 required job을 성공시켜
+merge gate를 닫지 않은 채 macOS·Xcode·Simulator·artifact 단계만 제외합니다.
+
+- iOS runtime-impact 경로가 하나라도 섞이면 두 workflow 모두 전체 macOS 검증으로
+  fail-safe 전환합니다.
+- 알 수 없는 경로, API 오류, 빈 값 또는 판정 실패는 비용 절감을 위해 `false`로
+  간주하지 않고 required check 실패로 처리합니다.
+- workflow 수준 `paths`, `paths-ignore`와 `[skip ci]` 계열 commit 메시지는 required
+  check를 `Pending`으로 남길 수 있으므로 사용하지 않습니다.
+- 제외 결과는 required job summary에 사유를 남기며, PR 작성자가 임의로 우회하지
+  않습니다.
+
+### 수동·야간 전체 회귀
+
+`workflow_dispatch`는 항상 `develop`의 지정 SHA에서 두 workflow의 전체 macOS
+검증을 실행합니다. 현재 workflow에 `schedule` trigger를 추가하지 않으므로 야간
+회귀는 자동 cron이 아니라 아래 조건을 만족할 때 운영자가 야간 점검 창에서 수동
+실행합니다.
+
+실행 조건:
+
+- 마지막 전체 회귀 이후 iOS runtime-impact 변경이 `develop`에 병합됨
+- runner·Xcode·Simulator·공통 action·workflow 계약이 변경됨
+- 릴리즈 후보 또는 `develop -> main` 승격 검토가 예정됨
+- 간헐 실패를 재현해야 하며 Development Lead가 전체 회귀를 요청함
+
+비용 절감을 위해 위 조건이 없으면 야간 실행을 생략합니다. 실행 전 Actions Budget과
+included usage 잔여량, 같은 ref의 진행 중 run, 최신 `origin/develop` SHA를 확인합니다.
+
+```bash
+git fetch origin develop
+git rev-parse origin/develop
+gh workflow run ios-build.yml --ref develop
+gh workflow run ios-xctest.yml --ref develop
+gh run list --branch develop --limit 10
+```
+
+두 workflow가 같은 `origin/develop` SHA를 검증했는지 확인하고 run ID, attempt,
+결론, macOS job 실행 여부, artifact와 사용량 점검 결과를 운영 보고에 남깁니다.
+한쪽만 성공하면 전체 회귀 통과로 보지 않습니다. 실패 시 merge·승격을 중지하고
+위 재실행 기준에 따라 원인을 분류합니다.
+
+- [GitHub workflow 수동 실행](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)
+
+### Actions 사용량과 Budget 운영
+
+AI Ops Agent는 Billing의 `Budgets and alerts` 화면을 과금·included usage의 기준으로
+사용하고, Actions API는 run 추세와 artifact·cache 보조 지표로 사용합니다. run의
+`created_at` 검색은 나중에 수행한 re-run attempt의 과금 시점을 놓칠 수 있으므로
+Billing 수치를 대체하지 않습니다.
+
+점검 주기:
+
+- 정상: 매주 1회와 수동·야간 전체 회귀 직전
+- 50% 이상: 근무일마다 확인
+- 75% 이상: iOS runtime-impact PR과 승인된 전체 회귀만 허용
+- 90% 이상: 신규 전체 회귀와 원인 불명 재실행을 중지하고 Product Owner에게 보고
+- 100% 또는 quota 소진: 모든 비필수 Actions 실행과 merge를 중지
+
+GitHub의 Budget threshold 알림은 `75%`, `90%`, `100%`이므로 CookLog의 `50%`
+게이트는 AI Ops Agent가 Billing 화면에서 수동 확인해 기록합니다. included usage
+알림은 별도의 `90%`, `100%` 알림을 활성화합니다. Budget을 만들 때 Actions 제품,
+적용 account/repository, 월 금액과 `Stop usage when budget limit is reached` 여부는
+Product Owner가 승인해야 하며, 첫 생성 이전 사용량이 첫 주기 Budget 계산에 포함되지
+않을 수 있음을 기록합니다.
+
+- [GitHub Budget과 알림](https://docs.github.com/en/billing/concepts/budgets-and-alerts)
+- [GitHub metered product Budget 설정](https://docs.github.com/en/billing/how-tos/set-up-budgets)
+
+읽기 전용 보조 점검 예시:
+
+```bash
+gh api 'repos/cschoi724/CookLog/actions/runs?per_page=100'
+gh api repos/cschoi724/CookLog/actions/cache/usage
+gh api 'repos/cschoi724/CookLog/actions/artifacts?per_page=100'
+```
+
+Budget 50/75/90% 대응:
+
+| 사용 수준 | 운영 조치 |
+|---|---|
+| 50% | 최근 7일 macOS run·re-run·취소 원인을 검토하고 불필요한 실행을 정리 |
+| 75% | Product Owner에게 경고하고 문서·Backend·Design 경량 판정과 전체 회귀 필요성을 매일 확인 |
+| 90% | 비필수 수동·야간 실행과 두 번째 재실행 중지, 릴리즈 차단 영향과 잔여량 보고 |
+| 100% | hard stop 상태로 전환하고 아래 quota 소진 절차 수행 |
+
+quota가 소진되거나 hard Budget이 동작하면 새 실행을 반복 시도하지 않습니다. 진행 중인
+비필수 수동 run을 중지하고, required check가 생성되지 않거나 통과할 수 없는 PR의
+merge를 동결합니다. 로컬 검증은 증거로 남길 수 있지만 required check를 대체하지
+않습니다. 재개는 다음 billing cycle, Product Owner가 승인한 Budget 증액, 또는 별도
+승인된 repository gate rollback 중 하나가 확인된 뒤에만 수행합니다.
+
+### `T-20260730-006` required check 정합성
+
+`T-20260730-006`에서 `develop`, `main`에 required check를 적용하기 전 다음 조건을
+모두 확인합니다.
+
+- `T-20260730-005`와 `T-20260731-003`의 독립 QA 통과
+- check 이름이 정확히 `ios-build`, `ios-xctest`이며 같은 이름의 중복 source가 없음
+- 문서·Backend·Design PR에서도 두 required job이 Linux success로 종료됨
+- iOS·workflow 변경과 수동 실행은 macOS 전체 검증으로 전환됨
+- 현재 GitHub 플랜에서 private repository ruleset 또는 branch protection 사용 가능
+- Budget hard stop까지 required run을 수행할 잔여량과 quota 소진 대응 책임자 확인
+- Product Owner의 `T-20260730-006` 별도 실행 승인
+
+2026-08-03 읽기 전용 점검에서는 private 저장소의 ruleset과 `develop`, `main`
+branch protection API가 모두 플랜 업그레이드 또는 public 전환 필요 `403`을 반환했다.
+따라서 현재 조건에서는 `T-20260730-006`을 실행하거나 required check가 적용됐다고
+보고하지 않습니다. 플랜 조건이 해소돼도 별도 승인 전에는 외부 설정을 변경하지
+않습니다.
+
+### CI rollback 기준과 절차
+
+다음 중 하나라도 발생하면 WP-1~5 최적화를 rollback 후보로 분류합니다.
+
+- iOS runtime-impact 변경이 `false`로 판정되어 macOS 검증을 건너뜀
+- 문서 전용 PR에서 required check가 생성되지 않거나 `Pending`에 머묾
+- 수동 실행이 전체 macOS 검증 대신 경량 경로로 실행됨
+- check 이름 변경·중복으로 branch protection source가 불명확해짐
+- 판정 API 장애가 성공으로 처리되거나 실패가 required job에 전파되지 않음
+- 이전 run이 다른 workflow·PR·branch의 실행을 교차 취소함
+
+rollback은 force push나 설정 즉시 삭제가 아니라 Product Owner가 승인한 revert PR로
+수행합니다. 마지막 검증된 workflow commit으로 두 YAML을 되돌리고, required check
+이름은 유지하며 `workflow_dispatch`로 두 전체 회귀를 실행합니다. 외부 gate가 merge를
+막으면 우회 merge하지 않고, Product Owner가 별도로 승인한 임시 gate 변경과 복구
+시점을 기록합니다. rollback 완료 조건은 두 check의 동일 SHA 성공, 문서 전용 PR의
+required success, iOS PR의 macOS 실행, 독립 QA 확인입니다.
+
 ## 7. Review와 merge
 
 Task PR의 `develop` merge 조건:
@@ -309,3 +462,4 @@ Squash merge된 branch의 원래 commit은 `develop`의 ancestor가 아닐 수 �
 | 2026-07-30 | `T-20260730-001`에서 iOS CI 환경·명령·check·timeout·artifact 계약 확정 |
 | 2026-07-31 | `T-20260731-002`에서 다중 worktree 공용 상태를 최신 `origin/develop`로 고정하고 stale worktree 중단·상태 보고·안전한 정리 생명주기 규칙 추가 |
 | 2026-07-31 | `T-20260731-003`에서 required check 호환 경량 path 판정과 문서·Backend·Design PR의 macOS 실행 제외 정책 추가 |
+| 2026-08-03 | `T-20260731-003` WP-6~7에서 재실행·수동 야간 회귀·rollback·Actions Budget·quota·required check 운영 절차 추가 |
