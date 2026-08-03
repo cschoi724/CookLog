@@ -159,7 +159,7 @@ provider와 Cloud Run·Tasks·Firestore·TTL·egress·observability·build SKU�
 | `T-20260730-003` | `done` | CI | ios-xctest workflow | - | `T-20260730-001`, `T-20260730-002` 완료 | PR #28 squash merge·hosted 33/33·완료 확정 |
 | `T-20260730-004` | `done` | CI | concurrency·진단·cache·artifact 통합 | - | `T-20260730-002`, `003` 완료 | PR #34 checks·artifact 통과·squash merge |
 | `T-20260730-005` | `done` | CI | PR dry run·실패 감지 검증 | - | `T-20260730-004` 완료 | PR #36 squash merge `a5c6503`·완료 확정, T-006 required check 설정으로 인계 |
-| `T-20260730-006` | `proposed` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | 별도 Product Owner 승인 대기 |
+| `T-20260730-006` | `approved` | CI/Ops | required check 외부 설정 | AI Ops Agent | `T-20260730-005` | Product Owner 실행 승인 완료, AI Ops Agent 인계 |
 | `T-20260731-003` | `done` | CI/Ops | GitHub Actions 사용량 절감 및 실행 정책 최적화 | - | `T-20260730-005` | PR #52·#54 develop 병합, WP-1~7 검증 및 completion review 완료 |
 | `T-20260730-007` | `done` | iOS/CI | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | - | T-001 QA-HIGH-001 | PR #18 squash merge 완료 |
 

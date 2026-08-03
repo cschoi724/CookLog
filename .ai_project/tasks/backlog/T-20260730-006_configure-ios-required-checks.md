@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-006
 title: ios-build·ios-xctest required check 외부 설정
-status: proposed
+status: approved
 type: ops
 priority: P0
 priority_reason: 검증된 CI를 develop과 main의 실제 merge gate로 적용해야 한다.
@@ -34,13 +34,13 @@ source_of_truth:
   - docs/GIT_WORKFLOW.md
   - .ai_project/branch_pr_strategy.md
 created_by: Development Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
-updated_at: 2026-07-30
+updated_at: 2026-08-03
 report_to: .ai_project/reports/T-20260730-006_configure-ios-required-checks-report.md
 qa_to: .ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md
 ---
@@ -51,6 +51,8 @@ qa_to: .ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md
 
 - Product Owner의 이 하위 Task 실행 승인 전 repository 설정을 변경하지 않는다.
 - `T-20260730-005` iOS QA 통과 후 check 이름과 대상 브랜치를 다시 확인한다.
+
+승인 기록: 2026-08-03 Product Owner가 AI Ops Agent의 실행을 승인했다.
 
 ## 범위
 
