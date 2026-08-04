@@ -348,9 +348,22 @@ merge를 동결합니다. 로컬 검증은 증거로 남길 수 있지만 requir
 
 2026-08-03 읽기 전용 점검에서는 private 저장소의 ruleset과 `develop`, `main`
 branch protection API가 모두 플랜 업그레이드 또는 public 전환 필요 `403`을 반환했다.
-따라서 현재 조건에서는 `T-20260730-006`을 실행하거나 required check가 적용됐다고
-보고하지 않습니다. 플랜 조건이 해소돼도 별도 승인 전에는 외부 설정을 변경하지
-않습니다.
+Product Owner 결정에 따라 `develop`에 먼저 적용해 실제 PR 흐름을 검증하고, 통과한
+뒤 `main`에 같은 규칙을 확대합니다. 단일 collaborator 운영에서는 approval을 0으로
+두되 PR과 `ios-build`, `ios-xctest`를 필수화합니다. 상시 bypass actor는 두지 않으며
+긴급 우회는 Product Owner가 사유·시간·복구를 승인한 경우에만 허용합니다.
+
+2026-08-04 `develop` ruleset `20340678`을 적용하고 PR #57에서 check 대기 중
+`BLOCKED`, `ios-build`·`ios-xctest` 성공 뒤 `CLEAN`을 확인했습니다. 문서 전용 job은
+모두 `ubuntu-latest`였고 artifact는 생성되지 않았습니다. 검증 통과 뒤 같은 규칙을
+`main` ruleset `20344405`로 적용했으며 두 branch 모두 `protected: true`, 상시 bypass
+actor 없음, strict required checks 2개 상태입니다.
+
+최초 독립 QA에서 실패 check 차단 재현과 check source 고정이 누락됐음을 확인했습니다.
+Product Owner 승인 재작업으로 두 ruleset의 `ios-build`, `ios-xctest`에 GitHub Actions
+`integration_id: 15368`을 고정했습니다. 미병합 validation PR #58은 실패 SHA
+`ae0dd62`에서 `ios-build` failure와 `BLOCKED`, 복구 SHA `6a99f2a`에서 두 check
+success와 `CLEAN`을 확인한 뒤 닫았습니다.
 
 ### CI rollback 기준과 절차
 

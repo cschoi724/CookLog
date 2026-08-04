@@ -45,13 +45,28 @@ pull_request:
   main_allowed_sources:
     - develop
     - hotfix/*
-  ci_required:
+  ci_required_target:
     - ios-build
-  ci_pending_promotion:
     - ios-xctest
+  ci_required_applied:
+    develop:
+      - ios-build
+      - ios-xctest
+    main:
+      - ios-build
+      - ios-xctest
+  ci_required_source:
+    integration: GitHub Actions
+    integration_id: 15368
+  ci_external_status: verification_passed
 ```
 
-`ios-build`와 `ios-xctest`의 실제 workflow는 `T-20260728-008`에서 구축한다. 구축 전에는 Task에 지정된 빌드·테스트·수동 QA 결과를 PR에 기록한다. `ios-xctest`는 `T-20260728-004`에서 실행 안정화가 확인된 뒤 Product Owner 승인으로 required check에 승격한다.
+`ios-build`와 `ios-xctest`는 두 branch의 required check 목표다. 2026-08-04
+`develop` ruleset `20340678`을 active로 적용하고 PR #57에서 대기 중 `BLOCKED`, 두
+check 성공 뒤 `CLEAN`을 확인했다. 같은 규칙을 `main` ruleset `20344405`로 확대했다.
+단일 collaborator 운영에서는 approval을 0으로 두되 PR과 두 check를 필수화하고 상시
+bypass actor는 두지 않는다. 독립 QA 재작업에서 두 check source를 GitHub Actions 앱
+`15368`로 고정하고 validation PR #58의 실패 `BLOCKED`와 복구 `CLEAN`을 확인했다.
 
 ## 4. Merge Rules
 
@@ -98,3 +113,4 @@ untracked 파일, 미push commit, 열린 PR, squash merge와 patch 동등성, �
 | 2026-07-28 | `T-20260728-007` 승인에 따라 문서 PR, 초기 `ios-build`, `ios-xctest` 승격 조건과 예외 기준 확정 |
 | 2026-07-28 | `T-20260728-019` 승인에 따라 `develop_integration_pr`와 `develop -> main` 승격·hotfix backport 기준 적용 |
 | 2026-07-31 | `T-20260731-002`에 따라 merge 직후 자동 삭제를 금지하고 안전 감사·Product Owner 별도 승인 후 정리하도록 변경 |
+| 2026-08-03 | `T-20260730-006` 실행에서 required check 목표와 실제 미적용 상태, private repository 플랜 차단을 분리 기록 |
