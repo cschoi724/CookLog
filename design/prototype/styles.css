@@ -759,6 +759,17 @@ body[data-text-scale="accessibility"] .legal-placeholder { font-size: 14px; line
 body[data-text-scale="accessibility"] .metadata-list div { align-items: flex-start; flex-direction: column; gap: 4px; }
 body[data-text-scale="accessibility"] .metadata-list dt,
 body[data-text-scale="accessibility"] .metadata-list dd { font-size: 14px; line-height: 20px; text-align: left; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 @media (max-width: 390px) {
   .review-bar { min-width: 375px; }
   .review-stage { min-width: 375px; }

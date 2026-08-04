@@ -1,7 +1,7 @@
 ---
 id: T-20260729-014
 title: 디자인 통합 접근성 검증·구현 핸드오프 갱신
-status: rework_requested
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 화면별 변경을 하나의 Source of Truth로 통합하고 작은 화면·Dynamic Type·Light/Dark·접근성 기준을 확인해야 iOS 구현을 시작할 수 있다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent: Design QA Agent
+target_role: Verification Role
 required_capabilities:
   - ux_flow
   - ui_design
@@ -130,3 +130,6 @@ qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-han
 - 2026-08-04: routing·데이터 보존·재시도·반응형·테마·접근성 구현 계약과 로컬 재현 절차를 핸드오프에 갱신했다.
 - 2026-08-04: 정적 assertion과 Chrome 대표 상태 렌더링 자체 검증을 통과해 lock을 해제하고 `in_progress -> verification_ready`로 Design QA Agent에 인계했다.
 - 2026-08-04: 독립 Design QA에서 앱 루트·녹음 타이머 live region의 반복 낭독 위험 `DQA-HIGH-014-001`과 실제 diff 검사에 어긋나는 자체 검증 기록 `DQA-MEDIUM-014-001`을 확인해 `verification_ready -> rework_requested`로 반환했다.
+- 2026-08-04: Product Owner가 승인한 1~5 연속 진행 범위에서 Design Lead가 QA 결함 2건을 재작업 범위로 확정하고 UI/UX 실행을 재개했다.
+- 2026-08-04: 앱 루트·매초 live region을 제거하고 전용 announcer의 의미 있는 경계 알림, 비-live timer와 녹음 중 DOM·포커스 보존으로 `DQA-HIGH-014-001`을 수정했다.
+- 2026-08-04: diff whitespace를 정리하고 자체 검증 기준을 실제 비교 명령과 일치시켜 `DQA-MEDIUM-014-001`을 수정한 뒤 `verification_ready`로 독립 재검증을 요청했다.

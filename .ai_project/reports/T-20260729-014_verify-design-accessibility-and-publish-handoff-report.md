@@ -1,7 +1,7 @@
 # T-20260729-014 실행 보고서
 
-작성일: 2026-08-04  
-실행 역할: UI/UX Design Agent  
+작성일: 2026-08-04
+실행 역할: UI/UX Design Agent
 기준: `origin/develop@e4bab3a`
 
 ## 결과
@@ -57,3 +57,10 @@ Design QA Agent는 다음을 독립적으로 확인한다.
 3. Light/Dark, 375×667, 접근성 수용 기준의 누락 여부
 4. 핸드오프가 Prototype·Manifest와 충돌하지 않는지 여부
 
+## QA 재작업
+
+- `DQA-HIGH-014-001`: 앱 루트와 매초 타이머의 live region을 제거했다. 녹음 중에는 DOM 전체를 다시 렌더링하지 않고 시각 타이머와 비-live `role=timer`의 현재 값만 갱신한다.
+- 녹음 시작·종료와 STEP 추가만 화면 밖 전용 status announcer에서 한 번씩 알린다.
+- 녹음 시작 control의 포커스를 비-live timer로 옮기고 10초 동안 같은 DOM을 유지한다. 종료 시 처리 상태 제목, STEP 추가 시 다음 기록 control로 포커스를 이동해 포커스 소실과 전체 화면 반복 낭독을 방지한다.
+- Chrome 자동 검증에서 2초 경과 뒤 동일 timer DOM·포커스·`08` 표시를, 10초 종료 뒤 처리 제목 포커스·단일 종료 알림·앱 루트 live region 부재를 확인했다.
+- `DQA-MEDIUM-014-001`: trailing whitespace와 EOF blank line을 제거하고 `git diff --check origin/develop...HEAD` 기준을 재실행한다.
