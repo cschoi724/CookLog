@@ -30,7 +30,7 @@
 | `T-20260728-015` | `proposed` | Backend | 구독 검증과 AI quota 구현 | Development Lead Agent | `T-20260728-006`, `012`, `013` | 수익화 선행 Task 대기 |
 | `T-20260728-016` | `proposed` | Cross-platform | 수익화 이벤트와 AI 비용 관측성 | Development Lead Agent | `T-20260728-014`, `015` | 구현 완료 후 scope |
 | `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` | 외부 설정 별도 승인 필요 |
-| `T-20260804-002` | `verification_ready` | Backend | runtime scaffold·환경 설정·health | Backend QA Agent | `T-20260728-005` 완료 | Node 24·Fastify·config·health 자체 PASS, 독립 검증 |
+| `T-20260804-002` | `rework_requested` | Backend | runtime scaffold·환경 설정·health | Development Lead Agent | `T-20260728-005` 완료 | shutdown deadline 결함 재작업 조율 |
 | `T-20260804-003` | `proposed` | Backend | 공통 HTTP·인증·제한·idempotency middleware | Backend Agent | `T-20260804-002` | T-002 `done` 후 실행 승인 |
 | `T-20260804-004` | `proposed` | Backend | Mock AI recipe job·status·ACK·복구 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 대기 |
 | `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |

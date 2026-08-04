@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-002
 title: Backend runtime scaffold·환경 설정·health 구현
-status: verification_ready
+status: rework_requested
 type: feature
 priority: P0
 priority_reason: 모든 foundation 패키지가 공유할 실행·빌드·테스트 기준을 먼저 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_architecture
 - backend_implementation
@@ -96,3 +96,8 @@ qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
   `approved -> in_progress`로 전환했다.
 - 2026-08-04: runtime·config·health·container 경계 구현과 테스트 10개, 기존 계약
   validator 자체 검증을 완료해 `in_progress -> verification_ready`로 전환했다.
+- 2026-08-04: Backend QA Agent가 최신 `origin/develop`, 실행 보고서와 선행 조건을
+  확인하고 `verification_ready -> verification_in_progress`로 전환했다.
+- 2026-08-04: Backend QA Agent가 shutdown deadline 이후 listener·process가 계속
+  살아 있는 `QA-HIGH-002-001`을 확인해 `verification_in_progress -> rework_requested`,
+  `FAIL`로 Development Lead에 인계했다.
