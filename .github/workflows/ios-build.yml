@@ -76,8 +76,6 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
       COOKLOG_CI_DESTINATION: platform=iOS Simulator,name=iPhone 17,OS=26.5
-      # T-20260730-006 격리 검증 전용. 이 branch는 병합하지 않는다.
-      OTHER_SWIFT_FLAGS: "$(inherited) -cooklog-t006-intentional-build-failure"
 
     steps:
       - name: Verify trigger decision
