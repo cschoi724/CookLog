@@ -26,7 +26,7 @@
 | `T-20260729-013` | `done` | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | App Info 전환 포커스·선택형 진단 정보 동의 범위와 기존 통과 항목 무회귀 | PR #53 squash merge·완료 확정 |
 | `T-20260731-003` | `done` | GitHub Actions 사용량 절감 및 실행 정책 최적화 | 경량 path 판정·동적 runner·concurrency·check 이름·실패 65·timeout 124 | iOS QA·AI Ops 독립 검증 및 PR #52·#54 develop 병합 완료 |
 | `T-20260730-006` | `done` | ios-build·ios-xctest required check 외부 설정 | source `15368`·PR #58 failure→복구·PR #57 무회귀·Budget 화면 | 독립 QA PASS_WITH_RISK, Product Owner 잔여 위험 수용 |
-| `T-20260729-025` | `verification_passed` | iOS·Backend 공용 fixture와 계약 테스트 기준 | header 계약·negative 9종 실제 mutation·기존 추적성 무회귀 | Backend QA PASS_WITH_RISK, Development Lead 완료 검토 |
+| `T-20260729-025` | `completion_review` | iOS·Backend 공용 fixture와 계약 테스트 기준 | header 계약·negative 9종 실제 mutation·기존 추적성 무회귀 | Backend QA PASS_WITH_RISK, Development Lead 완료 검토 통과 |
 
 향후 검증 예정 Task:
 
@@ -36,7 +36,6 @@
 | `T-20260728-005` | Backend | Backend QA Agent | API 계약, 보안, 개인정보 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
-| `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
 
 T-025는 AI 정상·공개 오류·timeout·만료, 원격 STT 비활성과 negative case의 공용
 fixture를 source schema·catalog에 연결했습니다. Backend 통합 validator는 canonical
@@ -57,6 +56,11 @@ mutation 거부를 확인했습니다. 두 HIGH 결함이 해소되고 기존 �
 STT 비활성 및 민감정보 비포함에도 회귀가 없어 `PASS_WITH_RISK`,
 `verification_passed`로 Development Lead 완료 검토에 인계했습니다. 실제 iOS·Backend
 runtime과 staging 검증은 후속 구현 범위입니다.
+
+T-025 완료 검토에서 독립 QA `PASS_WITH_RISK`, HIGH 결함 2건 해소, 성공 기준과 허용
+경로, 최신 develop 포함 상태를 수용했습니다. PR #63의 필수 check와 미해결 리뷰 스레드
+0건을 확인해 `completion_review`로 전환했으며, 실제 iOS loader·Backend runtime
+validator·staging 흐름은 후속 구현·통합 QA 위험으로 유지합니다.
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
 
