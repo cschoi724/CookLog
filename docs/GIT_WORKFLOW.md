@@ -348,9 +348,10 @@ merge를 동결합니다. 로컬 검증은 증거로 남길 수 있지만 requir
 
 2026-08-03 읽기 전용 점검에서는 private 저장소의 ruleset과 `develop`, `main`
 branch protection API가 모두 플랜 업그레이드 또는 public 전환 필요 `403`을 반환했다.
-따라서 현재 조건에서는 `T-20260730-006`을 실행하거나 required check가 적용됐다고
-보고하지 않습니다. 플랜 조건이 해소돼도 별도 승인 전에는 외부 설정을 변경하지
-않습니다.
+Product Owner 결정에 따라 `develop`에 먼저 적용해 실제 PR 흐름을 검증하고, 통과한
+뒤 `main`에 같은 규칙을 확대합니다. 단일 collaborator 운영에서는 approval을 0으로
+두되 PR과 `ios-build`, `ios-xctest`를 필수화합니다. 상시 bypass actor는 두지 않으며
+긴급 우회는 Product Owner가 사유·시간·복구를 승인한 경우에만 허용합니다.
 
 ### CI rollback 기준과 절차
 
