@@ -1,0 +1,58 @@
+{
+  "fixture_version": "ios-backend-fixture.v1",
+  "case_id": "negative_contract_cases",
+  "cases": [
+    {
+      "name": "unsupported_fixture_version",
+      "mutation": {"fixture_version": "ios-backend-fixture.v2"},
+      "expected": "fixture_decode_rejected"
+    },
+    {
+      "name": "unsupported_ai_contract_version",
+      "mutation": {"contract_version": "ai-recipe-job.v2"},
+      "expected": "API_VERSION_UNSUPPORTED"
+    },
+    {
+      "name": "unknown_public_error_code",
+      "mutation": {"code": "PROVIDER_OVERLOADED"},
+      "expected": "error_decode_rejected"
+    },
+    {
+      "name": "same_idempotency_key_different_body",
+      "mutation": {"same_key": true, "body_hashes": 2},
+      "expected": "IDEMPOTENCY_KEY_REUSED"
+    },
+    {
+      "name": "ack_result_version_mismatch",
+      "mutation": {"stored_result_version": 1, "submitted_result_version": 2},
+      "expected": "VALIDATION_FAILED:MISMATCH",
+      "content_delete_count": 0
+    },
+    {
+      "name": "unexpected_status_field",
+      "mutation": {"unexpected_provider_name": true},
+      "expected": "schema_rejected"
+    },
+    {
+      "name": "remote_stt_enabled_without_approval",
+      "mutation": {"mode": "enabled", "audio_egress_allowed": true},
+      "expected": "deployment_gate_fail"
+    },
+    {
+      "name": "missing_required_request_header",
+      "mutation": {
+        "target": "request",
+        "remove_required_header": "CookLog-Installation-ID"
+      },
+      "expected": "request_header_contract_rejected"
+    },
+    {
+      "name": "undefined_required_request_header",
+      "mutation": {
+        "target": "acknowledgement_request",
+        "add_required_header": "X-CookLog-App-Attest-Assertion"
+      },
+      "expected": "request_header_contract_rejected"
+    }
+  ]
+}

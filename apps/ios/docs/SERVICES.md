@@ -155,3 +155,117 @@ PreviewSupport/
 ├── SampleRecipes.swift
 └── SampleStepPreviews.swift
 ```
+
+## 7. iOS·Backend 공용 계약 fixture
+
+Backend AI 연동과 iOS mock client의 단일 fixture 원본은 다음 경로다.
+
+```text
+apps/backend/contracts/fixtures/
+```
+
+iOS test target은 해당 JSON을 test resource로 복사해 `Decodable` DTO로 읽는다. 같은
+payload를 Swift literal, Preview sample 또는 `apps/ios/` 아래 별도 JSON으로 복제하지
+않는다. 앱 production target과 release bundle에는 fixture를 포함하지 않는다.
+
+공용 version:
+
+- fixture wrapper: `ios-backend-fixture.v1`
+- AI job: `ai-recipe-job.v1`
+- RecipeDraft: `recipe-draft.v1`
+- API envelope: `v1`
+
+알 수 없는 fixture·AI·draft version, enum과 추가 필드는 테스트 decode 실패로 처리한다.
+production 응답에서 version이 지원되지 않으면 공개 `API_VERSION_UNSUPPORTED` 흐름으로
+정규화하고 기존 로컬 STEP snapshot을 유지한다.
+
+### 7.1 AI 비동기 facade
+
+기존 `RecipeGenerationRepository.generateRecipeDraft`는 화면에 제공하는 facade다.
+`RemoteRecipeAIDataSource` 내부 transport는 다음 순서를 따른다.
+
+1. 로컬 STEP snapshot과 canonical SHA-256을 만든다.
+2. 새 사용자 실행에 새 `Idempotency-Key`를 발급해
+   `POST /v1/ai/recipe-jobs`를 호출한다.
+3. 반환된 `job_id`, snapshot ID·revision과 상태를 로컬에 저장한다.
+4. 서버가 제시한 `poll_after_seconds`에만 GET으로 상태를 조회한다.
+5. `succeeded/available`의 draft와 `result_version`을 로컬 AI Review 초안으로 먼저
+   저장한다.
+6. 저장 commit 뒤 같은 result version으로 acknowledgement를 보낸다.
+7. 앱 재실행은 저장된 job ID를 GET해 복구하며 create나 provider 호출을 자동 반복하지
+   않는다.
+
+공식 공통 header 계약은 다음과 같다. fixture와 iOS mock client도 같은 집합을 사용하며
+정의되지 않은 App Attest 전용 header를 임의로 추가하지 않는다.
+
+| 요청 | 필수 header | 선택 header |
+|---|---|---|
+| create POST | `Authorization`, `CookLog-Installation-ID`, `Content-Type`, `Idempotency-Key` | `Accept`, `CookLog-Client-Request-ID` |
+| poll GET | `Authorization`, `CookLog-Installation-ID` | `Accept`, `CookLog-Client-Request-ID` |
+| ACK POST | `Authorization`, `CookLog-Installation-ID`, `Content-Type`, `Idempotency-Key` | `Accept`, `CookLog-Client-Request-ID` |
+
+fixture별 iOS 기대 동작:
+
+| Fixture | iOS 검증 |
+|---|---|
+| `ai-recipe-success.json` | create 202 → poll → 로컬 저장 → version ACK |
+| `ai-recipe-error-cases.json` | 공개 code·message key만 mapping, snapshot 보존 |
+| `ai-recipe-timeout-recovery.json` | 자동 retry 없음, terminal 확인 후 사용자 수동 재실행 |
+| `ai-recipe-expired.json` | draft 없음, 로컬 snapshot 보존, 자동 재생성 없음 |
+| `negative-contract-cases.json` | version·error·idempotency·ACK·추가 필드·header·STT mutation 거부 |
+
+`queued`와 `processing`은 처리 화면을 유지하고 draft를 만들지 않는다.
+`failed`와 `expired`는 기존 STEP을 변경하지 않는다. 사용자 `다시 정리하기` 선택만 새
+idempotency key와 새 job을 만든다. 동일 job의 GET, ACK replay와 token refresh 후
+동일 요청 재전송은 provider 재호출을 의미하지 않는다.
+
+### 7.2 공개 오류 mapping
+
+iOS는 `title`·`detail`을 사용자 문구로 직접 표시하지 않고 `user_message_key`와 고정
+`code`를 domain error로 변환한다.
+
+| 공개 code | iOS 동작 |
+|---|---|
+| `TOKEN_EXPIRED` | installation token 갱신 후 동일 idempotency key 재전송 |
+| `IDEMPOTENCY_KEY_REUSED` | 자동 새 job 금지, 사용자 재실행 때만 새 key |
+| `VALIDATION_FAILED` | field/reason allowlist로 요청 검토, provider 재호출 금지 |
+| `QUOTA_EXCEEDED` | 사용 불가 안내, snapshot 보존, 자동 retry 금지 |
+| `SERVICE_DISABLED` | 기능 비활성 안내, snapshot 보존 |
+| `RATE_LIMITED` | `retry_after_seconds` 이전 자동 요청 금지 |
+| `UPSTREAM_UNAVAILABLE`, `UPSTREAM_TIMEOUT` | 현재 job 상태 조회 우선, 새 job은 사용자 선택 |
+
+알 수 없는 code, provider명, stack, raw body와 자유 형식 오류 문자열을 사용자에게
+노출하지 않는다. decode 불가 응답은 콘텐츠를 기록하지 않는 고정 temporary failure로
+처리한다.
+
+### 7.3 원격 STT 비활성 fixture
+
+`remote-stt-disabled.json`은 첫 출시에서 다음을 검증한다.
+
+- resolver가 `AppleSpeechRecognitionService`만 선택
+- 기기 내 STT 최종 실패 시 다시 녹음만 제공
+- Backend remote upload 요청 0회
+- Backend audio body read와 egress 0 byte
+- provider config가 주입돼도 승인 없이는 deployment gate 실패
+- 자동 fallback과 실패 STEP 생성 없음
+
+fixture에 request/result schema가 있어도 remote STT endpoint 활성화를 뜻하지 않는다.
+별도 제품·비용·개인정보·provider·QA 승인 전 iOS production code는 remote adapter를
+등록하지 않는다.
+
+### 7.4 Fixture 보안
+
+공용 fixture의 레시피·STEP 문자열과 UUID는 합성 데이터다. 실제 사용자 콘텐츠,
+Authorization 값, App Attest proof, access token, provider key, raw audio와 개인정보를
+추가하지 않는다. `required_headers`에는 header 이름만 두며 값은 test harness가
+별도의 합성 credential provider로 주입한다. `optional_headers`도 이름만 두고 실제
+사용자·기기 식별값을 fixture에 기록하지 않는다.
+
+Backend 기준 검증 명령:
+
+```sh
+sh apps/backend/tests/contracts/validate-shared-fixtures.sh
+```
+
+iOS 계약 테스트는 manifest의 모든 `ios_assertion`을 test case와 1:1로 연결해야 한다.
+누락 case, 별도 복제 fixture와 민감정보 scanner 실패는 merge 차단 항목이다.
