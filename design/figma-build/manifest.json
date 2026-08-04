@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "runId": "cooklog-mvp-v1-20260728",
-  "revision": "app-info-data-service-failures-20260731",
+  "revision": "integrated-accessibility-handoff-20260804",
   "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
   "direction": "A — Warm Kitchen Journal",
   "brandScope": "wordmark-only",
@@ -615,6 +615,16 @@
     ]
   },
   "validation": {
+    "integratedAudit": {
+      "task": "T-20260729-014",
+      "date": "2026-08-04",
+      "screenGroups": 7,
+      "screenStates": 82,
+      "componentGroups": 13,
+      "themes": ["light", "dark"],
+      "flows": ["record", "reuse", "completed-edit", "completed-delete", "search", "app-info", "legal-link", "service-failure"],
+      "figmaRequiredForCompletion": false
+    },
     "baseFrame": {
       "width": 390,
       "height": 844

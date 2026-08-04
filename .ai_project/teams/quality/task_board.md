@@ -37,6 +37,8 @@
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
 
+`T-20260729-014`는 최종 독립 재재검증에서 DQA-HIGH-014-001과 DQA-MEDIUM-014-001 해소, 기존 통과 항목 무회귀를 확인해 `verification_passed`로 Design Lead 완료 검토에 인계했습니다.
+
 T-025는 AI 정상·공개 오류·timeout·만료, 원격 STT 비활성과 negative case의 공용
 fixture를 source schema·catalog에 연결했습니다. Backend 통합 validator는 canonical
 hash, 상태·공개 오류 mapping, body read·egress 0과 secret·token·개인정보 pattern을

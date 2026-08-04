@@ -1,7 +1,7 @@
 # Current Agent Context
 
 작성일: 2026-07-01
-최종 업데이트: 2026-07-31
+최종 업데이트: 2026-08-04
 프로젝트: CookLog
 상태: Active
 
@@ -20,7 +20,7 @@
 | 활성 개발 영역 | iOS 최우선, Backend foundation |
 | 보류 영역 | Android, Release Role |
 | 활성 Agent | Product Lead, Product Planning, Design Lead, UI/UX Design, Development Lead, iOS, Backend, Product QA, Design QA, iOS QA, Backend QA, AI Ops |
-| 현재 우선 Task | Design T-012, Backend T-024 승인 실행선·T-025 준비, CI T-006 별도 승인 대기 |
+| 현재 우선 Task | Design T-014 독립 검증, Backend T-025 준비, CI T-006 완료선 정리 |
 | 기본 작업 브랜치 | `develop` |
 | 안정·릴리즈 브랜치 | `main` |
 | 공용 상태 기준 | fetch를 마친 최신 `origin/develop`과 확인 SHA |
@@ -41,7 +41,7 @@
 - 첫 공개 출시 Critical Path는 `docs/product/CookLog_ROADMAP.md`를 따릅니다.
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
 - Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다.
-- Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~013`은 `done`, 다음 순차 Task `T-20260729-014`는 범위 확정·실행 승인 준비 상태입니다.
+- Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~013`은 `done`, 마지막 순차 Task `T-20260729-014`는 Design QA와 Design Lead 완료 검토를 통과해 develop 통합 대기입니다.
 - Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020~023은 `done`, T-024·025는 `approved`이고 T-025는 T-024 완료 후 착수합니다.
 - CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~005는 `done`, T-006은 별도 승인 대기입니다.
 - AI Ops `T-20260731-002`는 독립 검증 `PASS`와 PR #48 squash merge를 거쳐 `done`입니다.
@@ -105,3 +105,4 @@ fetch 또는 공용 SHA 확인에 실패하면 `PUBLIC_STATE_UNVERIFIED`로 보�
 | 2026-07-31 | T-005 PR #36 검증 산출물·PR #46 완료 기록 병합을 반영해 CI 상태를 `done`으로 동기화 |
 | 2026-07-31 | T-20260731-002에서 최신 `origin/develop` 공용 상태 조회와 로컬 worktree 상태 분리, 세션 preflight·보고 형식·정리 동결 규칙 반영 |
 | 2026-07-31 | T-20260731-002 독립 AI Ops PASS와 PR #48 squash merge를 확인해 `done`으로 동기화 |
+| 2026-08-04 | Design T-013 완료 정합화와 T-014 로컬 통합·자체 검증 완료, 독립 Design QA 인계 반영 |

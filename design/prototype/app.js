@@ -207,6 +207,7 @@ if (screen === "library") {
 }
 
 const app = document.querySelector("#app");
+const announcer = document.querySelector("#announcer");
 const screenSelect = document.querySelector("#screen-select");
 const stateList = document.querySelector("#state-list");
 const themeToggle = document.querySelector("#theme-toggle");
@@ -466,7 +467,7 @@ function stepRows({ includeProcessing = false, locked = false } = {}) {
     </div>`
   ).join("");
   const pending = includeProcessing
-    ? `<div class="step-row is-processing" aria-live="polite"><span class="step-number">${recordedSteps.length + 1}</span><div class="step-copy"><p class="processing-line">방금 말한 기록을 기기에서 변환하고 있어요.</p><span>완료되면 원문 STEP으로 자동 저장</span></div></div>`
+    ? `<div class="step-row is-processing"><span class="step-number">${recordedSteps.length + 1}</span><div class="step-copy"><p class="processing-line">방금 말한 기록을 기기에서 변환하고 있어요.</p><span>완료되면 원문 STEP으로 자동 저장</span></div></div>`
     : "";
   return `<div class="step-list">${rows}${pending}</div>`;
 }
@@ -547,7 +548,7 @@ function renderLog() {
     ${baseHeader}
     <div class="hero">
       <p class="eyebrow">${eyebrow}</p>
-      <h2 class="screen-title">${title}</h2>
+      <h2 class="screen-title" tabindex="-1" data-log-state-focus>${title}</h2>
       <p>${description}</p>
     </div>
     ${isOffline ? logBanner("success", "오프라인에서도 기록할 수 있어요", "지원되는 기기에서는 10초 기록과 STEP Preview 생성이 계속됩니다.") : ""}
@@ -555,9 +556,9 @@ function renderLog() {
     ${isRetrying ? logBanner("info", "자동 재처리 1/1", "이후에도 실패하면 새 STEP을 만들지 않고 임시 음성을 삭제합니다.") : ""}
     ${logFeedback ? logBanner("success", logFeedback, "텍스트 초안을 이 기기에 자동 저장했습니다.") : ""}
     ${showRecordOrb ? `<div class="record-orb ${isRecording ? "recording" : ""}">
-      <div class="record-core">
-        <span class="record-time" aria-live="polite">${isRecording ? String(recordSecondsRemaining).padStart(2, "0") : isProcessing || isRetrying ? "···" : "10"}</span>
-        <span class="record-label">${isRecording ? "초 남음" : isProcessing ? "기기 내 변환 중" : isRetrying ? "자동 재처리 중" : "초 기록"}</span>
+      <div class="record-core" ${isRecording ? `role="timer" tabindex="-1" data-recording-focus aria-label="${recordSecondsRemaining}초 남음"` : ""}>
+        <span class="record-time" data-recording-timer aria-hidden="true">${isRecording ? String(recordSecondsRemaining).padStart(2, "0") : isProcessing || isRetrying ? "···" : "10"}</span>
+        <span class="record-label" aria-hidden="${isRecording}">${isRecording ? "초 남음" : isProcessing ? "기기 내 변환 중" : isRetrying ? "자동 재처리 중" : "초 기록"}</span>
       </div>
     </div>` : ""}
     ${state === "empty" ? recordAction(recordedSteps.length ? "10초 더 기록" : "10초 기록 시작") : ""}
@@ -884,6 +885,8 @@ function applyFocusIntent() {
     "undo-step": "[data-undo-step]",
     "step-delete": `[data-action="delete-step"][data-index="${intent.index ?? ""}"]`,
     "record-action": "[data-action=\"start-recording\"]",
+    "recording-status": "[data-recording-focus]",
+    "log-state": "[data-log-state-focus]",
     "review-title": "#title",
     "review-step": `#review-step-${intent.index ?? ""}`,
     "review-step-undo": "[data-action=\"undo-review-step\"]",
@@ -913,6 +916,32 @@ function applyFocusIntent() {
   if (target) target.focus({ preventScroll: true });
 }
 
+function announce(message) {
+  if (!announcer) return;
+  announcer.textContent = "";
+  window.requestAnimationFrame(() => { announcer.textContent = message; });
+}
+
+function scheduleRecordingCountdown() {
+  transitionTimer = window.setTimeout(() => {
+    if (screen !== "log" || state !== "recording") return;
+    recordSecondsRemaining -= 1;
+    if (recordSecondsRemaining <= 0) {
+      state = "processing";
+      recordSecondsRemaining = 10;
+      focusIntent = { type: "log-state" };
+      announce("녹음이 끝났습니다. 기기에서 STEP으로 변환합니다.");
+      render();
+      return;
+    }
+    const timer = document.querySelector("[data-recording-timer]");
+    const timerGroup = document.querySelector("[data-recording-focus]");
+    if (timer) timer.textContent = String(recordSecondsRemaining).padStart(2, "0");
+    if (timerGroup) timerGroup.setAttribute("aria-label", `${recordSecondsRemaining}초 남음`);
+    scheduleRecordingCountdown();
+  }, 1000);
+}
+
 function cancelDeleteRecord() {
   deleteDialogOpen = false;
   pendingDeleteId = "";
@@ -932,14 +961,7 @@ function render() {
   renderStateList();
   applyFocusIntent();
   if (!isEmbedded && screen === "log" && state === "recording") {
-    transitionTimer = window.setTimeout(() => {
-      recordSecondsRemaining -= 1;
-      if (recordSecondsRemaining <= 0) {
-        state = "processing";
-        recordSecondsRemaining = 10;
-      }
-      render();
-    }, 1000);
+    scheduleRecordingCountdown();
   } else if (!isEmbedded && screen === "log" && ["processing", "retrying"].includes(state)) {
     transitionTimer = window.setTimeout(advanceTranscription, 1600);
   } else if (!isEmbedded && screen === "review" && state === "processing") {
@@ -1032,6 +1054,8 @@ function startRecording() {
   state = "recording";
   recordSecondsRemaining = 10;
   logFeedback = "";
+  focusIntent = { type: "recording-status" };
+  announce("녹음을 시작했습니다. 10초 뒤 자동 종료됩니다.");
   render();
 }
 
@@ -1040,6 +1064,8 @@ function completeTranscription() {
   if (recordedSteps.length < stepSamples.length) recordedSteps.push(stepSamples[recordedSteps.length]);
   state = "steps";
   logFeedback = `STEP ${recordedSteps.length}을 추가했어요`;
+  focusIntent = { type: "record-action" };
+  announce(`STEP ${recordedSteps.length}을 추가했습니다.`);
   render();
 }
 
@@ -1047,12 +1073,14 @@ function advanceTranscription() {
   if (screen !== "log") return;
   if (state === "processing" && sttPath !== "success") {
     state = "retrying";
+    focusIntent = { type: "log-state" };
     render();
     return;
   }
   if (state === "retrying" && sttPath === "retry-failure") {
     state = "stt-error";
     logFeedback = "";
+    focusIntent = { type: "record-action" };
     render();
     return;
   }
