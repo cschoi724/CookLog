@@ -1,7 +1,7 @@
 ---
 id: T-20260729-014
 title: 디자인 통합 접근성 검증·구현 핸드오프 갱신
-status: verification_ready
+status: rework_requested
 type: feature
 priority: P0
 priority_reason: 화면별 변경을 하나의 Source of Truth로 통합하고 작은 화면·Dynamic Type·Light/Dark·접근성 기준을 확인해야 iOS 구현을 시작할 수 있다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design QA Agent
-target_role: Verification Role
+target_agent: UI/UX Design Agent
+target_role: Execution Role
 required_capabilities:
   - ux_flow
   - ui_design
@@ -135,3 +135,4 @@ qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-han
 - 2026-08-04: diff whitespace를 정리하고 자체 검증 기준을 실제 비교 명령과 일치시켜 `DQA-MEDIUM-014-001`을 수정한 뒤 `verification_ready`로 독립 재검증을 요청했다.
 - 2026-08-04: 재검증 전 최신 `origin/develop@8eea645` 위로 충돌 없이 재정렬하고 script·JSON·82/13·44pt·대비·stale 문구·diff 검사를 다시 통과했다.
 - 2026-08-04: 첫 재검증 직전 공용 기준이 Backend T-025 완료 커밋 `55992a5`로 전진해 QA가 판정 없이 중단했으며, 최신 기준 위로 다시 충돌 없이 재정렬했다.
+- 2026-08-04: 독립 재검증에서 `DQA-MEDIUM-014-001` 해소와 녹음 중 DOM·포커스 보존을 확인했으나, 10초 종료 시 처리 STEP과 전용 announcer 두 live region이 동시에 남아 `DQA-HIGH-014-001` 미해소로 `rework_requested` 반환했다.

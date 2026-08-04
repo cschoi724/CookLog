@@ -56,3 +56,14 @@ blank line 1건으로 실패한다. 검증 증거가 실제 결과와 일치해�
 핵심 Source of Truth 통합은 정합하지만 VoiceOver 알림 수용 기준을 충족하지 못하고
 자체 검증 증거도 실제 결과와 다르다. `FAIL`, `rework_requested`로 UI/UX Design
 Agent에 반환한다. 디자인 원본 수정, commit, push와 merge는 수행하지 않았다.
+
+## 5. 재작업 독립 재검증 — 2026-08-04
+
+- 기준: `origin/develop@55992a5`
+- 대상 HEAD: `774f6b2`
+- `DQA-MEDIUM-014-001`: 해소. `git diff --check origin/develop...HEAD`가 통과했고 실행 보고서의 실제 비교 기준과 일치한다.
+- `DQA-HIGH-014-001`: 부분 해소. 앱 루트와 timer 자체의 live 속성은 제거됐다. Chrome에서 녹음 2초 뒤 같은 timer DOM, 같은 포커스, `08` 표시를 확인했고 10초 종료 뒤 처리 제목 포커스도 확인했다.
+- `DQA-HIGH-014-001`: 미해소. 10초 종료 후 DOM에는 `step-row.is-processing[aria-live=polite]`와 전용 `#announcer[aria-live=polite]`가 동시에 존재한다. 처리 상태 본문과 종료 메시지가 중복 낭독될 수 있어 “단일 announcer” 수용 기준을 충족하지 않는다.
+- 기존 통과 항목: revision, 7개 화면군·82개 상태·13개 컴포넌트, routing·보존 계약, Light/Dark·viewport·44pt·대비·Dynamic Type·Reduce Motion 문서 계약에 회귀가 없다.
+
+최종 재검증 판정은 `FAIL`이다. Task를 `rework_requested`로 유지하고 UI/UX Design Agent에 반환한다. 처리 전이에서 전용 announcer만 live region으로 남기거나, 처리 STEP 영역의 live 속성을 제거해 동일 이벤트가 한 번만 전달되도록 보완해야 한다.
