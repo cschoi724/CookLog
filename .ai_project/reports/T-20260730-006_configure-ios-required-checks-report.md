@@ -4,7 +4,7 @@
 
 담당: AI Ops Agent / Ops Governance Role
 
-결과: `IN_PROGRESS`
+결과: `VERIFICATION_READY`
 
 ## 기준 상태
 
@@ -42,19 +42,24 @@ required approval은 0으로 두고 PR과 두 required check를 기술적 merge 
 - linear history 필수
 - 적용 후 branch `protected`: `true`
 
-## Develop 검증 계획
+## Develop 실제 검증
 
-T-006 문서 변경 PR을 실제 검증 PR로 사용한다.
+T-006 문서 변경 PR #57을 실제 검증 PR로 사용했다.
 
-1. PR 생성 직후 required check 대기 중 merge 차단을 확인한다.
-2. 문서 전용 경량 경로에서 두 workflow와 required job이 생성되는지 확인한다.
-3. 두 job이 Linux에서 success이고 macOS·artifact가 생략되는지 확인한다.
-4. strict 상태와 squash-only PR gate가 정상인지 확인한다.
-5. 검증 통과 뒤 `main`에 동일 ruleset을 적용한다.
+1. 생성 직후 두 감지 job 대기 중 `mergeStateStatus: BLOCKED`를 확인했다.
+2. `ios-build`, `ios-xctest` required job이 모두 생성되고 success로 끝났다.
+3. 감지·required job 4개는 모두 `ubuntu-latest`였다.
+4. run `30869009342`, `30869009326`의 artifact는 각각 0개였다.
+5. 성공 뒤 `mergeStateStatus: CLEAN`을 확인했다.
 
-## Main 적용 대기
+## Main 적용
 
-`main`은 아직 `protected: false`다. Develop 검증 전에는 확대하지 않는다.
+- ruleset ID: `20344405`
+- name: `CookLog main required checks`
+- develop과 PR·squash·linear history·strict required checks·삭제·force push·bypass
+  규칙이 동일하다.
+- 적용 후 branch `protected`: `true`
+- API round-trip에서 `current_user_can_bypass: never`를 확인했다.
 
 ## Budget·사용량
 
@@ -63,6 +68,16 @@ T-006 문서 변경 PR을 실제 검증 PR로 사용한다.
 - included usage 알림: 90/100%
 - 실제 Billing 수치는 `Budgets and alerts` 화면을 source of truth로 사용한다.
 - Actions API는 run·re-run·artifact·cache 추세 보조 지표로 사용한다.
+
+2026-08-04 snapshot:
+
+- 8월 run 12개: pull request 12, success 12, re-run 0
+- run duration 합계 779초, billable Ubuntu 0ms·macOS 0ms
+- active cache 0개·0B
+- active artifact 75개·58,340,487B, 최대 항목 52,692,221B
+- public repository의 표준 runner이므로 runner minute 과금은 0이다.
+- 현재 token은 `user` scope가 없어 Billing API가 404를 반환했다. 실제 Budget 비율과
+  알림 활성화는 Product Owner가 `Budgets and alerts` 화면에서 독립 확인한다.
 
 ## 긴급 우회와 rollback
 
@@ -81,5 +96,15 @@ T-006 문서 변경 PR을 실제 검증 PR로 사용한다.
 - bypass actor 없음: 확인
 - required check 이름 2개: 확인
 - `.github/`, `apps/` 변경: 없음
-- develop 실제 PR gate: 진행 예정
-- main 적용: develop 검증 후
+- PR #57 pending `BLOCKED` -> required checks success -> `CLEAN`: 통과
+- 문서 전용 Linux 경량 job·artifact 0: 통과
+- main ruleset API round-trip·`protected: true`: 통과
+- Billing 실제 percentage·알림 활성화: Product Owner 화면 확인 필요
+
+## 인계
+
+- 상태: `verification_ready`
+- 다음 담당: iOS QA Agent / Verification Role
+- 독립 확인 대상: ruleset 2개, PR #57 상태 전이, check source·runner·artifact,
+  Billing Budget 50/75/90/100 운영
+- PR #57은 독립 QA와 Product Owner merge 승인 전까지 열린 상태로 유지한다.

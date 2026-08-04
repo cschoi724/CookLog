@@ -25,6 +25,7 @@
 | `T-20260729-024` | `done` | Backend 보안·개인정보·관측성·비용 guardrail | 비용 operation 전액 결정·actual 초과 정산 불변식 | PR #50 squash merge `00feb017`·완료 확정 |
 | `T-20260729-013` | `verification_passed` | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | App Info 전환 포커스·선택형 진단 정보 동의 범위와 기존 통과 항목 무회귀 | Design QA PASS·Design Lead 완료 검토 통과 |
 | `T-20260731-003` | `done` | GitHub Actions 사용량 절감 및 실행 정책 최적화 | 경량 path 판정·동적 runner·concurrency·check 이름·실패 65·timeout 124 | iOS QA·AI Ops 독립 검증 및 PR #52·#54 develop 병합 완료 |
+| `T-20260730-006` | `verification_ready` | ios-build·ios-xctest required check 외부 설정 | ruleset 2개·PR #57 BLOCKED→CLEAN·Linux 경량 job·Budget 화면 | iOS QA 독립 검증 대기 |
 
 향후 검증 예정 Task:
 
@@ -35,7 +36,7 @@
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
 | `T-20260729-025` | Backend | Backend QA Agent | fixture 추적성·계약 테스트·민감정보 제외 |
-| `T-20260730-006` | CI/Ops | iOS QA Agent | 외부 설정 차단 해소 후 branch protection 실제 merge 차단 검증 |
+| `T-20260730-006` | CI/Ops | iOS QA Agent | ruleset `20340678`·`20344405`, PR #57 상태 전이와 Budget 화면 독립 검증 |
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
 

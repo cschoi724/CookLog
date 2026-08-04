@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-006
 title: ios-build·ios-xctest required check 외부 설정
-status: in_progress
+status: verification_ready
 type: ops
 priority: P0
 priority_reason: 검증된 CI를 develop과 main의 실제 merge gate로 적용해야 한다.
@@ -10,11 +10,13 @@ org_unit: AI Operations Division
 team: AI Ops Team
 team_lead: AI Ops Agent
 workflow: ops
-target_agent: AI Ops Agent
-target_role: Ops Governance Role
+target_agent: iOS QA Agent
+target_role: Verification Role
 required_capabilities:
 - process_governance
 - workflow_governance
+- ios_qa
+- regression_test
 depends_on:
 - T-20260730-005
 blocks:
@@ -35,9 +37,9 @@ source_of_truth:
 - ".ai_project/branch_pr_strategy.md"
 created_by: Development Lead Agent
 approved_by: Product Owner
-locked_by: AI Ops Agent
-locked_at: '2026-08-04'
-lock_session: ops/T-20260730-006-configure-required-checks
+locked_by:
+locked_at:
+lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-30
 updated_at: '2026-08-04'
@@ -77,7 +79,12 @@ qa_to: ".ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md"
 - `develop`: PR 필수, 승인 0, squash only, strict required checks 2개,
   force push·삭제 금지, bypass actor 없음
 - `develop` 현재 `protected`: `true`
-- `main` 현재 `protected`: `false`, develop 실제 PR 검증 후 적용 예정
+- PR #57 생성 직후 required check 대기 중: `mergeStateStatus: BLOCKED`
+- PR #57의 `ios-build`, `ios-xctest`: 모두 success
+- PR #57 성공 뒤: `mergeStateStatus: CLEAN`
+- 문서 전용 job: 모두 `ubuntu-latest`, artifact 0개
+- `main` ruleset ID: `20344405`
+- `main`: develop과 동일 규칙, `protected: true`
 
 ## 적용 결정
 
@@ -89,14 +96,23 @@ qa_to: ".ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md"
   원복 시간을 기록하는 방식으로만 허용한다.
 - Budget 50/75/90/100%와 Actions 사용량을 함께 점검한다.
 
-## 다음 단계
+## Actions·Budget snapshot
 
-1. 현재 변경을 T-006 branch에 commit·push하고 `develop` 대상 PR을 만든다.
-2. PR 생성 직후 두 required check 전에는 merge가 차단되는지 확인한다.
-3. `ios-build`, `ios-xctest` 성공 뒤 merge gate가 열리는지 확인한다.
-4. 검증 통과 시 `main`에 같은 설정을 적용한다.
-5. Budget·Actions 사용량과 rollback snapshot을 보고하고 iOS QA Agent에 독립 검증을
-   인계한다.
+- 2026-08-01 이후 run: 12개, 모두 pull request·success, re-run 0개
+- run duration 합계: 779초, API billable: Ubuntu 0ms·macOS 0ms
+- active cache: 0개, 0B
+- active artifact: 75개, 58,340,487B; 최대 항목 약 52.7MB
+- public repository의 표준 runner라 runner minute는 과금되지 않는다.
+- Budget 75/90/100%는 GitHub native 알림, 50%는 CookLog 수동 경고로 운영한다.
+- 현재 GitHub 토큰에 `user` scope가 없어 Billing API가 404를 반환하므로 실제 Budget
+  비율은 Product Owner가 `Budgets and alerts` 화면에서 독립 확인해야 한다.
+
+## 독립 검증 인계
+
+1. iOS QA Agent가 ruleset `20340678`, `20344405`를 API round-trip한다.
+2. PR #57의 대기 중 `BLOCKED`와 성공 뒤 `CLEAN`, Linux 경량 job을 독립 확인한다.
+3. Billing 화면에서 Budget 금액·75/90/100% native alert·50% 수동 기록을 확인한다.
+4. 독립 QA 전에는 PR #57을 merge하지 않는다.
 
 ## AI Ops CLI 기록
 
@@ -108,3 +124,6 @@ qa_to: ".ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md"
 | 2026-08-04 | AI Ops Agent | lock | task lock |
 | 2026-08-04 | Product Owner | resume blocked task | develop 선적용 후 main 확대, 두 required check 필수, 승인 기반 긴급 우회, Budget 모니터링 결정 |
 | 2026-08-04 | AI Ops Agent | develop ruleset applied | ruleset `20340678`, active, bypass 없음, required checks 2개 |
+| 2026-08-04 | AI Ops Agent | develop gate verified | PR #57 pending `BLOCKED`, checks success 뒤 `CLEAN`, Linux·artifact 0 |
+| 2026-08-04 | AI Ops Agent | main ruleset applied | ruleset `20344405`, active, develop과 동일, bypass 없음 |
+| 2026-08-04 | AI Ops Agent | handoff | `verification_ready`, iOS QA Agent 독립 검증 요청 |

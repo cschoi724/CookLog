@@ -52,14 +52,17 @@ pull_request:
     develop:
       - ios-build
       - ios-xctest
-    main: []
-  ci_external_status: develop_verification_in_progress
+    main:
+      - ios-build
+      - ios-xctest
+  ci_external_status: verification_ready
 ```
 
 `ios-build`와 `ios-xctest`는 두 branch의 required check 목표다. 2026-08-04
-`develop` ruleset `20340678`을 active로 적용했고 실제 PR 흐름을 검증 중이다. 검증
-통과 뒤 `main`에 같은 규칙을 확대한다. 단일 collaborator 운영에서는 approval을
-0으로 두되 PR과 두 check를 필수화하고 상시 bypass actor는 두지 않는다.
+`develop` ruleset `20340678`을 active로 적용하고 PR #57에서 대기 중 `BLOCKED`, 두
+check 성공 뒤 `CLEAN`을 확인했다. 같은 규칙을 `main` ruleset `20344405`로 확대했다.
+단일 collaborator 운영에서는 approval을 0으로 두되 PR과 두 check를 필수화하고 상시
+bypass actor는 두지 않는다.
 
 ## 4. Merge Rules
 

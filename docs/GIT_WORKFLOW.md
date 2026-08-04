@@ -353,6 +353,12 @@ Product Owner 결정에 따라 `develop`에 먼저 적용해 실제 PR 흐름을
 두되 PR과 `ios-build`, `ios-xctest`를 필수화합니다. 상시 bypass actor는 두지 않으며
 긴급 우회는 Product Owner가 사유·시간·복구를 승인한 경우에만 허용합니다.
 
+2026-08-04 `develop` ruleset `20340678`을 적용하고 PR #57에서 check 대기 중
+`BLOCKED`, `ios-build`·`ios-xctest` 성공 뒤 `CLEAN`을 확인했습니다. 문서 전용 job은
+모두 `ubuntu-latest`였고 artifact는 생성되지 않았습니다. 검증 통과 뒤 같은 규칙을
+`main` ruleset `20344405`로 적용했으며 두 branch 모두 `protected: true`, 상시 bypass
+actor 없음, strict required checks 2개 상태입니다.
+
 ### CI rollback 기준과 절차
 
 다음 중 하나라도 발생하면 WP-1~5 최적화를 rollback 후보로 분류합니다.
