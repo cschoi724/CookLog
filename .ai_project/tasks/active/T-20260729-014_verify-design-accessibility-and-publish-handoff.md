@@ -1,7 +1,7 @@
 ---
 id: T-20260729-014
 title: 디자인 통합 접근성 검증·구현 핸드오프 갱신
-status: verification_ready
+status: rework_requested
 type: feature
 priority: P0
 priority_reason: 화면별 변경을 하나의 Source of Truth로 통합하고 작은 화면·Dynamic Type·Light/Dark·접근성 기준을 확인해야 iOS 구현을 시작할 수 있다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design QA Agent
-target_role: Verification Role
+target_agent: UI/UX Design Agent
+target_role: Execution Role
 required_capabilities:
   - ux_flow
   - ui_design
@@ -129,3 +129,4 @@ qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-han
 - 2026-08-04: 7개 화면군·82개 상태·13개 컴포넌트를 통합 대조하고 Prototype·Manifest revision을 `integrated-accessibility-handoff-20260804`로 일치시켰다.
 - 2026-08-04: routing·데이터 보존·재시도·반응형·테마·접근성 구현 계약과 로컬 재현 절차를 핸드오프에 갱신했다.
 - 2026-08-04: 정적 assertion과 Chrome 대표 상태 렌더링 자체 검증을 통과해 lock을 해제하고 `in_progress -> verification_ready`로 Design QA Agent에 인계했다.
+- 2026-08-04: 독립 Design QA에서 앱 루트·녹음 타이머 live region의 반복 낭독 위험 `DQA-HIGH-014-001`과 실제 diff 검사에 어긋나는 자체 검증 기록 `DQA-MEDIUM-014-001`을 확인해 `verification_ready -> rework_requested`로 반환했다.
