@@ -25,7 +25,7 @@
 | `T-20260729-024` | `done` | Backend 보안·개인정보·관측성·비용 guardrail | 비용 operation 전액 결정·actual 초과 정산 불변식 | PR #50 squash merge `00feb017`·완료 확정 |
 | `T-20260729-013` | `verification_passed` | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | App Info 전환 포커스·선택형 진단 정보 동의 범위와 기존 통과 항목 무회귀 | Design QA PASS·Design Lead 완료 검토 통과 |
 | `T-20260731-003` | `done` | GitHub Actions 사용량 절감 및 실행 정책 최적화 | 경량 path 판정·동적 runner·concurrency·check 이름·실패 65·timeout 124 | iOS QA·AI Ops 독립 검증 및 PR #52·#54 develop 병합 완료 |
-| `T-20260730-006` | `verification_passed` | ios-build·ios-xctest required check 외부 설정 | source `15368`·PR #58 failure→복구·PR #57 무회귀·Budget 화면 | HIGH 2건 해소, PASS_WITH_RISK로 AI Ops 완료 검토 인계 |
+| `T-20260730-006` | `done` | ios-build·ios-xctest required check 외부 설정 | source `15368`·PR #58 failure→복구·PR #57 무회귀·Budget 화면 | 독립 QA PASS_WITH_RISK, Product Owner 잔여 위험 수용 |
 
 향후 검증 예정 Task:
 

@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260730-006
 title: ios-build·ios-xctest required check 외부 설정
-status: verification_passed
+status: done
 type: ops
 priority: P0
 priority_reason: 검증된 CI를 develop과 main의 실제 merge gate로 적용해야 한다.
@@ -139,3 +139,4 @@ qa_to: ".ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md"
 | 2026-08-04 | AI Ops Agent | handoff | `verification_ready`, iOS QA Agent 독립 재검증 요청 |
 | 2026-08-04 | iOS QA Agent | transition: verification_ready -> verification_in_progress | source 고정, PR #58 failure·복구, PR #57 무회귀 독립 재검증 시작 |
 | 2026-08-04 | iOS QA Agent | transition: verification_in_progress -> verification_passed | `QA-HIGH-006-001~002` 해소, Billing 화면 미확인을 위험으로 유지해 PASS_WITH_RISK |
+| 2026-08-04 | Development Lead Agent | completion_review -> done | QA PR #59와 운영 적용 PR #57 develop 병합, Product Owner가 Billing 잔여 위험 수용 |
