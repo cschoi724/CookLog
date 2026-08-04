@@ -2,7 +2,7 @@
 
 작성자: Backend Agent
 작성일: 2026-07-31
-상태: 자체 검증 완료, Backend QA 독립 검증 대기
+상태: QA 차단 결함 재작업 자체 검증 완료, Backend QA 독립 재검증 대기
 
 ## 실행 결과
 
@@ -130,10 +130,28 @@ Backend QA Agent는 정상·공개 오류·timeout·만료·STT 비활성·negat
 공식 QA 판정은 Backend QA Agent가 수행하며 Backend Agent의 자체 검증은 이를 대체하지
 않는다.
 
+## 2026-08-04 QA 재작업
+
+Backend QA `FAIL`의 `QA-HIGH-025-001~002`를 다음과 같이 수정했다.
+
+- create·ACK 필수 header에 `CookLog-Installation-ID`, `Content-Type`을 추가했다.
+- 계약에 없는 `X-CookLog-App-Attest-Assertion`을 제거했다.
+- poll GET 요청 fixture를 추가하고 create·poll·ACK의 필수·선택 header 집합을
+  `API_CONTRACT.md` 3.1과 정확히 대조한다.
+- 필수 header 누락과 미정의 필수 header 추가 negative case를 추가했다.
+- 기존 7개를 포함한 negative 9종의 mutation과 expected를 모두 명시적으로 검증한다.
+- version·공개 error·status 추가 field·원격 STT·header mutation을 canonical payload에
+  실제 적용하고 decoder·계약 validator가 허용하면 검증 script가 실패하게 했다.
+- idempotency body conflict와 ACK version mismatch도 각 불변식을 실제 확인한다.
+
+재작업 후 shell 문법, JSON 문법, common·STT·AI·security validator와 공용 통합
+validator, 민감정보 scan, `git diff --check`를 다시 실행해 모두 PASS했다.
+
 ## 최신 develop 기준
 
 - 최초 구현 기준 `origin/develop`: `153bc44`
-- 2026-08-04 재정렬 기준 `origin/develop`: `890a6c6`
+- 최초 QA 인계 재정렬 기준 `origin/develop`: `890a6c6`
+- 재작업 최종 재정렬 기준 `origin/develop`: `e4bab3a`
 - T-20260729-021~024 `done`: 보존
 - 최신 `origin/develop` 대비 뒤처짐: 0
 - 재정렬 후 공용 계약 검증 5종과 `git diff --check` 재실행: PASS

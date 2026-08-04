@@ -9,7 +9,9 @@
 - 정상·오류·timeout·만료 상태와 iOS 행동
 - 공개 오류 catalog mapping
 - 원격 STT 비활성·body read 전 차단
-- version·idempotency·ACK·unknown field negative case
+- create·poll·ACK 필수·선택 header의 공통 API 계약 일치
+- version·error·idempotency·ACK·unknown field·header·STT negative case 9종
+- negative descriptor를 canonical payload에 주입한 decoder·validator 거부 자기 검증
 - secret, token, 실제 개인정보와 raw audio 비포함
 
 실행:

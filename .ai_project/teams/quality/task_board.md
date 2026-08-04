@@ -26,7 +26,7 @@
 | `T-20260729-013` | `done` | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | App Info 전환 포커스·선택형 진단 정보 동의 범위와 기존 통과 항목 무회귀 | PR #53 squash merge·완료 확정 |
 | `T-20260731-003` | `done` | GitHub Actions 사용량 절감 및 실행 정책 최적화 | 경량 path 판정·동적 runner·concurrency·check 이름·실패 65·timeout 124 | iOS QA·AI Ops 독립 검증 및 PR #52·#54 develop 병합 완료 |
 | `T-20260730-006` | `done` | ios-build·ios-xctest required check 외부 설정 | source `15368`·PR #58 failure→복구·PR #57 무회귀·Budget 화면 | 독립 QA PASS_WITH_RISK, Product Owner 잔여 위험 수용 |
-| `T-20260729-025` | `rework_requested` | iOS·Backend 공용 fixture와 계약 테스트 기준 | 정상·오류·timeout·만료·STT 비활성 추적성·민감정보 제외 | 필수 header·negative validator 결함 재작업 |
+| `T-20260729-025` | `verification_ready` | iOS·Backend 공용 fixture와 계약 테스트 기준 | header 계약·negative 9종 실제 mutation·기존 추적성 무회귀 | Backend QA 독립 재검증 |
 
 향후 검증 예정 Task:
 

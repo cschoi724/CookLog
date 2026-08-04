@@ -7,8 +7,13 @@
     "path_template": "/v1/ai/recipe-jobs",
     "required_headers": [
       "Authorization",
-      "Idempotency-Key",
-      "X-CookLog-App-Attest-Assertion"
+      "Content-Type",
+      "CookLog-Installation-ID",
+      "Idempotency-Key"
+    ],
+    "optional_headers": [
+      "Accept",
+      "CookLog-Client-Request-ID"
     ],
     "body": {
       "contract_version": "ai-recipe-job.v1",
@@ -119,10 +124,22 @@
       }
     }
   },
+  "poll_request": {
+    "method": "GET",
+    "path_template": "/v1/ai/recipe-jobs/{job_id}",
+    "required_headers": ["Authorization", "CookLog-Installation-ID"],
+    "optional_headers": ["Accept", "CookLog-Client-Request-ID"]
+  },
   "acknowledgement_request": {
     "method": "POST",
     "path_template": "/v1/ai/recipe-jobs/{job_id}/result-acknowledgements",
-    "required_headers": ["Authorization", "Idempotency-Key"],
+    "required_headers": [
+      "Authorization",
+      "Content-Type",
+      "CookLog-Installation-ID",
+      "Idempotency-Key"
+    ],
+    "optional_headers": ["Accept", "CookLog-Client-Request-ID"],
     "body": {
       "result_version": 1,
       "saved_locally_at": "2026-07-31T09:01:09Z"

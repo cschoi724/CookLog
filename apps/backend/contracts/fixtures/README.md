@@ -11,7 +11,7 @@
 - `ai-recipe-timeout-recovery.json`: queue/provider timeout과 outcome unknown
 - `ai-recipe-expired.json`: 24시간 만료·본문 없는 복구 상태
 - `remote-stt-disabled.json`: 첫 출시 원격 STT 비활성·무승인 upload 차단
-- `negative-contract-cases.json`: version, error, idempotency, ACK와 STT drift 차단
+- `negative-contract-cases.json`: version, error, idempotency, ACK, header와 STT drift 차단
 
 ## 사용 규칙
 
@@ -23,8 +23,12 @@
   Swift literal이나 별도 JSON으로 재작성하지 않는다.
 - Backend는 `apps/backend/tests/contracts/validate-shared-fixtures.sh`로 원본
   schema·catalog·fixture와의 정합성, 상태 전이와 민감정보 비포함을 검증한다.
-- fixture의 `required_headers`는 이름만 표현한다. access token, App Attest proof와
-  실제 idempotency secret 값을 포함하지 않는다.
+- create·poll·ACK의 `required_headers`와 `optional_headers`는
+  `API_CONTRACT.md` 3.1의 이름만 표현한다. access token과 실제 idempotency secret
+  값을 포함하지 않으며 계약에 없는 header를 추가하지 않는다.
+- negative case는 descriptor의 이름만 검사하지 않는다. canonical payload에 version,
+  error code, status field, header와 STT config mutation을 실제 적용하고 decoder·계약
+  validator가 거부하는지 확인한다.
 
 검증:
 

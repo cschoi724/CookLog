@@ -195,6 +195,15 @@ production 응답에서 version이 지원되지 않으면 공개 `API_VERSION_UN
 7. 앱 재실행은 저장된 job ID를 GET해 복구하며 create나 provider 호출을 자동 반복하지
    않는다.
 
+공식 공통 header 계약은 다음과 같다. fixture와 iOS mock client도 같은 집합을 사용하며
+정의되지 않은 App Attest 전용 header를 임의로 추가하지 않는다.
+
+| 요청 | 필수 header | 선택 header |
+|---|---|---|
+| create POST | `Authorization`, `CookLog-Installation-ID`, `Content-Type`, `Idempotency-Key` | `Accept`, `CookLog-Client-Request-ID` |
+| poll GET | `Authorization`, `CookLog-Installation-ID` | `Accept`, `CookLog-Client-Request-ID` |
+| ACK POST | `Authorization`, `CookLog-Installation-ID`, `Content-Type`, `Idempotency-Key` | `Accept`, `CookLog-Client-Request-ID` |
+
 fixture별 iOS 기대 동작:
 
 | Fixture | iOS 검증 |
@@ -203,7 +212,7 @@ fixture별 iOS 기대 동작:
 | `ai-recipe-error-cases.json` | 공개 code·message key만 mapping, snapshot 보존 |
 | `ai-recipe-timeout-recovery.json` | 자동 retry 없음, terminal 확인 후 사용자 수동 재실행 |
 | `ai-recipe-expired.json` | draft 없음, 로컬 snapshot 보존, 자동 재생성 없음 |
-| `negative-contract-cases.json` | version·enum·추가 필드 decode 또는 요청 차단 |
+| `negative-contract-cases.json` | version·error·idempotency·ACK·추가 필드·header·STT mutation 거부 |
 
 `queued`와 `processing`은 처리 화면을 유지하고 draft를 만들지 않는다.
 `failed`와 `expired`는 기존 STEP을 변경하지 않는다. 사용자 `다시 정리하기` 선택만 새
@@ -249,7 +258,8 @@ fixture에 request/result schema가 있어도 remote STT endpoint 활성화를 �
 공용 fixture의 레시피·STEP 문자열과 UUID는 합성 데이터다. 실제 사용자 콘텐츠,
 Authorization 값, App Attest proof, access token, provider key, raw audio와 개인정보를
 추가하지 않는다. `required_headers`에는 header 이름만 두며 값은 test harness가
-별도의 합성 credential provider로 주입한다.
+별도의 합성 credential provider로 주입한다. `optional_headers`도 이름만 두고 실제
+사용자·기기 식별값을 fixture에 기록하지 않는다.
 
 Backend 기준 검증 명령:
 

@@ -37,6 +37,22 @@
       "name": "remote_stt_enabled_without_approval",
       "mutation": {"mode": "enabled", "audio_egress_allowed": true},
       "expected": "deployment_gate_fail"
+    },
+    {
+      "name": "missing_required_request_header",
+      "mutation": {
+        "target": "request",
+        "remove_required_header": "CookLog-Installation-ID"
+      },
+      "expected": "request_header_contract_rejected"
+    },
+    {
+      "name": "undefined_required_request_header",
+      "mutation": {
+        "target": "acknowledgement_request",
+        "add_required_header": "X-CookLog-App-Attest-Assertion"
+      },
+      "expected": "request_header_contract_rejected"
     }
   ]
 }
