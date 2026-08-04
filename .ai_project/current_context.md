@@ -41,7 +41,7 @@
 - 첫 공개 출시 Critical Path는 `docs/product/CookLog_ROADMAP.md`를 따릅니다.
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
 - Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다.
-- Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~013`은 `done`, 다음 순차 Task `T-20260729-014`는 범위 확정·실행 승인 준비 상태입니다.
+- Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~013`은 `done`, 다음 순차 Task `T-20260729-014`는 Product Owner 승인 후 UI/UX 실행 대기입니다.
 - Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020~023은 `done`, T-024·025는 `approved`이고 T-025는 T-024 완료 후 착수합니다.
 - CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~005는 `done`, T-006은 별도 승인 대기입니다.
 - AI Ops `T-20260731-002`는 독립 검증 `PASS`와 PR #48 squash merge를 거쳐 `done`입니다.

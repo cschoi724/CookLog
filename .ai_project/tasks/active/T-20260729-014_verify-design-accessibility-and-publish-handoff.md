@@ -1,7 +1,7 @@
 ---
 id: T-20260729-014
 title: 디자인 통합 접근성 검증·구현 핸드오프 갱신
-status: proposed
+status: approved
 type: feature
 priority: P0
 priority_reason: 화면별 변경을 하나의 Source of Truth로 통합하고 작은 화면·Dynamic Type·Light/Dark·접근성 기준을 확인해야 iOS 구현을 시작할 수 있다.
@@ -39,13 +39,13 @@ source_of_truth:
   - design/prototype/
   - design/figma-build/manifest.json
 created_by: Design Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-29
-updated_at: 2026-07-29
+updated_at: 2026-08-04
 report_to: .ai_project/reports/T-20260729-014_verify-design-accessibility-and-publish-handoff-report.md
 qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-handoff-qa.md
 ---
@@ -88,3 +88,39 @@ qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-han
 ## 사용자 결정 필요 항목
 
 - 최종 디자인 수용은 Design QA 통과 후 Product Lead의 상위 Task 완료 검토에서 확인한다.
+
+## Design Lead 확정 실행 구조
+
+### WP-1 — Source of Truth 인벤토리
+
+- 제품 문서, Prototype, Manifest와 기존 핸드오프의 화면·상태·행동·토큰 목록을 대조한다.
+- `T-20260729-008~013`에서 추가된 상태가 누락 없이 도달 가능한지 확인한다.
+
+### WP-2 — 통합 사용자 흐름
+
+- Home → 기록·복귀·검색 → AI Processing·Review → 저장·편집·삭제 → Audio Guide → App Info 흐름을 연결한다.
+- 오류·이탈·재시도·데이터 보존 목적지가 문서와 실행형 Prototype에서 일치해야 한다.
+
+### WP-3 — 반응형·테마·접근성
+
+- 390×844와 375×667의 Light·Dark 핵심·오류 상태를 검증한다.
+- 접근성 글자 크기, 스크롤, 44×44pt, WCAG AA, 포커스, 이름·역할·상태, live region과 Reduce Motion을 확인한다.
+
+### WP-4 — 구현 핸드오프와 검토 산출물
+
+- `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`를 최신 상태·routing·저장 경계·오류 행동·접근성 계약으로 갱신한다.
+- Manifest revision과 Prototype revision을 일치시키고 검토용 export 또는 재현 절차를 남긴다.
+- Figma 미러 범위와 미동기화 항목을 기록하되 MCP 한도는 로컬 완료를 차단하지 않는다.
+
+### 검증·완료 경계
+
+- UI/UX Design Agent가 WP-1~4와 자체 검증을 완료한 뒤 `verification_ready`로 인계한다.
+- Design QA Agent가 별도 세션에서 전체 흐름, 상태 누락, 접근성과 핸드오프 정합성을 독립 검증한다.
+- 검증 통과 후 Design Lead Agent가 완료 검토하며, `develop` 병합 전에는 `done`으로 전환하지 않는다.
+- Figma MCP는 호출하지 않는다.
+
+## 상태 전이 기록
+
+- 2026-08-04: 최신 `origin/develop`에서 선행 `T-20260729-013`의 PR #53 병합과 `done` 정합화를 확인했다.
+- 2026-08-04: Design Lead Agent가 WP-1~4, 허용 경로, Source of Truth, 검증·완료 경계를 확정해 `proposed -> scoped`로 전환했다.
+- 2026-08-04: Product Owner가 상위 `T-20260729-002`의 다음 순서 1~5 진행을 승인해 `scoped -> approved`로 전환하고 UI/UX Design Agent에 라우팅했다.
