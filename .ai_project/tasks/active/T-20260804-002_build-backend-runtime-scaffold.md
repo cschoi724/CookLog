@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-002
 title: Backend runtime scaffold·환경 설정·health 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 모든 foundation 패키지가 공유할 실행·빌드·테스트 기준을 먼저 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Backend QA Agent
+target_role: Verification Role
 required_capabilities:
 - backend_architecture
 - backend_implementation
@@ -89,3 +89,10 @@ qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
 
 2026-08-04 Product Owner가 상위 T-006 진행을 승인했고 Development Lead가 첫 실행
 패키지로 인계했다. Backend Agent는 전용 worktree와 branch에서만 착수한다.
+
+## 상태 전이 기록
+
+- 2026-08-04: Backend Agent가 전용 worktree lock을 획득하고
+  `approved -> in_progress`로 전환했다.
+- 2026-08-04: runtime·config·health·container 경계 구현과 테스트 10개, 기존 계약
+  validator 자체 검증을 완료해 `in_progress -> verification_ready`로 전환했다.

@@ -6,3 +6,7 @@
 - Backend Agent용 `apps/backend/agents.md`와 상태·계획·스펙·결정 문서를 추가했다.
 - 첫 runtime scaffold Task `T-20260804-002`를 실행 승인했다.
 - 실제 provider·배포·원격 STT endpoint를 범위 밖으로 유지했다.
+- Node.js 24 LTS·TypeScript 7·Fastify 5.11·npm 11 runtime을 결정했다.
+- typed fail-closed 환경 설정과 고정 응답 `GET /healthz`를 구현했다.
+- Cloud Run `PORT`·`0.0.0.0`·`SIGTERM` 경계와 multi-stage non-root container를 추가했다.
+- config·health·remote STT route 부재·graceful close 테스트를 추가했다.

@@ -15,7 +15,9 @@
 
 ## 2026-08-04 — Runtime 선택은 T-002 ADR에서 고정
 
-- 상태: 실행 인계
-- 결정: 특정 언어·framework를 선결정하지 않고 Cloud Run 호환성, JSON Schema 재사용,
-  local test 재현성을 비교한 뒤 T-002에서 고정한다.
+- 상태: 확정
+- 결정: Node.js 24 LTS, TypeScript 7, Fastify 5.11과 npm 11을 고정한다.
+- 비교: Node 내장 HTTP와 Go 후보보다 후속 schema·middleware 연결 및 local/mock 테스트
+  재현성이 현재 foundation에 적합하다.
 - 제약: 선택이 기존 API·보안·비용 계약을 변경할 수 없다.
+- 상세: `apps/backend/docs/RUNTIME_FOUNDATION.md`

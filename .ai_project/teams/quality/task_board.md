@@ -32,13 +32,13 @@
 | `T-20260805-001` | `done` | iOS MVP 디자인 적용 기준과 Visual QA 계약 | DQA-MEDIUM-007~008 해소, Core Loop 23개 상태·대비·접근성 무회귀 | Design QA `PASS`, 구현 후 실제 화면 QA는 T-003 인계 |
 | `T-20260729-002` | `done` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | T-008~014 독립 QA·상위 성공 기준·통합 Source of Truth | 하위 전체 병합·Design Lead 완료 확정 |
 | `T-20260804-001` | `done` | 수익화 Source of Truth와 후보 Task 복구 | Lead Role·schema HIGH 2건, 상태 동결·Task graph·최신 develop 비회귀 | Product QA `PASS`·Product Lead 완료 리뷰·Product Owner 최종 승인 |
+| `T-20260804-002` | `verification_ready` | Backend runtime scaffold·환경 설정·health | Node/Fastify 재현·config fail-closed·health·secret 비노출 | Backend QA 독립 검증 |
 
 향후 검증 예정 Task:
 
 | Task ID | 도메인 | 예정 Verification Agent | 검증 초점 |
 |---|---|---|---|
 | `T-20260728-003` | iOS/Design | iOS QA Agent | 기능 회귀와 Figma 정합성 |
-| `T-20260804-002` | Backend | Backend QA Agent | 새 clone 재현·runtime config·health·secret 비노출 |
 | `T-20260804-003` | Backend | Backend QA Agent | 공통 envelope·인증·replay·제한·idempotency |
 | `T-20260804-004` | Backend | Backend QA Agent | Mock AI 단일 호출·status·ACK·timeout·복구 |
 | `T-20260804-005` | Backend | Backend QA Agent | 원격 STT route·body read·egress 0·활성화 차단 |

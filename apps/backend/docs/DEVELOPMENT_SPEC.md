@@ -1,18 +1,19 @@
 # Backend Foundation 개발 스펙
 
 최종 업데이트: 2026-08-04
-단계: 구현 전 기준
+단계: T-002 Runtime Foundation 구현
 
 ## 런타임 경계
 
 - Cloud Run 호환 stateless HTTP container
 - local/mock 환경만 구현하며 cloud resource를 만들지 않는다.
-- runtime·framework·package manager 버전은 T-002 ADR에서 고정한다.
+- Node.js 24 LTS·TypeScript 7·Fastify 5.11·npm 11을 사용한다.
+- 상세 선택과 Cloud Run lifecycle은 `RUNTIME_FOUNDATION.md`를 따른다.
 - 환경별 설정은 typed validation과 fail closed를 사용한다.
 
 ## 공개 endpoint
 
-- health endpoint
+- `GET /healthz`: 고정 `health.v1` 응답, 환경·secret·dependency 상세 비노출
 - 계약에 정의된 installation auth 경계
 - AI recipe job create·status·ACK
 - 원격 STT endpoint는 만들지 않는다.
@@ -39,3 +40,4 @@
 - `apps/backend/tests/contracts/validate-shared-fixtures.sh`
 - runtime unit·integration·contract·security test
 - secret·사용자 콘텐츠 로그 scanner
+- `npm ci`, `npm run typecheck`, `npm test`, `npm run check`
