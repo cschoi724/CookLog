@@ -39,6 +39,7 @@
 | UI/UX 원본 | `design/prototype/` | `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `design/figma-build/manifest.json` | Product Owner가 승인한 로컬 Prototype과 Manifest 우선 |
 | Figma 미러 | [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn) | `design/figma-build/` | 버전 스냅샷·형상 보존용이며 충돌 시 로컬 UI/UX 원본 우선 |
 | 출시 Roadmap | `docs/product/CookLog_ROADMAP.md` | `docs/PROJECT_STATUS.md`, `.ai_project/task_board.md` | Roadmap은 단계·의존성, Task 파일은 실행 상태를 담당 |
+| 수익화 정책·가설 | `docs/product/CookLog_MONETIZATION.md` | `docs/PROJECT_DECISIONS.md`, `T-20260728-010~018` | Core v1과 분리된 `proposed` Workstream이며 가격·quota는 T-010과 Product Owner 승인 전까지 가설 |
 | 전체 현재 상태 | `docs/PROJECT_STATUS.md` | 플랫폼별 `apps/*/docs/STATUS.md` | 플랫폼 문서가 더 최신이면 PM Agent가 루트 상태 갱신 필요 |
 | 전체 결정사항 | `docs/PROJECT_DECISIONS.md` | 플랫폼별 `DECISIONS.md` | 공통 결정은 루트, 플랫폼 결정은 플랫폼 문서 우선 |
 | 전체 변경 이력 | `docs/PROJECT_CHANGELOG.md` | 플랫폼별 `CHANGELOG.md`, Git commit | 누락 시 PM Agent가 갱신 |
