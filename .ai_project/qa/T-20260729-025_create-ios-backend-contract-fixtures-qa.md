@@ -4,8 +4,8 @@
 검증자: Backend QA Agent / Verification Role
 검증 기준: `task/T-20260729-025-create-ios-backend-contract-fixtures` `f6a7a64`
 기준 develop: `origin/develop` `890a6c6`
-현재 판정: `FAIL`
-현재 상태 인계: `verification_in_progress -> rework_requested`
+현재 판정: `PASS_WITH_RISK`
+현재 상태 인계: `verification_in_progress -> verification_passed`
 
 ## 1. 검증 범위
 
@@ -134,3 +134,68 @@ Backend가 동일하지만 잘못된 계약을 공유하거나 잘못된 payload
 
 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 Development Lead Agent /
 Lead Role에 재작업 범위 조율을 인계한다.
+
+## 7. 독립 재검증
+
+재검증일: 2026-08-04
+재검증 기준: `task/T-20260729-025-create-ios-backend-contract-fixtures` `1bed517`
+기준 develop: `origin/develop` `e4bab3a`
+
+### 결함 해소 결과
+
+| 결함 | 결과 | 독립 재검증 근거 |
+|---|---|---|
+| `QA-HIGH-025-001` | RESOLVED | create·ACK에 `CookLog-Installation-ID`, `Content-Type`이 추가되고 미정의 App Attest header가 제거됐다. poll GET을 포함한 필수·선택 header 집합이 공통 API 계약과 일치하며 누락·미정의 header mutation이 거부된다. |
+| `QA-HIGH-025-002` | RESOLVED | negative case 9종의 mutation·expected가 모두 고정됐다. canonical fixture에 version·error·status field·STT·header mutation을 실제 적용하고, idempotency·ACK 불변식까지 validator가 거부해야 통과한다. |
+
+### 재검증 상세
+
+- create POST 필수 header: `Authorization`, `CookLog-Installation-ID`, `Content-Type`,
+  `Idempotency-Key`
+- poll GET 필수 header: `Authorization`, `CookLog-Installation-ID`
+- ACK POST 필수 header: create와 동일
+- 세 요청 선택 header: `Accept`, `CookLog-Client-Request-ID`
+- `X-CookLog-App-Attest-Assertion`은 정상 fixture에서 제거되고 미정의 header 거부
+  negative case에만 존재한다.
+- 기존 7개 negative case의 descriptor 전체와 header case 2개가 명시적으로 검증된다.
+- version·AI contract·unknown error·status 추가 field·STT 활성화·header 변형은 실제
+  canonical payload에 적용되며 허용되면 전체 script가 실패한다.
+- idempotency body conflict와 ACK result version mismatch도 실제 불변식 판정 함수가
+  거부한다.
+
+독립 반례로 필수 header 제거, 미정의 header 추가, fixture expected 변조, unknown error
+expected 변조와 status descriptor 변조를 재실행했으며 모두 reject exit `1`을 확인했다.
+
+### 재검증 명령
+
+```text
+origin/develop...HEAD: 0 behind / 3 ahead (QA 기록 전)
+sh -n apps/backend/tests/contracts/validate-shared-fixtures.sh: PASS
+sh apps/backend/tests/contracts/validate-shared-fixtures.sh: PASS
+common contract validator: PASS
+remote STT contract validator: PASS
+AI recipe contract validator: PASS
+security/privacy/cost contract validator: PASS
+공용 fixture JSON 문법: PASS
+공통 header 독립 대조: PASS
+필수 header 누락 mutation: REJECT
+미정의 header 추가 mutation: REJECT
+negative expected·descriptor 독립 변조 3건: REJECT
+민감정보 pattern scan: PASS
+production iOS target fixture 참조 검색: PASS
+aiops task strict validation: PASS
+git diff --check: PASS
+```
+
+## 8. 재검증 잔여 위험과 최종 판정
+
+이번 Task는 공용 fixture와 계약 검증 기준을 정의한다. 실제 iOS DTO·fixture loader,
+Backend runtime schema middleware·endpoint, release bundle fixture 제외 CI와 staging
+create/poll/ACK·cleanup은 아직 구현되지 않았으므로 후속 구현·통합 QA에서 확인해야 한다.
+이는 이번 재작업의 계약 결함은 아니지만 실서비스 동작 통과로 확대 해석할 수 없는
+잔여 위험이다.
+
+`QA-HIGH-025-001~002`가 모두 해소됐고 기존 정상·오류·timeout·만료·STT 비활성 및
+민감정보 비포함 기준에도 회귀가 없다. 최종 판정은 `PASS_WITH_RISK`다. Task를
+`verification_passed`로 전환하고 Development Lead Agent / Completion Role에 완료
+검토를 인계한다.

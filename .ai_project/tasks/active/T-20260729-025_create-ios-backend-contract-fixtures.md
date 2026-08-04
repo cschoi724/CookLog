@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-025
 title: iOS·Backend 공용 fixture와 계약 테스트 기준 정의
-status: verification_ready
+status: verification_passed
 type: test
 priority: P0
 priority_reason: 구현 전에 양쪽이 같은 정상·오류·복구 schema를 검증해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities:
 - api_contract
 - backend_architecture
@@ -75,3 +75,5 @@ qa_to: ".ai_project/qa/T-20260729-025_create-ios-backend-contract-fixtures-qa.md
 | 2026-08-04 | Backend QA Agent | transition: verification_in_progress -> rework_requested | 공통 필수 header 불일치와 negative validator 차단력 결함 2건 확인, FAIL 판정 후 Development Lead 재조율 인계 |
 | 2026-08-04 | Backend Agent | transition: rework_requested -> in_progress | Product Owner 재작업 요청에 따라 QA-HIGH-025-001~002 수정 시작 |
 | 2026-08-04 | Backend Agent | transition: in_progress -> verification_ready | create·poll·ACK header 계약 정합화와 negative 9종 실제 mutation 거부 자기 검증 완료, Backend QA 재검증 인계 |
+| 2026-08-04 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-025-001~002 재작업 산출물과 최신 origin/develop 정렬 확인 후 독립 재검증 시작 |
+| 2026-08-04 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-025-001~002 해소와 기존 계약·민감정보 경계 무회귀 확인, PASS_WITH_RISK로 Development Lead 완료 검토 인계 |
