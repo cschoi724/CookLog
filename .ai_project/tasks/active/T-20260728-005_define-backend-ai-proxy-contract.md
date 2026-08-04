@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260728-005
 title: Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의
-status: completion_review
+status: done
 type: docs
 priority: P0
 priority_reason: 첫 출시의 온라인 AI 정리와 향후 원격 STT adapter가 iOS에 secret을 두지 않는 공통 Backend 경계를 사용해야 한다.
@@ -48,7 +48,7 @@ source_of_truth:
   - docs/PROJECT_DECISIONS.md
   - .ai_project/source_of_truth.md
 created_by: Product Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
@@ -137,6 +137,8 @@ iOS가 provider API Key를 보유하지 않고 STEP Preview를 안전하게 레�
 - 2026-07-30: Development Lead Agent가 최신 `origin/develop`의 T-20260729-026 정책을 기준으로 6개 하위 Task와 의존성·ownership·승인 경계를 확정해 `proposed -> scoped`로 전환했다.
 - 2026-07-30: 상위 scope만 완료했으며 하위 Task 구현 lock, commit, push와 PR은 획득하거나 실행하지 않았다.
 - 2026-08-04: 하위 `T-20260729-020~025`의 `done`, 독립 Backend QA 판정과 공용 계약 validator 통과를 확인해 `scoped -> completion_review`로 전환했다.
+- 2026-08-04: Product Owner가 완료 리뷰 잔여 위험을 수용하고 PR #65의 `develop` squash merge와 완료 확정을 승인했다.
+- 2026-08-04: Development Lead Agent가 PR #65 merge commit `4e0bca4`를 확인해 `completion_review -> done`으로 전환하고 후속 Backend 구현 Task에 인계했다.
 
 ## Development Lead 완료 검토
 
@@ -145,4 +147,7 @@ iOS가 provider API Key를 보유하지 않고 STEP Preview를 안전하게 레�
 - 하위 6개 Task는 각각 Backend QA 독립 검증을 거쳤고 최종 `PASS_WITH_RISK`의 차단 결함이 모두 해소됐다. 상위 Task는 새 runtime 산출물을 추가하지 않으므로 하위 QA 결과를 상위 검증 증거로 집계한다.
 - common·STT·AI·security 계약 validator와 공용 fixture 통합 validator, 상위 Task strict validation을 최신 `develop`에서 다시 실행해 모두 통과했다.
 - 실제 runtime schema validator·safe renderer·worker CAS, IAM·provider 설정, iOS loader·release bundle 제외 CI와 staging 통합 검증은 후속 구현·출시 Task 위험으로 유지한다.
-- 완료 리뷰 판정은 `PASS_WITH_RISK`다. 차단 결함이 없어 `completion_review`로 수용하며, Product Owner의 `develop` 병합 승인 후 `done`으로 확정한다.
+- 완료 리뷰 판정은 `PASS_WITH_RISK`다. Product Owner가 잔여 위험을 수용했고 PR #65를
+  `develop`에 squash merge한 commit `4e0bca4`를 확인해 `done`으로 확정한다.
+- `T-20260728-006`, `T-20260729-003`, `T-20260729-005`는 각자의 나머지 선행 조건과
+  별도 실행 승인을 확인한 뒤 진행한다.
