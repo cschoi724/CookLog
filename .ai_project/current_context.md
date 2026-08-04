@@ -41,7 +41,7 @@
 - 첫 공개 출시 Critical Path는 `docs/product/CookLog_ROADMAP.md`를 따릅니다.
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
 - Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다.
-- Design 상위 `T-20260729-002`는 진행 중이며 하위 `T-20260729-008~013`은 `done`, 마지막 순차 Task `T-20260729-014`는 Design QA와 Design Lead 완료 검토를 통과해 develop 통합 대기입니다.
+- Design 상위 `T-20260729-002`와 하위 `T-20260729-008~014`는 통합 Design QA와 PR #68 병합을 마쳐 모두 `done`입니다.
 - Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020~023은 `done`, T-024·025는 `approved`이고 T-025는 T-024 완료 후 착수합니다.
 - CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~005는 `done`, T-006은 별도 승인 대기입니다.
 - AI Ops `T-20260731-002`는 독립 검증 `PASS`와 PR #48 squash merge를 거쳐 `done`입니다.
@@ -55,7 +55,7 @@
 - push, merge, 배포는 사용자 승인 후 진행합니다.
 - 일반 Task는 최신 `develop`에서 시작하고 `develop` 대상 PR로 병합합니다.
 - `main`은 통합 QA와 Product Lead 수용 검토를 거친 `develop -> main` 승격 또는 승인된 hotfix만 받습니다.
-- T-20260731-001의 문서 정합성 선행 차단은 해소됐습니다. T-20260728-003은 Design 상위 Task 완료와 별도 실행 승인을 확인해야 합니다.
+- T-20260731-001의 문서 정합성 선행 차단과 Design 상위 Task 의존성은 해소됐습니다. 후속 영역은 각 담당 Lead의 별도 실행 승인을 따릅니다.
 
 ## 4. 세션 시작 체크
 
@@ -106,3 +106,4 @@ fetch 또는 공용 SHA 확인에 실패하면 `PUBLIC_STATE_UNVERIFIED`로 보�
 | 2026-07-31 | T-20260731-002에서 최신 `origin/develop` 공용 상태 조회와 로컬 worktree 상태 분리, 세션 preflight·보고 형식·정리 동결 규칙 반영 |
 | 2026-07-31 | T-20260731-002 독립 AI Ops PASS와 PR #48 squash merge를 확인해 `done`으로 동기화 |
 | 2026-08-04 | Design T-013 완료 정합화와 T-014 로컬 통합·자체 검증 완료, 독립 Design QA 인계 반영 |
+| 2026-08-04 | Design T-014 최종 QA PASS·PR #68 병합과 상위 T-002 성공 기준 수용, 전체 Design 패키지 `done` 반영 |

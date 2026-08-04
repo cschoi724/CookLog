@@ -17,35 +17,35 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `proposed` | 8 |
 | `scoped` | 1 |
 | `approved` | 0 |
-| `in_progress` | 1 |
+| `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
-| `completion_review` | 1 |
+| `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 32 |
+| `done` | 34 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~013`은 `done`, `T-20260729-014`는 Design QA와 Design Lead 완료 검토를 통과해 `completion_review`입니다. Backend T-020~025와 상위 T-005는 모두 `done`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`는 모두 `done`입니다. Backend T-020~025와 상위 T-005는 모두 `done`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Design | 0 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 4 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 | AI Ops | 0 | 1 | 0 | `T-20260730-006` `verification_passed`, `T-20260731-002` `done` |
 
 ## 4. Next Candidates
 
-출시 Critical Path는 `T-20260729-001` 제품 기준 고정 후 Design, XCTest와 Backend Contract를 병렬 진행하고, iOS 로컬 제품·Backend production·실서비스 연동을 거쳐 `T-20260728-009`에서 통합합니다. `T-20260728-004`는 PR #8 squash merge와 완료 검토를 마쳐 `done`이며 Xcode·Simulator 고정 검증은 T-008로 인계했습니다. 구형 Mock UI 잔여 검증 `T-20260728-001`은 중복으로 폐기했습니다. `T-20260729-008~013`은 `done`이고 다음 순차 Task는 `T-20260729-014`입니다.
+출시 Critical Path는 `T-20260729-001` 제품 기준 고정 후 Design, XCTest와 Backend Contract를 병렬 진행하고, iOS 로컬 제품·Backend production·실서비스 연동을 거쳐 `T-20260728-009`에서 통합합니다. `T-20260728-004`는 PR #8 squash merge와 완료 검토를 마쳐 `done`이며 Xcode·Simulator 고정 검증은 T-008로 인계했습니다. 구형 Mock UI 잔여 검증 `T-20260728-001`은 중복으로 폐기했습니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`는 모두 `done`입니다.
 
 | Task ID | Priority | 제목 | 담당 Lead | 의존성 |
 |---|---|---|---|---|
@@ -61,7 +61,7 @@ Team별 요약:
 | `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `scoped`; T-001~005 `done`, T-006 develop gate 검증 중 |
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
-| `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | Design Lead Agent | `in_progress`, `T-20260729-026`, 하위 `T-20260729-008~014` |
+| `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | - | `done`, 하위 T-008~014·통합 Design QA·PR #68 완료 |
 | `T-20260729-003` | P0 | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `T-20260728-006` |
 | `T-20260729-004` | P0 | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` |
 | `T-20260729-005` | P0 | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
@@ -80,7 +80,7 @@ Design `T-20260729-002` 하위 실행 후보:
 | `T-20260729-011` | P0 | AI 처리·AI Review·완료 레시피 편집·삭제 디자인 | - | `done`, PR #30 squash merge |
 | `T-20260729-012` | P0 | Audio Guide·핸즈프리·오디오 중단 상태 디자인 | - | `done`, PR #42 squash merge |
 | `T-20260729-013` | P0 | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | - | `done`, PR #53 squash merge |
-| `T-20260729-014` | P0 | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | Design Lead Agent | `completion_review`, Design QA PASS·완료 검토 통과 |
+| `T-20260729-014` | P0 | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | - | `done`, Design QA PASS·PR #68 squash merge |
 
 Backend `T-20260728-005` 하위 실행 후보:
 
@@ -271,3 +271,5 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-31 | T-20260731-002 독립 AI Ops PASS와 PR #48 squash merge를 확인해 `done`으로 확정 |
 | 2026-08-04 | Development Lead가 T-020~025 `done`·독립 Backend QA·공용 계약 validator를 집계해 T-20260728-005 완료 리뷰를 `PASS_WITH_RISK`, `completion_review`로 수용 |
 | 2026-08-04 | Product Owner가 T-20260728-005 잔여 위험과 병합을 승인하고 PR #65 merge SHA `4e0bca4`를 확인해 `done`으로 확정 |
+| 2026-08-04 | T-20260729-014 최종 Design QA·Design Lead 완료 검토와 PR #68 merge SHA `3d9a9a4`를 확인해 `done`으로 확정 |
+| 2026-08-04 | Design Lead가 T-008~014 완료·통합 QA·상위 성공 기준을 수용해 T-20260729-002를 `done`으로 확정 |

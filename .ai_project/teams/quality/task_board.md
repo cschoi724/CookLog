@@ -28,6 +28,8 @@
 | `T-20260730-006` | `done` | ios-build·ios-xctest required check 외부 설정 | source `15368`·PR #58 failure→복구·PR #57 무회귀·Budget 화면 | 독립 QA PASS_WITH_RISK, Product Owner 잔여 위험 수용 |
 | `T-20260729-025` | `done` | iOS·Backend 공용 fixture와 계약 테스트 기준 | header 계약·negative 9종 실제 mutation·기존 추적성 무회귀 | PR #63 squash merge `8eea645`·완료 확정 |
 | `T-20260728-005` | `done` | Backend AI gateway·기본 비활성 원격 STT 계약 정의 | T-020~025 독립 QA·상위 성공 기준·잔여 위험 집계 | PR #65 squash merge `4e0bca4`·완료 확정 |
+| `T-20260729-014` | `done` | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | DQA-HIGH-014-001·DQA-MEDIUM-014-001 해소, 82개 상태·접근성·핸드오프 무회귀 | PR #68 squash merge `3d9a9a4`·완료 확정 |
+| `T-20260729-002` | `done` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | T-008~014 독립 QA·상위 성공 기준·통합 Source of Truth | 하위 전체 병합·Design Lead 완료 확정 |
 
 향후 검증 예정 Task:
 
@@ -37,7 +39,7 @@
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
 
-`T-20260729-014`는 최종 독립 재재검증에서 DQA-HIGH-014-001과 DQA-MEDIUM-014-001 해소, 기존 통과 항목 무회귀를 확인해 `verification_passed`로 Design Lead 완료 검토에 인계했습니다.
+`T-20260729-014`는 최종 독립 재재검증에서 DQA-HIGH-014-001과 DQA-MEDIUM-014-001 해소, 기존 통과 항목 무회귀를 확인하고 PR #68로 병합돼 `done`입니다. 상위 `T-20260729-002`도 하위 전체 QA와 성공 기준을 수용해 `done`입니다.
 
 T-025는 AI 정상·공개 오류·timeout·만료, 원격 STT 비활성과 negative case의 공용
 fixture를 source schema·catalog에 연결했습니다. Backend 통합 validator는 canonical
