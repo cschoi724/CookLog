@@ -50,6 +50,9 @@
 | iOS 구현 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` | `apps/ios/docs/STATUS.md` | 계획 변경은 Product Lead Agent 또는 iOS Agent가 문서화 |
 | iOS 기술 스펙 | `apps/ios/docs/DEVELOPMENT_SPEC.md` | `apps/ios/docs/ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md` | 세부 영역 문서와 실제 코드 모두 확인 |
 | iOS QA 기준 | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` | `apps/ios/docs/TESTING.md`, `.ai_project/qa/` | iOS QA Agent가 리스크 분류 |
+| Backend 세션 기준 | `apps/backend/agents.md` | 루트 `agents.md` | Backend 구현·검증은 승인 Task와 확정 계약을 우선 |
+| Backend 현재 상태 | `apps/backend/docs/STATUS.md` | `apps/backend/docs/CHANGELOG.md` | 공용 `origin/develop`과 실행 Task 상태를 함께 확인 |
+| Backend 구현 계획·스펙 | `apps/backend/docs/DEVELOPMENT_PLAN.md`, `apps/backend/docs/DEVELOPMENT_SPEC.md` | `apps/backend/docs/DECISIONS.md` | Foundation과 실제 provider·배포 범위를 분리 |
 | Backend 런타임·AI provider 추천안 | `apps/backend/docs/ARCHITECTURE_DECISION.md` | T-20260729-020 report·QA | Task 완료와 최종 provider 선택을 구분하며 실제 계약·배포 전 Product Owner 승인 필요 |
 | Backend 공통 API 계약 | `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/` | T-20260729-021 report·QA | T-021 완료 상태와 후속 job·보안·fixture 계약을 함께 확인 |
 | 기본 비활성 원격 STT adapter 계약 | `apps/backend/docs/REMOTE_STT_ADAPTER.md`, `apps/backend/contracts/stt/` | T-20260729-022 report·QA | 첫 출시 기본 비활성·자동 fallback 없음, 활성화는 별도 제품 승인 |
@@ -104,6 +107,7 @@ apps/android/docs/
 | Backend 공통 계약 검증 | `apps/backend/contracts/common/validate-contracts.sh`, T-20260729-021 report·QA | Backend Agent / Backend QA Agent |
 | 원격 STT adapter 계약 검증 | `apps/backend/contracts/stt/validate-contracts.sh`, T-20260729-022 report·QA | Backend Agent / Backend QA Agent |
 | Backend 후속 계약 검증 | T-20260729-023~025의 job·보안·fixture 계약과 runtime renderer·validator 동일성 | Backend Agent / Backend QA Agent |
+| Backend Foundation 검증 | `apps/backend/docs/DEVELOPMENT_PLAN.md`, T-20260804-002~007 runtime test·QA | Backend Agent / Backend QA Agent |
 | Android 검증 | Android 착수 후 확정 | Android 착수 후 Execution/Verification Agent 확정 |
 
 ## 7. 충돌 해결 원칙
@@ -130,3 +134,4 @@ apps/android/docs/
 | 2026-07-31 | T-20260731-001 재작업에서 Backend 계약 검증 script·후속 계약 경계와 Product QA 운영 정합성 반영 |
 | 2026-07-31 | T-20260731-002에서 다중 worktree 공용 상태를 최신 `origin/develop`로 고정하고 로컬 실행 상태와 의존성 판단 경계를 명시 |
 | 2026-08-05 | T-20260805-001의 Core Loop 23개 iOS 구현·Visual QA 계약을 통합 82개 상태의 하위 인수 기준으로 등록 |
+| 2026-08-04 | T-20260728-006 scope에서 Backend 세션·상태·계획·스펙과 Foundation 검증 경계를 등록 |

@@ -38,7 +38,12 @@
 | Task ID | 도메인 | 예정 Verification Agent | 검증 초점 |
 |---|---|---|---|
 | `T-20260728-003` | iOS/Design | iOS QA Agent | 기능 회귀와 Figma 정합성 |
-| `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
+| `T-20260804-002` | Backend | Backend QA Agent | 새 clone 재현·runtime config·health·secret 비노출 |
+| `T-20260804-003` | Backend | Backend QA Agent | 공통 envelope·인증·replay·제한·idempotency |
+| `T-20260804-004` | Backend | Backend QA Agent | Mock AI 단일 호출·status·ACK·timeout·복구 |
+| `T-20260804-005` | Backend | Backend QA Agent | 원격 STT route·body read·egress 0·활성화 차단 |
+| `T-20260804-006` | Backend | Backend QA Agent | redaction·비용 hard cutoff·TTL cleanup |
+| `T-20260804-007` | Backend | Backend QA Agent | 전체 계약 동등성·보안 회귀·로컬 재현 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
 | `T-20260728-010` | Product | Product QA Agent | 비용 모델·Free/Pro·가격·quota·출시 범위 |
 | `T-20260728-011` | Design | Design QA Agent | Paywall 진입·가격·복원·접근성·로컬 데이터 접근 유지 |
@@ -83,6 +88,11 @@ T-005 상위 완료 리뷰는 새로운 runtime 산출물을 추가하지 않고
 각각 독립 검증했고 모두 `done`이므로 추가 중복 QA 없이 `PASS_WITH_RISK`로 수용했습니다.
 Product Owner가 잔여 위험을 수용하고 PR #65를 squash merge해 `done`으로 확정했습니다.
 runtime·cloud·iOS·staging 잔여 위험은 후속 구현·출시 Task로 인계합니다.
+
+T-006은 6개 Foundation 실행 패키지로 분해됐습니다. Backend QA는 각 패키지의 계약·
+secret·콘텐츠 비노출을 독립 검증하며, 마지막 T-007에서 공용 fixture와 runtime 응답의
+전체 동등성을 재검증합니다. 실제 provider·배포와 원격 STT 활성화는 검증 범위 밖이며
+승인 없이 추가할 수 없습니다.
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
 
