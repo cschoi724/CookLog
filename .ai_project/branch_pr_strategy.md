@@ -55,6 +55,9 @@ pull_request:
     main:
       - ios-build
       - ios-xctest
+  ci_required_source:
+    integration: GitHub Actions
+    integration_id: 15368
   ci_external_status: verification_ready
 ```
 
@@ -62,7 +65,8 @@ pull_request:
 `develop` ruleset `20340678`을 active로 적용하고 PR #57에서 대기 중 `BLOCKED`, 두
 check 성공 뒤 `CLEAN`을 확인했다. 같은 규칙을 `main` ruleset `20344405`로 확대했다.
 단일 collaborator 운영에서는 approval을 0으로 두되 PR과 두 check를 필수화하고 상시
-bypass actor는 두지 않는다.
+bypass actor는 두지 않는다. 독립 QA 재작업에서 두 check source를 GitHub Actions 앱
+`15368`로 고정하고 validation PR #58의 실패 `BLOCKED`와 복구 `CLEAN`을 확인했다.
 
 ## 4. Merge Rules
 

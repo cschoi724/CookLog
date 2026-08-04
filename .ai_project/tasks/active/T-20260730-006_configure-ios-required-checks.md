@@ -85,6 +85,10 @@ qa_to: ".ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md"
 - 문서 전용 job: 모두 `ubuntu-latest`, artifact 0개
 - `main` ruleset ID: `20344405`
 - `main`: develop과 동일 규칙, `protected: true`
+- 두 ruleset의 required check source: GitHub Actions `integration_id: 15368`
+- validation PR #58 실패 SHA `ae0dd62`: `ios-build` failure, `BLOCKED`
+- validation PR #58 복구 SHA `6a99f2a`: 두 required check success, `CLEAN`
+- validation PR #58: 미병합 종료
 
 ## 적용 결정
 
@@ -98,10 +102,9 @@ qa_to: ".ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md"
 
 ## Actions·Budget snapshot
 
-- 2026-08-01 이후 run: 12개, 모두 pull request·success, re-run 0개
-- run duration 합계: 779초, API billable: Ubuntu 0ms·macOS 0ms
+- 재작업 직후 2026-08-01 이후 run: 18개, success 17·의도적 failure 1, re-run 0개
 - active cache: 0개, 0B
-- active artifact: 75개, 58,340,487B; 최대 항목 약 52.7MB
+- active artifact: 77개, 58,513,632B
 - public repository의 표준 runner라 runner minute는 과금되지 않는다.
 - Budget 75/90/100%는 GitHub native 알림, 50%는 CookLog 수동 경고로 운영한다.
 - 현재 GitHub 토큰에 `user` scope가 없어 Billing API가 404를 반환하므로 실제 Budget
@@ -109,10 +112,14 @@ qa_to: ".ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md"
 
 ## 독립 검증 인계
 
-1. iOS QA Agent가 ruleset `20340678`, `20344405`를 API round-trip한다.
-2. PR #57의 대기 중 `BLOCKED`와 성공 뒤 `CLEAN`, Linux 경량 job을 독립 확인한다.
-3. Billing 화면에서 Budget 금액·75/90/100% native alert·50% 수동 기록을 확인한다.
-4. 독립 QA 전에는 PR #57을 merge하지 않는다.
+1. iOS QA Agent가 ruleset `20340678`, `20344405`의 context와 `integration_id: 15368`을
+   API round-trip한다.
+2. PR #58 실패 SHA `ae0dd62`, run `30878036777`, job `91893372329`의 failure와
+   `BLOCKED`를 독립 확인한다.
+3. PR #58 복구 SHA `6a99f2a`, run `30878540769`, `30878540781`의 success와
+   `CLEAN`, 미병합 종료를 확인한다.
+4. Billing 화면에서 Budget 금액·75/90/100% native alert·50% 수동 기록을 확인한다.
+5. 독립 QA 전에는 PR #57을 merge하지 않는다.
 
 ## AI Ops CLI 기록
 
@@ -127,3 +134,8 @@ qa_to: ".ai_project/qa/T-20260730-006_configure-ios-required-checks-qa.md"
 | 2026-08-04 | AI Ops Agent | develop gate verified | PR #57 pending `BLOCKED`, checks success 뒤 `CLEAN`, Linux·artifact 0 |
 | 2026-08-04 | AI Ops Agent | main ruleset applied | ruleset `20344405`, active, develop과 동일, bypass 없음 |
 | 2026-08-04 | AI Ops Agent | handoff | `verification_ready`, iOS QA Agent 독립 검증 요청 |
+| 2026-08-04 | iOS QA Agent | transition: verification_ready -> verification_in_progress | ruleset 2개, PR #57 merge gate, Actions 경량 경로와 Budget 운영 독립 검증 시작 |
+| 2026-08-04 | iOS QA Agent | transition: verification_in_progress -> rework_requested | `QA-HIGH-006-001~002`로 독립 QA FAIL |
+| 2026-08-04 | Product Owner | rework approved | 실패 check 격리 재현과 GitHub Actions source 고정 승인 |
+| 2026-08-04 | AI Ops Agent | rework | 두 ruleset에 `integration_id: 15368` 적용, PR #58 failure `BLOCKED`·복구 `CLEAN` 검증 |
+| 2026-08-04 | AI Ops Agent | handoff | `verification_ready`, iOS QA Agent 독립 재검증 요청 |

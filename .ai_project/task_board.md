@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~012`는 `done`, `T-20260729-013`은 Design Lead 완료 검토를 통과해 `completion_review`입니다. Backend T-020~024는 `done`, T-025는 `approved`입니다. CI T-001~005는 `done`, T-006은 두 branch ruleset 적용과 PR #57 실제 gate 검증을 마쳐 `verification_ready`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~012`는 `done`, `T-20260729-013`은 Design Lead 완료 검토를 통과해 `completion_review`입니다. Backend T-020~024는 `done`, T-025는 `approved`입니다. CI T-001~005는 `done`, T-006은 source 고정과 PR #58 실패 차단 재작업을 마쳐 독립 재검증 `verification_ready`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -102,7 +102,7 @@ CI `T-20260728-008` 하위 실행 후보:
 | `T-20260730-003` | P0 | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | - | `done`, PR #28 squash merge |
 | `T-20260730-004` | P1 | iOS CI concurrency·진단·cache·artifact 통합 | - | `done`, PR #34 checks·squash merge·완료 확정 |
 | `T-20260730-005` | P0 | iOS CI PR dry run·실패 감지·회귀 검증 | - | `done`, PR #36·#46 squash merge |
-| `T-20260730-006` | P0 | ios-build·ios-xctest required check 외부 설정 | iOS QA Agent | `verification_ready`: develop `20340678`, main `20344405`, PR #57 gate 검증 완료 |
+| `T-20260730-006` | P0 | ios-build·ios-xctest required check 외부 설정 | iOS QA Agent | `verification_ready`: source `15368`, PR #58 failure `BLOCKED`·복구 `CLEAN` 재작업 완료 |
 
 완료된 주요 Task:
 

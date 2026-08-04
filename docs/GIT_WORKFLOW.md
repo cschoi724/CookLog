@@ -359,6 +359,12 @@ Product Owner 결정에 따라 `develop`에 먼저 적용해 실제 PR 흐름을
 `main` ruleset `20344405`로 적용했으며 두 branch 모두 `protected: true`, 상시 bypass
 actor 없음, strict required checks 2개 상태입니다.
 
+최초 독립 QA에서 실패 check 차단 재현과 check source 고정이 누락됐음을 확인했습니다.
+Product Owner 승인 재작업으로 두 ruleset의 `ios-build`, `ios-xctest`에 GitHub Actions
+`integration_id: 15368`을 고정했습니다. 미병합 validation PR #58은 실패 SHA
+`ae0dd62`에서 `ios-build` failure와 `BLOCKED`, 복구 SHA `6a99f2a`에서 두 check
+success와 `CLEAN`을 확인한 뒤 닫았습니다.
+
 ### CI rollback 기준과 절차
 
 다음 중 하나라도 발생하면 WP-1~5 최적화를 rollback 후보로 분류합니다.
