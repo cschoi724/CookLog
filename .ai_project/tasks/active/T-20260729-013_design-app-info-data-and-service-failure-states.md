@@ -1,7 +1,7 @@
 ---
 id: T-20260729-013
 title: 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 첫 공개 출시에서 로컬 보관 한계와 온라인 장애를 정확히 안내하고 지원·법적 정보로 접근할 수 있어야 한다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
   - ux_flow
   - ui_design
@@ -125,6 +125,7 @@ qa_to: .ai_project/qa/T-20260729-013_design-app-info-data-and-service-failure-st
 - 2026-07-31: 실행 lock을 해제하고 `Design QA Agent / Verification Role`에 포커스·진단정보 동의 범위와 기존 통과 항목의 독립 재검증을 요청했다.
 - 2026-07-31: Design QA Agent가 `DQA-MEDIUM-013-001~002` 해소, App Info 전체 전환 포커스, 진단 정보 동의 범위와 기존 통과 항목 무회귀를 실제 Chrome으로 독립 재검증해 `verification_ready -> verification_passed`로 전환하고 Design Lead Agent / Completion Role에 인계했다. Task는 `done`으로 변경하지 않았다.
 - 2026-07-31: Design Lead Agent가 성공 기준, Design QA `PASS`, allowed paths, Figma 비차단 근거와 iOS 구현 핸드오프를 확인해 `verification_passed -> completion_review`로 인계했다. develop 통합 전이므로 `done`, 상위 `T-20260729-002` 완료와 후속 `T-20260729-014` 차단 해제는 보류한다.
+- 2026-08-04: PR #53의 `develop` 병합 커밋 `3ae2b15`을 최신 `origin/develop`에서 확인하고 `completion_review -> done`으로 정합화했다. 후속 `T-20260729-014` 선행 차단을 해제한다.
 
 ## 승인된 재작업 결과
 
