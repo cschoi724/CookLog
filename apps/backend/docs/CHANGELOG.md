@@ -10,3 +10,7 @@
 - typed fail-closed 환경 설정과 고정 응답 `GET /healthz`를 구현했다.
 - Cloud Run `PORT`·`0.0.0.0`·`SIGTERM` 경계와 multi-stage non-root container를 추가했다.
 - config·health·remote STT route 부재·graceful close 테스트를 추가했다.
+- Backend QA가 shutdown deadline 뒤 listener·process 생존 결함
+  `QA-HIGH-002-001`을 확인해 `FAIL`로 판정했다.
+- Product Owner가 강제 종료·두 번째 signal·hanging close·keep-alive·실제 process
+  종료 상한 재작업을 승인해 Backend Agent에 재인계했다.

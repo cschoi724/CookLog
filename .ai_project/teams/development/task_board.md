@@ -30,7 +30,7 @@
 | `T-20260728-015` | `proposed` | Backend | 구독 검증과 AI quota 구현 | Development Lead Agent | `T-20260728-006`, `012`, `013` | 수익화 선행 Task 대기 |
 | `T-20260728-016` | `proposed` | Cross-platform | 수익화 이벤트와 AI 비용 관측성 | Development Lead Agent | `T-20260728-014`, `015` | 구현 완료 후 scope |
 | `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` | 외부 설정 별도 승인 필요 |
-| `T-20260804-002` | `rework_requested` | Backend | runtime scaffold·환경 설정·health | Development Lead Agent | `T-20260728-005` 완료 | shutdown deadline 결함 재작업 조율 |
+| `T-20260804-002` | `approved` | Backend | runtime scaffold·환경 설정·health | Backend Agent | `T-20260728-005` 완료 | shutdown deadline 결함 재작업·재검증 |
 | `T-20260804-003` | `proposed` | Backend | 공통 HTTP·인증·제한·idempotency middleware | Backend Agent | `T-20260804-002` | T-002 `done` 후 실행 승인 |
 | `T-20260804-004` | `proposed` | Backend | Mock AI recipe job·status·ACK·복구 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 대기 |
 | `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
@@ -47,6 +47,12 @@ Product Owner가 T-006 진행을 승인했습니다. Development Lead는 runtime
 공통 middleware, Mock AI, STT 비활성 경계, 보안·cleanup, 통합 검증의 6개 패키지로
 분해했습니다. T-002만 `approved`로 Backend Agent에 인계하고 나머지는 선행 완료 전
 `proposed`로 유지합니다. 실제 provider·cloud 배포·원격 STT endpoint는 범위 밖입니다.
+
+Backend QA는 T-002의 shutdown deadline 뒤 listener·process 생존을
+`QA-HIGH-002-001`로 확인해 `FAIL`로 인계했습니다. Product Owner가 deadline 강제 종료,
+두 번째 signal, hanging close·keep-alive·실제 process 상한 테스트 재작업을 승인했습니다.
+Backend Agent는 최신 `develop` 충돌을 해소하고 자체 검증 후 Backend QA에 재인계합니다.
+T-003~007은 T-002가 `done`이 될 때까지 차단합니다.
 
 Development Lead는 T-020~025의 `done`, 하위 Backend QA 최종 판정, Source of Truth
 연결과 공용 계약 validator를 집계해 T-005 완료 리뷰를 `PASS_WITH_RISK`로 수용했습니다.

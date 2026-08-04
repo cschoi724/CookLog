@@ -2,7 +2,7 @@
 
 작성일: 2026-08-04
 작성자: Backend Agent
-상태: 자체 검증 완료, Backend QA 독립 검증 대기
+상태: Backend QA FAIL, 승인된 재작업 대기
 
 ## 결과
 
@@ -59,3 +59,22 @@ local/mock server scaffold를 구현했다.
 Backend QA Agent는 새 clone `npm ci -> npm run check -> npm run dev`, production 필수·금지
 설정, health 고정 응답·secret 비노출, remote STT route 부재, SIGTERM 종료와 가능한
 환경에서 Docker build/run을 독립 검증한다.
+
+## Backend QA 결과와 재작업 승인
+
+2026-08-04 Backend QA는 정상 실행·config·health·금지 route·secret 비노출과 기존
+계약 validator를 통과시켰다. 그러나 `app.close()`가 멈췄을 때 deadline 뒤에도
+listener와 process가 살아 있고 두 번째 signal도 무시되는 `QA-HIGH-002-001`을 확인해
+최종 `FAIL`, `rework_requested`로 인계했다.
+
+Development Lead는 다음 재작업만 허용했고 Product Owner가 승인했다.
+
+- 정상 signal은 exit 0, deadline 초과와 두 번째 signal은 강제 exit 1
+- hanging close·keep-alive·연속 signal의 실제 child process 회귀 테스트
+- 종료 상한 9초와 listener·process 실제 종료 검증
+- 기존 10개 테스트와 config·health·보안·공용 계약 무회귀
+- Backend QA 재인계 전 최신 `origin/develop` 충돌 해소와 공용 기록 보존
+
+Backend Agent가 자체 검증 후 `verification_ready`로 재인계하며 Backend QA는 기존
+통과 항목과 `QA-HIGH-002-001`을 독립 재검증한다. Docker가 없는 환경의 Node 24
+container·non-root 실행은 별도 잔여 위험으로 유지한다.

@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-002
 title: Backend runtime scaffold·환경 설정·health 구현
-status: rework_requested
+status: approved
 type: feature
 priority: P0
 priority_reason: 모든 foundation 패키지가 공유할 실행·빌드·테스트 기준을 먼저 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Lead Role
+target_agent: Backend Agent
+target_role: Execution Role
 required_capabilities:
 - backend_architecture
 - backend_implementation
@@ -90,6 +90,26 @@ qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
 2026-08-04 Product Owner가 상위 T-006 진행을 승인했고 Development Lead가 첫 실행
 패키지로 인계했다. Backend Agent는 전용 worktree와 branch에서만 착수한다.
 
+## 재작업 승인 범위
+
+2026-08-04 Product Owner가 `QA-HIGH-002-001` 재작업을 승인했다. Backend Agent는
+다음 범위만 수정하고 기존 config·health·보안 계약을 유지한다.
+
+1. 정상 SIGTERM/SIGINT에서는 listener와 process가 exit code 0으로 실제 종료된다.
+2. `app.close()`가 deadline 안에 끝나지 않으면 활성 listener·socket 또는 process를
+   강제 종료하고 exit code 1로 9초 안에 끝낸다.
+3. shutdown 진행 중 두 번째 SIGTERM/SIGINT는 즉시 강제 종료한다.
+4. hanging close, 열린 keep-alive connection, 연속 signal을 실제 child process로
+   검증하고 종료 시각·exit code를 assertion한다.
+5. 기존 `npm run check`, health·production config·금지 route·secret 비노출 계약을
+   회귀 검증한다.
+6. Backend QA 재인계 전에 최신 `origin/develop`과 PR #70 충돌을 해소하되 최신 공용
+   보드·Source of Truth 기록을 보존한다.
+
+인증·AI·원격 STT endpoint, 실제 provider·cloud resource와 T-003 이후 구현은 이번
+재작업에 포함하지 않는다. 완료 후 `verification_ready`로 전환하고 같은 Backend QA가
+`QA-HIGH-002-001`과 기존 통과 항목을 독립 재검증한다.
+
 ## 상태 전이 기록
 
 - 2026-08-04: Backend Agent가 전용 worktree lock을 획득하고
@@ -101,3 +121,7 @@ qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
 - 2026-08-04: Backend QA Agent가 shutdown deadline 이후 listener·process가 계속
   살아 있는 `QA-HIGH-002-001`을 확인해 `verification_in_progress -> rework_requested`,
   `FAIL`로 Development Lead에 인계했다.
+- 2026-08-04: Development Lead Agent가 결함을 종료 강제 경계와 process-level 회귀
+  테스트로 범위화했다.
+- 2026-08-04: Product Owner가 재작업을 승인해
+  `rework_requested -> scoped -> approved`로 전환하고 Backend Agent에 재라우팅했다.

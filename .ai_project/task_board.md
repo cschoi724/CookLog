@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005는 모두 `done`, Foundation T-006은 `scoped`, 첫 하위 T-20260804-002는 `approved`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005는 모두 `done`, Foundation T-006은 `scoped`, 첫 하위 T-20260804-002는 Backend QA `FAIL` 후 재작업 `approved`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -93,7 +93,7 @@ Backend `T-20260728-005` 하위 실행 후보:
 | `T-20260729-023` | P0 | AI 레시피 job·상태 조회·결과 복구 계약 정의 | - | `done`, 완료 검토·Product Owner 승인 완료 |
 | `T-20260729-024` | P0 | Backend 보안·개인정보·관측성·비용 guardrail 정의 | - | `done`, PR #50·#51 squash merge·완료 확정 |
 | `T-20260729-025` | P0 | iOS·Backend 공용 fixture와 계약 테스트 기준 정의 | - | `done`, PR #63·#64 squash merge |
-| `T-20260804-002` | P0 | Backend runtime scaffold·환경 설정·health | Backend Agent | `approved`, 구현 착수 인계 |
+| `T-20260804-002` | P0 | Backend runtime scaffold·환경 설정·health | Backend Agent | `approved`, QA-HIGH-002-001 재작업 인계 |
 | `T-20260804-003` | P0 | Backend 공통 HTTP·인증·제한·idempotency middleware | Backend Agent | `proposed`, T-002 선행 |
 | `T-20260804-004` | P0 | Mock AI recipe job·status·ACK·복구 저장 경계 | Backend Agent | `proposed`, T-002·003 선행 |
 | `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `proposed`, T-002·003 선행 |
@@ -301,3 +301,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-04 | Design Lead가 T-008~014 완료·통합 QA·상위 성공 기준을 수용해 T-20260729-002를 `done`으로 확정 |
 | 2026-08-05 | T-20260805-001 Core Loop 23개 iOS 구현·Visual QA 계약을 공용화하고 T-20260728-003의 선행 기준으로 연결 |
 | 2026-08-04 | Product Owner가 T-20260728-006 진행을 승인하고 Development Lead가 T-20260804-002~007로 scope, T-002를 Backend Agent 실행 승인 인계 |
+| 2026-08-04 | Backend QA가 T-20260804-002 shutdown deadline 결함을 FAIL로 인계하고 Product Owner가 강제 종료·process-level 회귀 재작업을 승인 |
