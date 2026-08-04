@@ -3,7 +3,7 @@
 작성일: 2026-08-04
 실행 역할: UI/UX Design Agent
 최초 실행 기준: `origin/develop@e4bab3a`
-재검증 기준: `origin/develop@55992a5`
+재검증 기준: `origin/develop@be44156`
 
 ## 결과
 
@@ -65,5 +65,5 @@ Design QA Agent는 다음을 독립적으로 확인한다.
 - 녹음 시작 control의 포커스를 비-live timer로 옮기고 10초 동안 같은 DOM을 유지한다. 종료 시 처리 상태 제목, STEP 추가 시 다음 기록 control로 포커스를 이동해 포커스 소실과 전체 화면 반복 낭독을 방지한다.
 - Chrome 자동 검증에서 2초 경과 뒤 동일 timer DOM·포커스·`08` 표시를, 10초 종료 뒤 처리 제목 포커스·단일 종료 알림·앱 루트 live region 부재를 확인했다.
 - `DQA-MEDIUM-014-001`: trailing whitespace와 EOF blank line을 제거하고 `git diff --check origin/develop...HEAD` 기준을 재실행한다.
-- 최신 `origin/develop@55992a5` 위로 충돌 없이 재정렬한 뒤 정적 assertion과 diff 검사를 다시 통과했다.
+- 최신 `origin/develop@be44156` 위로 재정렬한 뒤 정적 assertion과 diff 검사를 다시 통과했다.
 - 첫 재검증에서 확인된 처리 STEP의 별도 `aria-live`를 제거해 녹음 종료 이벤트는 전용 announcer 하나에서만 전달되도록 보완했다.
