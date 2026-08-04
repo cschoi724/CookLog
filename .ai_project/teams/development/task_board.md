@@ -10,8 +10,8 @@
 | `T-20260728-001` | `cancelled` | iOS | iOS M8 잔여 안정화와 최종 검증 | - | - | 유효 항목 T-003/T-009 통합 |
 | `T-20260728-003` | `proposed` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` | 7개 iOS 하위 패키지 scope |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
-| `T-20260728-005` | `scoped` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` | T-020~023 `done`, T-024 재작업, T-025 승인·T-024 선행 대기 |
-| `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` | 선행 Task 대기 |
+| `T-20260728-005` | `completion_review` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | 하위 `T-20260729-020~025` 완료 | 완료 리뷰 PASS_WITH_RISK, Product Owner 병합 승인 대기 |
+| `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` | T-005 `done` 확정 후 별도 실행 승인 검토 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
 | `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~005 완료, T-006 별도 승인 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
@@ -31,6 +31,11 @@ T-020~025는 모두 `done`입니다. T-025는 공통 header와 negative validato
 Backend QA 독립 재검증과 완료 검토를 통과하고 PR #63으로 `develop`에 병합됐습니다.
 원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지합니다. 일반 개발 Task는 최신
 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+
+Development Lead는 T-020~025의 `done`, 하위 Backend QA 최종 판정, Source of Truth
+연결과 공용 계약 validator를 집계해 T-005 완료 리뷰를 `PASS_WITH_RISK`로 수용했습니다.
+실제 runtime·provider·iOS·staging 위험은 후속 Task에 유지하며, Product Owner의 병합
+승인 후 `done`으로 확정합니다.
 
 T-025는 AI 정상·오류·timeout·만료, 원격 STT 비활성과 negative case를 iOS·Backend
 공용 JSON fixture로 고정했습니다. manifest가 source schema와 iOS assertion을 연결하고,
