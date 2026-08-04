@@ -24,7 +24,7 @@
 | `T-20260729-022` | `done` | Backend | 기본 비활성 원격 STT adapter 계약 | - | `T-20260729-021`, `026` 완료 | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260729-023` | `done` | Backend | AI recipe job·상태 조회·결과 복구 계약 | - | `T-20260729-020`, `021` 완료 | 완료 검토·Product Owner 승인 완료, T-025 인계 |
 | `T-20260729-024` | `done` | Backend | 보안·개인정보·관측성·비용 guardrail | - | `T-20260729-020`, `021` 완료 | PR #50 squash merge `00feb017`·완료 확정, T-025 착수 |
-| `T-20260729-025` | `verification_ready` | Backend | iOS·Backend fixture·계약 테스트 기준 | Backend QA Agent | `T-20260729-021~024` 완료 | 공용 fixture·통합 검증 자체 PASS, 독립 검증 |
+| `T-20260729-025` | `rework_requested` | Backend | iOS·Backend fixture·계약 테스트 기준 | Development Lead Agent | `T-20260729-021~024` 완료 | 필수 header·negative validator 결함 재작업 조율 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
 T-020~024는 `done`이고 T-025는 공용 fixture·통합 검증 자체 PASS 후 Backend QA
@@ -37,6 +37,12 @@ T-025는 AI 정상·오류·timeout·만료, 원격 STT 비활성과 negative ca
 Backend 통합 validator가 canonical hash·공개 오류·상태·민감정보 비포함과 기존
 common·STT·AI·security 계약을 함께 검사합니다. iOS `SERVICES.md` handoff까지
 동기화하고 자체 검증을 통과해 Backend QA에 인계합니다.
+
+Backend QA 독립 검증에서 create·ACK 필수 header가 `API_CONTRACT.md`와 다른
+`QA-HIGH-025-001`, negative 7개 중 4개의 expected·mutation 오류를 validator가
+차단하지 못하는 `QA-HIGH-025-002`를 확인했습니다. fixture 콘텐츠와 민감정보 경계는
+통과했지만 계약 drift를 허용하므로 `FAIL`, `rework_requested`로 Development Lead에
+재조율을 인계했습니다.
 
 Backend QA가 `T-20260729-021`에서 최초 설치 challenge의 동시 소비 원자성 누락
 `QA-HIGH-021-001`, 오류 허용 문자열 내부 민감정보 비노출을 기계적으로 보장하지 못하는
