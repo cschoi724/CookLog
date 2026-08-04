@@ -1,5 +1,16 @@
 # CookLog Project Changelog
 
+## 2026-08-04
+
+- 보존 WIP에만 있던 `docs/product/CookLog_MONETIZATION.md`와 `T-20260728-010~018` 후보 Task를 최신 develop 기준으로 선택 복구했습니다.
+- 후보 Task는 모두 `proposed`·실행 동결 상태로 유지하고 Core v1 Critical Path와 분리했습니다.
+- T-010이 AI·Backend·Apple·운영 비용, 사용자당 사용량, 손익분기점과 위험 시나리오를 비교한 뒤 가격·Free/Pro quota를 확정하도록 보강했습니다.
+- Apple 기기 내 STT를 기본 원가 경로로 두고 유료 원격 STT는 자동 fallback 없는 별도 선택 비용 시나리오로 분리했습니다.
+- 핸즈프리 음성 명령을 첫 공개 출시 핵심 경험으로 유지하고 Pro 전용 기능에서 제외했습니다.
+- Product QA 실패 재작업으로 Product Lead에 Product Team 한정 Lead Role을 추가하고 복구 Task 10개의 vNext schema를 보완했습니다.
+- WIP의 T-011 실행·QA·디자인 결과는 공식 완료 근거로 가져오지 않고 별도 보존했습니다.
+- T-20260804-001은 Product QA 재검증 `PASS`, Product Lead 완료 리뷰와 Product Owner 최종 승인을 거쳐 로컬 `done`으로 확정했습니다. develop 통합은 별도 승인 전까지 대기합니다.
+
 ## 2026-07-31
 
 - 루트 `agents.md`를 제품 세부 정책 복제 없이 역할·Source of Truth 탐색 중심으로 재구성했습니다.

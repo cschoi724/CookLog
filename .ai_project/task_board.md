@@ -14,7 +14,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 8 |
+| `proposed` | 17 |
 | `scoped` | 1 |
 | `approved` | 0 |
 | `in_progress` | 0 |
@@ -24,14 +24,14 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 34 |
+| `done` | 35 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`는 모두 `done`입니다. Backend T-020~025와 상위 T-005는 모두 `done`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Product `T-20260804-001`도 수익화 Source of Truth 복구 HIGH 2건 해소와 무회귀 재검증 `PASS`, Product Lead 완료 리뷰와 Product Owner 최종 승인을 거쳐 로컬 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`는 모두 `done`입니다. Backend T-020~025와 상위 T-005는 모두 `done`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -39,9 +39,9 @@ Team별 요약:
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 0 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
-| Core Development | 4 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
+| Core Development | 2 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
-| AI Ops | 0 | 1 | 0 | `T-20260730-006` `verification_passed`, `T-20260731-002` `done` |
+| AI Ops | 0 | 0 | 0 | `T-20260730-006`, `T-20260731-002` `done` |
 
 ## 4. Next Candidates
 
@@ -58,7 +58,7 @@ Team별 요약:
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
 | `T-20260731-002` | P0 | 프로젝트 공용 상태 일관성 및 Git 안전 guardrail | - | `done`, 독립 AI Ops PASS·PR #48 squash merge |
-| `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `scoped`; T-001~005 `done`, T-006 develop gate 검증 중 |
+| `T-20260728-008` | P0 | iOS CI 기본 파이프라인 구축 | Development Lead Agent | `scoped`; T-001~006 모두 `done`, 상위 완료 검토 준비 |
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
 | `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | - | `done`, 하위 T-008~014·통합 Design QA·PR #68 완료 |
@@ -102,7 +102,23 @@ CI `T-20260728-008` 하위 실행 후보:
 | `T-20260730-003` | P0 | ios-xctest 직렬 실행·timeout·artifact workflow 구현 | - | `done`, PR #28 squash merge |
 | `T-20260730-004` | P1 | iOS CI concurrency·진단·cache·artifact 통합 | - | `done`, PR #34 checks·squash merge·완료 확정 |
 | `T-20260730-005` | P0 | iOS CI PR dry run·실패 감지·회귀 검증 | - | `done`, PR #36·#46 squash merge |
-| `T-20260730-006` | P0 | ios-build·ios-xctest required check 외부 설정 | AI Ops Agent | `verification_passed`: HIGH 2건 해소, Billing 화면 미확인 위험 유지 |
+| `T-20260730-006` | P0 | ios-build·ios-xctest required check 외부 설정 | - | `done`, PR #60 squash merge·완료 확정 |
+
+수익화 동결 후보:
+
+| Task ID | Priority | 제목 | 담당 Lead | 실행 조건 |
+|---|---|---|---|---|
+| `T-20260728-010` | P1 | 수익화 가격·원가와 출시 정책 확정 | Product Lead Agent / Lead Role | `T-20260728-006`, `009` 완료 후 Product Owner 활성화 승인 |
+| `T-20260728-011` | P1 | 구독·Paywall UX 설계 | Design Lead Agent | `T-20260729-002`, `T-20260728-010` |
+| `T-20260728-012` | P1 | 구독 entitlement와 AI quota Backend 계약 | Development Lead Agent | `T-20260728-005`, `006`, `009`, `010` |
+| `T-20260728-013` | P1 | App Store 구독 상품과 법무·운영 정보 준비 | Product Lead Agent / Lead Role | `T-20260728-007`, `009`, `010` |
+| `T-20260728-014` | P1 | iOS StoreKit 2 CookLog Pro 구현 | Development Lead Agent | `T-20260728-003`, `011~013` |
+| `T-20260728-015` | P1 | Backend 구독 검증과 AI quota 구현 | Development Lead Agent | `T-20260728-006`, `012`, `013` |
+| `T-20260728-016` | P1 | 수익화 이벤트와 AI 비용 관측성 구현 | Development Lead Agent | `T-20260728-014`, `015` |
+| `T-20260728-017` | P1 | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` |
+| `T-20260728-018` | P1 | 초기 실서비스 수익화 출시 준비 판정 | Product Lead Agent / Lead Role | `T-20260728-017` |
+
+위 9개 Task는 모두 `proposed`이며 Core v1 Critical Path를 차단하지 않습니다. Product Lead Agent의 Lead Role은 Product Team 후보 T-010·013·018의 scope 조율에만 적용합니다. 가격·quota와 출시 포함 여부는 T-010에서 실제 비용을 비교하고 Product Owner가 승인하기 전까지 가설입니다.
 
 완료된 주요 Task:
 
@@ -137,6 +153,9 @@ CI `T-20260728-008` 하위 실행 후보:
 
 | 날짜 | 변경 내용 |
 |---|---|
+| 2026-08-04 | Product QA가 T-20260804-001 HIGH 2건 해소, strict 10/10과 상태·Task graph·최신 develop 무회귀를 확인해 `PASS`, `verification_passed`로 인계 |
+| 2026-08-04 | Product Lead가 T-20260804-001 QA PASS와 실행 동결 유지를 수용해 `completion_review`, Product Owner 최종 승인으로 로컬 `done` 확정 |
+| 2026-08-04 | T-20260804-001에서 수익화 Source of Truth와 T-010~018 `proposed` 후보를 복구하고 Lead Role·schema 재작업 후 Product QA 재검증으로 인계 |
 | 2026-07-01 | Task Board 초기화 |
 | 2026-07-01 | 첫 proposed Task `T-20260701-001` 등록 |
 | 2026-07-01 | `T-20260701-001` Product Owner 승인 반영 |

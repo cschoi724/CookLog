@@ -30,6 +30,7 @@
 | `T-20260728-005` | `done` | Backend AI gateway·기본 비활성 원격 STT 계약 정의 | T-020~025 독립 QA·상위 성공 기준·잔여 위험 집계 | PR #65 squash merge `4e0bca4`·완료 확정 |
 | `T-20260729-014` | `done` | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | DQA-HIGH-014-001·DQA-MEDIUM-014-001 해소, 82개 상태·접근성·핸드오프 무회귀 | PR #68 squash merge `3d9a9a4`·완료 확정 |
 | `T-20260729-002` | `done` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | T-008~014 독립 QA·상위 성공 기준·통합 Source of Truth | 하위 전체 병합·Design Lead 완료 확정 |
+| `T-20260804-001` | `done` | 수익화 Source of Truth와 후보 Task 복구 | Lead Role·schema HIGH 2건, 상태 동결·Task graph·최신 develop 비회귀 | Product QA `PASS`·Product Lead 완료 리뷰·Product Owner 최종 승인 |
 
 향후 검증 예정 Task:
 
@@ -38,6 +39,15 @@
 | `T-20260728-003` | iOS/Design | iOS QA Agent | 기능 회귀와 Figma 정합성 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
+| `T-20260728-010` | Product | Product QA Agent | 비용 모델·Free/Pro·가격·quota·출시 범위 |
+| `T-20260728-011` | Design | Design QA Agent | Paywall 진입·가격·복원·접근성·로컬 데이터 접근 유지 |
+| `T-20260728-012~017` | Cross-domain | Product·Design·iOS·Backend QA Agent | 계약·구매·quota·관측성·Sandbox 통합 |
+
+`T-20260804-001` 최종 독립 재검증에서 `PQA-HIGH-804-001~002` 해소,
+strict validation 10/10, 후보 상태 동결·Task graph와 최신 develop 완료 상태 무회귀를
+확인했습니다. `PASS`, `verification_passed`로 Product Lead Agent 완료 검토에
+인계했습니다. Product Lead가 결과와 실행 동결을 수용하고 Product Owner가 최종 승인해
+로컬 `done`으로 확정했으며 가격·quota 가설과 수익화 실행 동결은 유지합니다.
 
 `T-20260729-014`는 최종 독립 재재검증에서 DQA-HIGH-014-001과 DQA-MEDIUM-014-001 해소, 기존 통과 항목 무회귀를 확인하고 PR #68로 병합돼 `done`입니다. 상위 `T-20260729-002`도 하위 전체 QA와 성공 기준을 수용해 `done`입니다.
 

@@ -25,6 +25,11 @@
 | `T-20260729-023` | `done` | Backend | AI recipe job·상태 조회·결과 복구 계약 | - | `T-20260729-020`, `021` 완료 | 완료 검토·Product Owner 승인 완료, T-025 인계 |
 | `T-20260729-024` | `done` | Backend | 보안·개인정보·관측성·비용 guardrail | - | `T-20260729-020`, `021` 완료 | PR #50 squash merge `00feb017`·완료 확정, T-025 착수 |
 | `T-20260729-025` | `done` | Backend | iOS·Backend fixture·계약 테스트 기준 | - | `T-20260729-021~024` 완료 | PR #63 squash merge `8eea645`·완료 확정 |
+| `T-20260728-012` | `proposed` | Backend/계약 | 구독 entitlement와 AI quota 계약 | Development Lead Agent | `T-20260728-005`, `006`, `009`, `010` | 수익화 activation gate 대기 |
+| `T-20260728-014` | `proposed` | iOS | StoreKit 2 CookLog Pro 구현 | Development Lead Agent | `T-20260728-003`, `011~013` | 수익화 선행 Task 대기 |
+| `T-20260728-015` | `proposed` | Backend | 구독 검증과 AI quota 구현 | Development Lead Agent | `T-20260728-006`, `012`, `013` | 수익화 선행 Task 대기 |
+| `T-20260728-016` | `proposed` | Cross-platform | 수익화 이벤트와 AI 비용 관측성 | Development Lead Agent | `T-20260728-014`, `015` | 구현 완료 후 scope |
+| `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` | 외부 설정 별도 승인 필요 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
 T-020~025는 모두 `done`입니다. T-025는 공통 header와 negative validator 재작업,
@@ -37,6 +42,8 @@ Development Lead는 T-020~025의 `done`, 하위 Backend QA 최종 판정, Source
 실제 runtime·provider·iOS·staging 위험은 후속 Task에 유지합니다. Product Owner가
 잔여 위험을 수용하고 PR #65를 `develop`에 squash merge했으며 merge SHA `4e0bca4`를
 확인해 `done`으로 확정했습니다.
+
+수익화 개발 `T-20260728-012`, `014~017`은 Core v1과 분리된 `proposed` 후보입니다. T-010 정책과 각 activation gate가 완료돼도 Product Owner의 별도 실행 승인 전에는 scope·구현하지 않습니다.
 
 T-025는 AI 정상·오류·timeout·만료, 원격 STT 비활성과 negative case를 iOS·Backend
 공용 JSON fixture로 고정했습니다. manifest가 source schema와 iOS assertion을 연결하고,

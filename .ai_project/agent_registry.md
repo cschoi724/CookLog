@@ -1,7 +1,7 @@
 # CookLog Project Agent Registry
 
 작성일: 2026-07-01
-최종 업데이트: 2026-07-31
+최종 업데이트: 2026-08-04
 프로젝트: CookLog
 
 ## 1. 목적
@@ -16,7 +16,7 @@
 
 | Agent | 상태 | Team | 기본 Role | 비고 |
 |---|---|---|---|---|
-| Product Lead Agent | `enabled` | Product Team | Direction Role, Completion Role | 상위 제품 Task 방향과 완료 판단 |
+| Product Lead Agent | `enabled` | Product Team | Direction Role, Lead Role, Completion Role | Product Team의 방향·scope·의존성·상위 완료 판단 |
 | Product Planning Agent | `enabled` | Product Team | Execution Role | 승인된 제품 문서 Task 수행 |
 | Design Lead Agent | `enabled` | Design Team | Lead Role, Completion Role | Design 하위 Task 분해와 완료 판단 |
 | UI/UX Design Agent | `enabled` | Design Team | Execution Role | UX/UI, Figma, 프로토타입, 핸드오프 |
@@ -36,6 +36,7 @@
 |---|---|---|
 | `product_direction` | Product Lead Agent | 제품 목표와 성공 기준 |
 | `priority_management` | Product Lead Agent | Product Owner 승인 준비 |
+| `product_scoping`, `product_dependency_management` | Product Lead Agent | Product Team Task 범위·소유권·의존성 조율 |
 | `parent_task_completion` | Product Lead Agent | 필수 하위 Task가 완료된 상위 제품 Task만 완료 |
 | `product_documentation` | Product Planning Agent | PRD, 로드맵, 상태 문서 Task |
 | `design_scoping`, `design_dependency_management` | Design Lead Agent | Design 하위 Task 분해와 조율 |
@@ -66,3 +67,4 @@
 | 2026-07-27 | Product/Design/Core Development/Quality/AI Ops 멀티팀 Role 매핑으로 확장 | Product Owner 승인 |
 | 2026-07-28 | Design Lead/Execution과 도메인 QA를 분리하고 Team 하위 Task Completion 범위 추가 | Product Owner 승인 |
 | 2026-07-31 | Product QA Agent와 제품 문서·cross-domain 정합성 독립 검증 capability 등록 | T-20260731-001 재작업 승인 |
+| 2026-08-04 | Product Lead Agent에 Product Team 한정 Lead Role과 scope·의존성 조율 capability 추가 | T-20260804-001 재작업 승인 |

@@ -72,7 +72,7 @@ CookLog Organization
 
 | Team | Team ID | 상태 | Pattern | Lead | Team Context | 비고 |
 |---|---|---|---|---|---|---|
-| Product Team | `product` | active | product direction | Product Lead Agent | `.ai_project/teams/product/team_context.md` | 제품 방향과 완료 판단 |
+| Product Team | `product` | active | product direction | Product Lead Agent | `.ai_project/teams/product/team_context.md` | 제품 방향·scope 조율·완료 판단 |
 | Design Team | `design` | active | design domain | Design Lead Agent | `.ai_project/teams/design/team_context.md` | UX/UI와 디자인 핸드오프 |
 | Core Development Team | `development` | active | platform workstreams | Development Lead Agent | `.ai_project/teams/development/team_context.md` | iOS 우선, Backend 기반 준비 |
 | Quality Team | `quality` | active | shared verification pool | 별도 Lead 없음 | `.ai_project/teams/quality/team_context.md` | Task 라우팅 기반 독립 검증 |
@@ -84,7 +84,7 @@ Android Workstream은 iOS 우선 이정표 완료, Android 착수 범위 확정,
 
 | Agent | Role | Capabilities | 비고 |
 |---|---|---|---|
-| Product Lead Agent | Direction Role, Completion Role | product_direction, priority_management, approval_preparation, parent_task_completion | 상위 제품 Task만 완료한다. |
+| Product Lead Agent | Direction Role, Lead Role, Completion Role | product_direction, priority_management, product_scoping, product_dependency_management, approval_preparation, parent_task_completion | Product Team Task의 방향·scope를 조율하고 상위 제품 Task만 완료한다. Lead Role은 Product Team 범위로 제한한다. |
 | Product Planning Agent | Execution Role | product_documentation, roadmap_management, task_reporting | Product Team의 승인된 문서 Task를 수행한다. |
 | Design Lead Agent | Lead Role, Completion Role | design_scoping, design_dependency_management, design_child_completion | Design Team 하위 Task만 완료한다. |
 | UI/UX Design Agent | Execution Role | ux_flow, ui_design, prototyping, design_handoff | 승인된 Design 하위 Task를 실행한다. |
@@ -127,6 +127,8 @@ proposed
 ```text
 Product Lead Agent
   -> 상위 제품 Task 생성과 Team 목표 배정
+  -> Product Team Task scope·소유권·의존성 조율
+  -> Product Owner 승인 후 Product Planning Agent에 문서 실행 라우팅
 
 Design / Development Lead Agent
   -> 상위 목표를 Team 하위 Task로 분해
@@ -151,6 +153,8 @@ Product Lead Agent
 - Design 하위 Task의 `completion_review` 대상은 `Design Lead Agent`다.
 - Development 하위 Task의 `completion_review` 대상은 `Development Lead Agent`다.
 - 상위 제품 Task의 `completion_review` 대상은 `Product Lead Agent`다.
+- Product Lead Agent의 Lead Role은 Product Team Task의 `proposed -> scoped` 조율에만 사용하며 Design·Development 하위 Task의 scope·완료 권한을 대체하지 않는다.
+- Product Team 문서 Task는 Product Lead Agent가 scope한 뒤 Product Owner 승인으로 Product Planning Agent에 실행을 라우팅하고 Product QA Agent가 독립 검증한다.
 - Team Lead는 자신이 `target_agent`가 아닌 상위 제품 Task를 전이하지 않는다.
 - 상위 제품 Task는 필수 하위 Task를 `depends_on`으로 연결하고 모두 `done`일 때만 완료 검토한다.
 - 단순 하위 Task 검증은 같은 Task의 Verification 상태로 처리하고, cross-team 통합 검증이 필요할 때만 별도 Quality Task를 만든다.
@@ -267,3 +271,4 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | 2026-07-28 | `T-20260728-007` 승인 기준으로 Task branch·PR·초기 CI check와 merge gate 확정 |
 | 2026-07-31 | T-20260731-001에서 UI/UX 원본, Backend 추천안·계약 경계와 CI 현재 상태를 최신화 |
 | 2026-07-31 | T-20260731-001 재작업에서 Product QA Agent를 정식 등록하고 T-004 done 상태 반영 |
+| 2026-08-04 | T-20260804-001 재작업 승인으로 Product Lead Agent에 Product Team 한정 Lead Role과 scope·의존성 조율 책임 추가 |

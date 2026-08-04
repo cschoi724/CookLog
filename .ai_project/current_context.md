@@ -20,7 +20,7 @@
 | 활성 개발 영역 | iOS 최우선, Backend foundation |
 | 보류 영역 | Android, Release Role |
 | 활성 Agent | Product Lead, Product Planning, Design Lead, UI/UX Design, Development Lead, iOS, Backend, Product QA, Design QA, iOS QA, Backend QA, AI Ops |
-| 현재 우선 Task | Design T-014 독립 검증, Backend T-025 준비, CI T-006 완료선 정리 |
+| 현재 우선 Task | iOS T-003 scope 준비, Backend T-006 실행 승인 준비, 수익화 T-010 activation gate 대기 |
 | 기본 작업 브랜치 | `develop` |
 | 안정·릴리즈 브랜치 | `main` |
 | 공용 상태 기준 | fetch를 마친 최신 `origin/develop`과 확인 SHA |
@@ -42,11 +42,12 @@
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
 - Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다.
 - Design 상위 `T-20260729-002`와 하위 `T-20260729-008~014`는 통합 Design QA와 PR #68 병합을 마쳐 모두 `done`입니다.
-- Backend Contract 상위 `T-20260728-005`는 scoped 상태이며 T-020~023은 `done`, T-024·025는 `approved`이고 T-025는 T-024 완료 후 착수합니다.
-- CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~005는 `done`, T-006은 별도 승인 대기입니다.
+- Backend Contract 상위 `T-20260728-005`는 하위 T-020~025 완료 집계와 Product Owner 승인을 거쳐 `done`이며 T-006 실행 승인 준비로 인계됐습니다.
+- CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~006은 모두 `done`입니다.
 - AI Ops `T-20260731-002`는 독립 검증 `PASS`와 PR #48 squash merge를 거쳐 `done`입니다.
 - Product QA Agent와 문서·cross-domain 정합성 capability는 T-20260731-001 재작업에서 정식 등록했습니다. 기존 T-20260729-007은 중복 범위의 재조정 또는 폐기 검토 대상입니다.
-- 수익화 문서와 `T-20260728-010~018` 동결 후보는 Core v1 출시선과 분리합니다.
+- 수익화 지침과 `T-20260728-010~018` 복구 Task T-20260804-001은 Product QA `PASS`, Product Lead 완료 리뷰와 Product Owner 최종 승인을 거쳐 로컬 `done`입니다. 후보는 모두 `proposed`·실행 동결 상태로 Core v1 출시선과 분리하며 develop 통합 전에는 이 worktree 상태만 유효합니다.
+- Product Lead Agent는 Product Team에 한해 Direction·Lead·Completion Role을 맡고 scope·의존성 조율 후 Product Planning 실행과 Product QA 독립 검증으로 분리합니다.
 - 기존 완료 Task는 legacy 위치에 보존하고 신규 실행 후보는 `tasks/active/` 또는 `tasks/backlog/`에 생성합니다.
 - 모든 신규 실행 Task는 `standard_vnext`와 `scoped` 단계를 사용합니다.
 - Task 병렬 가능 여부는 Development Lead Agent가 ownership과 dependency를 확인합니다.
