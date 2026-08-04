@@ -11,7 +11,7 @@
 | `T-20260728-003` | `proposed` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` | 7개 iOS 하위 패키지 scope |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
 | `T-20260728-005` | `done` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | 하위 `T-20260729-020~025` 완료 | PR #65 squash merge `4e0bca4`·완료 확정 |
-| `T-20260728-006` | `proposed` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` 완료 | 별도 scope·Product Owner 실행 승인 검토 |
+| `T-20260728-006` | `scoped` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | 하위 `T-20260804-002~007` | Product Owner 진행 승인, T-002 Backend Agent 인계 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
 | `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~005 완료, T-006 별도 승인 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
@@ -25,12 +25,23 @@
 | `T-20260729-023` | `done` | Backend | AI recipe job·상태 조회·결과 복구 계약 | - | `T-20260729-020`, `021` 완료 | 완료 검토·Product Owner 승인 완료, T-025 인계 |
 | `T-20260729-024` | `done` | Backend | 보안·개인정보·관측성·비용 guardrail | - | `T-20260729-020`, `021` 완료 | PR #50 squash merge `00feb017`·완료 확정, T-025 착수 |
 | `T-20260729-025` | `done` | Backend | iOS·Backend fixture·계약 테스트 기준 | - | `T-20260729-021~024` 완료 | PR #63 squash merge `8eea645`·완료 확정 |
+| `T-20260804-002` | `approved` | Backend | runtime scaffold·환경 설정·health | Backend Agent | `T-20260728-005` 완료 | 전용 worktree에서 구현 착수 |
+| `T-20260804-003` | `proposed` | Backend | 공통 HTTP·인증·제한·idempotency middleware | Backend Agent | `T-20260804-002` | T-002 `done` 후 실행 승인 |
+| `T-20260804-004` | `proposed` | Backend | Mock AI recipe job·status·ACK·복구 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 대기 |
+| `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
+| `T-20260804-006` | `proposed` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` | 도메인 경계 완료 대기 |
+| `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
 T-020~025는 모두 `done`입니다. T-025는 공통 header와 negative validator 재작업,
 Backend QA 독립 재검증과 완료 검토를 통과하고 PR #63으로 `develop`에 병합됐습니다.
 원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지합니다. 일반 개발 Task는 최신
 `develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
+
+Product Owner가 T-006 진행을 승인했습니다. Development Lead는 runtime scaffold,
+공통 middleware, Mock AI, STT 비활성 경계, 보안·cleanup, 통합 검증의 6개 패키지로
+분해했습니다. T-002만 `approved`로 Backend Agent에 인계하고 나머지는 선행 완료 전
+`proposed`로 유지합니다. 실제 provider·cloud 배포·원격 STT endpoint는 범위 밖입니다.
 
 Development Lead는 T-020~025의 `done`, 하위 Backend QA 최종 판정, Source of Truth
 연결과 공용 계약 validator를 집계해 T-005 완료 리뷰를 `PASS_WITH_RISK`로 수용했습니다.
