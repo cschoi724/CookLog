@@ -67,3 +67,15 @@ Agent에 반환한다. 디자인 원본 수정, commit, push와 merge는 수행�
 - 기존 통과 항목: revision, 7개 화면군·82개 상태·13개 컴포넌트, routing·보존 계약, Light/Dark·viewport·44pt·대비·Dynamic Type·Reduce Motion 문서 계약에 회귀가 없다.
 
 최종 재검증 판정은 `FAIL`이다. Task를 `rework_requested`로 유지하고 UI/UX Design Agent에 반환한다. 처리 전이에서 전용 announcer만 live region으로 남기거나, 처리 STEP 영역의 live 속성을 제거해 동일 이벤트가 한 번만 전달되도록 보완해야 한다.
+
+## 6. 최종 독립 재재검증 — 2026-08-04
+
+- 검증 시작 기준: `origin/develop@be44156`
+- 대상 HEAD: `e4964de`
+- `DQA-HIGH-014-001`: 해소. Chrome에서 2초 뒤 동일 timer DOM·포커스와 `08` 표시를 확인했다. 10초 종료 뒤 처리 제목으로 포커스가 이동했고 앱 루트·timer에는 live 속성이 없으며 활성 `[aria-live]`는 전용 `#announcer` 1개뿐이다.
+- `DQA-MEDIUM-014-001`: 해소 유지. `git diff --check origin/develop...HEAD`가 통과한다.
+- 정적 무회귀: `node --check`, Manifest JSON, revision, 7개 화면군·82개 상태·13개 컴포넌트, 44pt, 최저 대비 4.67:1, stale 문구 0건을 확인했다.
+- 흐름 무회귀: 기록·재사용·완료 수정·삭제·검색·App Info·법적 문서·서비스 장애 routing과 데이터 보존 계약이 유지된다.
+- Figma MCP는 호출하지 않았다.
+
+최종 판정은 `PASS`다. 두 결함이 모두 해소됐고 기존 통과 항목에 회귀가 없어 Task를 `verification_passed`로 Design Lead Agent / Completion Role에 인계한다. 디자인 원본 수정, commit, push와 merge는 수행하지 않았다.

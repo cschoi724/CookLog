@@ -1,7 +1,7 @@
 ---
 id: T-20260729-014
 title: 디자인 통합 접근성 검증·구현 핸드오프 갱신
-status: verification_ready
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 화면별 변경을 하나의 Source of Truth로 통합하고 작은 화면·Dynamic Type·Light/Dark·접근성 기준을 확인해야 iOS 구현을 시작할 수 있다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design QA Agent
-target_role: Verification Role
+target_agent: Design Lead Agent
+target_role: Completion Role
 required_capabilities:
   - ux_flow
   - ui_design
@@ -138,3 +138,5 @@ qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-han
 - 2026-08-04: 독립 재검증에서 `DQA-MEDIUM-014-001` 해소와 녹음 중 DOM·포커스 보존을 확인했으나, 10초 종료 시 처리 STEP과 전용 announcer 두 live region이 동시에 남아 `DQA-HIGH-014-001` 미해소로 `rework_requested` 반환했다.
 - 2026-08-04: 처리 STEP의 중복 `aria-live`를 제거해 녹음 종료 이벤트의 live region을 전용 announcer 하나로 단일화하고 `verification_ready`로 재재검증을 요청했다.
 - 2026-08-04: Backend 완료 기록 병합을 보존하며 최신 `origin/develop@be44156` 위로 재정렬했고 T-014는 behind 0 상태로 재재검증 준비를 마쳤다.
+- 2026-08-04: 최종 독립 재재검증에서 timer DOM·포커스 보존, 처리 제목 포커스, 전용 announcer 1개와 diff 검사를 확인해 `DQA-HIGH-014-001`, `DQA-MEDIUM-014-001` 모두 해소 판정하고 `verification_passed`로 Design Lead 완료 검토에 인계했다.
+- 2026-08-04: Design Lead가 성공 기준, 최종 QA PASS, allowed paths, 최신 develop 정렬, Figma 비차단과 구현 핸드오프를 확인해 `verification_passed -> completion_review`로 수용했다. develop 병합 전 `done` 전환은 보류한다.
