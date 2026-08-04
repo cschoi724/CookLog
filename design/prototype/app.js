@@ -467,7 +467,7 @@ function stepRows({ includeProcessing = false, locked = false } = {}) {
     </div>`
   ).join("");
   const pending = includeProcessing
-    ? `<div class="step-row is-processing" aria-live="polite"><span class="step-number">${recordedSteps.length + 1}</span><div class="step-copy"><p class="processing-line">방금 말한 기록을 기기에서 변환하고 있어요.</p><span>완료되면 원문 STEP으로 자동 저장</span></div></div>`
+    ? `<div class="step-row is-processing"><span class="step-number">${recordedSteps.length + 1}</span><div class="step-copy"><p class="processing-line">방금 말한 기록을 기기에서 변환하고 있어요.</p><span>완료되면 원문 STEP으로 자동 저장</span></div></div>`
     : "";
   return `<div class="step-list">${rows}${pending}</div>`;
 }

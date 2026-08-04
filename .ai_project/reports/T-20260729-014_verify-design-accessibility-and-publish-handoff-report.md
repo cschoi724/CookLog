@@ -66,3 +66,4 @@ Design QA Agent는 다음을 독립적으로 확인한다.
 - Chrome 자동 검증에서 2초 경과 뒤 동일 timer DOM·포커스·`08` 표시를, 10초 종료 뒤 처리 제목 포커스·단일 종료 알림·앱 루트 live region 부재를 확인했다.
 - `DQA-MEDIUM-014-001`: trailing whitespace와 EOF blank line을 제거하고 `git diff --check origin/develop...HEAD` 기준을 재실행한다.
 - 최신 `origin/develop@55992a5` 위로 충돌 없이 재정렬한 뒤 정적 assertion과 diff 검사를 다시 통과했다.
+- 첫 재검증에서 확인된 처리 STEP의 별도 `aria-live`를 제거해 녹음 종료 이벤트는 전용 announcer 하나에서만 전달되도록 보완했다.
