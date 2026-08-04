@@ -1,7 +1,7 @@
 ---
 id: T-20260729-002
 title: 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신
-status: in_progress
+status: done
 type: feature
 priority: P0
 priority_reason: 완료된 T-20260728-002 이후 기록·초안·AI Review·핸즈프리 요구가 추가 확정되어 iOS 디자인 적용 전에 새 상태와 흐름을 반영해야 한다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent:
+target_role:
 required_capabilities:
   - design_scoping
   - design_dependency_management
@@ -52,7 +52,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-29
-updated_at: 2026-07-29
+updated_at: 2026-08-04
 report_to: .ai_project/reports/T-20260729-002_refresh-design-for-approved-product-ux-report.md
 qa_to: .ai_project/qa/T-20260729-002_refresh-design-for-approved-product-ux-qa.md
 ---
@@ -176,3 +176,5 @@ Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료
 - 2026-07-31: Design QA Agent가 하위 `T-20260729-013`의 App Info 포커스·선택형 진단 정보 동의 범위와 기존 통과 항목을 독립 재검증해 `PASS`, `verification_passed`로 인계했다.
 - 2026-07-31: Design Lead Agent가 최신 `origin/develop` SHA `153bc44` 기준으로 성공 기준·allowed paths·Figma 비차단·iOS 핸드오프를 확인해 `completion_review`로 인계했다. develop 통합 전 `done`, 상위 Task 완료와 후속 `T-20260729-014` 차단 해제는 보류한다.
 - 2026-08-04: 최신 `origin/develop`에서 `T-20260729-013` PR #53 병합을 확인해 하위 Task를 `done`으로 정합화하고, 240분을 초과한 상위 Task의 2026-07-29 실행 lock을 해제했다. 다음 순차 Task는 `T-20260729-014`다.
+- 2026-08-04: 하위 `T-20260729-014`가 최종 Design QA PASS와 Design Lead 완료 검토를 거쳐 PR #68, merge SHA `3d9a9a4`로 `develop`에 통합됐다.
+- 2026-08-04: 7개 하위 Task 완료, 상위 성공 기준, 통합 QA와 Figma 비차단 원칙을 최종 검토해 `in_progress -> done`으로 확정했다.

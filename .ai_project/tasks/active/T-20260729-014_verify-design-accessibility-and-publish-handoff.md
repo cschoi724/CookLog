@@ -1,7 +1,7 @@
 ---
 id: T-20260729-014
 title: 디자인 통합 접근성 검증·구현 핸드오프 갱신
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 화면별 변경을 하나의 Source of Truth로 통합하고 작은 화면·Dynamic Type·Light/Dark·접근성 기준을 확인해야 iOS 구현을 시작할 수 있다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities:
   - ux_flow
   - ui_design
@@ -140,3 +140,4 @@ qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-han
 - 2026-08-04: Backend 완료 기록 병합을 보존하며 최신 `origin/develop@be44156` 위로 재정렬했고 T-014는 behind 0 상태로 재재검증 준비를 마쳤다.
 - 2026-08-04: 최종 독립 재재검증에서 timer DOM·포커스 보존, 처리 제목 포커스, 전용 announcer 1개와 diff 검사를 확인해 `DQA-HIGH-014-001`, `DQA-MEDIUM-014-001` 모두 해소 판정하고 `verification_passed`로 Design Lead 완료 검토에 인계했다.
 - 2026-08-04: Design Lead가 성공 기준, 최종 QA PASS, allowed paths, 최신 develop 정렬, Figma 비차단과 구현 핸드오프를 확인해 `verification_passed -> completion_review`로 수용했다. develop 병합 전 `done` 전환은 보류한다.
+- 2026-08-04: PR #68 필수 CI 4개 통과와 squash merge SHA `3d9a9a4`를 최신 `origin/develop`에서 확인해 `completion_review -> done`으로 확정했다.
