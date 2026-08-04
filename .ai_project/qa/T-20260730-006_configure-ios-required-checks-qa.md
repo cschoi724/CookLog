@@ -12,6 +12,8 @@
 
 판정: `FAIL` / `rework_requested`
 
+최종 재검증 판정: `PASS_WITH_RISK` / `verification_passed`
+
 ## 1. 검증 범위
 
 - `develop` ruleset `20340678`
@@ -106,3 +108,62 @@ Product Owner가 `Settings > Billing & licensing > Budgets and alerts` 화면에
 성공 기준이 미검증이고 expected check source도 고정되지 않았다. AI Ops Agent가 두 HIGH
 항목을 수정·재현한 뒤 `verification_ready`로 다시 인계해야 한다. PR #57은 재검증과
 Product Owner 승인 전 merge하지 않는다.
+
+## 6. 독립 재검증
+
+재검증일: 2026-08-04
+
+재검증 기준: `ops/T-20260730-006-configure-required-checks@a85a20e`
+
+판정: `PASS_WITH_RISK` / `verification_passed`
+
+### QA-HIGH-006-001 해소
+
+- 두 ruleset의 source 고정 `updated_at`은 각각 2026-08-04 13:16:46+09:00,
+  13:16:57+09:00이며 validation PR #58 생성 13:33:38+09:00보다 앞선다.
+- 실패 SHA `ae0dd62`는 격리 branch의 `.github/workflows/ios-build.yml`에 알 수 없는
+  Swift flag만 추가했다.
+- `ios-build` run `30878036777`, job `91893372329`는 GitHub Actions 앱 `15368`,
+  `macos-26`에서 `BUILD FAILED`, 종료 코드 65로 실패했다.
+- 같은 SHA의 `ios-xctest`는 성공했으나 strict required check 중 `ios-build`가 실패해
+  ruleset 충족 조건이 성립하지 않았다. active ruleset과 bypass 없음도 동시에 확인했다.
+- GitHub API는 과거 PR `mergeStateStatus` 이력을 제공하지 않아 당시 `BLOCKED` 문자열을
+  재조회할 수는 없지만, source가 고정된 active required check의 실제 failure로 merge
+  차단 조건을 독립 확인했다.
+- 복구 SHA `6a99f2a`는 실패 commit을 정확히 revert해 validation branch tree를 원복했고,
+  `ios-build` run `30878540769`, `ios-xctest` run `30878540781`이 모두 success였다.
+- PR #58은 `merged: false`, `state: closed`, 최종 `CLEAN`으로 종료됐고 validation
+  branch는 증거 보존 상태다.
+
+결과: `QA-HIGH-006-001` 해소.
+
+### QA-HIGH-006-002 해소
+
+- develop ruleset `20340678`과 main ruleset `20344405`의 `ios-build`, `ios-xctest`
+  모두 `integration_id: 15368`로 API round-trip됐다.
+- 두 ruleset은 `active`, strict, bypass actor 없음,
+  `current_user_can_bypass: never`를 유지한다.
+- 실패·복구 SHA와 PR #57 최신 HEAD `a85a20e`의 required check source는 모두 실제
+  GitHub Actions 앱 `15368`이다.
+
+결과: `QA-HIGH-006-002` 해소.
+
+### 무회귀
+
+- PR #57 최신 HEAD `a85a20e`에서 `ios-build`, `ios-xctest`가 success이고
+  `mergeStateStatus: CLEAN`, `mergeable: MERGEABLE`이다.
+- validation 실패 변경은 단일 workflow 환경 변수 2줄이며 revert 뒤 base와 tree diff가
+  없다.
+- 재작업 commit `a85a20e`는 Task 허용 문서 경로만 변경하고 `git diff --check`를
+  통과한다.
+
+### 잔여 위험
+
+`QA-RISK-006-001`은 유지한다. 현재 token에 `user` scope가 없어 실제 Billing Budget
+금액·현재 비율·알림 활성화를 독립 확인하지 못했다. Product Owner가 Billing 화면에서
+확인하거나 완료 검토에서 이 위험을 명시적으로 수용해야 한다.
+
+## 7. 최종 인계
+
+필수 HIGH 2건은 모두 해소됐다. `PASS_WITH_RISK`, `verification_passed`로 AI Ops
+Agent의 완료 검토에 인계한다. PR #57 merge는 Product Owner 승인 전 수행하지 않는다.

@@ -58,7 +58,7 @@ pull_request:
   ci_required_source:
     integration: GitHub Actions
     integration_id: 15368
-  ci_external_status: verification_ready
+  ci_external_status: verification_passed
 ```
 
 `ios-build`와 `ios-xctest`는 두 branch의 required check 목표다. 2026-08-04
