@@ -14,24 +14,24 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 10 |
-| `scoped` | 2 |
-| `approved` | 1 |
+| `proposed` | 9 |
+| `scoped` | 1 |
+| `approved` | 0 |
 | `in_progress` | 1 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
-| `verification_passed` | 1 |
-| `completion_review` | 0 |
+| `verification_passed` | 0 |
+| `completion_review` | 1 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 28 |
+| `done` | 31 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~013`은 `done`, `T-20260729-014`는 실행 승인 준비 상태입니다. Backend T-020~024는 `done`, T-025는 `approved`입니다. CI T-001~005는 `done`, T-006은 source 고정과 PR #58 실패 차단 재작업의 독립 재검증을 `PASS_WITH_RISK`, `verification_passed`로 통과했습니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~013`은 `done`, `T-20260729-014`는 실행 승인 준비 상태입니다. Backend T-020~025는 모두 `done`이고 상위 T-005는 완료 리뷰 `PASS_WITH_RISK`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -53,7 +53,7 @@ Team별 요약:
 | `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | `done` |
 | `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
-| `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | `scoped`; T-020~023 `done`, T-024·025 `approved` |
+| `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | Development Lead Agent | `completion_review`; T-020~025 `done`, 병합 승인 대기 |
 | `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `T-20260728-005` |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
@@ -91,7 +91,7 @@ Backend `T-20260728-005` 하위 실행 후보:
 | `T-20260729-022` | P1 | 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #40 squash merge·완료 확정 |
 | `T-20260729-023` | P0 | AI 레시피 job·상태 조회·결과 복구 계약 정의 | - | `done`, 완료 검토·Product Owner 승인 완료 |
 | `T-20260729-024` | P0 | Backend 보안·개인정보·관측성·비용 guardrail 정의 | - | `done`, PR #50·#51 squash merge·완료 확정 |
-| `T-20260729-025` | P0 | iOS·Backend 공용 fixture와 계약 테스트 기준 정의 | Backend Agent | `approved`, 선행 완료·실행 대기 |
+| `T-20260729-025` | P0 | iOS·Backend 공용 fixture와 계약 테스트 기준 정의 | - | `done`, PR #63·#64 squash merge |
 
 CI `T-20260728-008` 하위 실행 후보:
 
@@ -269,3 +269,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-31 | Product Owner 승인으로 T-012 PR #42를 develop에 squash merge하고 merge SHA `2b9b750`·두 CI 성공 확인 후 done 확정 |
 | 2026-07-31 | T-005 공용 상태 복구 PR #47 병합 후 T-20260731-002 프로젝트 상태·Git 안전 guardrail을 정식 등록하고 독립 검증으로 인계 |
 | 2026-07-31 | T-20260731-002 독립 AI Ops PASS와 PR #48 squash merge를 확인해 `done`으로 확정 |
+| 2026-08-04 | Development Lead가 T-020~025 `done`·독립 Backend QA·공용 계약 validator를 집계해 T-20260728-005 완료 리뷰를 `PASS_WITH_RISK`, `completion_review`로 수용 |

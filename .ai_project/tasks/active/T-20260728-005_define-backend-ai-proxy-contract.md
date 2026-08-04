@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260728-005
 title: Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의
-status: scoped
+status: completion_review
 type: docs
 priority: P0
 priority_reason: 첫 출시의 온라인 AI 정리와 향후 원격 STT adapter가 iOS에 secret을 두지 않는 공통 Backend 경계를 사용해야 한다.
@@ -11,7 +11,7 @@ team: Core Development Team
 team_lead: Development Lead Agent
 workflow: docs
 target_agent: Development Lead Agent
-target_role: Lead Role
+target_role: Completion Role
 required_capabilities:
   - technical_planning
   - dependency_management
@@ -54,7 +54,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-29
+updated_at: 2026-08-04
 report_to: .ai_project/reports/T-20260728-005_define-backend-ai-proxy-contract-report.md
 qa_to: .ai_project/qa/T-20260728-005_define-backend-ai-proxy-contract-qa.md
 ---
@@ -136,3 +136,13 @@ iOS가 provider API Key를 보유하지 않고 STEP Preview를 안전하게 레�
 
 - 2026-07-30: Development Lead Agent가 최신 `origin/develop`의 T-20260729-026 정책을 기준으로 6개 하위 Task와 의존성·ownership·승인 경계를 확정해 `proposed -> scoped`로 전환했다.
 - 2026-07-30: 상위 scope만 완료했으며 하위 Task 구현 lock, commit, push와 PR은 획득하거나 실행하지 않았다.
+- 2026-08-04: 하위 `T-20260729-020~025`의 `done`, 독립 Backend QA 판정과 공용 계약 validator 통과를 확인해 `scoped -> completion_review`로 전환했다.
+
+## Development Lead 완료 검토
+
+- 선행 `T-20260729-001`, `026`과 하위 `T-20260729-020~025`가 모두 `done`임을 최신 `origin/develop` `55992a5`에서 확인했다.
+- Backend 경로와 아키텍처 결정, 공통 API·인증·오류, 기본 비활성 원격 STT, AI job·복구, 보안·개인정보·비용 guardrail, iOS·Backend 공용 fixture가 Source of Truth와 연결돼 성공 기준을 충족한다.
+- 하위 6개 Task는 각각 Backend QA 독립 검증을 거쳤고 최종 `PASS_WITH_RISK`의 차단 결함이 모두 해소됐다. 상위 Task는 새 runtime 산출물을 추가하지 않으므로 하위 QA 결과를 상위 검증 증거로 집계한다.
+- common·STT·AI·security 계약 validator와 공용 fixture 통합 validator, 상위 Task strict validation을 최신 `develop`에서 다시 실행해 모두 통과했다.
+- 실제 runtime schema validator·safe renderer·worker CAS, IAM·provider 설정, iOS loader·release bundle 제외 CI와 staging 통합 검증은 후속 구현·출시 Task 위험으로 유지한다.
+- 완료 리뷰 판정은 `PASS_WITH_RISK`다. 차단 결함이 없어 `completion_review`로 수용하며, Product Owner의 `develop` 병합 승인 후 `done`으로 확정한다.
