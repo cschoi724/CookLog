@@ -134,3 +134,4 @@ qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-han
 - 2026-08-04: 앱 루트·매초 live region을 제거하고 전용 announcer의 의미 있는 경계 알림, 비-live timer와 녹음 중 DOM·포커스 보존으로 `DQA-HIGH-014-001`을 수정했다.
 - 2026-08-04: diff whitespace를 정리하고 자체 검증 기준을 실제 비교 명령과 일치시켜 `DQA-MEDIUM-014-001`을 수정한 뒤 `verification_ready`로 독립 재검증을 요청했다.
 - 2026-08-04: 재검증 전 최신 `origin/develop@8eea645` 위로 충돌 없이 재정렬하고 script·JSON·82/13·44pt·대비·stale 문구·diff 검사를 다시 통과했다.
+- 2026-08-04: 첫 재검증 직전 공용 기준이 Backend T-025 완료 커밋 `55992a5`로 전진해 QA가 판정 없이 중단했으며, 최신 기준 위로 다시 충돌 없이 재정렬했다.
