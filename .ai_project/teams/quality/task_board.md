@@ -27,7 +27,7 @@
 | `T-20260731-003` | `done` | GitHub Actions 사용량 절감 및 실행 정책 최적화 | 경량 path 판정·동적 runner·concurrency·check 이름·실패 65·timeout 124 | iOS QA·AI Ops 독립 검증 및 PR #52·#54 develop 병합 완료 |
 | `T-20260730-006` | `done` | ios-build·ios-xctest required check 외부 설정 | source `15368`·PR #58 failure→복구·PR #57 무회귀·Budget 화면 | 독립 QA PASS_WITH_RISK, Product Owner 잔여 위험 수용 |
 | `T-20260729-025` | `done` | iOS·Backend 공용 fixture와 계약 테스트 기준 | header 계약·negative 9종 실제 mutation·기존 추적성 무회귀 | PR #63 squash merge `8eea645`·완료 확정 |
-| `T-20260728-005` | `completion_review` | Backend AI gateway·기본 비활성 원격 STT 계약 정의 | T-020~025 독립 QA·상위 성공 기준·잔여 위험 집계 | Development Lead PASS_WITH_RISK 수용, 병합 승인 대기 |
+| `T-20260728-005` | `done` | Backend AI gateway·기본 비활성 원격 STT 계약 정의 | T-020~025 독립 QA·상위 성공 기준·잔여 위험 집계 | PR #65 squash merge `4e0bca4`·완료 확정 |
 
 향후 검증 예정 Task:
 
@@ -66,6 +66,7 @@ QA 위험으로 유지합니다.
 T-005 상위 완료 리뷰는 새로운 runtime 산출물을 추가하지 않고 T-020~025 결과를
 집계합니다. 여섯 하위 Task의 Backend QA가 아키텍처·API·STT·AI 복구·보안·fixture를
 각각 독립 검증했고 모두 `done`이므로 추가 중복 QA 없이 `PASS_WITH_RISK`로 수용했습니다.
+Product Owner가 잔여 위험을 수용하고 PR #65를 squash merge해 `done`으로 확정했습니다.
 runtime·cloud·iOS·staging 잔여 위험은 후속 구현·출시 Task로 인계합니다.
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
