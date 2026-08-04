@@ -33,6 +33,7 @@
 
 | Task ID | 도메인 | 예정 Verification Agent | 검증 초점 |
 |---|---|---|---|
+| `T-20260729-014` | Design | Design QA Agent | 82개 상태·통합 흐름·접근성·핸드오프 정합성 |
 | `T-20260728-003` | iOS/Design | iOS QA Agent | 기능 회귀와 Figma 정합성 |
 | `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |

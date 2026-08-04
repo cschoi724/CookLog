@@ -1,7 +1,7 @@
 ---
 id: T-20260729-014
 title: 디자인 통합 접근성 검증·구현 핸드오프 갱신
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 화면별 변경을 하나의 Source of Truth로 통합하고 작은 화면·Dynamic Type·Light/Dark·접근성 기준을 확인해야 iOS 구현을 시작할 수 있다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent: Design QA Agent
+target_role: Verification Role
 required_capabilities:
   - ux_flow
   - ui_design
@@ -124,3 +124,8 @@ qa_to: .ai_project/qa/T-20260729-014_verify-design-accessibility-and-publish-han
 - 2026-08-04: 최신 `origin/develop`에서 선행 `T-20260729-013`의 PR #53 병합과 `done` 정합화를 확인했다.
 - 2026-08-04: Design Lead Agent가 WP-1~4, 허용 경로, Source of Truth, 검증·완료 경계를 확정해 `proposed -> scoped`로 전환했다.
 - 2026-08-04: Product Owner가 상위 `T-20260729-002`의 다음 순서 1~5 진행을 승인해 `scoped -> approved`로 전환하고 UI/UX Design Agent에 라우팅했다.
+- 2026-08-04: UI/UX Design Agent 실행 세션의 편집 도구 지연으로 변경 없이 재인계됐으며 Design Lead가 동일 승인 범위의 실행을 복구했다.
+- 2026-08-04: 실행 lock을 획득하고 `approved -> in_progress`로 전환해 WP-1 Source of Truth 인벤토리부터 시작했다.
+- 2026-08-04: 7개 화면군·82개 상태·13개 컴포넌트를 통합 대조하고 Prototype·Manifest revision을 `integrated-accessibility-handoff-20260804`로 일치시켰다.
+- 2026-08-04: routing·데이터 보존·재시도·반응형·테마·접근성 구현 계약과 로컬 재현 절차를 핸드오프에 갱신했다.
+- 2026-08-04: 정적 assertion과 Chrome 대표 상태 렌더링 자체 검증을 통과해 lock을 해제하고 `in_progress -> verification_ready`로 Design QA Agent에 인계했다.

@@ -4,7 +4,7 @@ Figma MCP 한도와 무관하게 CookLog MVP UI/UX v1을 검토하기 위한 로
 
 이 디렉토리는 Product Owner가 승인한 CookLog의 공식 UI Source of Truth입니다.
 
-현재 Prototype revision은 `app-info-data-service-failures-20260731`이며 `design/figma-build/manifest.json`과 동일합니다.
+현재 Prototype revision은 `integrated-accessibility-handoff-20260804`이며 `design/figma-build/manifest.json`과 동일합니다.
 
 ## 실행
 
@@ -129,5 +129,16 @@ http://127.0.0.1:8765/?screen=home&state=network-error
 - Git 기반 디자인 변경 이력
 - Figma 한도 갱신 후 화면 재현 기준
 - `design/figma-build/manifest.json`의 시각적 보조 자료
+
+## T-014 통합 검증 기준
+
+- 화면 상태: Home 9, All Recipes 5, Cooking Log 14, AI Review 12, Recipe Detail 7, Audio Player 24, App Info 11 — 총 82개
+- 공통 컴포넌트: 13개
+- 대표 사용자 흐름: 기록, 재사용, 완료 레시피 수정·삭제, 검색, 앱 정보·법적 문서, 서비스 장애 복구
+- Viewport: 기본 `390×844`, 작은 iPhone `375×667`
+- 테마: Light/Dark Semantic Token을 동일한 의미 이름으로 대응
+- 접근성: 일반 텍스트 4.5:1, 큰 텍스트 3:1, 최소 터치 영역 44×44pt, 키보드 포커스와 상태 문구 보존
+- 데이터 보존: 실패한 행동만 재시도하고 STEP 원문·편집값·완료 레시피·현재 재생 위치를 해당 흐름의 계약에 따라 유지
+- Figma는 로컬 원본을 반영하는 버전 미러이며, 미동기화 또는 호출 제한은 이 revision의 검증·구현 인계를 막지 않음
 
 이 프로토타입은 앱 구현 코드가 아니며 `T-20260728-003`에서 그대로 제품 코드로 복사하지 않습니다.
