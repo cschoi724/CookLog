@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260729-025
 title: iOS·Backend 공용 fixture와 계약 테스트 기준 정의
-status: completion_review
+status: done
 type: test
 priority: P0
 priority_reason: 구현 전에 양쪽이 같은 정상·오류·복구 schema를 검증해야 한다.
@@ -78,6 +78,8 @@ qa_to: ".ai_project/qa/T-20260729-025_create-ios-backend-contract-fixtures-qa.md
 | 2026-08-04 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-025-001~002 재작업 산출물과 최신 origin/develop 정렬 확인 후 독립 재검증 시작 |
 | 2026-08-04 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-025-001~002 해소와 기존 계약·민감정보 경계 무회귀 확인, PASS_WITH_RISK로 Development Lead 완료 검토 인계 |
 | 2026-08-04 | Development Lead Agent | transition: verification_passed -> completion_review | 독립 QA PASS_WITH_RISK, 성공 기준·허용 경로·최신 develop 정렬·필수 check를 확인하고 PR #63 develop 통합 대기로 전환 |
+| 2026-08-04 | Product Owner | approve merge and completion | PR #63을 develop에 squash 병합하고 T-025 완료 확정 승인 |
+| 2026-08-04 | Development Lead Agent | transition: completion_review -> done | PR #63 merge commit `8eea645` 확인, T-025 완료 확정 및 상위 T-20260728-005 완료 검토 인계 |
 
 ## Development Lead 완료 검토
 
@@ -86,4 +88,5 @@ qa_to: ".ai_project/qa/T-20260729-025_create-ios-backend-contract-fixtures-qa.md
 - create·poll·ACK header 계약과 negative 9종의 실제 mutation 거부를 통합 validator 및 독립 반례로 확인했다.
 - PR #63은 최신 `origin/develop`을 포함하고 Task 허용 경로만 변경하며, 미해결 리뷰 스레드 없이 `ios-build`·`ios-xctest`가 통과했다.
 - 실제 iOS DTO·fixture loader, Backend runtime schema middleware·endpoint, release bundle 제외 CI와 staging create/poll/ACK·cleanup은 후속 구현·통합 QA 위험으로 유지한다.
-- 완료 리뷰를 통과했으며 Product Owner 승인에 따라 PR #63을 `develop`에 squash merge한 뒤 `done`으로 확정한다.
+- PR #63을 `develop`에 squash merge했고 merge commit `8eea645`을 확인했다.
+- T-025를 `done`으로 확정하며 상위 `T-20260728-005`의 완료 검토로 인계한다.

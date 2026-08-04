@@ -24,13 +24,13 @@
 | `T-20260729-022` | `done` | Backend | 기본 비활성 원격 STT adapter 계약 | - | `T-20260729-021`, `026` 완료 | PR #40 checks 통과·squash merge·완료 확정 |
 | `T-20260729-023` | `done` | Backend | AI recipe job·상태 조회·결과 복구 계약 | - | `T-20260729-020`, `021` 완료 | 완료 검토·Product Owner 승인 완료, T-025 인계 |
 | `T-20260729-024` | `done` | Backend | 보안·개인정보·관측성·비용 guardrail | - | `T-20260729-020`, `021` 완료 | PR #50 squash merge `00feb017`·완료 확정, T-025 착수 |
-| `T-20260729-025` | `completion_review` | Backend | iOS·Backend fixture·계약 테스트 기준 | Development Lead Agent | `T-20260729-021~024` 완료 | 완료 검토 통과, PR #63 develop squash merge |
+| `T-20260729-025` | `done` | Backend | iOS·Backend fixture·계약 테스트 기준 | - | `T-20260729-021~024` 완료 | PR #63 squash merge `8eea645`·완료 확정 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
-T-020~024는 `done`이고 T-025는 공통 header와 negative validator 재작업 및 Backend QA
-독립 재검증을 통과해 완료 검토에 수용했습니다. 원격 STT는 T-022의 기본 비활성 문서
-계약으로만 유지합니다. 일반 개발 Task는 최신 `develop` 기반 전용 worktree와
-`develop` 대상 PR을 사용합니다.
+T-020~025는 모두 `done`입니다. T-025는 공통 header와 negative validator 재작업,
+Backend QA 독립 재검증과 완료 검토를 통과하고 PR #63으로 `develop`에 병합됐습니다.
+원격 STT는 T-022의 기본 비활성 문서 계약으로만 유지합니다. 일반 개발 Task는 최신
+`develop` 기반 전용 worktree와 `develop` 대상 PR을 사용합니다.
 
 T-025는 AI 정상·오류·timeout·만료, 원격 STT 비활성과 negative case를 iOS·Backend
 공용 JSON fixture로 고정했습니다. manifest가 source schema와 iOS assertion을 연결하고,
@@ -52,8 +52,9 @@ Backend runtime validator와 staging 흐름은 후속 구현·통합 QA에서 �
 
 Development Lead는 성공 기준·허용 경로·최신 develop 정렬, 통합 validator와 독립 반례,
 PR #63의 필수 check와 미해결 리뷰 스레드 0건을 확인했습니다. 잔여 위험을 후속 구현·통합
-QA로 유지하고 `completion_review`로 수용했으며 Product Owner 승인에 따라 PR #63을
-`develop`에 squash merge한 뒤 `done`으로 확정합니다.
+QA로 유지하고 `completion_review`로 수용했습니다. Product Owner 승인에 따라 PR #63을
+`develop`에 squash merge했고 merge SHA `8eea645`을 확인해 `done`으로 확정했습니다.
+상위 `T-20260728-005`는 별도 완료 검토가 필요합니다.
 
 Backend QA가 `T-20260729-021`에서 최초 설치 challenge의 동시 소비 원자성 누락
 `QA-HIGH-021-001`, 오류 허용 문자열 내부 민감정보 비노출을 기계적으로 보장하지 못하는
