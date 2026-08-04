@@ -1,7 +1,8 @@
 ---
+schema: aiops.task.v1
 id: T-20260728-006
 title: Backend AI gateway와 비활성 원격 STT adapter foundation 구현
-status: proposed
+status: scoped
 type: feature
 priority: P0
 priority_reason: 승인된 API 계약을 실행 가능한 안전한 Backend 기반으로 전환한다.
@@ -16,6 +17,12 @@ required_capabilities:
   - dependency_management
 depends_on:
   - T-20260728-005
+  - T-20260804-002
+  - T-20260804-003
+  - T-20260804-004
+  - T-20260804-005
+  - T-20260804-006
+  - T-20260804-007
 blocks:
   - T-20260729-003
   - T-20260728-009
@@ -35,13 +42,13 @@ source_of_truth:
   - docs/product/CookLog_PRD_v2.md
   - .ai_project/source_of_truth.md
 created_by: Product Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-29
+updated_at: 2026-08-04
 report_to: .ai_project/reports/T-20260728-006_implement-backend-ai-proxy-foundation-report.md
 qa_to: .ai_project/qa/T-20260728-006_implement-backend-ai-proxy-foundation-qa.md
 ---
@@ -93,3 +100,37 @@ qa_to: .ai_project/qa/T-20260728-006_implement-backend-ai-proxy-foundation-qa.md
 4. 원격 STT 확장 지점·비활성 설정과 무승인 활성화 방지 테스트
 5. redacted logging·사용량 계측·TTL cleanup
 6. 단위·계약·보안 테스트와 로컬 실행 문서
+
+## Development Lead Scope 결과
+
+| 순서 | Task | 실행 패키지 | 선행 Task |
+|---:|---|---|---|
+| 1 | `T-20260804-002` | Backend runtime scaffold·환경 설정·health | `T-20260728-005` |
+| 2 | `T-20260804-003` | 공통 HTTP·인증·rate limit·idempotency middleware | `T-20260804-002` |
+| 3 | `T-20260804-004` | Mock AI job·status·ACK·복구 저장 경계 | `T-20260804-002`, `003` |
+| 4 | `T-20260804-005` | 원격 STT 비활성 확장 경계·활성화 차단 | `T-20260804-002`, `003` |
+| 5 | `T-20260804-006` | redacted logging·비용 원장·TTL cleanup 경계 | `T-20260804-003~005` |
+| 6 | `T-20260804-007` | 통합 계약·보안 테스트와 로컬 실행 handoff | `T-20260804-002~006` |
+
+`T-20260804-004`와 `T-20260804-005`는 공통 middleware가 완료된 뒤 핵심 코드 경로가
+분리되므로 별도 worktree에서 병렬 실행할 수 있다. package manager·lockfile과 앱
+composition root는 T-002가 단일 소유하고, 최종 wiring은 T-007이 담당한다.
+
+## 승인 및 실행 경계
+
+- 2026-08-04 Product Owner가 `T-20260728-006` 진행을 승인했다.
+- `T-20260728-005`는 `origin/develop` `be44156`에서 `done`이다.
+- 첫 실행 패키지 `T-20260804-002`를 `approved`로 Backend Agent에 인계한다.
+- 나머지 패키지는 `proposed`로 등록하고 각 선행 Task가 공용 `develop`에서 `done`인
+  것을 확인한 뒤 Development Lead가 실행 순서를 연다.
+- 실제 provider 계약·결제·secret·cloud resource 생성·배포와 원격 STT endpoint는
+  승인 범위가 아니다.
+- runtime 언어·framework·package manager는 T-002에서 Cloud Run 호환성, JSON Schema
+  재사용성, 로컬 재현성을 비교해 ADR로 고정한다. 외부 cloud 변경 없이 local/mock
+  foundation만 구현한다.
+
+## 상태 전이 기록
+
+- 2026-08-04: Product Owner가 Backend foundation 진행을 승인했다.
+- 2026-08-04: Development Lead Agent가 6개 하위 패키지·의존성·병렬 경계·후속 QA를
+  확정해 `proposed -> scoped`로 전환하고 T-002를 Backend Agent에 인계했다.

@@ -14,9 +14,9 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 9 |
-| `scoped` | 1 |
-| `approved` | 0 |
+| `proposed` | 13 |
+| `scoped` | 2 |
+| `approved` | 1 |
 | `in_progress` | 1 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~013`은 `done`, `T-20260729-014`는 실행 승인 준비 상태입니다. Backend T-020~025와 상위 T-005는 모두 `done`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Design `T-20260729-002`의 Lead scope는 진행 중이고 `T-20260729-008~013`은 `done`, `T-20260729-014`는 실행 승인 준비 상태입니다. Backend 계약 T-005는 `done`, Foundation T-006은 `scoped`, 첫 하위 T-20260804-002는 `approved`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -39,7 +39,7 @@ Team별 요약:
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
-| Core Development | 4 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
+| Core Development | 10 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 | AI Ops | 0 | 1 | 0 | `T-20260730-006` `verification_passed`, `T-20260731-002` `done` |
 
@@ -54,7 +54,7 @@ Team별 요약:
 | `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #65 squash merge `4e0bca4` |
-| `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | T-005 완료, 별도 실행 승인 대기 |
+| `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `scoped`; T-20260804-002 승인·003~007 제안 |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
 | `T-20260731-002` | P0 | 프로젝트 공용 상태 일관성 및 Git 안전 guardrail | - | `done`, 독립 AI Ops PASS·PR #48 squash merge |
@@ -92,6 +92,12 @@ Backend `T-20260728-005` 하위 실행 후보:
 | `T-20260729-023` | P0 | AI 레시피 job·상태 조회·결과 복구 계약 정의 | - | `done`, 완료 검토·Product Owner 승인 완료 |
 | `T-20260729-024` | P0 | Backend 보안·개인정보·관측성·비용 guardrail 정의 | - | `done`, PR #50·#51 squash merge·완료 확정 |
 | `T-20260729-025` | P0 | iOS·Backend 공용 fixture와 계약 테스트 기준 정의 | - | `done`, PR #63·#64 squash merge |
+| `T-20260804-002` | P0 | Backend runtime scaffold·환경 설정·health | Backend Agent | `approved`, 구현 착수 인계 |
+| `T-20260804-003` | P0 | Backend 공통 HTTP·인증·제한·idempotency middleware | Backend Agent | `proposed`, T-002 선행 |
+| `T-20260804-004` | P0 | Mock AI recipe job·status·ACK·복구 저장 경계 | Backend Agent | `proposed`, T-002·003 선행 |
+| `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `proposed`, T-002·003 선행 |
+| `T-20260804-006` | P0 | Backend redacted logging·비용 원장·TTL cleanup | Backend Agent | `proposed`, T-003~005 선행 |
+| `T-20260804-007` | P0 | Backend Foundation 통합 계약·보안 검증·handoff | Backend Agent | `proposed`, T-002~006 선행 |
 
 CI `T-20260728-008` 하위 실행 후보:
 
@@ -271,3 +277,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-31 | T-20260731-002 독립 AI Ops PASS와 PR #48 squash merge를 확인해 `done`으로 확정 |
 | 2026-08-04 | Development Lead가 T-020~025 `done`·독립 Backend QA·공용 계약 validator를 집계해 T-20260728-005 완료 리뷰를 `PASS_WITH_RISK`, `completion_review`로 수용 |
 | 2026-08-04 | Product Owner가 T-20260728-005 잔여 위험과 병합을 승인하고 PR #65 merge SHA `4e0bca4`를 확인해 `done`으로 확정 |
+| 2026-08-04 | Product Owner가 T-20260728-006 진행을 승인하고 Development Lead가 T-20260804-002~007로 scope, T-002를 Backend Agent 실행 승인 인계 |
