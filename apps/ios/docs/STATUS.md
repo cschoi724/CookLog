@@ -4,20 +4,20 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-002 구현 완료, 독립 iOS QA 대기
+- 상태: T-20260805-002 독립 QA 실패, 데이터 보존 HIGH 2건 재작업 승인·iOS Agent 인계
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002 verification_ready
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002 approved 재작업
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS QA Agent가 `T-20260805-002`의 lifecycle·migration·복구 경계를 독립 검증
+1. iOS Agent가 `T-20260805-002`의 legacy 완료 조회와 완료 UUID 충돌 HIGH 2건 재작업
 2. T-20260805-002 공용 develop 완료 후 `T-20260805-003` 실행 승인
 3. `T-20260805-003~007` 화면·상태 패키지 순차 구현
 4. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
@@ -29,6 +29,9 @@
 - T-20260805-002에서 `RecipeRecord` 단일 UUID와 draft STEP·AI Review·완료 전이를 구현했습니다.
 - SwiftData lifecycle schema 확장, draft 복구, 완료 Recipe 호환 조회와 실패 rollback을 추가했습니다.
 - 전체 XCTest와 iPhone 15 iOS 17.2 기존 store 위 설치·실행을 통과했습니다.
+- 독립 QA에서 기존 39개 XCTest와 실제 non-empty legacy migration은 통과했으나,
+  알 수 없는 lifecycle 완료 행 누락과 완료 UUID의 draft 덮어쓰기 HIGH 2건을 확인했습니다.
+- Product Owner가 두 결함의 데이터 무손실 재작업과 직접 회귀 테스트 통과를 승인했습니다.
 - T-20260730-001에서 `macos-26`, Xcode 26.6, iPhone 17·iOS 26.5 CI 계약을 확정했습니다.
 - T-20260730-002와 T-20260730-003에서 `ios-build`, `ios-xctest` workflow를 구현하고 GitHub-hosted check·33/33·artifact를 검증했습니다.
 - T-20260730-004에서 concurrency 격리, 공통 진단 action과 artifact 요약을 통합하고 독립 QA·PR #34를 거쳐 `done`으로 확정했습니다.

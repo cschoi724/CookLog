@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-002
 title: iOS 로컬 도메인·SwiftData migration·draft 생명주기 구현
-status: rework_requested
+status: approved
 type: feature
 priority: P0
 priority_reason: 모든 화면이 공유하는 진행 기록·임시 저장·완료 전환과 영속화 경계를 먼저 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Lead Role
+target_agent: iOS Agent
+target_role: Execution Role
 required_capabilities:
   - ios_implementation
   - data_modeling
@@ -84,23 +84,39 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 - 2026-08-05: lifecycle·SwiftData·복구 구현과 전체 XCTest, 기존 store 위 앱 실행 자체 검증을 완료해 `verification_ready`로 iOS QA Agent에 인계했다.
 - 2026-08-05: iOS QA Agent가 독립 QA worktree에서 lock을 획득하고 `verification_ready -> verification_in_progress`로 전환했다.
 - 2026-08-05: iOS QA Agent가 기존 39개 XCTest와 실제 non-empty legacy store migration 통과를 확인했으나, 알 수 없는 lifecycle 완료 행 누락과 완료 UUID의 draft 덮어쓰기 결함 2건을 재현해 `verification_in_progress -> rework_requested`로 Development Lead Agent에 인계했다.
+- 2026-08-05: Product Owner가 `QA-HIGH-805002-001~002`를 하나의 데이터 무손실
+  재작업 범위로 승인했다. Development Lead Agent가 `rework_requested -> approved`로
+  전환하고 iOS Agent에 재인계했다.
+
+## 재작업 승인 범위
+
+- 알 수 없는 legacy lifecycle 값을 Mapper와 완료 Recipe 단건·목록 조회에서 동일하게
+  `completed`로 취급해 기존 레시피가 숨겨지지 않게 한다.
+- 새 draft 생성 시 기존 UUID 존재 여부를 확인하고 명시적 충돌 오류로 거부하며,
+  InMemory·SwiftData 모두 기존 completed record와 내용을 변경하지 않는다.
+- QA 회귀 테스트 2개와 실제 non-empty legacy migration, 기존 XCTest 39개를 모두
+  통과시키고 iOS QA Agent에 독립 재검증을 요청한다.
+- 화면·STT·AI·TTS·후속 `T-20260805-003~008` 구현은 이번 재작업에 포함하지 않는다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Lead Role이야.
-Task `T-20260805-002`의 재작업 범위를 조율해줘.
+너는 iOS Agent / Execution Role이야.
+Task `T-20260805-002`는 승인된 재작업 Task야.
 
-- 현재 상태: `rework_requested`
+- 현재 상태: `approved`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
-- 다음에 해야 할 일: `QA-HIGH-805002-001~002`의 legacy lifecycle 완료 조회 fallback과 완료 UUID 충돌 방지를 하나의 데이터 무손실 재작업 범위로 정리해줘.
+- 다음에 해야 할 일: 전용 구현 worktree에서 lock을 획득하고 legacy lifecycle 완료 조회
+  fallback과 완료 UUID 충돌 방지를 승인 범위 안에서 수정한 뒤 전체 회귀 검증을 수행해줘.
 - 기준 문서: `docs/product/CookLog_PRD_v2.md`, `apps/ios/docs/DATA_MODEL.md`, `apps/ios/docs/PERSISTENCE.md`, `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`
 - 허용 경로: 현재 Task의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260805-002_ios-local-domain-draft-lifecycle-report.md`, `.ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md`
 - 변경/검토 대상: `apps/ios/CookLog/Domain/`, `apps/ios/CookLog/Data/`, `apps/ios/CookLogTests/`, 관련 iOS 문서
-- 남은 리스크: 실제 non-empty 구버전 store migration은 통과했으나 두 HIGH 데이터 보존 결함이 미해소다.
-- 차단/결정 필요: 재작업 승인과 Execution Role 재할당이 필요하다.
+- 남은 리스크: 실제 non-empty 구버전 store migration은 통과했으나 두 HIGH 데이터 보존
+  결함은 아직 미해소다.
+- 차단/결정 필요: `T-20260805-003`은 독립 재검증과 T-002 완료 전까지 차단한다.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
-- 재개 가능 시: 재작업 범위를 확정하고 사용자 승인 후 `approved`로 iOS Agent / Execution Role에 넘겨줘.
+- 완료 시: status를 `verification_ready`로 전환하고 iOS QA Agent / Verification Role에
+  독립 재검증을 인계해줘.
