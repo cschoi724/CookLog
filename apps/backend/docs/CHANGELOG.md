@@ -1,5 +1,9 @@
 # Backend 변경 기록
 
+- 2026-08-05: Product Owner가 T-20260804-004의 QA·Lead `PASS_WITH_RISK`와 T-006~007
+  잔여 위험 이관을 수용하고 최종 완료·PR #79 병합을 승인했다.
+- 2026-08-05: PR #79를 squash merge SHA `a73a028`로 `develop`에 반영해 T-004를
+  공용 `done`으로 확정하고 T-005 별도 실행 승인 검토로 인계했다.
 - 2026-08-05: Backend QA가 T-20260804-004의 HIGH 2건·MEDIUM 1건 해소, 전체 55/55와
   공용 계약 무회귀를 `PASS_WITH_RISK`로 확인했다.
 - 2026-08-05: Development Lead가 성공 기준·허용 경로, PR #79 `CLEAN`과 필수 check를

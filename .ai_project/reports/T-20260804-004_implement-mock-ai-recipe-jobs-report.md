@@ -2,7 +2,7 @@
 
 작성일: 2026-08-05
 작성자: Backend Agent
-상태: Backend QA 재검증 PASS_WITH_RISK·Development Lead 완료 리뷰 수용
+상태: Product Owner 최종 승인·PR #79 squash merge `a73a028`·done 확정
 
 ## 결과
 
