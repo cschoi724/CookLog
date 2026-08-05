@@ -4,27 +4,31 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-002 독립 재검증·완료 리뷰·PR #77 병합 완료
+- 상태: T-20260805-002 완료·PR #77 병합, T-20260805-003 실행 승인
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002 done
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002 done, T-20260805-003 approved
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. 선행 해소된 `T-20260805-003` 별도 실행 승인
-2. `T-20260805-003~007` 화면·상태 패키지 순차 구현
+1. `T-20260805-003` Home·전체 보기·검색·상태별 routing 구현과 독립 QA
+2. `T-20260805-004~007` 화면·상태 패키지 순차 구현
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- 공용 `develop`에서 T-20260805-002 완료와 PR #77 병합을 확인하고 Product Owner가
+  `T-20260805-003` Home·전체 보기·검색·상태별 routing을 별도 실행 승인했습니다.
+- Home Core Loop 4개 상태, 제목·재료 검색, 동일 record ID와 lifecycle별 route,
+  back swipe·복구를 필수 검증 범위로 확정해 iOS Agent에 인계했습니다.
 - T-20260805-002에서 `RecipeRecord` 단일 UUID와 draft STEP·AI Review·완료 전이를 구현했습니다.
 - SwiftData lifecycle schema 확장, draft 복구, 완료 Recipe 호환 조회와 실패 rollback을 추가했습니다.
 - 전체 XCTest와 iPhone 15 iOS 17.2 기존 store 위 설치·실행을 통과했습니다.
