@@ -33,7 +33,7 @@
 | `T-20260804-002` | `done` | Backend | runtime scaffold·환경 설정·health | - | `T-20260728-005` 완료 | Product Owner 최종 승인·PR #70 병합, T-003 별도 실행 승인 검토 |
 | `T-20260804-003` | `done` | Backend | 공통 HTTP·인증·제한·idempotency middleware | - | `T-20260804-002` 완료 | Product Owner 잔여 위험 수용·PR #76 병합, T-004 완료 |
 | `T-20260804-004` | `done` | Backend | Mock AI recipe job·status·ACK·복구 | - | `T-20260804-002`, `003` 완료 | Product Owner 최종 승인·PR #79 squash merge `a73a028` |
-| `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` 완료 | 선행 해소·별도 실행 승인 대기 |
+| `T-20260804-005` | `approved` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` 완료 | Product Owner 별도 실행 승인·전용 worktree lock 후 구현 |
 | `T-20260804-006` | `proposed` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` | 도메인 경계 완료 대기 |
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
@@ -54,8 +54,10 @@ Product Owner가 T-006 진행을 승인했습니다. Development Lead는 runtime
 공통 middleware, Mock AI, STT 비활성 경계, 보안·cleanup, 통합 검증의 6개 패키지로
 분해했습니다. T-002~004는 독립 QA·완료 리뷰·Product Owner 최종 승인을 통과해
 `done`입니다. T-004는 PR #79 squash merge `a73a028`로 공용 완료를 확정했습니다.
-T-005는 선행이 해소됐지만 별도 실행 승인 전 착수하지 않고 T-006~007은 나머지 선행
-완료를 기다립니다. 실제 provider·cloud 배포·원격 STT endpoint는 범위 밖입니다.
+Product Owner가 T-005를 별도 실행 승인해 Backend Agent에 인계했습니다. disabled
+resolver·activation gate와 route·body read·queue·egress 0회 검증만 구현하며 T-006~007은
+나머지 선행 완료를 기다립니다. 실제 provider·cloud 배포·원격 STT endpoint는 범위
+밖입니다.
 
 Backend QA는 T-002의 shutdown deadline 뒤 listener·process 생존을
 `QA-HIGH-002-001`로 확인해 `FAIL`로 인계했습니다. Product Owner가 deadline 강제 종료,
