@@ -2,9 +2,9 @@
 
 작성일: 2026-08-05
 작성 Role: iOS QA Agent / Verification Role
-대상 구현: `f9c86a0751488ab4ff7741d410b045d2692c445c`
+대상 구현: `a5063758d7504cbe9258a6ca75edd48d965942b5`
 기준 상태: `origin/develop@39468f455b20234b4cc237cf84c718a170376419`
-판정: `FAIL — rework_requested`
+최종 판정: `PASS — verification_passed`
 
 ## 1. 검증 범위
 
@@ -73,8 +73,56 @@
   - xcresult: `/private/tmp/cooklog-qa-T-20260805-002-derived/Logs/Test/Test-CookLog-2026.08.05_12-04-51-+0900.xcresult`
 - 수용 기준: 생성 시 기존 ID 존재 여부를 확인해 충돌을 명시적 오류로 거부하고, InMemory·SwiftData 모두 기존 completed record를 변경하지 않을 것
 
-## 5. 최종 판정과 인계
+## 5. 초기 판정과 인계
 
 실제 non-empty migration과 기존 39개 테스트는 통과했지만, 완료 Recipe 가시성과 단일 UUID 생명주기의 핵심 데이터 보존 불변식을 깨는 HIGH 결함 2건이 재현됐습니다. 따라서 `FAIL`, `rework_requested`로 판정합니다.
 
 Development Lead Agent는 두 결함을 하나의 데이터 무손실 재작업 범위로 조율하고, 구현 수정 후 위 QA 회귀 테스트와 기존 39개 테스트를 모두 통과한 상태로 iOS QA에 재인계해야 합니다.
+
+## 6. 재작업 독립 재검증
+
+재검증일: 2026-08-05
+재검증 대상: `a5063758d7504cbe9258a6ca75edd48d965942b5`
+환경: Xcode 26.6, iPhone 15 Simulator, iOS 17.2
+
+### QA-HIGH-805002-001
+
+- [x] `RecipeLifecycleState.restored(from:)`가 알 수 없는 raw value를 `completed`로 복원한다.
+- [x] Mapper, `fetchRecipe(id:)`, `fetchRecipes()`가 동일한 fallback을 사용한다.
+- [x] record 조회와 완료 Recipe 단건·목록 조회가 제목·재료·STEP을 동일하게 반환한다.
+- [x] `testUnknownLegacyLifecycleRemainsVisibleThroughCompletedRecipeQueries` 통과.
+
+판정: 해소.
+
+### QA-HIGH-805002-002
+
+- [x] 새 record 생성이 `createRecord(_:)` 경계로 분리됐다.
+- [x] InMemory와 SwiftData 모두 기존 UUID를 `recordAlreadyExists`로 거부한다.
+- [x] 충돌 후 기존 completed `RecipeRecord`와 완료 Recipe 내용이 변경되지 않는다.
+- [x] InMemory·SwiftData 집중 회귀 테스트 통과.
+
+판정: 해소.
+
+### 기존 통과 항목 회귀
+
+- [x] 실제 non-empty 구버전 store migration에서 UUID·제목·재료·STEP 보존.
+- [x] 여러 draft 최근 활동 순 복구와 draft/completed 분리 조회 유지.
+- [x] AI snapshot 잠금, 역방향 전이 거부, 저장 실패 원본 보존 유지.
+- [x] 구현 변경 경로가 Task `allowed_paths` 안에 있음.
+- [x] `git diff --check` 통과.
+
+### 독립 테스트 결과
+
+- HIGH 2건과 migration 집중 회귀: `4/4` 통과
+  - `/private/tmp/cooklog-qa-T-20260805-002-reverification-derived/Logs/Test/Test-CookLog-2026.08.05_13-33-30-+0900.xcresult`
+- 전체 XCTest: `43/43` 통과, 실패·skip 0
+  - `/private/tmp/cooklog-qa-T-20260805-002-reverification-derived/Logs/Test/Test-CookLog-2026.08.05_13-33-00-+0900.xcresult`
+
+## 7. 최종 판정과 인계
+
+`QA-HIGH-805002-001~002`가 모두 해소됐고 실제 non-empty migration과 기존 통과 항목에
+회귀가 없습니다. 신규 결함과 수용이 필요한 잔여 위험은 확인되지 않아 `PASS`,
+`verification_passed`로 판정합니다.
+
+Development Lead Agent / Completion Role은 이 QA 결과를 검토하고 Task 완료 확정과
+후속 `T-20260805-003` 의존성 해제 여부를 판단해야 합니다.
