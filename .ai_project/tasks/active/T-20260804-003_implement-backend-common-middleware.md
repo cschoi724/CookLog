@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-003
 title: Backend 공통 HTTP·인증·제한·idempotency middleware 구현
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P0
 priority_reason: 도메인 handler 전에 공통 계약과 abuse 경계를 실행 코드로 강제해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -91,6 +91,12 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
 - 2026-08-05: violation safe projection, schema own-property 검사와 query 제외 pathname
   판정을 구현하고 직접 반례 3개를 추가했다. 기존 15개·T-003 24개·공용 계약 validator를
   통과해 `in_progress -> verification_ready`로 전환하고 Backend QA에 재인계했다.
+- 2026-08-05: Backend QA Agent가 재작업 커밋과 clean worktree를 확인하고 담당 메타데이터를
+  바로잡아 `verification_ready -> verification_in_progress`로 독립 재검증을 시작했다.
+- 2026-08-05: Backend QA Agent가 HIGH 2건·MEDIUM 1건 직접 반례 해소와 기존 39개·공용
+  계약 무회귀를 확인했다. Node 24 실환경과 production 분산 adapter를 잔여 위험으로
+  기록하고 `verification_in_progress -> verification_passed`, `PASS_WITH_RISK`로
+  Development Lead Agent에 완료 검토를 인계했다.
 
 ## 재작업 승인 범위
 
@@ -110,14 +116,14 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Backend Agent / Execution Role이야.
-Task T-20260804-003은 승인된 재작업 Task야.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260804-003은 Backend QA 독립 재검증을 통과한 완료 검토 Task야.
 
-- 현재 상태: `verification_ready`
+- 현재 상태: `verification_passed`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
-- 다음에 해야 할 일: 새 clone 또는 clean worktree에서 HIGH 2건·MEDIUM 1건의 직접 반례와
-  기존 전체 회귀를 독립 재검증하고 판정을 기록해줘.
+- 다음에 해야 할 일: QA `PASS_WITH_RISK`와 잔여 위험을 검토하고 `completion_review`
+  전환 또는 추가 재작업 필요 여부를 결정해줘.
 - 기준 문서: `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md`
@@ -125,5 +131,4 @@ Task T-20260804-003은 승인된 재작업 Task야.
 - 남은 리스크: Host Node 26의 목표 Node 24 engine 경고와 production 분산 adapter·datastore
   transaction은 기존 후속 범위로 유지한다.
 - 차단/결정 필요: T-004~007은 Backend QA 독립 재검증 통과 전 열지 않는다.
-- 완료 시: QA 보고서에 재검증 결과를 추가하고 통과하면 `verification_passed`로
-  Development Lead Agent / Lead Role에 완료 검토를 인계해줘.
+- 완료 시: Product Owner 최종 승인과 PR 병합이 필요한 완료 절차로 인계해줘.
