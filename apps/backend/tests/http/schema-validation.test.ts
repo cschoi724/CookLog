@@ -37,3 +37,41 @@ test("JSON Schema subset rejects missing, unknown, format, and range violations 
     { field: "body", reason: "OUT_OF_RANGE" },
   ]);
 });
+
+test("strict objects reject prototype-named own fields at every nesting level", () => {
+  const prototypeNames = ["toString", "constructor", "prototype", "__proto__"];
+  const nestedSchema = {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      nested: { type: "object", additionalProperties: false, properties: {} },
+      items: {
+        type: "array",
+        items: { type: "object", additionalProperties: false, properties: {} },
+      },
+    },
+  } as const;
+  const secret = "Bearer secret raw recipe";
+  const namedFields = Object.fromEntries(prototypeNames.map((name) => [name, secret]));
+  const payload = {
+    ...namedFields,
+    nested: { ...namedFields },
+    items: [{ ...namedFields }],
+  };
+  const violations = validateJsonSchema(payload, nestedSchema);
+
+  assert.deepEqual(violations, [
+    ...prototypeNames.map((name) => ({ path: `body.${name}`, reason: "UNSUPPORTED_VALUE" })),
+    ...prototypeNames.map((name) => ({ path: `body.nested.${name}`, reason: "UNSUPPORTED_VALUE" })),
+    ...prototypeNames.map((name) => ({ path: `body.items[0].${name}`, reason: "UNSUPPORTED_VALUE" })),
+  ]);
+  assert.equal(JSON.stringify(violations).includes(secret), false);
+});
+
+test("required and child validation use own payload properties only", () => {
+  const inherited = Object.create({ installation_id: "not-an-own-value" }) as Record<string, unknown>;
+  inherited.count = 2;
+  assert.deepEqual(validateJsonSchema(inherited, schema), [
+    { path: "body.installation_id", reason: "REQUIRED" },
+  ]);
+});

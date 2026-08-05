@@ -1,5 +1,11 @@
 # Backend 변경 기록
 
+- 2026-08-05: `T-20260804-003` 재작업에서 violation을 exact own descriptor로 검증한 뒤
+  새 공개 객체로 투영해 extra property·getter·custom prototype·symbol·20개 초과 입력을
+  `INTERNAL_ERROR`로 fail closed했다.
+- 2026-08-05: strict schema required·unknown·child lookup을 own property 기준으로 통일하고
+  query를 제외한 pathname으로 unsupported API version을 판정했다. 직접 반례 3개를 포함한
+  T-003 전용 24개와 기존 15개, 공용 계약 validator를 통과해 독립 재검증에 인계했다.
 - 2026-08-05: Backend QA가 `T-20260804-003`에서 violation 추가 필드 secret 누출과
   strict schema prototype-key 우회 HIGH 2건, query 포함 unsupported version 오분류
   MEDIUM 1건을 확인해 `FAIL`로 판정했다.

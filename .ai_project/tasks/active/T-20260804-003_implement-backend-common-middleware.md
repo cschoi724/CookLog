@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-003
 title: Backend 공통 HTTP·인증·제한·idempotency middleware 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 도메인 handler 전에 공통 계약과 abuse 경계를 실행 코드로 강제해야 한다.
@@ -86,6 +86,11 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
 - 2026-08-05: Product Owner가 `QA-HIGH-003-001~002`, `QA-MEDIUM-003-003` 해소와
   직접 반례 회귀 테스트 추가를 재작업 범위로 승인했다. Development Lead Agent가
   `rework_requested -> approved`로 전환하고 Backend Agent에 재인계했다.
+- 2026-08-05: Backend Agent가 전용 worktree의 clean 상태와 승인 범위를 확인하고 lock을
+  획득해 `approved -> in_progress`로 전환했다.
+- 2026-08-05: violation safe projection, schema own-property 검사와 query 제외 pathname
+  판정을 구현하고 직접 반례 3개를 추가했다. 기존 15개·T-003 24개·공용 계약 validator를
+  통과해 `in_progress -> verification_ready`로 전환하고 Backend QA에 재인계했다.
 
 ## 재작업 승인 범위
 
@@ -108,11 +113,11 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
 너는 Backend Agent / Execution Role이야.
 Task T-20260804-003은 승인된 재작업 Task야.
 
-- 현재 상태: `approved`
+- 현재 상태: `verification_ready`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
-- 다음에 해야 할 일: 기존 전용 worktree에서 lock을 획득하고 HIGH 2건·MEDIUM 1건을
-  승인 범위 안에서 수정한 뒤 직접 반례와 전체 회귀 검증을 수행해줘.
+- 다음에 해야 할 일: 새 clone 또는 clean worktree에서 HIGH 2건·MEDIUM 1건의 직접 반례와
+  기존 전체 회귀를 독립 재검증하고 판정을 기록해줘.
 - 기준 문서: `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md`
@@ -120,5 +125,5 @@ Task T-20260804-003은 승인된 재작업 Task야.
 - 남은 리스크: Host Node 26의 목표 Node 24 engine 경고와 production 분산 adapter·datastore
   transaction은 기존 후속 범위로 유지한다.
 - 차단/결정 필요: T-004~007은 Backend QA 독립 재검증 통과 전 열지 않는다.
-- 완료 시: `verification_ready`로 전환하고 Backend QA Agent / Verification Role에
-  독립 재검증을 인계해줘.
+- 완료 시: QA 보고서에 재검증 결과를 추가하고 통과하면 `verification_passed`로
+  Development Lead Agent / Lead Role에 완료 검토를 인계해줘.

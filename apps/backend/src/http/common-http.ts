@@ -87,7 +87,8 @@ export function installCommonHttp(app: FastifyInstance): void {
   });
 
   app.setNotFoundHandler((request, reply) => {
-    const versionMatch = /^\/v(\d+)(?:\/|$)/u.exec(request.url);
+    const pathname = new URL(request.url, "http://cooklog.invalid").pathname;
+    const versionMatch = /^\/v(\d+)(?:\/|$)/u.exec(pathname);
     const code = versionMatch !== null && versionMatch[1] !== "1"
       ? "API_VERSION_UNSUPPORTED"
       : "RESOURCE_NOT_FOUND";

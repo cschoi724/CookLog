@@ -2,7 +2,7 @@
 
 작성일: 2026-08-05
 작성자: Backend Agent
-상태: 자체 검증 완료, Backend QA 독립 검증 대기
+상태: QA 차단 결함 재작업·자체 검증 완료, Backend QA 독립 재검증 대기
 
 ## 결과
 
@@ -49,6 +49,18 @@ T-20260729-021 공통 계약을 후속 도메인 handler가 재사용할 수 있
 | common·STT·AI·security·shared fixture validator | PASS |
 | `aiops validate task --strict`·`git diff --check` | PASS |
 
+## QA 재작업 결과
+
+| 결함 | 해소 내용 | 직접 회귀 |
+|---|---|---|
+| `QA-HIGH-003-001` | violation 배열·객체의 own descriptor, 허용 key, prototype, symbol과 accessor를 검사하고 `field`·`reason`만 새 객체로 투영 | extra property·getter·custom prototype·symbol·21개 입력이 실제 HTTP 500 `INTERNAL_ERROR`, 합성 secret body/header 비노출 |
+| `QA-HIGH-003-002` | required·unknown property·child lookup을 모두 `Object.hasOwn` 기준으로 통일 | `toString`·`constructor`·`prototype`·`__proto__`의 root·nested object·array item 거부 및 inherited required 거부 |
+| `QA-MEDIUM-003-003` | not-found 판정을 query가 제거된 WHATWG URL pathname 기준으로 변경 | `/v2?probe=1`, encoded fragment query와 하위 path query가 모두 `API_VERSION_UNSUPPORTED` |
+
+재작업 후 `npm run check`의 기존 15개와 T-003 전용 24개, 공통·STT·AI·security·shared
+fixture validator, Task strict validator와 `git diff --check`가 모두 통과했다. getter 반례는
+getter 호출 횟수 0도 검증한다.
+
 ## 제한과 후속 소유권
 
 - T-002가 소유한 `package.json`은 T-003 허용 경로가 아니므로 `npm run check`에 새 suite를
@@ -64,7 +76,8 @@ T-20260729-021 공통 계약을 후속 도메인 handler가 재사용할 수 있
 
 ## Backend QA 인계
 
-Backend QA Agent는 새 clone에서 install·build, 기존 15개와 신규 21개를 모두 실행한다.
+Backend QA Agent는 새 clone에서 install·build, 기존 15개와 T-003 전용 24개를 모두 실행한다.
 catalog/schema 동일성, 악성 오류 비노출, auth 실패 handler 0회, 세 limiter scope와
 unavailable, idempotency 동시 단일 승자·body/path 충돌·replay request ID 일치를 독립
-반례로 검증한다. T-003은 QA 통과 전 T-004~007을 열지 않는다.
+반례로 검증한다. 특히 QA 보고서의 세 차단 결함 직접 반례를 재실행한다. T-003은 QA 통과
+전 T-004~007을 열지 않는다.

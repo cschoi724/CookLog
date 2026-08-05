@@ -106,14 +106,44 @@ export function getPublicErrorDefinition(code: PublicErrorCode): PublicErrorDefi
   return toDefinition(publicErrorCatalog[code]);
 }
 
-function areViolationsSafe(violations: unknown): violations is readonly PublicViolation[] {
-  return Array.isArray(violations) && violations.length <= 20 && violations.every((violation: unknown) => {
-    if (typeof violation !== "object" || violation === null) return false;
-    const candidate = violation as { readonly field?: unknown; readonly reason?: unknown };
-    return typeof candidate.field === "string" && typeof candidate.reason === "string" &&
-      violationFields.has(candidate.field as ViolationField) &&
-      violationReasons.has(candidate.reason as ViolationReason);
-  });
+function projectSafeViolations(violations: unknown): readonly PublicViolation[] | undefined {
+  try {
+    if (!Array.isArray(violations) || Object.getPrototypeOf(violations) !== Array.prototype ||
+      violations.length > 20) return undefined;
+    const arrayKeys = Reflect.ownKeys(violations);
+    if (arrayKeys.length !== violations.length + 1 ||
+      !arrayKeys.every((key) => key === "length" ||
+        (typeof key === "string" && /^(0|[1-9]\d*)$/u.test(key) && Number(key) < violations.length))) {
+      return undefined;
+    }
+
+    const projected: PublicViolation[] = [];
+    for (let index = 0; index < violations.length; index += 1) {
+      const arrayItem = Object.getOwnPropertyDescriptor(violations, String(index));
+      if (arrayItem === undefined || !("value" in arrayItem)) return undefined;
+      const violation: unknown = arrayItem.value;
+      if (typeof violation !== "object" || violation === null) return undefined;
+      const prototype = Object.getPrototypeOf(violation);
+      if (prototype !== Object.prototype && prototype !== null) return undefined;
+      const keys = Reflect.ownKeys(violation);
+      if (keys.length !== 2 || !keys.includes("field") || !keys.includes("reason")) return undefined;
+      const fieldDescriptor = Object.getOwnPropertyDescriptor(violation, "field");
+      const reasonDescriptor = Object.getOwnPropertyDescriptor(violation, "reason");
+      if (fieldDescriptor === undefined || reasonDescriptor === undefined ||
+        !("value" in fieldDescriptor) || !("value" in reasonDescriptor) ||
+        !fieldDescriptor.enumerable || !reasonDescriptor.enumerable ||
+        typeof fieldDescriptor.value !== "string" || typeof reasonDescriptor.value !== "string" ||
+        !violationFields.has(fieldDescriptor.value as ViolationField) ||
+        !violationReasons.has(reasonDescriptor.value as ViolationReason)) return undefined;
+      projected.push({
+        field: fieldDescriptor.value as ViolationField,
+        reason: reasonDescriptor.value as ViolationReason,
+      });
+    }
+    return projected;
+  } catch {
+    return undefined;
+  }
 }
 
 export function renderProblem(
@@ -136,8 +166,11 @@ export function renderProblem(
   const invalidRetryPolicy =
     (definition.retryAfterPolicy === "required" && !hasValidRetryAfter) ||
     (definition.retryAfterPolicy === "forbidden" && options.retryAfterSeconds !== undefined);
+  const safeViolations = options.violations === undefined
+    ? undefined
+    : projectSafeViolations(options.violations);
   const invalidViolations = options.violations !== undefined &&
-    (code !== "VALIDATION_FAILED" || !areViolationsSafe(options.violations));
+    (code !== "VALIDATION_FAILED" || safeViolations === undefined);
 
   if (invalidRetryPolicy || invalidViolations) {
     code = "INTERNAL_ERROR";
@@ -157,8 +190,8 @@ export function renderProblem(
     ...(code === knownCode && hasValidRetryAfter
       ? { retry_after_seconds: options.retryAfterSeconds }
       : {}),
-    ...(code === "VALIDATION_FAILED" && options.violations !== undefined
-      ? { violations: options.violations }
+    ...(code === "VALIDATION_FAILED" && safeViolations !== undefined
+      ? { violations: safeViolations }
       : {}),
   };
 }

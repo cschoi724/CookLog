@@ -8,6 +8,7 @@ import Fastify from "fastify";
 import {
   createSuccessEnvelope,
   installCommonHttp,
+  sendProblem,
   sendSuccess,
 } from "../../src/http/common-http.js";
 import {
@@ -75,6 +76,58 @@ test("unknown codes and unsafe violations fail closed to INTERNAL_ERROR", () => 
   assert.equal(JSON.stringify(unsafe).includes("BEARER_SECRET"), false);
 });
 
+test("violation renderer projects safe fields and rejects structural data leaks", async () => {
+  const secret = "qa-raw-token-and-recipe";
+  const safeInput = [{ field: "body", reason: "INVALID_FORMAT" }] as const;
+  const safeProblem = renderProblem(randomUUID(), "VALIDATION_FAILED", { violations: safeInput });
+  assert.deepEqual(safeProblem.violations, safeInput);
+  assert.notEqual(safeProblem.violations?.[0], safeInput[0]);
+  assert.deepEqual(Object.keys(safeProblem.violations?.[0] ?? {}), ["field", "reason"]);
+
+  let getterCalls = 0;
+  const getterViolation = {} as Record<string, unknown>;
+  Object.defineProperties(getterViolation, {
+    field: { enumerable: true, get: () => { getterCalls += 1; return "body"; } },
+    reason: { enumerable: true, value: "INVALID_FORMAT" },
+  });
+  const prototypeViolation = Object.assign(Object.create({ secret }), {
+    field: "body",
+    reason: "INVALID_FORMAT",
+  });
+  const symbolViolation = { field: "body", reason: "INVALID_FORMAT" } as Record<PropertyKey, unknown>;
+  symbolViolation[Symbol("secret")] = secret;
+  const customArrayPrototype = [{ field: "body", reason: "INVALID_FORMAT" }];
+  Object.setPrototypeOf(customArrayPrototype, { secret });
+  const unsafeCases: readonly unknown[] = [
+    [{ field: "body", reason: "INVALID_FORMAT", secret }],
+    [getterViolation],
+    [prototypeViolation],
+    [symbolViolation],
+    customArrayPrototype,
+    Array.from({ length: 21 }, () => ({ field: "body", reason: "INVALID_FORMAT" })),
+  ];
+
+  const app = Fastify({ logger: false });
+  installCommonHttp(app);
+  unsafeCases.forEach((violations, index) => {
+    app.get(`/v1/unsafe-${index}`, (request, reply) => sendProblem(
+      request,
+      reply,
+      "VALIDATION_FAILED",
+      { violations: violations as never },
+    ));
+  });
+  for (let index = 0; index < unsafeCases.length; index += 1) {
+    const response = await app.inject({ method: "GET", url: `/v1/unsafe-${index}` });
+    assert.equal(response.statusCode, 500);
+    assert.equal(response.json().code, "INTERNAL_ERROR");
+    assert.equal(response.body.includes(secret), false);
+    assert.equal(JSON.stringify(response.headers).includes(secret), false);
+  }
+  assert.equal(getterCalls, 0);
+  await app.close();
+});
+
 test("common HTTP layer keeps canonical request ID and success envelope aligned", async () => {
   const app = Fastify({ logger: false });
   installCommonHttp(app);
@@ -114,6 +167,12 @@ test("validation, unsupported version, and raw errors use safe problem envelopes
   const unsupported = await app.inject({ method: "GET", url: "/v2/example" });
   assert.equal(unsupported.statusCode, 404);
   assert.equal(unsupported.json().code, "API_VERSION_UNSUPPORTED");
+
+  for (const url of ["/v2?probe=1", "/v2?probe=%23fragment", "/v2/example?probe=1"]) {
+    const unsupportedWithQuery = await app.inject({ method: "GET", url });
+    assert.equal(unsupportedWithQuery.statusCode, 404);
+    assert.equal(unsupportedWithQuery.json().code, "API_VERSION_UNSUPPORTED");
+  }
 
   const failure = await app.inject({ method: "GET", url: "/v1/failure" });
   assert.equal(failure.statusCode, 500);

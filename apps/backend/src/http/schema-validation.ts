@@ -72,15 +72,15 @@ export function validateJsonSchema(value: unknown, schema: JsonSchema, path = "b
   if (isRecord(value)) {
     const properties = schema.properties ?? {};
     for (const required of schema.required ?? []) {
-      if (!(required in value)) violations.push({ path: `${path}.${required}`, reason: "REQUIRED" });
+      if (!Object.hasOwn(value, required)) violations.push({ path: `${path}.${required}`, reason: "REQUIRED" });
     }
     if (schema.additionalProperties === false) {
       for (const key of Object.keys(value)) {
-        if (!(key in properties)) violations.push({ path: `${path}.${key}`, reason: "UNSUPPORTED_VALUE" });
+        if (!Object.hasOwn(properties, key)) violations.push({ path: `${path}.${key}`, reason: "UNSUPPORTED_VALUE" });
       }
     }
     for (const [key, childSchema] of Object.entries(properties)) {
-      if (key in value) violations.push(...validateJsonSchema(value[key], childSchema, `${path}.${key}`));
+      if (Object.hasOwn(value, key)) violations.push(...validateJsonSchema(value[key], childSchema, `${path}.${key}`));
     }
   }
   return violations;
