@@ -50,10 +50,11 @@ merge:
 
 ## 5. Migration Note
 
-기존 `docs/GIT_WORKFLOW.md`의 `main` 직접 작업 정책은 이 전략과 충돌한다. 이번 AI Ops Apply에서는 제품 문서를 수정하지 않고 `.ai_project/ops_issues.md`에 후속 동기화 항목으로 기록한다.
+`docs/GIT_WORKFLOW.md`는 2026-08-05 Product Owner 승인에 따라 이 문서의 `feature_branch_pr`, 사용자 push·merge 승인, `main` 직접 push 금지 기준과 동기화했습니다.
 
 ## 6. 변경 이력
 
 | 날짜 | 변경 내용 |
 |---|---|
 | 2026-07-27 | 멀티팀 병렬 운영을 위한 `feature_branch_pr` 전략 기록 |
+| 2026-08-05 | `docs/GIT_WORKFLOW.md` 동기화 완료 기록 |

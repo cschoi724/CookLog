@@ -1,3 +1,35 @@
+---
+schema: aiops.operating_model.v1
+project: CookLog
+bootstrap_mode: guided_full
+core_version: 0.9.0
+core_source: homebrew
+core_update_policy: manual_review
+start_context: custom_start_context
+readiness_level: implementation_ready
+operating_mode: multi_team
+team_pattern: functional_teams
+workflow_policy: standard_vnext
+ownership_model: path_plus_domain
+coordination: custom
+board_model: project_plus_team_board
+branch_pr: pr_required
+canonical_status_ref:
+status_ref_checked_at:
+status_ref_sha:
+knowledge_mode: context_packs
+release_role: inactive
+active_roles:
+  - Direction Role
+  - Lead Role
+  - Execution Role
+  - Verification Role
+  - Completion Role
+  - Ops Governance Role
+deferred_roles:
+  - Release Role
+---
+
 # CookLog Project Operating Model
 
 작성일: 2026-07-27
@@ -29,7 +61,7 @@
 
 | 항목 | 선택값 |
 |---|---|
-| core_version | 0.6.4 |
+| core_version | 0.9.0 |
 | core_source | homebrew |
 | core_update_policy | migration plan 확인 후 사용자 승인 적용 |
 | bootstrap_mode | `guided_full` |
@@ -237,8 +269,9 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | CI 구성과 필수 check | unresolved | 첫 코드 PR merge 전 |
 | Android Workstream 활성화 | deferred | iOS 우선 이정표 완료 후 |
 | Release Role 활성화 | inactive | TestFlight 또는 운영 배포 준비 전 |
-| 기존 `agents.md`와 adapter 지침 병합 | needs_user_decision | 후속 운영 Task |
-| `docs/GIT_WORKFLOW.md`와 새 전략 동기화 | needs_user_decision | 후속 문서 Task |
+| 루트 `AGENTS.md`와 core adapter 정합성 | resolved | 2026-08-05 core 0.9.0 Codex adapter와 정확히 동기화 |
+| `docs/GIT_WORKFLOW.md`와 새 전략 동기화 | resolved | 2026-08-05 `feature_branch_pr` 기준으로 동기화 |
+| core `0.9.0` 프로젝트 마이그레이션 | resolved | 2026-08-05 migration-safe Apply와 자체 검증 완료 |
 
 ## 15. 변경 이력
 
@@ -246,3 +279,7 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 |---|---|
 | 2026-07-27 | Guided Full Discovery 결정과 core 0.6.4 마이그레이션 기준으로 운영 모델 생성 |
 | 2026-07-28 | Design Lead/Execution 분리와 Team 하위 Task/제품 상위 Task 완료 권한 범위 추가 |
+| 2026-08-05 | `AGENTS.md` 역할 라우팅과 Git 정책 충돌 해결 상태 반영, core 0.9.0 마이그레이션을 별도 결정으로 분리 |
+| 2026-08-05 | 승인된 migration-safe Apply로 core version 기록과 운영 디렉토리를 0.9.0에 동기화 |
+| 2026-08-05 | 루트 `AGENTS.md`를 core adapter로 정규화하고 CookLog 맥락을 프로젝트별 source of truth로 분리 |
+| 2026-08-05 | core 0.9.0 `aiops.operating_model.v1` front matter 적용 |

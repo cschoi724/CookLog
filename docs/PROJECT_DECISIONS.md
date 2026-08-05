@@ -64,6 +64,13 @@
 - 이유: 루트 관리 에이전트가 플랫폼별 개발 상황을 한눈에 파악하고 다음 작업을 배정할 수 있어야 합니다.
 - 영향: 플랫폼별 상세 진행은 각 앱 폴더에 두되, 전체 요약은 루트 문서에 반영합니다.
 
+### 현행 운영 모델에 따른 후속 정정 (2026-08-05)
+
+- 문서 위치와 전체 요약 유지 결정은 계속 유효합니다.
+- 별도의 `루트 관리 에이전트`가 작업을 배정한다는 역할 설명은 폐기합니다.
+- 전체 상태 갱신은 Product Lead가 필요성과 우선순위를 판단하고 Product Planning Agent 또는 해당 Execution Agent에 라우팅합니다.
+- 세션 역할과 권한은 `.ai_project/operating_model.md`, `.ai_project/agent_registry.md`, 해당 Task metadata를 따릅니다.
+
 ## 2026-06-22 - `packages/`와 `tools/`는 초기 구조에서 제거
 
 - 상태: 확정
@@ -73,7 +80,16 @@
 
 ## 2026-06-22 - 1인 개발 기준 Git 운영은 main 중심으로 단순화
 
-- 상태: 확정
+- 상태: 대체됨 (2026-08-05)
 - 결정: Git 운영 기준은 `docs/GIT_WORKFLOW.md`에서 단일 관리합니다. 현재 기준은 `main` 직접 작업 중심이며, 큰 실험이나 파일 변화가 큰 작업만 `work/...` 임시 브랜치를 사용합니다.
 - 이유: 현재는 1인 개발이며 브랜치를 세세하게 나누는 비용보다 작은 커밋과 자주 push하는 운영이 더 적합합니다.
 - 영향: Git 전략이 바뀌면 `docs/GIT_WORKFLOW.md`를 우선 수정하고, 다른 문서는 해당 문서를 참조합니다.
+
+## 2026-08-05 - feature branch와 PR 기반 Git 운영으로 전환
+
+- 상태: 확정
+- 결정: CookLog의 공식 Git 전략은 `feature_branch_pr`이며 Task 브랜치와 PR을 기본으로 사용합니다.
+- 브랜치 형식: `task/<task-id>-<slug>`
+- 검토와 병합: Verification Role의 독립 검토 후 Development Lead Agent가 merge를 판단하고 Product Owner가 승인합니다.
+- 권한: push와 merge는 Product Owner 승인 후 진행하며 `main` 직접 push는 허용하지 않습니다.
+- 영향: 이 결정은 2026-06-22의 `main` 직접 작업 결정을 대체하고 `docs/GIT_WORKFLOW.md`와 `.ai_project/branch_pr_strategy.md`에 동일하게 반영됩니다.

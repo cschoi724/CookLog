@@ -23,7 +23,7 @@ source_of_truth:
   - .ai_project/source_of_truth.md
   - .ai_project/qa/T-20260701-002_qa-report.md
   - .ai_project/tasks/T-20260701-002_ios-mvp-manual-qa.md
-  - apps/ios/agents.md
+  - apps/ios/AGENTS.md
   - apps/ios/docs/STATUS.md
   - apps/ios/docs/DEVELOPMENT_PLAN.md
   - apps/ios/docs/NAVIGATION.md

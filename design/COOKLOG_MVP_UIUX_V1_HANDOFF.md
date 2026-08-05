@@ -1,7 +1,8 @@
 # CookLog MVP UI/UX v1 핸드오프
 
 작성일: 2026-07-28
-상태: Design QA 재작업 반영 중
+최종 업데이트: 2026-08-04
+상태: Design QA 독립 재검증 및 Design Lead 완료 확정
 기준 Task: `T-20260728-002`
 
 ## 1. 원본
@@ -15,8 +16,8 @@
 
 로컬 Prototype은 UI의 시각적 Source of Truth이고, 이 문서는 구현 범위와 상태를 빠르게 확인하는 텍스트 핸드오프입니다.
 
-한도 갱신 후 재개 기준은 `design/figma-build/`에 있습니다.
-Figma는 호출 가능 시 로컬 원본을 반영하는 버전 미러로 유지합니다.
+Figma 동기화 재개 기준은 `design/figma-build/`에 있습니다.
+2026-08-03 MCP 쓰기 가능 상태를 확인했으며, Design QA와 Design Lead 완료 검토를 통과한 로컬 원본을 별도 승인된 후속 Task에서 반영하는 버전 미러로 유지합니다.
 
 ## 2. 확정 방향
 
@@ -155,6 +156,7 @@ Figma 제작 폰트는 `Inter`를 사용합니다. iOS 구현은 Dynamic Type이
 - 순서 번호와 STT 원문
 - STEP Preview임을 명확히 하고 AI가 정리한 결과처럼 보이지 않게 함
 - STT 처리 중 skeleton과 오류 상태 제공
+- 번호 텍스트는 `color/bg/accent`, 번호 배경은 `color/bg/subtle`을 사용해 작은 텍스트도 Light `4.74:1`, Dark `7.79:1`을 유지
 
 ### Status Banner
 
@@ -201,6 +203,7 @@ Figma 제작 폰트는 `Inter`를 사용합니다. iOS 구현은 Dynamic Type이
 - 사용자는 이 화면에서 레시피 폼을 직접 작성하지 않음
 - Processing은 1.6초 뒤 자동으로 STEP Added로 전환되며 `STEP 추가 완료 보기`로 즉시 전환할 수도 있음
 - STEP Added에는 `10초 더 기록`과 `AI 정리하기`를 함께 제공해 반복 기록을 닫힌 흐름으로 구성
+- 첫 Processing은 완료 STEP 없이 pending `STEP 1`만 표시하고, 반복 기록부터 기존 완료 STEP 뒤에 다음 pending 번호를 표시
 
 ### AI Review
 
@@ -211,6 +214,7 @@ Figma 제작 폰트는 `Inter`를 사용합니다. iOS 구현은 Dynamic Type이
 - 키보드 노출 시 현재 필드와 저장 행동이 가려지지 않도록 ScrollView 기반 구성
 - 저장은 `Editable -> Saving -> Recipe Detail` 순서를 반드시 거침
 - Save Error는 편집값을 유지하고 상단 `저장 다시 시도`와 하단 저장 버튼으로 복구
+- 제목, 재료 이름·양, 조리 순서, 예상 시간, 메모는 하나의 draft 상태로 관리하며 Editable, Saving, Save Error 전환에서 모두 보존
 - 재료 추가·삭제 컨트롤은 Prototype에서 실제 목록 상태를 변경
 
 ### Recipe Detail
@@ -288,15 +292,23 @@ AI Review / Editable
 | Light 강조 텍스트 `#C93610` / `#FFFDF8` | `5.14:1` |
 | Light 성공 `#176B4A` / `#ECF3F1` | `5.76:1` |
 | Light 오류 `#B42318` / `#F9EDED` | `5.75:1` |
+| Light STEP `#C93610` / `#FAF3E7` | `4.74:1` |
 | Dark CTA `#2D1C14` / `#FF9A7A` | `7.89:1` |
 | Dark 성공 `#7EE0B4` / `#363A3F` | `7.20:1` |
 | Dark 오류 `#FF8C84` / `#41343B` | `5.25:1` |
+| Dark STEP `#FF9A7A` / `#222027` | `7.79:1` |
 
 ### 실제 Viewport
 
 - 기본: `390×844`, URL 기본값 또는 `viewport=regular`
 - 작은 iPhone: `375×667`, `viewport=small`
 - 작은 프레임은 CSS transform 축소를 사용하지 않고 기기 폭·높이, 여백, 제목, 녹음 컨트롤, 스크롤 영역을 실제로 재배치
+
+### Design QA 2차 재작업 반영
+
+- `DQA-HIGH-002`: STEP 번호와 STEP 칩 배경을 `color/bg/subtle`로 변경해 Light·Dark 모두 WCAG AA 일반 텍스트 기준을 통과
+- `DQA-HIGH-003`: AI Review 전체 편집 항목을 draft 상태로 연결해 Save Error와 Saving에서 수정값 보존
+- `DQA-MEDIUM-004`: 첫 Processing의 완료 STEP 0개·pending STEP 1개와 반복 Processing의 번호 증가를 실제 세션 상태에 맞게 수정
 
 ## 9. 제외
 
@@ -307,9 +319,25 @@ AI Review / Editable
 - 앱 아이콘과 그래픽 로고
 - Android 전용 화면
 
-## 10. iOS 구현 인계 주의사항
+## 10. 구독·Paywall 후속 확장
 
-- 기존 기능과 상태 모델은 참고하되 시각 값은 승인된 Figma를 우선합니다.
+`T-20260728-011`에서 MVP Core Loop와 분리된 로컬 구독 UX 원본을 추가했다.
+
+- 실행형 원본: `design/prototype/subscription.html`
+- UX 명세: `design/subscription/PAYWALL_UX_SPEC.md`
+- 상태 매트릭스: `design/subscription/PAYWALL_STATE_MATRIX.md`
+- 카피 토큰: `design/subscription/PAYWALL_COPY_TOKENS.md`
+- 가격·quota·초기화 시점은 `T-20260728-010` 완료 전 가설값이며 Core MVP 확정 범위에는 포함되지 않는다.
+- 구독 종료 후에도 기존 로컬 레시피와 기본 오디오 가이드를 유지한다.
+
+## 11. iOS 구현 인계 주의사항
+
+상세 구현·검수 계약은 `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`를 단일 기준으로 사용합니다. 이 계약은 23개 상태의 실제 SwiftUI ViewModel 조건, 네이티브 관례 우선 범위, Dynamic Type·VoiceOver, Visual QA 허용 편차와 증빙 형식을 정의합니다.
+
+- 제품 의미·흐름·상태 보존은 디자인 계약을 따르고, 동일한 사용자 결과를 유지하는 시스템 렌더링과 동작은 iOS 관례를 우선합니다.
+- UI 시각 원본은 `design/prototype/`이며 Figma 미러 완료 여부는 구현 조건이 아닙니다.
+- CookLog 화면·카드·섹션 배경은 `color/bg/base`, `color/bg/subtle`, `color/bg/elevated`의 Light/Dark 값을 정확히 사용하며 system background로 대체하지 않습니다. System semantic color는 레이블·구분선·네이티브 컨트롤 내부 슬롯에 한정합니다.
+- AI Review 전이는 현재 코드의 `AppRoute.aiReview([StepPreview])`를 기준으로 하고 누적한 동일 STEP 배열을 전달합니다. 오래된 `apps/ios/docs/NAVIGATION.md` 표기는 iOS 적용 Task에서 동기화합니다.
 - SwiftUI 시스템 컨트롤의 접근성 동작을 보존합니다.
 - Figma의 Inter는 시각 기준이며 앱에서는 시스템 폰트와 Dynamic Type을 사용합니다.
 - 별도 Light/Dark Figma 컬렉션은 iOS에서 하나의 동적 Color Asset 또는 `Color` 토큰으로 통합합니다.

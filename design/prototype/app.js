@@ -28,11 +28,17 @@ let state = screenStates[screen].includes(params.get("state")) ? params.get("sta
 let dark = params.get("theme") === "dark";
 let playerStep = 1;
 let playerFeedback = "";
-let recordedStepCount = screen === "log" && ["steps", "processing"].includes(state) ? 2 : 0;
-let ingredients = [
-  { name: "삼겹살", amount: "300g" },
-  { name: "양파", amount: "1/2개" }
-];
+let recordedStepCount = screen === "log" && state === "steps" ? 2 : 0;
+const reviewDraft = {
+  title: "달큰한 간장 삼겹살",
+  ingredients: [
+    { name: "삼겹살", amount: "300g" },
+    { name: "양파", amount: "1/2개" }
+  ],
+  steps: "1. 삼겹살을 노릇하게 볶아요.\n2. 양파와 간장을 넣고 더 볶아요.",
+  time: "25분",
+  memo: "양파가 살짝 투명해질 때 불을 줄이면 좋아요."
+};
 let transitionTimer = null;
 
 const app = document.querySelector("#app");
@@ -79,6 +85,14 @@ function feedbackCard(kind, title, copy, retry) {
   </div>`;
 }
 
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
 function renderHome() {
   if (state === "loading") return `<section class="screen">${header()}${feedbackCard("loading", "레시피를 불러오는 중", "나의 요리 기록을 정리하고 있어요.")}</section>`;
   if (state === "error") return `<section class="screen">${header()}${feedbackCard("error", "레시피를 불러오지 못했어요", "잠시 후 다시 시도해주세요.", "content")}</section>`;
@@ -107,7 +121,7 @@ function stepRows(includeProcessing = false) {
     "불을 줄이고 설탕 한 작은술을 넣었어.",
     "윤기가 돌 때 불을 끄고 접시에 담았어."
   ];
-  const count = Math.max(recordedStepCount, includeProcessing ? 1 : 0);
+  const count = recordedStepCount;
   const rows = samples.slice(0, count).map((copy, index) =>
     `<div class="step-row"><span class="step-number">${index + 1}</span><p>${copy}</p></div>`
   ).join("");
@@ -155,23 +169,23 @@ function renderLog() {
 }
 
 function reviewForm({ disabled = false } = {}) {
-  const ingredientRows = ingredients.map((ingredient, index) =>
+  const ingredientRows = reviewDraft.ingredients.map((ingredient, index) =>
     `<div class="ingredient-row">
-      <input class="input" aria-label="재료 이름" value="${ingredient.name}" ${disabled ? "disabled" : ""}>
-      <input class="input" aria-label="재료 양" value="${ingredient.amount}" ${disabled ? "disabled" : ""}>
-      <button class="remove-button" type="button" data-action="remove-ingredient" data-index="${index}" aria-label="${ingredient.name} 삭제" ${disabled ? "disabled" : ""}>×</button>
+      <input class="input" aria-label="재료 이름" data-ingredient-field="name" data-index="${index}" value="${escapeHTML(ingredient.name)}" ${disabled ? "disabled" : ""}>
+      <input class="input" aria-label="재료 양" data-ingredient-field="amount" data-index="${index}" value="${escapeHTML(ingredient.amount)}" ${disabled ? "disabled" : ""}>
+      <button class="remove-button" type="button" data-action="remove-ingredient" data-index="${index}" aria-label="${escapeHTML(ingredient.name)} 삭제" ${disabled ? "disabled" : ""}>×</button>
     </div>`
   ).join("");
   return `<form class="form" onsubmit="return false">
-    <div class="field"><label for="title">제목</label><input class="input" id="title" value="달큰한 간장 삼겹살" ${disabled ? "disabled" : ""}></div>
+    <div class="field"><label for="title">제목</label><input class="input" id="title" data-draft-field="title" value="${escapeHTML(reviewDraft.title)}" ${disabled ? "disabled" : ""}></div>
     <div class="field">
       <span class="group-label">재료</span>
       ${ingredientRows}
       <button class="subtle-add" type="button" data-action="add-ingredient" ${disabled ? "disabled" : ""}>+ 재료 추가</button>
     </div>
-    <div class="field"><label for="steps">조리 순서</label><textarea class="textarea" id="steps" ${disabled ? "disabled" : ""}>1. 삼겹살을 노릇하게 볶아요.&#10;2. 양파와 간장을 넣고 더 볶아요.</textarea></div>
-    <div class="field"><label for="time">예상 시간</label><input class="input" id="time" value="25분" ${disabled ? "disabled" : ""}></div>
-    <div class="field"><label for="memo">메모</label><textarea class="textarea" id="memo" ${disabled ? "disabled" : ""}>양파가 살짝 투명해질 때 불을 줄이면 좋아요.</textarea></div>
+    <div class="field"><label for="steps">조리 순서</label><textarea class="textarea" id="steps" data-draft-field="steps" ${disabled ? "disabled" : ""}>${escapeHTML(reviewDraft.steps)}</textarea></div>
+    <div class="field"><label for="time">예상 시간</label><input class="input" id="time" data-draft-field="time" value="${escapeHTML(reviewDraft.time)}" ${disabled ? "disabled" : ""}></div>
+    <div class="field"><label for="memo">메모</label><textarea class="textarea" id="memo" data-draft-field="memo" ${disabled ? "disabled" : ""}>${escapeHTML(reviewDraft.memo)}</textarea></div>
     <div class="sticky-action"><button class="button button-primary ${disabled ? "is-loading" : ""}" type="button" data-action="save-recipe" ${disabled ? "disabled" : ""}>${disabled ? `<span class="inline-loader" aria-hidden="true"></span><span>저장 중</span>` : "레시피 저장"}</button></div>
   </form>`;
 }
@@ -286,10 +300,10 @@ document.addEventListener("click", event => {
   if (target.dataset.action === "complete-transcription") completeTranscription();
   else if (target.dataset.action === "save-recipe") startSaving();
   else if (target.dataset.action === "add-ingredient") {
-    ingredients.push({ name: "새 재료", amount: "적당량" });
+    reviewDraft.ingredients.push({ name: "새 재료", amount: "적당량" });
     render();
   } else if (target.dataset.action === "remove-ingredient") {
-    ingredients.splice(Number(target.dataset.index), 1);
+    reviewDraft.ingredients.splice(Number(target.dataset.index), 1);
     render();
   } else if (target.dataset.nav) navigate(target.dataset.nav, target.dataset.state);
   else if (target.dataset.state) {
@@ -309,6 +323,17 @@ document.addEventListener("click", event => {
     state = "playing";
     playerFeedback = `STEP ${playerStep + 1}을 처음부터 다시 재생합니다.`;
     render();
+  }
+});
+
+document.addEventListener("input", event => {
+  const target = event.target;
+  if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
+  if (target.dataset.draftField) {
+    reviewDraft[target.dataset.draftField] = target.value;
+  } else if (target.dataset.ingredientField) {
+    const ingredient = reviewDraft.ingredients[Number(target.dataset.index)];
+    if (ingredient) ingredient[target.dataset.ingredientField] = target.value;
   }
 });
 

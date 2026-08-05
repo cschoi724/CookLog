@@ -2,17 +2,20 @@
 
 이 문서는 CookLog 저장소의 Git 운영 기준을 관리합니다. Git 전략이 바뀌면 이 문서를 우선 수정하고, 다른 문서는 이 문서를 참조합니다.
 
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-08-05
 
 ## 1. 운영 원칙
 
-현재는 1인 개발 기준으로 단순하게 운영합니다.
+CookLog는 승인된 `feature_branch_pr` 전략을 사용합니다.
 
-- 기본 작업은 `main`에서 직접 진행합니다.
+- 기준 브랜치는 `main`입니다.
+- `main`에서 직접 작업하거나 직접 push하지 않습니다.
+- Task별 브랜치는 `task/<task-id>-<slug>` 형식을 사용합니다.
 - 기능, 문서, 설정 변경 단위로 작게 커밋합니다.
-- 작업이 끝나면 `main`을 바로 원격에 push합니다.
-- 큰 실험, 파일 변화가 큰 작업, 며칠 이상 걸릴 작업만 `work/...` 임시 브랜치를 사용합니다.
-- 임시 브랜치는 `main`에 merge한 뒤 삭제합니다.
+- commit은 해당 Execution Role이 담당합니다.
+- push와 merge는 Product Owner인 사용자의 승인 후 진행합니다.
+- PR은 필수이며 Verification Role의 독립 검토를 거칩니다.
+- merge 방식은 squash를 기본으로 하고 merge 후 Task 브랜치를 삭제합니다.
 - 작업 전 `git status -sb`로 상태를 확인합니다.
 - 사용자 변경사항이 있으면 임의로 되돌리지 않습니다.
 
@@ -21,38 +24,43 @@
 ```bash
 git status -sb
 git pull origin main
+git checkout -b task/T-YYYYMMDD-NNN-short-slug
 
 # 작업
 
 git add -A
 git commit -m "feat: iOS 홈 화면 추가"
-git push origin main
+git push -u origin task/T-YYYYMMDD-NNN-short-slug
+
+# PR 생성 후 Verification Role 검토
+# Product Owner 승인 후 squash merge
 ```
 
-## 3. 임시 브랜치가 필요한 경우
+push, PR 생성과 merge는 각각 사용자 승인을 확인한 뒤 실행합니다.
 
-다음 경우에만 `work/...` 임시 브랜치를 사용합니다.
+## 3. 브랜치와 PR 기준
 
-- Xcode 프로젝트 생성처럼 파일 변화가 큰 작업
-- 구현 방향이 확실하지 않은 실험
-- 며칠 이상 걸릴 기능
-- 중간에 `main`을 깨끗하게 유지하고 싶은 작업
+모든 실행 Task는 원칙적으로 별도 Task 브랜치를 사용합니다.
 
-브랜치 생성:
+- 브랜치: `task/<task-id>-<slug>`
+- base: `main`
+- PR 생성: Execution Role
+- PR 검토: Verification Role
+- merge 권고: Development Lead Agent
+- merge 승인: Product Owner
+- CI 준비 전: Task에 지정된 빌드·테스트·수동 QA 결과를 PR에 기록
 
-```bash
-git checkout -b work/ios-project-setup
-```
-
-작업 완료 후:
+예시:
 
 ```bash
 git checkout main
 git pull origin main
-git merge work/ios-project-setup
-git push origin main
-git branch -d work/ios-project-setup
+git checkout -b task/T-20260805-001-sync-agent-policy
 ```
+
+직접 merge하지 않고 승인된 PR 흐름을 사용합니다.
+
+긴급 수정이나 예외적으로 `main` 직접 작업이 필요한 경우에도 Product Owner의 사전 승인이 필요합니다.
 
 ## 4. 커밋 메시지
 
@@ -93,7 +101,9 @@ git branch -d work/ios-project-setup
 - 필요한 문서 업데이트
 - 가능하면 빌드 또는 테스트 실행
 - 의미 있는 단위로 커밋
-- `main`에 push
+- 사용자 승인 후 Task 브랜치 push 및 PR 생성
+- Verification 결과 기록
+- Development Lead의 merge 판단과 Product Owner 승인 확인
 
 iOS 작업 종료 시 우선 갱신 문서:
 

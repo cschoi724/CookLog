@@ -1,37 +1,239 @@
 {
-  "runId": "cooklog-mvp-v1-20260728",
+  "runId": "cooklog-mvp-v1-design-system-20260803",
   "fileKey": "tAvYn6TatLKb3SXDjkH1hn",
-  "phase": "new-file-rate-limited",
-  "lastCompletedStep": "new-file-created-by-product-owner",
+  "phase": "rework-blocked-figma-mcp-rate-limit",
+  "callBudget": {
+    "policy": "minimize-without-fixed-cap-stop-on-rate-limit",
+    "historicalSnapshotCalls": 10,
+    "failedCallsCount": true,
+    "historicalSnapshotExtension": {
+      "authorized": true,
+      "authorizedAt": "2026-08-03",
+      "policy": "continue until actual Figma upload is confirmed"
+    }
+  },
+  "lastCompletedStep": "phase0-local-gallery-qa-passed-figma-discovery-partial",
+  "blockedReason": "figma_mcp_rate_limit",
+  "blockedError": "You've reached the Figma MCP tool call limit on the Starter plan. Upgrade your plan for more tool calls: https://www.figma.com/files/team/1298479221859166708/all-projects?upgrade=mcp_rate_limit_paywall",
+  "handoff": {
+    "from": "UI/UX Design Agent",
+    "to": "Design Lead Agent",
+    "date": "2026-08-04",
+    "purpose": "Figma MCP 한도 갱신 확인과 실행 재라우팅",
+    "resumeFrom": "WP-R2 read-only rehydrate after quota recovery",
+    "nextExecutionAgent": "UI/UX Design Agent"
+  },
   "entities": {
     "pages": {},
     "directionFrames": {},
     "collections": {},
     "primitiveVariables": {},
     "components": {},
-    "screens": {}
+    "screens": {
+      "integratedGallery": "59:2",
+      "coverAndHandoff": "57:2"
+    }
   },
   "pending": [
-    "direction-gate",
-    "collections-and-core-primitives",
-    "primitive-colors-b",
-    "semantic-light-a",
-    "semantic-light-b",
-    "semantic-dark-a",
-    "semantic-dark-b",
-    "dimension-spacing",
-    "dimension-radius",
-    "text-and-effect-styles",
-    "system-page",
-    "components",
-    "screens",
-    "prototype",
-    "visual-qa"
+    "rehydrate-figma-design-system-state",
+    "light-foundation",
+    "light-components",
+    "light-integration-qa",
+    "conditional-dark-foundation-and-components",
+    "independent-design-qa-retest"
   ],
+  "capturePlan": {
+    "sourceUrl": "http://127.0.0.1:8765/gallery.html",
+    "galleryFrameCount": 23,
+    "manifestStateCount": 23,
+    "includesComponentsGallery": true,
+    "externalImages": false,
+    "font": "Inter with Apple system fallback",
+    "artifactName": "CookLog / MVP UIUX v1 / Gallery / 2026-08-03"
+  },
   "validation": {
-    "directionGate": "local-source-passed-figma-pending",
+    "directionGate": "passed",
     "localManifest": "passed",
     "localScriptsSyntax": "passed",
-    "generateFigmaDesignAttempt": "blocked-by-starter-mcp-limit"
-  }
+    "generateFigmaDesignAttempt": "flattened-gallery-capture-completed",
+    "mcpWriteProbe20260803": "passed-temporary-node-created-and-deleted",
+    "noCallPreparation": "passed",
+    "figmaPreflight": "passed-empty-page-no-run-duplicates",
+    "figmaMutations": "uploaded-renamed-annotated-and-validated",
+    "uploadedNodeId": "59:2",
+    "coverNodeId": "57:2",
+    "removedBlankCaptureNodeId": "56:2",
+    "descendantTextCount": 452,
+    "descendantFrameCount": 1056,
+    "fontFamily": "Inter",
+    "visualPreview": "execution-agent-passed-independent-qa-failed",
+    "independentDesignQA": "rework-requested-missing-nine-states-and-clipped-components",
+    "localGalleryUniqueAppStates": 23,
+    "localGalleryAppCards": 30,
+    "localGalleryComponentCards": 2,
+    "localGalleryTotalCards": 32,
+    "localComponentsClipping": "passed-1900px",
+    "localVisualQA": "passed-chrome-headless-1470x13000",
+    "figmaDiscovery": "passed-empty-native-design-system",
+    "codeConnect": "not-applicable-none-found",
+    "libraryDiscovery": "passed",
+    "designSystemSearch": "blocked-figma-mcp-rate-limit"
+  },
+  "reworkCalls": [
+    {
+      "number": 1,
+      "tool": "use_figma",
+      "purpose": "read-only file structure and native design system discovery",
+      "status": "passed",
+      "result": {
+        "pageId": "0:1",
+        "pageName": "Page 1",
+        "topLevelCount": 5,
+        "galleryNodeId": "59:2",
+        "coverNodeId": "57:2",
+        "variableCollectionCount": 0,
+        "variableCount": 0,
+        "styleCount": 0,
+        "componentCount": 0
+      },
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 2,
+      "tool": "get_libraries",
+      "purpose": "accessible Figma library discovery",
+      "status": "passed",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 3,
+      "tool": "search_design_system",
+      "purpose": "search accessible libraries for button candidates",
+      "status": "failed-rate-limit",
+      "errorCode": "INVALID_ARGUMENT",
+      "error": "You've reached the Figma MCP tool call limit on the Starter plan. Upgrade your plan for more tool calls: https://www.figma.com/files/team/1298479221859166708/all-projects?upgrade=mcp_rate_limit_paywall",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 4,
+      "tool": "search_design_system",
+      "purpose": "search accessible libraries for input and card candidates",
+      "status": "failed-rate-limit",
+      "errorCode": "INVALID_ARGUMENT",
+      "error": "You've reached the Figma MCP tool call limit on the Starter plan. Upgrade your plan for more tool calls: https://www.figma.com/files/team/1298479221859166708/all-projects?upgrade=mcp_rate_limit_paywall",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 5,
+      "tool": "search_design_system",
+      "purpose": "search accessible libraries for status banner and player control candidates",
+      "status": "passed-no-relevant-result",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    }
+  ],
+  "calls": [
+    {
+      "number": 1,
+      "tool": "use_figma",
+      "purpose": "read-only preflight",
+      "status": "failed",
+      "errorCode": "INVALID_ARGUMENT",
+      "error": "get_currentUser: currentUser is not a supported API",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 2,
+      "tool": "use_figma",
+      "purpose": "corrected read-only preflight without currentUser",
+      "status": "passed",
+      "result": {
+        "editorType": "figma",
+        "currentPageId": "0:1",
+        "currentPageName": "Page 1",
+        "pageCount": 1,
+        "topLevelCount": 0,
+        "duplicateRunCount": 0
+      },
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 3,
+      "tool": "generate_figma_design",
+      "purpose": "start integrated Gallery capture",
+      "status": "capture-id-issued",
+      "captureId": "60043c8c-f6f8-4874-a169-99b2f44af407",
+      "sourceUrl": "http://127.0.0.1:8765/gallery.html",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 4,
+      "tool": "generate_figma_design",
+      "purpose": "poll integrated Gallery capture",
+      "status": "pending",
+      "captureId": "60043c8c-f6f8-4874-a169-99b2f44af407",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 5,
+      "tool": "generate_figma_design",
+      "purpose": "final allowed poll for integrated Gallery capture",
+      "status": "pending",
+      "captureId": "60043c8c-f6f8-4874-a169-99b2f44af407",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 6,
+      "tool": "generate_figma_design",
+      "purpose": "poll original capture after fresh browser submission",
+      "status": "completed-with-blank-iframe-content",
+      "captureId": "60043c8c-f6f8-4874-a169-99b2f44af407",
+      "createdNodeIds": ["56:2"],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 7,
+      "tool": "use_figma",
+      "purpose": "name original capture and create Cover/Handoff",
+      "status": "passed-visual-preview-found-blank-iframe-content",
+      "createdNodeIds": ["57:2", "57:3", "57:4"],
+      "mutatedNodeIds": ["56:2"]
+    },
+    {
+      "number": 8,
+      "tool": "generate_figma_design",
+      "purpose": "issue flattened Gallery capture ID",
+      "status": "capture-id-issued",
+      "captureId": "61732514-a945-45d7-95c8-17e1f372359e",
+      "createdNodeIds": [],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 9,
+      "tool": "generate_figma_design",
+      "purpose": "poll flattened Gallery capture",
+      "status": "completed",
+      "captureId": "61732514-a945-45d7-95c8-17e1f372359e",
+      "createdNodeIds": ["59:2"],
+      "mutatedNodeIds": []
+    },
+    {
+      "number": 10,
+      "tool": "use_figma",
+      "purpose": "validate flattened Gallery and remove blank capture",
+      "status": "passed",
+      "createdNodeIds": [],
+      "mutatedNodeIds": ["59:2", "57:2"],
+      "removedNodeIds": ["56:2"]
+    }
+  ]
 }

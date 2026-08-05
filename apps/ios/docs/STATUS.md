@@ -23,7 +23,7 @@
 
 - PRD v2 기준으로 iOS 개발 계획을 업데이트했습니다.
 - iOS 개발 문서를 `apps/ios/docs/`로 이동했습니다.
-- iOS 전담 개발 세션 기준을 `apps/ios/agents.md`에 정리했습니다.
+- iOS 전담 개발 세션 기준을 `apps/ios/AGENTS.md`에 정리했습니다.
 - 향후 확장을 고려한 iOS 개발 스펙을 작성했습니다.
 - 현재 개발 Mac 기준으로 Xcode 15.2를 개발 기준으로 확정했습니다.
 - 최소 iOS 버전을 iOS 17 이상으로 확정했습니다.
@@ -150,7 +150,7 @@
 ## 세션 시작 체크리스트
 
 - [ ] `git status -sb` 확인
-- [ ] `apps/ios/agents.md` 확인
+- [ ] `apps/ios/AGENTS.md` 확인
 - [ ] 이 문서의 현재 상태와 다음 작업 확인
 - [ ] `apps/ios/docs/DEVELOPMENT_PLAN.md` 확인
 - [ ] 작업 주제에 맞는 역할별 상세 문서 확인

@@ -22,7 +22,7 @@
 
 1. `git status -sb`로 작업트리 상태를 확인합니다.
 2. `docs/GIT_WORKFLOW.md`를 확인합니다.
-3. `apps/ios/agents.md`를 확인합니다.
+3. `apps/ios/AGENTS.md`를 확인합니다.
 4. 이 문서의 `현재 상태 요약`과 `M8. MVP 정리와 검증`을 확인합니다.
 5. `apps/ios/docs/DEVELOPMENT_SPEC.md`와 역할별 상세 문서를 확인합니다.
 6. M8 전체 MVP 흐름 수동 검증부터 시작합니다.
@@ -111,7 +111,7 @@ MVP 초반에는 실제 Apple Speech, SwiftData, 실제 AI API보다 Mock 흐름
 - [x] 기본 빌드 성공
 - [x] 기본 시뮬레이터 실행 성공
 - [x] 프로젝트 구조 정리
-- [x] `apps/ios/agents.md`에 실제 프로젝트 구조 반영
+- [x] `apps/ios/AGENTS.md`에 실제 프로젝트 구조 반영
 - [x] `apps/ios/docs/TESTING.md`에 실제 빌드/테스트 명령 기록
 - [x] `apps/ios/docs/STATUS.md`에 프로젝트 생성 결과 기록
 
@@ -487,8 +487,8 @@ M8 검증 결과:
 새 iOS 개발 세션은 작업 시작 시 다음을 확인합니다.
 
 - [ ] `git status -sb` 확인
-- [ ] 루트 `agents.md` 확인
-- [ ] `apps/ios/agents.md` 확인
+- [ ] 루트 `AGENTS.md` 확인
+- [ ] `apps/ios/AGENTS.md` 확인
 - [ ] `../../../docs/product/CookLog_PRD_v2.md` 확인
 - [ ] 이 개발 계획 문서 확인
 - [ ] 최근 작업 로그 확인
@@ -578,8 +578,8 @@ M8 검증 결과:
 
 ### 2026-06-19
 
-- 루트 `agents.md`를 전체 서비스 관리 에이전트 기준으로 재정리했습니다.
-- `apps/ios/agents.md`를 추가해 iOS 개발 에이전트 기준을 만들었습니다.
+- 루트 `AGENTS.md`를 전체 서비스 관리 에이전트 기준으로 재정리했습니다.
+- `apps/ios/AGENTS.md`를 추가해 iOS 개발 에이전트 기준을 만들었습니다.
 - iOS 개발 환경 권장안을 정리했습니다.
 - 이 개발 계획 문서를 추가했습니다.
 
@@ -605,4 +605,4 @@ M8 검증 결과:
 - `apps/ios/docs/TESTING.md`
 - `apps/ios/docs/DECISIONS.md`
 - `apps/ios/docs/CHANGELOG.md`
-- `apps/ios/agents.md`
+- `apps/ios/AGENTS.md`

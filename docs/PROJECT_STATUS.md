@@ -80,13 +80,13 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 
 iOS 개발 세션은 다음 문서를 순서대로 확인합니다.
 
-1. `apps/ios/agents.md`
+1. `apps/ios/AGENTS.md`
 2. `apps/ios/docs/STATUS.md`
 3. `apps/ios/docs/DEVELOPMENT_PLAN.md`
 4. `docs/product/CookLog_PRD_v2.md`
 
 Android 개발 세션은 다음 문서를 순서대로 확인합니다.
 
-1. `apps/android/agents.md`
+1. `apps/android/AGENTS.md`
 2. `apps/android/docs/STATUS.md`
 3. `docs/product/CookLog_PRD_v2.md`

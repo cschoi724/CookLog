@@ -4,6 +4,15 @@
 작성자: UI/UX Design Agent
 판정: `verification_ready`
 
+## 2026-08-03 WP-4 2차 재작업 결과
+
+- `DQA-HIGH-002`: STEP 번호·Recipe Detail 순서 번호·Audio Player STEP 칩을 `color/bg/accent` 전경과 `color/bg/subtle` 배경 조합으로 통일했다.
+  - Light `#C93610` / `#FAF3E7`: `4.74:1`
+  - Dark `#FF9A7A` / `#222027`: `7.79:1`
+- `DQA-HIGH-003`: 제목, 재료 이름·양, 조리 순서, 예상 시간, 메모를 `reviewDraft` 상태로 관리하고 입력 이벤트를 상태에 반영해 Editable, Save Error, Saving 사이에서 값을 보존한다.
+- `DQA-MEDIUM-004`: Processing의 완료 행 개수를 `recordedStepCount`와 일치시키고 pending 번호를 다음 STEP으로 계산해 첫 처리와 반복 처리를 구분했다.
+- `node --check design/prototype/app.js`와 WP-4 동작 검사에서 편집값 보존, 첫·두 번째 Processing, Light·Dark STEP 대비를 통과했다.
+
 ## 완료한 작업
 
 - 젤리공방의 현재 미러 파일: [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn)

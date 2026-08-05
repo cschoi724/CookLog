@@ -49,7 +49,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-28
+updated_at: 2026-08-03
 report_to: .ai_project/reports/T-20260728-009_define-live-service-readiness-gates-report.md
 qa_to: .ai_project/qa/T-20260728-009_define-live-service-readiness-gates-qa.md
 ---
@@ -85,6 +85,11 @@ qa_to: .ai_project/qa/T-20260728-009_define-live-service-readiness-gates-qa.md
 - TestFlight와 외부 MVP 각각의 진입 조건이 구분된다.
 - 보안, 개인정보, 비용, 장애 대응과 rollback 기준이 정의된다.
 - 각 준비 항목이 담당 Team, 의존성, 성공 기준을 가진 후속 Task 후보로 분리된다.
+
+## 의존성 현황
+
+- 2026-08-03: `T-20260728-002`가 완료돼 승인된 MVP UI/UX 기준 의존성이 충족됐다.
+- `T-20260728-001`, `T-20260728-005`, `T-20260728-007`은 계속 대기한다.
 
 ## 사용자 결정 필요 항목
 

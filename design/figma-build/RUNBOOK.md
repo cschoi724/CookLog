@@ -1,138 +1,96 @@
-# Figma 재개 Runbook
+# Figma Light 우선 디자인 시스템 재작업 Runbook
 
-## 1. 재개 전
+기준 Task: `T-20260803-001`
+실행 원칙: Light 필수, Dark 조건부, 호출 최소화, rate limit 즉시 보류
 
-1. `figma-use`, `figma-generate-design`, `figma-generate-library` 스킬을 읽습니다.
-2. `manifest.json`, `state.json`, `../COOKLOG_MVP_UIUX_V1_HANDOFF.md`를 읽습니다.
-3. Figma `whoami`에서 젤리공방 권한과 호출 가능 여부를 확인합니다.
-4. `use_figma` 읽기 호출 하나로 페이지, 컬렉션, 변수, 스타일, 컴포넌트를 재탐색합니다.
-5. Task의 `blocked` 상태를 `in_progress`로 바꾸고 lock을 다시 획득합니다.
+## Phase 0 Checklist — 로컬 준비와 Discovery
 
-## 2. Foundation
+- `P0.a` 누락 앱 상태 9개 추가
+- `P0.b` 앱 상태 수와 전체 카드 수 분리
+- `P0.c` Components Gallery 잘림 해소
+- `P0.d` 로컬 JavaScript·JSON·HTTP·시각 검증
+- `P0.e` Figma 파일·페이지·변수·스타일·컴포넌트 read-only discovery
+- `P0.f` Code Connect·기존 화면·라이브러리 확인
+- `P0.g` 로컬 Manifest ↔ Figma gap analysis
+- Exit: Light token·style·component 목록 고정, 쓰기 전 충돌 해소
 
-아래 파일을 순서대로 호출합니다.
+## Phase 1 Checklist — Light Foundation
 
-1. `scripts/00-collections-and-core-primitives.js`
-2. `scripts/01-primitives-remaining.js`
-3. `scripts/02-semantics-light-a.js`
-4. `scripts/03-semantics-light-b.js`
-5. `scripts/04-semantics-dark-a.js`
-6. `scripts/05-semantics-dark-b.js`
-7. `scripts/06-dimensions-spacing.js`
-8. `scripts/07-dimensions-radius.js`
-9. `scripts/08-text-and-effect-styles.js`
+- `P1.a` Primitives·Light Color·Dimension collection 확인 또는 생성
+- `P1.b` Primitive Color 21개
+- `P1.c` Light Semantic Color 15개 alias
+- `P1.d` Spacing 7개·Radius 5개
+- `P1.e` Text Style 6개·Effect Style 2개
+- `P1.f` 모든 scope와 WEB/iOS code syntax
+- `P1.g` Foundation 문서 Section과 Light 샘플
+- `P1.h` 변수 수·alias·scope·syntax·시각 검증
+- Exit: Foundation 검증 통과, unresolved token 없음
 
-검증:
+## Phase 2 Checklist — File Structure
 
-- 컬렉션 4개
-- Primitive 21개
-- Light Semantic 15개
-- Dark Semantic 15개
-- Spacing 7개
-- Radius 5개
-- Text Style 6개
-- Effect Style 2개
-- 모든 Variable에 제한된 scope와 WEB/iOS code syntax 존재
+- `P2.a` Starter 3페이지 구조 유지
+- `P2.b` `01 — System & Handoff`에 Foundations·Components Section 구성
+- `P2.c` `02 — MVP Screens & Prototype`에 수정 Gallery 기준 연결
+- `P2.d` 페이지·Section 명명과 Source of Truth 표시 검증
+- Exit: Foundation과 Component 작업 위치가 명확하고 기존 Gallery와 충돌 없음
 
-## 3. 페이지
+## Phase 3 Checklist — Light Components
 
-Starter 페이지 한도를 지킵니다.
+각 컴포넌트는 한 종류씩 생성하고 다음 컴포넌트로 넘어가기 전에 검증한다.
 
-- 기존 `00 — Direction Gate` 유지
-- `01 — System & Handoff` 생성
-- `02 — MVP Screens & Prototype` 생성
+- `P3.a` Button
+- `P3.b` Record Control
+- `P3.c` Recipe Card
+- `P3.d` STEP Row
+- `P3.e` Status Banner
+- `P3.f` Form Field
+- `P3.g` Player Controls
+- `P3.h` variant count·property·binding·44pt·명칭 통합 검사
+- Exit: 7개 Light 컴포넌트와 상태가 Manifest와 일치
 
-`01`에는 Cover, Foundations, Components를 Section으로 배치합니다. `02`에는 Record Flow, Reuse Flow, States, Dark, Small Screen을 Section으로 배치합니다.
+## Phase 4 Checklist — Light Integration과 QA 준비
 
-## 4. 컴포넌트
+- `P4.a` 수정 Gallery 반영
+- `P4.b` 앱 상태 23개와 전체 카드 수 별도 검증
+- `P4.c` Components Gallery 전체 높이·잘림 검증
+- `P4.d` Light Foundation·Component·Gallery 정합성
+- `P4.e` 접근성·이름·미해결 binding audit
+- `P4.f` state ledger·실행 보고·핸드오프 갱신
+- Exit: Light 결과가 독립 Design QA에 인계 가능한 상태
 
-한 호출에서 한 컴포넌트만 만듭니다.
+## Phase 5 Checklist — 조건부 Dark
 
-1. Button
-2. Record Control
-3. Recipe Card
-4. STEP Row
-5. Status Banner
-6. Form Field
-7. Player Controls
+진입 조건: P0~P4 통과, rate limit 경고 없음, state ledger 일치.
 
-각 컴포넌트는 다음을 만족해야 합니다.
+- `P5.a` Dark Semantic Color 15개
+- `P5.b` Light 구조에 Dark 변수 적용
+- `P5.c` 7개 Dark Component 상태 확인
+- `P5.d` Dark Gallery 잘림·대비·상태 회귀
+- `P5.e` state ledger와 핸드오프 갱신
+- Exit: 가능하면 Dark 완료, 불가능하면 정확한 pending 지점 기록
 
-- Auto Layout
-- Light Semantic 변수 binding
-- Variant와 상태
-- Text 또는 Boolean Component Property
-- 44pt 이상 터치 영역
-- 설명과 사용 기준
-- metadata와 screenshot 검증
+## 호출 최소화 규칙
 
-## 5. 화면
+- MCP 전 로컬 검사를 모두 끝낸다.
+- 변수는 관련된 작은 원자 묶음으로 생성하되 실패 원인을 분리할 수 있는 크기를 유지한다.
+- 컴포넌트는 한 호출에 한 종류만 다룬다.
+- 생성 결과에서 metadata와 inline screenshot을 함께 반환할 수 있으면 활용한다.
+- 별도 검증 호출을 줄여도 컴포넌트별 구조·시각 검증은 생략하지 않는다.
+- 한 호출에서 page 전환은 최대 한 번이다.
+- Figma mutation은 순차 실행한다.
+- 반환 ID를 state ledger에 기록한 후 다음 호출로 넘어간다.
 
-화면 골격과 내용을 분리해 호출합니다.
+## Rate Limit 보류 절차
 
-1. Home Light
-2. Cooking Log Light
-3. AI Review Light
-4. Recipe Detail Light
-5. Audio Player Light
-6. 주요 상태
-7. Home Dark
-8. Cooking Log Dark
-9. AI Review Dark
-10. Recipe Detail Dark
-11. Audio Player Dark
-12. iPhone SE 작은 화면 검증
+1. rate limit·quota·호출 한도 오류를 확인하면 즉시 중단한다.
+2. 자동 재시도, 대체 도구 호출, 새 capture 시작을 하지 않는다.
+3. 성공한 마지막 Phase·Task ID와 모든 반환 ID를 기록한다.
+4. Task lock을 해제하고 `blocked`로 전환한다.
+5. 실행 보고에 오류 원문과 재개 조건을 기록한다.
+6. 다음 세션은 read-only rehydrate 후 미완료 Task ID부터 재개한다.
 
-화면 크기:
+## 완료·인계
 
-- 기본: 390×844
-- 작은 화면: 375×667
-
-## 6. Prototype
-
-기록 흐름:
-
-```text
-Home
--> Cooking Log / Empty
--> Cooking Log / Recording
--> Cooking Log / Processing
--> Cooking Log / STEP Added
--> Cooking Log / Recording
--> Cooking Log / Processing
--> Cooking Log / STEP Added
--> AI Review / Processing
--> AI Review / Editable
--> AI Review / Saving
--> Recipe Detail
--> Audio Player / Paused
--> Audio Player / Playing
-```
-
-재사용 흐름:
-
-```text
-Home / Recipe Card
--> Recipe Detail
--> Audio Player / Paused
-```
-
-저장 오류 복구:
-
-```text
-AI Review / Editable
--> AI Review / Save Error
--> AI Review / Saving
--> Recipe Detail
-```
-
-## 7. 검증과 완료
-
-1. Foundation Section screenshot
-2. Component Section screenshot
-3. Light Flow screenshot
-4. Dark Flow screenshot
-5. Small Screen screenshot
-6. 이름, binding, 대비, 터치 영역 audit
-7. 저장소 핸드오프와 보고서 갱신
-8. `verification_ready`로 전환하고 Design QA Agent에 인계
+- Light 필수 범위가 끝나면 Dark 진행 여부와 관계없이 Light 완료 결과를 명확히 기록한다.
+- Dark를 시작했다가 한도에 걸리면 Light 완료 상태와 Dark 중단 상태를 분리한다.
+- 필수 QA 결함과 Light 디자인 시스템이 완료되면 `verification_ready`로 Design QA Agent에 인계한다.

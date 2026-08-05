@@ -1,8 +1,8 @@
 # 새 클론 환경 인수인계
 
 작성일: 2026-07-14  
-최종 업데이트: 2026-07-27  
-작성자: PM Agent  
+최종 업데이트: 2026-08-05
+최초 작성자: PM Agent (legacy 명칭)
 목적: CookLog를 새 디렉토리에 Git clone한 뒤 현재 제품/운영 흐름을 끊지 않고 이어가기 위한 인수인계 기준
 
 ## 1. 현재 전환 목표
@@ -61,7 +61,7 @@ Git으로 새 디렉토리에 clone할 때 아래 파일/디렉토리는 반드�
 
 ### 제품/프로젝트 기준
 
-- `agents.md`
+- `AGENTS.md`
 - `README.md`
 - `docs/`
 - `docs/product/`
@@ -72,7 +72,7 @@ Git으로 새 디렉토리에 clone할 때 아래 파일/디렉토리는 반드�
 
 ### iOS 기준
 
-- `apps/ios/agents.md`
+- `apps/ios/AGENTS.md`
 - `apps/ios/CookLog.xcodeproj`
 - `apps/ios/CookLog/`
 - `apps/ios/CookLogTests/`
@@ -84,7 +84,7 @@ Git으로 새 디렉토리에 clone할 때 아래 파일/디렉토리는 반드�
 
 ### Android 기준
 
-- `apps/android/agents.md`
+- `apps/android/AGENTS.md`
 - `apps/android/docs/`
 
 Android는 아직 개발 대기 상태이므로 현재는 문서 기준만 유지한다.
@@ -123,12 +123,12 @@ Android는 아직 개발 대기 상태이므로 현재는 문서 기준만 유�
 
 1. `git status -sb`
 2. `git log --oneline -5`
-3. `agents.md`
+3. `AGENTS.md`
 4. `.ai_project/new_clone_handoff.md`
 5. `.ai_project/task_board.md`
 6. `.ai_project/source_of_truth.md`
 7. `docs/PROJECT_STATUS.md`
-8. `apps/ios/agents.md`
+8. `apps/ios/AGENTS.md`
 9. `apps/ios/docs/STATUS.md`
 10. `apps/ios/docs/DEVELOPMENT_PLAN.md`
 11. `apps/ios/docs/MANUAL_QA_CHECKLIST.md`
@@ -137,7 +137,7 @@ Android는 아직 개발 대기 상태이므로 현재는 문서 기준만 유�
 
 ## 7. 새 환경에서 이어갈 첫 작업
 
-새 환경에서 가장 먼저 이어갈 작업은 PM Agent의 상태 정리와 후속 Task 분리다.
+새 환경에서 가장 먼저 이어갈 작업은 Product Lead Agent의 우선순위 확인과 Product Planning Agent의 상태 문서 정리다.
 
 - `docs/PROJECT_STATUS.md` 최종 갱신
 - `apps/ios/docs/STATUS.md` 최종 갱신

@@ -29,7 +29,7 @@ allowed_paths:
   - .ai_project/teams/development/task_board.md
   - .ai_project/teams/quality/task_board.md
 source_of_truth:
-  - apps/ios/agents.md
+  - apps/ios/AGENTS.md
   - apps/ios/docs/TESTING.md
   - apps/ios/docs/STATUS.md
   - apps/ios/CookLog.xcodeproj/project.pbxproj

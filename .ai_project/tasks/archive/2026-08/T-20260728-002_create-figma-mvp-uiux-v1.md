@@ -1,7 +1,7 @@
 ---
 id: T-20260728-002
 title: CookLog MVP UI/UX v1 설계와 Figma 버전 미러
-status: verification_ready
+status: done
 type: feature
 priority: P0
 priority_reason: 승인된 디자인 원본이 없어 이후 UI 구현과 Visual QA의 기준을 먼저 만들어야 한다.
@@ -9,8 +9,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent:
+target_role:
 required_capabilities:
   - ux_flow
   - ui_design
@@ -48,7 +48,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-28
+updated_at: 2026-08-03
 report_to: .ai_project/reports/T-20260728-002_create-figma-mvp-uiux-v1-report.md
 qa_to: .ai_project/qa/T-20260728-002_create-figma-mvp-uiux-v1-qa.md
 ---
@@ -137,10 +137,16 @@ Design Lead Agent가 다음 기준으로 ownership과 의존성을 조율했으�
   - 전체 화면 비교 갤러리
   - Safari Light Home, Dark Audio Player, 전체 갤러리, 375×667 저장 오류, Dark 컴포넌트 상태 시각 검증
 - 로컬 디자인 핸드오프: `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`
-- Figma 미러 제한: 젤리공방 Starter의 Figma MCP 월간 호출 한도 도달
-- Task 상태: 재작업과 통합 자체 검증 완료, Design QA 독립 재검증 대기
+- Figma 미러 상태: 2026-08-03 MCP 쓰기 확인 완료, 전체 동기화는 Design QA 통과 후 수행
+- Task 상태: Design QA 독립 재검증 통과, Design Lead Agent 완료 확정
 
-## Figma 미러 제한
+## Figma 미러 현황
+
+- 2026-08-03 기존 Figma 파일에 단일 `use_figma` 임시 도형 생성·삭제 검사를 수행해 MCP 쓰기가 다시 가능함을 확인했다.
+- 테스트 산출물은 즉시 삭제해 Figma 파일에 남기지 않았다.
+- WP-4 수정본의 Design QA 통과 전에는 결함 버전 중복 업로드를 피하기 위해 전체 동기화를 시작하지 않는다.
+
+과거 제한 이력:
 
 - Figma의 파일 조회, `use_figma`, screenshot 호출이 모두 `INVALID_ARGUMENT`로 거부된다.
 - `whoami` 기준 젤리공방 권한은 `Full / Starter`로 정상이다.
@@ -245,6 +251,58 @@ Design Lead Agent가 Design QA의 6개 결함을 아래 순차 작업 패키지�
 - `DQA-MEDIUM-002`: 390×844와 375×667을 별도 실제 레이아웃으로 제공하고 작은 화면 갤러리를 추가했다.
 - `DQA-MEDIUM-003`: 공통 컴포넌트 상태 갤러리와 상태별 핸드오프를 추가하고 재료 추가·삭제를 실제 상태 변화로 연결했다.
 
+## 2차 재작업 승인 범위
+
+2026-08-03 Product Owner가 최신 Design QA 재검증에서 확인된 아래 3개 결함의 재작업을 승인했다.
+
+### UI/UX Design Agent — WP-4 접근성·상태 보존·STEP 정확성
+
+대상 결함:
+
+- `DQA-HIGH-002`: STEP 번호와 STEP 칩의 Light·Dark 실제 전경/배경 명암비를 모두 WCAG AA `4.5:1` 이상으로 조정한다.
+- `DQA-HIGH-003`: AI Review의 제목, 재료 이름·양, 조리 순서, 예상 시간, 메모를 draft 상태로 관리하고 Editable, Saving, Save Error 전환 사이에서 수정값을 보존한다.
+- `DQA-MEDIUM-004`: 첫 Processing에서는 완료 STEP 0개와 처리 중 STEP 1개를 표시하고, 두 번째 기록부터 기존 STEP 뒤에 pending STEP을 추가한다.
+
+수용 기준:
+
+- 수정된 STEP 전경/배경 조합의 실제 명암비와 토큰을 핸드오프에 기록한다.
+- Save Error 안내 문구와 실제 편집값 보존 동작이 일치한다.
+- 첫 번째와 두 번째 Processing의 완료·처리 중 STEP 개수가 실제 세션 상태와 일치한다.
+- Prototype, Manifest, 핸드오프를 함께 갱신하고 기존 6개 결함과 신규 결함의 회귀 자체 검증을 수행한다.
+- 실행 완료 후 `verification_ready`로 전환해 Design QA Agent에 독립 재검증을 요청한다.
+
+실행 경로:
+
+- `design/prototype/app.js`
+- `design/prototype/styles.css`
+- `design/figma-build/manifest.json`
+- `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`
+
+현재 라우팅:
+
+- Product Owner 승인 완료
+- UI/UX Design Agent가 실행 lock을 획득해 WP-4를 완료하고 해제했다.
+- 수정본은 Design QA의 `verification_passed` 판정을 거쳐 Design Lead Agent가 완료를 확정했다.
+- `T-20260728-003`, `T-20260728-009`, `T-20260728-011`에서 이 Task에 대한 의존성은 충족됐다.
+
+### WP-4 실행 결과
+
+- `DQA-HIGH-002`: STEP 관련 작은 텍스트의 실제 조합을 Light `#C93610` / `#FAF3E7` `4.74:1`, Dark `#FF9A7A` / `#222027` `7.79:1`로 조정했다.
+- `DQA-HIGH-003`: 제목, 재료 이름·양, 조리 순서, 예상 시간, 메모를 `reviewDraft`로 관리해 Editable, Save Error, Saving 전환에서 수정값을 보존한다.
+- `DQA-MEDIUM-004`: 첫 Processing은 완료 0개와 pending STEP 1, 두 번째 Processing은 완료 1개와 pending STEP 2를 표시하도록 수정했다.
+- Prototype, Manifest, 핸드오프, 실행 보고를 동기화하고 JavaScript 문법·JSON·상태 동작·대비 검사를 통과했다.
+
+## Design Lead 완료 검토
+
+2026-08-03 Design Lead Agent가 Completion Role로 최종 검토했다.
+
+- Design QA의 `verification_passed` 판정과 결함별 검증 근거를 수용했다.
+- WP-4 3건과 기존 결함 회귀 범위가 모두 통과했고 신규 결함이 없음을 확인했다.
+- Prototype, Manifest, 핸드오프와 실행 보고의 상태·토큰·동작 기준이 일치한다.
+- Figma 캔버스 동기화는 승인된 운영 결정에 따라 비차단 버전 미러 후속 작업으로 유지한다.
+- iOS 적용과 기능·디자인 정합성 검증은 별도 `T-20260728-003`에서 수행한다.
+- 완료를 막는 잔여 리스크나 외부 결정이 없어 `completion_review -> done`으로 확정한다.
+
 ## 상태 전이 기록
 
 - 2026-07-28: Design Lead Agent가 ownership, 실행 경로, 의존성과 병렬 가능성을 확인하고 `proposed -> scoped`로 조율했다.
@@ -265,3 +323,11 @@ Design Lead Agent가 Design QA의 6개 결함을 아래 순차 작업 패키지�
 - 2026-07-28: Product Owner가 재작업 범위를 승인해 `scoped -> approved`로 전환하고 UI/UX Design Agent에 다시 라우팅했다.
 - 2026-07-28: UI/UX Design Agent가 재작업 lock을 획득하고 `approved -> in_progress`로 전환했다.
 - 2026-07-28: UI/UX Design Agent가 QA 결함 6건의 재작업과 통합 자체 검증을 완료하고 lock을 해제해 `in_progress -> verification_ready`로 전환했다.
+- 2026-08-03: Design QA 재검증에서 미해결 2건과 신규 1건을 확인한 판정을 Task와 보드에 동기화했다.
+- 2026-08-03: Design Lead Agent가 남은 결함 3건을 WP-4로 범위화하고 Product Owner가 2차 재작업을 승인해 `rework_requested -> scoped -> approved`로 전환했다.
+- 2026-08-03: UI/UX Design Agent가 실행 lock을 획득하고 `approved -> in_progress`로 전환해 WP-4 재작업을 시작했다.
+- 2026-08-03: WP-4 결함 3건 수정과 자체 검증을 완료하고 lock을 해제해 `in_progress -> verification_ready`로 전환했다.
+- 2026-08-03: Design QA Agent가 독립 재검증 lock을 획득해 `verification_ready -> verification_in_progress`로 전환했다.
+- 2026-08-03: WP-4 결함 3건과 기존 결함 회귀를 모두 통과하고 신규 결함 없음을 확인해 lock을 해제한 뒤 `verification_in_progress -> verification_passed`로 전환하고 Design Lead Agent에 인계했다.
+- 2026-08-03: Design Lead Agent가 검증 결과, 잔여 리스크, 후속 Task와 보드 갱신 범위를 검토해 `verification_passed -> completion_review`로 전환했다.
+- 2026-08-03: 완료 조건을 모두 충족하고 Figma 미러만 비차단 후속으로 남아 `completion_review -> done`으로 확정했다.

@@ -2,6 +2,31 @@
 
 이 문서는 플랫폼과 무관한 전체 프로젝트 변경 기록을 관리합니다.
 
+## 2026-08-05
+
+- 존재하지 않는 `루트 관리 에이전트` 역할을 폐기하고 루트 `AGENTS.md`를 공통 컨텍스트·Role 라우팅 기준으로 변경했습니다.
+- 루트와 iOS·Android 지침 파일명을 대문자 `AGENTS.md`로 통일하고 활성 문서의 경로 참조를 동기화했습니다.
+- QA 결과를 Task의 Completion Role 또는 Development Lead Agent로 인계하도록 iOS 검증 문서를 수정했습니다.
+- Git 운영 기준을 `feature_branch_pr`, Task 브랜치, 독립 검토, 사용자 push·merge 승인 방식으로 통일했습니다.
+- 승인된 migration-safe Apply를 실행해 AI Ops core와 프로젝트 운영 기록을 `0.9.0`으로 동기화했습니다.
+- 루트 `AGENTS.md`를 core 0.9.0 Codex adapter와 정확히 동기화하고 CookLog 고유 맥락을 `.ai_project/`, 제품 문서와 플랫폼별 `AGENTS.md`로 분리했습니다.
+- legacy Task metadata와 schema front matter는 자동 변경하지 않고 별도 검토 대상으로 유지했습니다.
+- 신규 Task부터 `aiops.task.v1` schema를 필수 적용하고 기존 Task는 legacy 이력으로 보존하는 운영 기준을 확정했습니다.
+
+## 2026-08-03
+
+- `T-20260728-002` Design QA 2차 재작업으로 STEP 번호·칩의 Light/Dark 대비를 WCAG AA 기준 이상으로 조정했습니다.
+- AI Review의 제목, 재료, 조리 순서, 예상 시간, 메모를 draft 상태로 관리해 저장 오류와 저장 중에도 편집값이 유지되도록 보완했습니다.
+- 첫 Processing과 반복 Processing의 완료·pending STEP 번호가 실제 기록 수와 일치하도록 수정하고 Manifest·핸드오프를 동기화했습니다.
+- `T-20260728-002` Design QA 독립 재검증에서 WP-4 3건과 기존 결함 회귀를 모두 통과하고 신규 결함 없음을 확인해 Design Lead 완료 검토로 인계했습니다.
+- Design Lead 완료 검토에서 검증 결과와 잔여 리스크를 수용해 `T-20260728-002`를 `done`으로 확정하고 후속 iOS 적용·릴리즈 게이트·Paywall Task의 디자인 의존성을 해소했습니다.
+- 승인된 로컬 UI Source of Truth를 Figma 버전 미러에 동기화하는 비차단 후속 Task `T-20260803-001`을 scope하고 Product Owner 승인 대기로 등록했습니다.
+- Starter MCP 호출 제한에 맞춰 `T-20260803-001`을 총 5회 이하의 시각 스냅샷 미러로 축소하고 편집형 Variable·Component·native Prototype 구축은 별도 후속 범위로 분리했습니다.
+- Product Owner가 `T-20260803-001`의 실패 포함 MCP 총 5회 이하 실행을 승인해 UI/UX Design Agent에 라우팅했습니다.
+- `T-20260803-001` Design QA에서 앱 상태 9개 누락과 Light·Dark Components Gallery 잘림을 확인해 재작업을 요청했습니다.
+- Design Lead가 재작업을 로컬 Gallery 결함 수정, Light Foundation·공통 컴포넌트 우선 구축과 조건부 Dark 확장으로 범위화하고, 실제 MCP 한도 발생 시 state ledger 기록 후 `blocked`로 보류하는 기준을 추가했습니다.
+- Product Owner가 `T-20260803-001`의 Light 우선 디자인 시스템 확대 재작업을 승인해 UI/UX Design Agent에 실행 라우팅했습니다.
+
 ## 2026-07-28
 
 - `design/prototype/`을 공식 UI Source of Truth로 확정하고 Figma를 점진적 버전 미러로 전환했습니다.
@@ -48,7 +73,7 @@
 
 ## 2026-06-19
 
-- 루트 `agents.md`를 전체 서비스 관리 에이전트 기준으로 재정리했습니다.
-- `apps/ios/agents.md`를 추가해 iOS 개발 에이전트 기준을 만들었습니다.
+- 루트 `AGENTS.md`를 전체 서비스 관리 에이전트 기준으로 재정리했습니다.
+- `apps/ios/AGENTS.md`를 추가해 iOS 개발 에이전트 기준을 만들었습니다.
 - iOS 개발 환경 권장안, 개발 계획, 의사결정 로그를 추가했습니다.
 - 제품 문서를 v1 형태로 정리했습니다.

@@ -4,29 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CookLog MVP UI Gallery</title>
+  <link rel="stylesheet" href="./styles.css">
   <style>
     :root { font-family: Inter, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; color: #2d1c14; background: #e8e3dc; }
     * { box-sizing: border-box; }
     body { margin: 0; padding: 56px; }
-    header { max-width: 1280px; margin: 0 auto 48px; }
+    body > header { max-width: 1280px; margin: 0 auto 48px; }
     .kicker { margin: 0; color: #c93610; font-size: 12px; font-weight: 850; letter-spacing: .12em; }
-    h1 { margin: 9px 0 12px; font-size: 44px; line-height: 1.08; letter-spacing: -.055em; }
-    header p:last-child { max-width: 650px; margin: 0; color: #756b64; line-height: 1.7; }
-    section { max-width: 1280px; margin: 0 auto 64px; }
+    body > header h1 { margin: 9px 0 12px; font-size: 44px; line-height: 1.08; letter-spacing: -.055em; }
+    body > header p:last-child { max-width: 650px; margin: 0; color: #756b64; line-height: 1.7; }
+    .gallery-counts { margin-top: 14px; color: #5c4638; font-size: 13px; font-weight: 750; }
+    body > section { max-width: 1280px; margin: 0 auto 64px; }
     .section-head { margin-bottom: 20px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; }
-    h2 { margin: 0; font-size: 25px; letter-spacing: -.04em; }
+    .section-head > h2 { margin: 0; font-size: 25px; letter-spacing: -.04em; }
     .section-head span { color: #756b64; font-size: 13px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, 390px); justify-content: center; gap: 24px; align-items: start; }
     .grid-small { grid-template-columns: repeat(auto-fit, 375px); }
     article { overflow: hidden; border-radius: 42px; background: white; box-shadow: 0 22px 60px rgba(45,28,20,.14); }
-    article h3 { margin: 0; padding: 15px 18px; color: #5c4638; background: #fffdf8; border-bottom: 1px solid #f2e3ce; font-size: 13px; }
+    article > h3 { margin: 0; padding: 15px 18px; color: #5c4638; background: #fffdf8; border-bottom: 1px solid #f2e3ce; font-size: 13px; }
     iframe { width: 390px; height: 844px; display: block; border: 0; }
     article.small, article.small iframe { width: 375px; }
     article.small iframe { height: 667px; }
+    article.component-state, article.component-state iframe { height: 1900px; }
     .dark-section { max-width: none; margin-left: -56px; margin-right: -56px; padding: 54px 56px 64px; color: #fffdf8; background: #111014; }
     .dark-section .section-head span { color: #b8ada5; }
     .dark-section article { background: #18171b; box-shadow: 0 22px 60px rgba(0,0,0,.42); }
-    .dark-section article h3 { color: #f2e3ce; background: #222027; border-color: #3c3742; }
+    .dark-section article > h3 { color: #f2e3ce; background: #222027; border-color: #3c3742; }
+    .capture-frame { display: block; margin: 0; padding: 0; overflow: hidden; background: var(--bg-base); }
     @media (max-width: 1200px) { body { padding: 32px 24px; } .dark-section { margin-left: -24px; margin-right: -24px; padding-left: 24px; padding-right: 24px; } }
   </style>
 </head>
@@ -35,6 +39,7 @@
     <p class="kicker">OFFICIAL UI SOURCE OF TRUTH · GALLERY</p>
     <h1>CookLog MVP UI/UX v1</h1>
     <p>Warm Kitchen Journal 방향의 핵심 화면과 테마를 한 번에 비교합니다. 각 화면의 세부 상태와 인터랙션은 기본 Prototype에서 확인합니다.</p>
+    <p class="gallery-counts"><strong>23</strong> app states · <strong>32</strong> capture cards</p>
   </header>
 
   <section>
@@ -79,15 +84,49 @@
       <article><h3>Review · Save Error</h3><iframe title="Review Save Error" src="./index.html?screen=review&state=save-error&embed=1"></iframe></article>
       <article><h3>Detail · Not Found</h3><iframe title="Detail Not Found" src="./index.html?screen=detail&state=not-found&embed=1"></iframe></article>
       <article><h3>Player · No Steps</h3><iframe title="Player No Steps" src="./index.html?screen=player&state=no-steps&embed=1"></iframe></article>
+      <article><h3>Home · Loading</h3><iframe title="Home Loading" src="./index.html?screen=home&state=loading&embed=1"></iframe></article>
+      <article><h3>Home · Error</h3><iframe title="Home Error" src="./index.html?screen=home&state=error&embed=1"></iframe></article>
+      <article><h3>Log · Empty</h3><iframe title="Log Empty" src="./index.html?screen=log&state=empty&embed=1"></iframe></article>
+      <article><h3>Log · Error</h3><iframe title="Log Error" src="./index.html?screen=log&state=error&embed=1"></iframe></article>
+      <article><h3>Review · Saving</h3><iframe title="Review Saving" src="./index.html?screen=review&state=saving&embed=1"></iframe></article>
+      <article><h3>Detail · Loading</h3><iframe title="Detail Loading" src="./index.html?screen=detail&state=loading&embed=1"></iframe></article>
+      <article><h3>Detail · Error</h3><iframe title="Detail Error" src="./index.html?screen=detail&state=error&embed=1"></iframe></article>
+      <article><h3>Player · Loading</h3><iframe title="Player Loading" src="./index.html?screen=player&state=loading&embed=1"></iframe></article>
+      <article><h3>Player · Error</h3><iframe title="Player Error" src="./index.html?screen=player&state=error&embed=1"></iframe></article>
     </div>
   </section>
 
   <section>
     <div class="section-head"><h2>Component States</h2><span>구현 가능한 공통 상태 시각 기준</span></div>
     <div class="grid">
-      <article><h3>Light · Components</h3><iframe title="Light Component States" src="./components.html"></iframe></article>
-      <article><h3>Dark · Components</h3><iframe title="Dark Component States" src="./components.html?theme=dark"></iframe></article>
+      <article class="component-state"><h3>Light · Components</h3><iframe title="Light Component States" src="./components.html"></iframe></article>
+      <article class="component-state"><h3>Dark · Components</h3><iframe title="Dark Component States" src="./components.html?theme=dark"></iframe></article>
     </div>
   </section>
+  <script>
+    const captureParams = new URLSearchParams(window.location.search);
+    if (captureParams.get("capture") === "1") {
+      const frames = [...document.querySelectorAll("iframe")];
+      const waitForFrame = frame => new Promise(resolve => {
+        if (frame.contentDocument?.readyState === "complete") resolve();
+        else frame.addEventListener("load", resolve, { once: true });
+      });
+
+      Promise.all(frames.map(waitForFrame)).then(() => {
+        frames.forEach(frame => {
+          const sourceBody = frame.contentDocument.body;
+          const clone = document.importNode(sourceBody, true);
+          clone.classList.add("capture-frame");
+          clone.style.width = `${frame.clientWidth}px`;
+          clone.style.height = `${frame.clientHeight}px`;
+          clone.style.minHeight = `${frame.clientHeight}px`;
+          clone.querySelectorAll("script").forEach(script => script.remove());
+          frame.replaceWith(clone);
+        });
+        document.documentElement.dataset.captureReady = String(frames.length);
+      });
+    }
+  </script>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </body>
 </html>

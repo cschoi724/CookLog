@@ -28,6 +28,14 @@ http://127.0.0.1:8765/gallery.html
 http://127.0.0.1:8765/components.html
 ```
 
+구독·Paywall UX:
+
+```text
+http://127.0.0.1:8765/subscription.html
+http://127.0.0.1:8765/subscription.html?view=paywall&state=ready&entry=quota
+http://127.0.0.1:8765/subscription.html?view=status&state=pro-active&theme=dark
+```
+
 화면·상태·테마를 URL로 바로 열 수도 있습니다.
 
 ```text
@@ -49,6 +57,7 @@ http://127.0.0.1:8765/?screen=home&state=content&viewport=small
 - 기록 흐름과 다시 요리 흐름의 기본 인터랙션
 - 390×844와 실제 375×667 레이아웃
 - Button, Status Banner, Form Field, Recipe Card, Player Control 상태 보드
+- Paywall 상품 조회·구매·복원과 Free/Pro 구독·사용량 상태
 
 ## 역할
 

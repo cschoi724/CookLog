@@ -28,28 +28,29 @@
 | Agent 운영 원칙 | `.ai/` | `.ai_project/` | 운영 원칙은 `.ai/` 우선 |
 | 프로젝트 운영 구성 | `.ai_project/operating_model.md` | `.ai/bootstrap/project_bootstrap_policy.md` | CookLog 선택값은 `operating_model.md` 우선 |
 | Agent 구성 | `.ai_project/agent_registry.md` | `.ai/models/agent_registry.md`, `.ai/models/role_model.md` | 프로젝트 활성 구성은 `.ai_project/` 우선 |
+| 세션 공통 컨텍스트·라우팅 | `AGENTS.md` | `.ai_project/current_context.md` | 루트 위치만으로 역할을 추론하지 않고 사용자 지정 Role과 Task metadata 우선 |
 | Agent 실행 Task | `.ai_project/tasks/` | `.ai_project/task_board.md`, report/QA 문서 | Task 파일 우선 |
 | Agent 작업 상태 요약 | `.ai_project/task_board.md` | `.ai_project/tasks/` | 충돌 시 Task 파일 기준으로 보드 갱신 |
-| 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog PRD v2.pdf`, `docs/product/CookLog_PRODUCT.md`, `agents.md` | PRD v2와 사용자 최신 결정 우선 |
-| MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `docs/product/CookLog_PRD_v2.md`, `agents.md` | PRD v2와 MVP Scope를 함께 확인 |
-| 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | `agents.md`, 플랫폼별 `agents.md` | PRD v2와 User Flow 우선 |
+| 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog PRD v2.pdf`, `docs/product/CookLog_PRODUCT.md` | PRD v2와 사용자 최신 결정 우선 |
+| MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `docs/product/CookLog_PRD_v2.md` | PRD v2와 MVP Scope를 함께 확인 |
+| 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | 플랫폼별 `AGENTS.md` | PRD v2와 User Flow 우선 |
 | 와이어프레임 | `docs/product/CookLog_WIREFRAME.md` | 디자인 산출물 | 최신 승인 산출물 우선 |
 | UI/UX 원본 | `design/prototype/` | `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `design/figma-build/manifest.json` | Product Owner가 승인한 로컬 Prototype과 Manifest 우선 |
 | Figma 미러 | [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn) | `design/figma-build/` | 버전 스냅샷·형상 보존용이며 충돌 시 로컬 UI/UX 원본 우선 |
-| 로드맵 | `docs/product/CookLog_ROADMAP.md` | `docs/PROJECT_STATUS.md` | PM Agent가 사용자 확인 후 정리 |
+| 로드맵 | `docs/product/CookLog_ROADMAP.md` | `docs/PROJECT_STATUS.md` | Product Planning Agent가 사용자 확인 후 정리 |
 | 수익화 | `docs/product/CookLog_MONETIZATION.md` | `docs/PROJECT_DECISIONS.md`, `docs/product/CookLog_ROADMAP.md` | 가격·기능·quota 변경은 Product Owner 승인 후 기준 문서와 결정 로그를 함께 갱신 |
-| 전체 현재 상태 | `docs/PROJECT_STATUS.md` | 플랫폼별 `apps/*/docs/STATUS.md` | 플랫폼 문서가 더 최신이면 PM Agent가 루트 상태 갱신 필요 |
+| 전체 현재 상태 | `docs/PROJECT_STATUS.md` | 플랫폼별 `apps/*/docs/STATUS.md` | 플랫폼 문서가 더 최신이면 Product Planning Agent가 루트 상태 갱신 필요 |
 | 전체 결정사항 | `docs/PROJECT_DECISIONS.md` | 플랫폼별 `DECISIONS.md` | 공통 결정은 루트, 플랫폼 결정은 플랫폼 문서 우선 |
-| 전체 변경 이력 | `docs/PROJECT_CHANGELOG.md` | 플랫폼별 `CHANGELOG.md`, Git commit | 누락 시 PM Agent가 갱신 |
+| 전체 변경 이력 | `docs/PROJECT_CHANGELOG.md` | 플랫폼별 `CHANGELOG.md`, Git commit | 누락 시 Product Planning Agent가 갱신 |
 | Branch / PR 운영 | `.ai_project/branch_pr_strategy.md` | `docs/GIT_WORKFLOW.md`, `.ai/policies/branch_pr_policy.md` | 현재 충돌은 `ops_issues.md`에 기록하고 동기화 전 사용자 승인 원칙을 우선 |
-| iOS 세션 기준 | `apps/ios/agents.md` | 루트 `agents.md` | iOS 구현 판단은 iOS 문서 우선 |
+| iOS 세션 기준 | `apps/ios/AGENTS.md` | 루트 `AGENTS.md` | iOS 구현 판단은 iOS 문서 우선 |
 | iOS 현재 상태 | `apps/ios/docs/STATUS.md` | `apps/ios/docs/CHANGELOG.md`, 코드 상태 | 코드/검증 결과 확인 후 갱신 |
 | iOS 구현 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` | `apps/ios/docs/STATUS.md` | 계획 변경은 Product Lead Agent 또는 iOS Agent가 문서화 |
 | iOS 기술 스펙 | `apps/ios/docs/DEVELOPMENT_SPEC.md` | `apps/ios/docs/ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md` | 세부 영역 문서와 실제 코드 모두 확인 |
 | iOS QA 기준 | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` | `apps/ios/docs/TESTING.md`, `.ai_project/qa/` | iOS QA Agent가 리스크 분류 |
 | Backend 아키텍처 | `unresolved` | `.ai_project/operating_model.md`의 foundation 범위 | Backend 구현 Task 승인 전 생성 후보 확정 |
 | Backend API 계약 | `unresolved` | PRD v2, iOS service 문서 | iOS 연동 Task 전에 계약 문서 필요 |
-| Android 세션 기준 | `apps/android/agents.md` | 루트 `agents.md` | Android 착수 전 Android 문서 우선 |
+| Android 세션 기준 | `apps/android/AGENTS.md` | 루트 `AGENTS.md` | Android 착수 전 Android 문서 우선 |
 | Android 현재 상태 | `apps/android/docs/STATUS.md` | Android 개발 문서 | Android는 iOS MVP 안정화 후 착수 |
 | AI Knowledge | `.ai_knowledge/` | 이 Source Of Truth 매트릭스 | Wiki는 원본이 아니며 충돌 시 이 문서의 원본 우선 |
 
@@ -81,7 +82,7 @@ apps/android/docs/
 
 1. 사용자 승인 결정이 최우선입니다.
 2. 실제 코드 동작과 문서가 다르면 코드와 검증 결과를 먼저 확인합니다.
-3. 문서가 오래되었으면 PM Agent가 갱신 필요성을 보고합니다.
+3. 문서가 오래되었으면 담당 Lead가 갱신 필요성을 판단하고 Product Planning Agent 또는 해당 Execution Agent에 라우팅합니다.
 4. Agent 운영 문서와 프로젝트 기술 문서가 충돌하면 영역을 분리해 해석합니다.
 5. 충돌 해결 후 관련 Task 파일과 `.ai_project/task_board.md`를 갱신합니다.
 
@@ -94,3 +95,4 @@ apps/android/docs/
 | 2026-07-28 | 멀티팀 역할 조정에 맞춰 iOS·Backend 실행/검증 담당을 도메인 Agent로 명시하고 Android 담당은 착수 시점에 확정하도록 변경 |
 | 2026-07-28 | CookLog MVP UI/UX v1 Figma 작업 파일 생성과 링크 등록 |
 | 2026-07-28 | Product Owner 결정으로 `design/prototype/`을 공식 UI Source of Truth, Figma를 점진적 미러로 전환 |
+| 2026-08-05 | `AGENTS.md`를 역할 부여 문서가 아닌 공통 컨텍스트·라우팅 기준으로 재정의하고 현행 Role 명칭을 반영 |

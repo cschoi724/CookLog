@@ -88,7 +88,7 @@ apps/ios/
 
 ```text
 apps/ios/
-├── agents.md
+├── AGENTS.md
 ├── docs/
 ├── CookLog.xcodeproj
 ├── CookLog/

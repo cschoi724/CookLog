@@ -1,4 +1,4 @@
-# CookLog Android agents.md
+# CookLog Android AGENTS.md
 
 이 문서는 `apps/android/` 전담 개발 에이전트가 추가 컨텍스트 없이 CookLog Android 앱을 개발하기 위한 기준입니다.
 

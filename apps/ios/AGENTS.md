@@ -1,4 +1,4 @@
-# CookLog iOS agents.md
+# CookLog iOS AGENTS.md
 
 이 문서는 `apps/ios/` 전담 개발 에이전트가 추가 컨텍스트 없이 CookLog iOS 앱을 개발하기 위한 기준입니다.
 
@@ -8,7 +8,7 @@
 
 - 작업 범위는 기본적으로 `apps/ios/` 안으로 제한합니다.
 - 루트 문서나 제품 문서를 수정해야 하면 변경 이유를 명확히 남깁니다.
-- 루트 `agents.md`와 `docs/product/CookLog_PRD_v2.md`를 제품 기준으로 삼습니다.
+- 루트 `AGENTS.md`는 공통 Role 라우팅 기준으로, `docs/product/CookLog_PRD_v2.md`는 제품 기준으로 삼습니다.
 - iOS 개발 환경과 기술 선택은 `apps/ios/docs/DEVELOPMENT_SPEC.md`를 우선 참고합니다.
 - 아키텍처, 도메인 모델, 저장소, 서비스, 내비게이션, 테스트 상세는 `apps/ios/docs/`의 역할별 문서를 참고합니다.
 - 개발 진행 순서와 체크리스트는 `apps/ios/docs/DEVELOPMENT_PLAN.md`를 계속 업데이트하며 따릅니다.
@@ -140,7 +140,7 @@ Home -> 저장된 레시피 -> 오디오 가이드 시작
 
 ```text
 apps/ios/
-├── agents.md
+├── AGENTS.md
 ├── docs/
 ├── CookLog.xcodeproj
 ├── CookLog/

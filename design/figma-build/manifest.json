@@ -165,6 +165,10 @@
     "STEP Row": {
       "properties": {
         "State": ["Default", "Processing", "Error"]
+      },
+      "tokenUsage": {
+        "numberText": "color/bg/accent",
+        "numberBackground": "color/bg/subtle"
       }
     },
     "Status Banner": {
@@ -214,6 +218,12 @@
       "Home / Content",
       "Recipe Detail / Content",
       "Audio Player / Paused"
+    ],
+    "saveErrorFlow": [
+      "AI Review / Editable",
+      "AI Review / Save Error",
+      "AI Review / Saving",
+      "Recipe Detail / Content"
     ]
   },
   "validation": {
@@ -233,9 +243,16 @@
       "lightAccentText": { "pair": "#C93610 on #FFFDF8", "ratio": 5.14 },
       "lightSuccessText": { "pair": "#176B4A on #ECF3F1", "ratio": 5.76 },
       "lightErrorText": { "pair": "#B42318 on #F9EDED", "ratio": 5.75 },
+      "lightStepText": { "pair": "#C93610 on #FAF3E7", "ratio": 4.74 },
       "darkPrimaryCTA": { "pair": "#2D1C14 on #FF9A7A", "ratio": 7.89 },
       "darkSuccessText": { "pair": "#7EE0B4 on #363A3F", "ratio": 7.2 },
-      "darkErrorText": { "pair": "#FF8C84 on #41343B", "ratio": 5.25 }
+      "darkErrorText": { "pair": "#FF8C84 on #41343B", "ratio": 5.25 },
+      "darkStepText": { "pair": "#FF9A7A on #222027", "ratio": 7.79 }
+    },
+    "stateContracts": {
+      "firstProcessing": "0 completed steps + pending STEP 1",
+      "repeatedProcessing": "existing completed steps + next pending STEP",
+      "reviewDraftPersistence": ["Editable", "Saving", "Save Error"]
     }
   }
 }

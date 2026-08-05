@@ -284,7 +284,7 @@ button.card { width: 100%; color: inherit; text-align: left; }
 
 .step-list { display: grid; gap: 10px; }
 .step-row { display: grid; grid-template-columns: 38px 1fr; gap: 12px; align-items: start; padding: 14px; border: 1px solid var(--border); border-radius: 17px; background: var(--bg-elevated); }
-.step-number { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 13px; color: var(--bg-accent); background: var(--bg-accent-muted); font-size: 13px; font-weight: 850; }
+.step-number { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 13px; color: var(--bg-accent); background: var(--bg-subtle); font-size: 13px; font-weight: 850; }
 .step-row p { margin: 3px 0 0; color: var(--text-secondary); font-size: 14px; line-height: 21px; }
 .processing-line { position: relative; overflow: hidden; color: var(--text-secondary); }
 .processing-line::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--bg-elevated) 75%, white), transparent); animation: shimmer 1.4s infinite; }
@@ -338,14 +338,14 @@ button.card { width: 100%; color: inherit; text-align: left; }
 .ingredient-list li span:last-child { color: var(--text-secondary); font-weight: 700; }
 .method-list { counter-reset: step; }
 .method-list li { counter-increment: step; display: grid; grid-template-columns: 34px 1fr; gap: 12px; color: var(--text-secondary); font-size: 14px; line-height: 21px; }
-.method-list li::before { content: counter(step); width: 34px; height: 34px; display: grid; place-items: center; border-radius: 12px; color: var(--bg-accent); background: var(--bg-accent-muted); font-size: 12px; font-weight: 850; }
+.method-list li::before { content: counter(step); width: 34px; height: 34px; display: grid; place-items: center; border-radius: 12px; color: var(--bg-accent); background: var(--bg-subtle); font-size: 12px; font-weight: 850; }
 .note-card { color: var(--text-secondary); line-height: 22px; font-size: 14px; background: var(--bg-subtle); box-shadow: none; }
 
 .player-screen { display: flex; flex-direction: column; overflow: hidden; }
 .player-progress { height: 4px; margin: 8px 0 30px; overflow: hidden; border-radius: 999px; background: var(--border); }
 .player-progress span { display: block; width: 25%; height: 100%; border-radius: inherit; background: var(--bg-accent); transition: width .25s ease; }
 .player-stage { flex: 1; display: grid; align-content: center; text-align: center; }
-.player-stage .step-chip { width: fit-content; margin: 0 auto 18px; padding: 8px 12px; border-radius: 999px; color: var(--bg-accent); background: var(--bg-accent-muted); font-size: 12px; font-weight: 850; }
+.player-stage .step-chip { width: fit-content; margin: 0 auto 18px; padding: 8px 12px; border-radius: 999px; color: var(--bg-accent); background: var(--bg-subtle); font-size: 12px; font-weight: 850; }
 .player-stage h2 { margin: 0; font-size: 29px; line-height: 1.28; letter-spacing: -.045em; }
 .player-stage p { margin: 17px auto 0; max-width: 285px; color: var(--text-secondary); font-size: 15px; line-height: 24px; }
 .player-stage .player-feedback { min-height: 18px; margin-top: 12px; color: var(--text-tertiary); font-size: 12px; line-height: 18px; font-weight: 700; }
