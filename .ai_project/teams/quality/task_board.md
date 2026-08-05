@@ -35,7 +35,7 @@
 | `T-20260804-001` | `done` | 수익화 Source of Truth와 후보 Task 복구 | Lead Role·schema HIGH 2건, 상태 동결·Task graph·최신 develop 비회귀 | Product QA `PASS`·Product Lead 완료 리뷰·Product Owner 최종 승인 |
 | `T-20260804-002` | `done` | Backend runtime scaffold·환경 설정·health | QA-HIGH-002-001 해소·15/15·실제 process 종료·기존 계약 무회귀 | PASS_WITH_RISK 수용·최종 승인, container는 T-007 인계 |
 | `T-20260804-003` | `done` | Backend 공통 HTTP·인증·제한·idempotency middleware | HIGH 2·MEDIUM 1 해소·기존 15/15·T-003 24/24·공용 계약 무회귀 | Product Owner PASS_WITH_RISK 수용·PR #76 병합 승인 |
-| `T-20260804-004` | `approved` | Backend Mock AI recipe job·status·ACK·복구 | provider 단일 호출·status·ACK·timeout·만료·result version·복구 | Backend Agent 구현 후 독립 QA 대기 |
+| `T-20260804-004` | `verification_ready` | Backend Mock AI recipe job·status·ACK·복구 | provider 단일 호출·status·ACK·timeout·만료·result version·복구 | T-004 13/13·전체 52/52, Backend QA 독립 검증 대기 |
 
 향후 검증 예정 Task:
 
@@ -44,7 +44,7 @@
 | `T-20260805-003` | iOS | iOS QA Agent | Home 4개 Core Loop·검색·동일 ID·상태별 route·back swipe·복구 |
 | `T-20260728-003`, `T-20260805-004~008` | iOS/Design | iOS QA Agent | 패키지별 기능·데이터 보존과 최종 82/23 상태·접근성·Visual QA |
 | `T-20260804-003` | Backend | Backend QA Agent | 공통 envelope·인증·replay·제한·idempotency |
-| `T-20260804-004` | Backend | Backend QA Agent | Mock AI 단일 호출·status·ACK·timeout·복구 |
+| `T-20260804-004` | Backend | Backend QA Agent | Mock AI 단일 호출·status·ACK·timeout·복구·snapshot hash 위험 |
 | `T-20260804-005` | Backend | Backend QA Agent | 원격 STT route·body read·egress 0·활성화 차단 |
 | `T-20260804-006` | Backend | Backend QA Agent | redaction·비용 hard cutoff·TTL cleanup |
 | `T-20260804-007` | Backend | Backend QA Agent | 전체 계약 동등성·보안 회귀·로컬 재현 |

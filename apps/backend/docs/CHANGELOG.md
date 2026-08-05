@@ -1,5 +1,14 @@
 # Backend 변경 기록
 
+- 2026-08-05: `T-20260804-004`에서 `RecipeAIProvider` interface와 deterministic Mock,
+  strict create/output validator를 구현했다.
+- 2026-08-05: 원자 in-memory job/content/idempotency/outbox 저장, duplicate worker CAS,
+  provider 최대 1회, timeout decision과 late result 폐기 경계를 추가했다.
+- 2026-08-05: 인증 기반 create·status·ACK route, result version 동시 삭제 1회·replay,
+  +22시간 cleanup과 +24시간 content read 전 expiry를 구현했다.
+- 2026-08-05: T-004 13/13, T-003 포함 37/37, 기존 15/15와 공용 계약 validator를 통과해
+  Backend QA에 인계했다. shared fixture snapshot hash canonicalization 불명확성은 QA 위험으로
+  명시했다.
 - 2026-08-05: 공용 `develop`에서 T-002·T-003 완료를 확인하고 Product Owner가
   `T-20260804-004` deterministic Mock AI recipe job·status·ACK·복구 저장 경계 구현을
   별도 승인해 Backend Agent에 인계했다.

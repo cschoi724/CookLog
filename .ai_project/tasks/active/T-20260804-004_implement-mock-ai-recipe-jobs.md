@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-004
 title: Mock AI recipe job·status·ACK·복구 저장 경계 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 실제 provider 없이 iOS 연동과 비동기 AI 계약을 실행 검증해야 한다.
@@ -83,6 +83,11 @@ qa_to: .ai_project/qa/T-20260804-004_implement-mock-ai-recipe-jobs-qa.md
   app wiring은 T-007 소유로 유지한다.
 - logical job당 provider 최대 1회, ACK 즉시 콘텐츠 삭제, result version·timeout·
   outcome unknown·manual retry 경계를 완화하지 않는다.
+- 2026-08-05: Backend Agent가 최신 `origin/develop` `5bfc350`과 clean 전용 worktree를
+  확인하고 lock을 획득해 `approved -> in_progress`로 전환했다.
+- 2026-08-05: deterministic Mock provider, 원자 in-memory repository, worker 상태 머신과
+  create·GET·ACK route를 구현했다. T-004 13개, T-003 포함 37개, 기존 15개와 공용 계약
+  validator를 통과해 `in_progress -> verification_ready`로 Backend QA에 인계했다.
 
 ## Next Agent Handoff
 
@@ -91,11 +96,11 @@ qa_to: .ai_project/qa/T-20260804-004_implement-mock-ai-recipe-jobs-qa.md
 너는 Backend Agent / Execution Role이야.
 Task T-20260804-004는 승인된 실행 Task야.
 
-- 현재 상태: `approved`
+- 현재 상태: `verification_ready`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `deb078601e87e7a393f3f45b9e2bddfd2d826664`
-- 다음에 해야 할 일: 전용 구현 worktree에서 lock을 획득하고 deterministic Mock AI job의
-  create·status·ACK·복구 저장 경계를 `allowed_paths` 안에서 구현해줘.
+- 다음에 해야 할 일: 새 clone 또는 clean worktree에서 정상·오류·timeout·만료·ACK·
+  result version·idempotency·provider 단일 호출을 독립 반례로 재검증해줘.
 - 기준 문서: `apps/backend/docs/AI_RECIPE_CONTRACT.md`, `apps/backend/contracts/ai/`,
   `apps/backend/contracts/fixtures/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
@@ -105,5 +110,5 @@ Task T-20260804-004는 승인된 실행 Task야.
 - 남은 리스크: in-memory 저장의 process 재시작 비내구성은 명시하고 production adapter는
   후속 승인 범위로 유지한다.
 - 차단/결정 필요: 실제 provider·cloud·production secret과 T-005~007 범위 확장 금지
-- 완료 시: report를 작성하고 `verification_ready`로 전환해 Backend QA Agent /
-  Verification Role에 독립 검증을 인계해줘.
+- 완료 시: QA 보고서를 작성하고 통과하면 `verification_passed`로 Development Lead Agent /
+  Lead Role에 완료 검토를 인계해줘.
