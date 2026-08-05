@@ -1,5 +1,16 @@
 # Backend 변경 기록
 
+- 2026-08-05: `T-20260804-003`에서 canonical request ID, 성공 envelope와 catalog 기반
+  RFC 9457 problem renderer, fail-closed schema validation을 구현했다.
+- 2026-08-05: non-production attestation verifier와 hash 저장 opaque installation token,
+  인증 pre-handler를 추가했다.
+- 2026-08-05: installation·IP HMAC·project fixed-window limiter, emergency limit 0과
+  limiter unavailable fail-closed 경계를 추가했다.
+- 2026-08-05: canonical JSON SHA-256, UUID v4 key, 24시간 in-memory record, 동시 단일
+  승자·처리 중·outcome unknown·원본 response replay를 구현했다.
+- 2026-08-05: 신규 HTTP/auth suite 21개와 기존 health/lifecycle 15개, 공용 계약
+  validator를 통과해 Backend QA에 인계했다.
+
 - 2026-08-05: `T-20260804-002` shutdown 재작업 독립 QA 15/15와 Lead 완료 리뷰를
   Product Owner가 승인해 `done`으로 확정했다. Docker·Node 24 container 실검증은
   `T-20260804-007` 필수 통합 게이트로 이관했다.

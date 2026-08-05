@@ -31,7 +31,7 @@
 | `T-20260728-016` | `proposed` | Cross-platform | 수익화 이벤트와 AI 비용 관측성 | Development Lead Agent | `T-20260728-014`, `015` | 구현 완료 후 scope |
 | `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` | 외부 설정 별도 승인 필요 |
 | `T-20260804-002` | `done` | Backend | runtime scaffold·환경 설정·health | - | `T-20260728-005` 완료 | Product Owner 최종 승인·PR #70 병합, T-003 별도 실행 승인 검토 |
-| `T-20260804-003` | `proposed` | Backend | 공통 HTTP·인증·제한·idempotency middleware | Backend Agent | `T-20260804-002` | T-002 `done` 후 실행 승인 |
+| `T-20260804-003` | `verification_ready` | Backend | 공통 HTTP·인증·제한·idempotency middleware | Backend QA Agent | `T-20260804-002` 완료 | 신규 21개·기존 15개 PASS, 독립 검증 |
 | `T-20260804-004` | `proposed` | Backend | Mock AI recipe job·status·ACK·복구 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 대기 |
 | `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
 | `T-20260804-006` | `proposed` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` | 도메인 경계 완료 대기 |
@@ -52,8 +52,9 @@ Backend QA 독립 재검증과 완료 검토를 통과하고 PR #63으로 `devel
 
 Product Owner가 T-006 진행을 승인했습니다. Development Lead는 runtime scaffold,
 공통 middleware, Mock AI, STT 비활성 경계, 보안·cleanup, 통합 검증의 6개 패키지로
-분해했습니다. T-002만 `approved`로 Backend Agent에 인계하고 나머지는 선행 완료 전
-`proposed`로 유지합니다. 실제 provider·cloud 배포·원격 STT endpoint는 범위 밖입니다.
+분해했습니다. T-002는 `done`이고 Product Owner가 T-003 실행을 별도 승인해 Backend
+Agent가 구현 중입니다. T-004~007은 선행 완료 전 `proposed`로 유지합니다. 실제
+provider·cloud 배포·원격 STT endpoint는 범위 밖입니다.
 
 Backend QA는 T-002의 shutdown deadline 뒤 listener·process 생존을
 `QA-HIGH-002-001`로 확인해 `FAIL`로 인계했습니다. Product Owner가 deadline 강제 종료,
@@ -69,6 +70,10 @@ T-002를 `completion_review`로 전환했습니다.
 Product Owner가 완료 리뷰와 Docker 잔여 위험의 T-007 이관을 승인해 T-002를
 `done`으로 확정하고 PR #70 병합을 승인했습니다. T-003은 공용 `develop` 병합 후
 선행 조건 해제를 확인하고 별도 실행 승인으로 착수합니다.
+
+2026-08-05 Product Owner가 T-003 실행을 승인했습니다. Backend Agent는 공통 HTTP
+envelope·설치 인증 interface/local fake·installation/IP/project limiter·idempotency
+단일 승자와 replay를 허용 경로 안에서 구현하고 독립 Backend QA로 인계합니다.
 
 Development Lead는 T-020~025의 `done`, 하위 Backend QA 최종 판정, Source of Truth
 연결과 공용 계약 validator를 집계해 T-005 완료 리뷰를 `PASS_WITH_RISK`로 수용했습니다.

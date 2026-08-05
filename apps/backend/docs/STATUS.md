@@ -1,24 +1,27 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-05
-상태: Runtime scaffold 완료 확정, 후속 middleware 실행 승인 대기
+상태: 공통 middleware T-20260804-003 자체 검증 완료, Backend QA 대기
 
 ## 현재 단계
 
 - 계약 정의 `T-20260728-005`: `done`
 - Foundation 구현 `T-20260728-006`: `scoped`
 - Runtime scaffold `T-20260804-002`: `done`, Backend QA `PASS_WITH_RISK`·최종 승인
-- 후속 `T-20260804-003~007`: `proposed`
+- 공통 middleware `T-20260804-003`: `verification_ready`
+- 후속 `T-20260804-004~007`: `proposed`
 
 Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock server scaffold, typed 환경
 설정과 `GET /healthz`를 구현했다. 실제 provider·인증·AI job·원격 STT route는 없다.
 
 ## 다음 조치
 
-PR #70 `develop` 병합 후 `T-20260804-003` 공통 middleware의 별도 실행 승인을
-검토한다. `QA-HIGH-002-001`은 실제 process 종료 검증으로 해소됐고 전체 15/15와
-기존 계약 validator가 통과했다. Docker CLI가 없는 환경의 Node 24·non-root image
-build/run 위험은 `T-20260804-007`의 필수 통합 게이트로 유지한다.
+Backend QA Agent가 request ID/envelope/catalog 동일성, 인증 실패의 handler 선차단,
+installation·IP·project 제한, idempotency body hash·동시 단일 승자·replay와
+token·proof·IP·본문 비노출을 독립 검증한다. 신규 suite 21개와 기존 15개는 PASS다.
+T-002 소유 `package.json`은 변경하지 않아 신규 suite는 별도 Node test 명령으로
+실행하며 전체 check wiring은 T-007 통합 게이트에서 확인한다. Docker CLI가 없는 환경의
+Node 24·non-root image build/run 위험도 T-007에 유지한다.
 
 ## 차단 경계
 
