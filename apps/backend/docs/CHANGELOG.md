@@ -1,5 +1,10 @@
 # Backend 변경 기록
 
+- 2026-08-05: 공용 `develop`에서 T-002·T-003 완료를 확인하고 Product Owner가
+  `T-20260804-004` deterministic Mock AI recipe job·status·ACK·복구 저장 경계 구현을
+  별도 승인해 Backend Agent에 인계했다.
+- 2026-08-05: 실제 provider·network·credential·production 저장소·cloud와 app 전체
+  wiring은 제외하고 단일 호출·timeout·result version·ACK 삭제 불변식을 유지했다.
 - 2026-08-05: Backend QA가 `T-20260804-003` 재검증에서 HIGH 2건·MEDIUM 1건 해소와
   기존 15/15·T-003 24/24·공용 계약 무회귀를 확인해 `PASS_WITH_RISK`로 판정했다.
 - 2026-08-05: Development Lead가 성공 기준·허용 경로·PR #76 CLEAN과 필수 check를
