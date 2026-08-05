@@ -7,7 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
-| `T-20260805-002` | `done` | iOS 로컬 도메인·SwiftData migration·draft 생명주기 | HIGH 2건 해소·단일 UUID·legacy completed·non-empty migration·전체 XCTest | PASS·Lead 완료 리뷰·Product Owner 병합 승인 |
+| `T-20260805-002` | `done` | iOS 로컬 도메인·SwiftData migration·draft 생명주기 | HIGH 2건 해소·단일 UUID·legacy completed·non-empty migration·전체 XCTest | PASS·PR #77 squash merge `3d1d012` |
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |
 | `T-20260730-007` | `done` | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | iOS 26.5·17.2 전체 33/33, QA-HIGH-007-001 해소 | PR #18 squash merge·완료 확정 |
 | `T-20260730-001` | `done` | iOS CI 환경·명령·check 계약 확정 | 전체 XCTest 33/33, QA-HIGH-001·timeout·artifact·build 경계 확인 | PR #20 squash merge·완료 확정 |
@@ -70,7 +70,8 @@ Development Lead는 성공 기준과 독립 QA 결과를 수용해 완료 리뷰
 PR #77 최종 CI에서 migration 테스트의 로컬 Simulator fixture 의존성이 확인됐습니다.
 production 코드 변경 없이 과거 schema non-empty store를 테스트 resource로 고정하고
 고유 임시 경로에서 실행하도록 보강했으며, 단독 migration과 전체 XCTest 43/43을
-재통과했습니다. 최신 required checks 통과를 병합 게이트로 유지합니다.
+재통과했습니다. 최신 develop rebase 후 required checks도 통과해 PR #77 squash merge
+SHA `3d1d012`로 공용 `done`을 확정했습니다.
 
 iOS Agent 재작업에서 legacy lifecycle fallback을 Mapper와 완료 Recipe 조회에 통일하고,
 원자적 `createRecord(_:)`와 명시적 UUID 충돌 오류로 InMemory·SwiftData의 기존 completed

@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-003 첫 패키지 독립 QA·완료 리뷰 통과·PR #77 병합 진행
+- 상태: Mock Core MVP 조건부 통과, T-003 첫 패키지 PR #77 병합 완료·다음 패키지 승인 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -35,7 +35,7 @@
 
 ## 현재 첫 공개 출시 실행 순서
 
-1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `done` 후보, PR #77 병합 진행
+1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `done`, PR #77 merge `3d1d012`
 2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `proposed`
 3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `proposed`
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `proposed`
