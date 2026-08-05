@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-005
 title: 원격 STT 비활성 확장 경계와 무승인 활성화 차단 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: Foundation 추가가 첫 출시의 기기 내 STT 정책을 우회하지 못하게 해야 한다.
@@ -85,6 +85,12 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
 - 2026-08-05: Development Lead Agent가 실제 startup 진입점 연결과 startup 반례 검증을
   하나의 제한된 재작업으로 범위화했고 Product Owner가 승인했다. Task를
   `rework_requested -> scoped -> approved`로 전환해 Backend Agent에 재인계한다.
+- 2026-08-05: Backend Agent가 승인된 재작업 lock을 획득하고
+  `approved -> in_progress`로 전환했다.
+- 2026-08-05: `loadRuntimeConfig()`에 remote STT validator를 연결하고 QA의 설정 9종과
+  기존 enabled flag를 local·test·production 진입점에 입력하는 30개 직접 반례를
+  추가했다. T-005 11/11, Backend 전체 66/66과 공용 validator를 통과해 lock을 해제하고
+  `in_progress -> verification_ready`로 Backend QA 재검증에 인계했다.
 
 - 2026-08-05: 공용 `develop` `ee6a973`에서 선행 `T-20260804-002`, `003`의 `done`과
   T-004 완료 기록을 확인했다.
@@ -119,22 +125,22 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Backend Agent / Execution Role이야.
-Task T-20260804-005는 독립 QA 실패 후 Product Owner가 제한된 재작업을 승인한 Task야.
+너는 Backend QA Agent / Verification Role이야.
+Task T-20260804-005의 승인된 재작업과 자체 회귀 검증이 완료됐어.
 
-- 현재 상태: `approved`
+- 현재 상태: `verification_ready`
 - 구현 기준 ref: `task/T-20260804-005-enforce-disabled-remote-stt-boundary`
-- 현재 기준 SHA: `fe81644`
-- 다음에 해야 할 일: clean worktree에서 lock을 획득하고 `loadRuntimeConfig()`에 remote STT
-  validator를 연결한 뒤 실제 startup 설정 반례를 추가해줘.
+- 현재 기준 SHA: 재작업 commit 후 Draft PR #84에 기록
+- 다음에 해야 할 일: 구현 Agent와 분리된 clean worktree에서 `QA-HIGH-005-001` 직접
+  반례와 전체 회귀를 재실행해줘.
 - 기준 문서: `apps/backend/docs/REMOTE_STT_ADAPTER.md`, `apps/backend/contracts/stt/`,
   `apps/backend/contracts/fixtures/remote-stt-disabled.json`
 - 참고 산출물: `.ai_project/reports/T-20260804-005_enforce-disabled-remote-stt-boundary-report.md`
-- 필수 재작업: production·local·test startup에서 활성화·연결·unknown 설정을 listener 전
-  거부하고, validator 직접 호출이 아닌 실제 startup integration 반례를 추가한다.
+- 필수 재검증: production·local·test `loadRuntimeConfig()`가 활성화·연결·unknown 설정
+  10종을 listener 전 모두 거부하고 기존 disabled config는 계속 수용하는지 확인한다.
 - 남은 리스크: 비활성 HTTP 경계의 공유 app composition, Node 24/container 실검증은
   T-007 범위다. 실제 remote STT 승인·provider·upload·삭제 SLA는 별도 승인 범위다.
 - 차단/결정 필요: endpoint·provider SDK·secret·audio storage·iOS remote 선택 구현 금지
 - 참고: `.ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md`
-- 완료 시: 결함 직접 반례와 기존 전체 회귀를 통과하고 실행 보고서를 갱신한 뒤 lock을
-  해제해 `verification_ready`로 Backend QA 재검증에 인계해줘.
+- 완료 시: QA report에 재검증 판정과 직접 반례를 기록하고 Development Lead Agent에
+  완료 검토를 인계해줘.

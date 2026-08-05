@@ -1,5 +1,10 @@
 # Backend 변경 기록
 
+- 2026-08-05: `QA-HIGH-005-001`에 따라 실제 `loadRuntimeConfig()`가 remote STT 환경
+  validator를 반드시 실행하도록 연결해 listener 생성 전 무승인 설정을 fail closed했다.
+- 2026-08-05: QA 설정 9종과 기존 enabled flag를 local·test·production 진입점에 입력하는
+  30개 직접 반례를 추가했다. T-005 11/11, Backend 전체 66/66과 공용 validator를 통과해
+  Backend QA 독립 재검증에 인계했다.
 - 2026-08-05: `T-20260804-005`에서 승인 fixture와 동일한 첫 출시 disabled config,
   미승인 mode·route·provider·credential·egress·fallback 설정을 거부하는 fail-closed
   validator를 구현했다.

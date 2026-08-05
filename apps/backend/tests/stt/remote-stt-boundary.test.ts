@@ -11,7 +11,7 @@ import {
   validateRemoteSTTEnvironment,
   type RemoteSTTReleaseConfig,
 } from "../../src/config/remote-stt-config.js";
-import { loadRuntimeConfig } from "../../src/config/runtime-config.js";
+import { loadRuntimeConfig, RuntimeConfigError } from "../../src/config/runtime-config.js";
 import { installCommonHttp } from "../../src/http/common-http.js";
 import { evaluateRemoteSTTActivation } from "../../src/stt/activation-gate.js";
 import { installDisabledRemoteSTTHttpBoundary } from "../../src/stt/disabled-http-boundary.js";
@@ -80,6 +80,48 @@ test("every activation mutation fails closed before startup", () => {
         error.message.includes(key),
       key,
     );
+  }
+});
+
+test("local, test, and production runtime entry points reject every unapproved setting", () => {
+  const mutations: ReadonlyArray<readonly [string, string]> = [
+    ["COOKLOG_REMOTE_STT_ENABLED", "true"],
+    ["COOKLOG_REMOTE_STT_MODE", "enabled"],
+    ["COOKLOG_REMOTE_STT_UPLOAD_ROUTE_REGISTERED", "true"],
+    ["COOKLOG_REMOTE_STT_PROVIDER_CONFIGURED", "true"],
+    ["COOKLOG_REMOTE_STT_AUDIO_EGRESS_ALLOWED", "true"],
+    ["COOKLOG_REMOTE_STT_AUTOMATIC_FALLBACK", "true"],
+    ["COOKLOG_REMOTE_STT_ACTIVATION_REQUIRES_NEW_APPROVAL", "false"],
+    ["COOKLOG_REMOTE_STT_ENDPOINT", "https://unapproved.invalid/stt"],
+    ["COOKLOG_REMOTE_STT_API_KEY", "synthetic-must-not-be-used"],
+    ["COOKLOG_REMOTE_STT_UNAPPROVED_FLAG", "true"],
+  ];
+  const environments: ReadonlyArray<readonly [string, NodeJS.ProcessEnv]> = [
+    ["local", { COOKLOG_ENV: "local" }],
+    ["test", { COOKLOG_ENV: "test", PORT: "0" }],
+    ["production", {
+      COOKLOG_ENV: "production",
+      HOST: "0.0.0.0",
+      PORT: "8080",
+      K_SERVICE: "cooklog-test",
+      K_REVISION: "cooklog-test-00001",
+      K_CONFIGURATION: "cooklog-test",
+    }],
+  ];
+
+  for (const [environmentName, baseEnvironment] of environments) {
+    for (const [key, value] of mutations) {
+      assert.throws(
+        () => loadRuntimeConfig({ ...baseEnvironment, [key]: value }),
+        (error: unknown) => key === "COOKLOG_REMOTE_STT_ENABLED"
+          ? error instanceof RuntimeConfigError &&
+            error.message === "remote STT cannot be enabled in the foundation runtime"
+          : error instanceof RemoteSTTConfigError &&
+            error.code === "REMOTE_STT_CONFIG_INVALID" &&
+            error.message.includes(key),
+        `${environmentName}:${key}`,
+      );
+    }
   }
 });
 

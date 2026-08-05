@@ -4,6 +4,14 @@
 
 상태: `verification_ready`
 
+## 재작업 결과
+
+`QA-HIGH-005-001`에서 validator가 실제 startup 진입점에 연결되지 않은 결함을 확인했다.
+승인된 재작업으로 `loadRuntimeConfig()`가 `validateRemoteSTTEnvironment()`를 반드시
+실행하도록 연결했다. QA가 재현한 설정 9종과 기존 `COOKLOG_REMOTE_STT_ENABLED=true`를
+local·test·production 설정에 각각 입력하는 총 30개 진입점 반례가 모두 listener 생성 전
+실패한다. 기존 enabled 오류의 공개되지 않는 내부 message 호환성도 유지했다.
+
 첫 공개 출시에서 원격 STT를 활성화할 수 없는 실행 경계를 구현했다. 승인된 release
 fixture를 runtime 상수로 고정하고, mode·upload route·provider·credential·audio egress·
 자동 fallback과 승인 우회 설정을 fail closed한다. 실제 endpoint, upload parser, Mock·
@@ -29,7 +37,7 @@ fixture를 runtime 상수로 고정하고, mode·upload route·provider·credent
 | 검증 | 결과 |
 |---|---|
 | 승인 disabled release fixture runtime 동등성 | PASS |
-| mode·enabled·route·provider·egress·fallback mutation | 모두 startup/deployment validator에서 거부 |
+| mode·enabled·route·provider·egress·fallback mutation | local·test·production `loadRuntimeConfig()`에서 모두 거부 |
 | provider·endpoint·credential·egress destination 주입 | 모두 fail closed |
 | 알 수 없는 remote STT 승인 revision 주입 | fail closed |
 | direct upload·local failure 자동 fallback | `SERVICE_DISABLED`, 모든 effect 0 |
@@ -41,8 +49,9 @@ fixture를 runtime 상수로 고정하고, mode·upload route·provider·credent
 실행 결과:
 
 - `npm run typecheck`: PASS
-- T-005 전용: 10/10 PASS
-- Backend 전체 runtime: 65/65 PASS
+- T-005 전용: 11/11 PASS
+- startup 진입점 직접 반례: 10종 × 3환경 = 30/30 PASS
+- Backend 전체 runtime: 66/66 PASS
 - 저장소 표준 `npm test`: health/lifecycle 15/15 PASS
 - common·STT·AI·security contract validator: PASS
 - iOS/Backend shared fixture validator: PASS
@@ -50,7 +59,7 @@ fixture를 runtime 상수로 고정하고, mode·upload route·provider·credent
 - `git diff --check`: PASS
 
 샌드박스 실행에서는 localhost bind가 `EPERM`으로 차단돼 기존 lifecycle 6개가 실행되지
-않았다. 동일 전체 명령을 네트워크 권한이 허용된 환경에서 재실행해 65/65 통과를
+않았다. 동일 전체 명령을 네트워크 권한이 허용된 환경에서 재실행해 66/66 통과를
 확인했다. 검증 환경은 Node.js 26.4.0/npm 11.17.0이며 프로젝트 기준 Node.js 24 LTS의
 container 실검증은 T-007에 남긴다.
 

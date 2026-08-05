@@ -1,3 +1,5 @@
+import { RemoteSTTConfigError, validateRemoteSTTEnvironment } from "./remote-stt-config.js";
+
 export type RuntimeEnvironment = "local" | "test" | "production";
 
 export interface RuntimeConfig {
@@ -81,8 +83,16 @@ function validateProductionEnvironment(environment: NodeJS.ProcessEnv): void {
 export function loadRuntimeConfig(environment: NodeJS.ProcessEnv = process.env): RuntimeConfig {
   const runtimeEnvironment = readEnvironment(environment["COOKLOG_ENV"]);
 
-  if (environment["COOKLOG_REMOTE_STT_ENABLED"] === "true") {
-    throw new RuntimeConfigError("remote STT cannot be enabled in the foundation runtime");
+  try {
+    validateRemoteSTTEnvironment(environment);
+  } catch (error) {
+    if (
+      error instanceof RemoteSTTConfigError &&
+      environment["COOKLOG_REMOTE_STT_ENABLED"] === "true"
+    ) {
+      throw new RuntimeConfigError("remote STT cannot be enabled in the foundation runtime");
+    }
+    throw error;
   }
 
   if (runtimeEnvironment === "production") {
