@@ -1,5 +1,10 @@
 # Backend 변경 기록
 
+- 2026-08-05: Backend QA가 T-20260804-004의 HIGH 2건·MEDIUM 1건 해소, 전체 55/55와
+  공용 계약 무회귀를 `PASS_WITH_RISK`로 확인했다.
+- 2026-08-05: Development Lead가 성공 기준·허용 경로, PR #79 `CLEAN`과 필수 check를
+  재확인하고 production adapter·재시작 내구성을 T-006~007에 이관하는 조건으로 완료
+  리뷰를 수용해 Product Owner 최종 승인 단계로 전환했다.
 - 2026-08-05: `QA-HIGH-004-001`에 따라 snapshot canonical JSON에 LF 종결 byte를 포함해
   계약 `jq -cS`와 일치시켰고 승인 fixture 원문 service·HTTP create와 golden vector를
   추가했다.

@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-05
-상태: T-20260804-004 QA 재작업 완료, Backend QA 독립 재검증 대기
+상태: T-20260804-004 Backend QA 통과·Development Lead 완료 리뷰 수용
 
 ## 현재 단계
 
@@ -9,7 +9,7 @@
 - Foundation 구현 `T-20260728-006`: `scoped`
 - Runtime scaffold `T-20260804-002`: `done`, Backend QA `PASS_WITH_RISK`·최종 승인
 - 공통 middleware `T-20260804-003`: `done`, Backend QA `PASS_WITH_RISK` 수용
-- Mock AI job `T-20260804-004`: `verification_ready`, HIGH 2건·MEDIUM 1건 수정 완료
+- Mock AI job `T-20260804-004`: `completion_review`, Backend QA·Lead `PASS_WITH_RISK`
 - 후속 `T-20260804-005~007`: `proposed`
 
 Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock server scaffold, typed 환경
@@ -18,11 +18,10 @@ network·production datastore·원격 STT route는 없다.
 
 ## 다음 조치
 
-Backend QA Agent가 승인 fixture 원문 create 202와 LF 종결 canonical bytes golden vector,
-+24시간 delete 반복 실패의 cleanup pending·신규 job 503 차단·sweeper 복구 후 삭제 완료,
-create·ACK strict RFC 3339 calendar/timezone을 독립 재검증한다. 자체 검증은 기존 15개,
-T-003 24개, T-004 16개와 공용 validator가 모두 통과했다. 실제 provider·production
-저장소 위험은 T-007 필수 통합 게이트에서 검증한다.
+Product Owner의 최종 완료와 PR #79 squash merge 승인을 기다린다. HIGH 2건·MEDIUM 1건은
+독립 재검증에서 해소됐고 전체 55/55와 공용 계약 validator가 통과했다. in-memory 재시작
+비내구성과 production encryption·datastore·queue·sweeper adapter는 T-006~007 필수 통합
+게이트에서 검증한다.
 
 ## 차단 경계
 
