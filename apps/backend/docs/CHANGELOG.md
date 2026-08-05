@@ -1,5 +1,10 @@
 # Backend 변경 기록
 
+- 2026-08-05: Product Owner가 `T-20260804-006` redacted logging·전체 외부비 원장·
+  콘텐츠와 raw metadata TTL cleanup 경계 구현을 별도 승인했다. 실제 cloud sink·billing·
+  datastore·queue·KMS·provider와 공유 app wiring은 제외하고 local/mock deterministic
+  경계와 장애·동시성 테스트로 제한해 Backend Agent에 인계했다.
+
 - 2026-08-05: `T-20260804-005` startup validator 연결 재작업의 독립 재검증에서
   `QA-HIGH-005-001` 해소, 30/30 startup mutation·실제 process 3/3·전체 66/66을
   확인했다. Development Lead가 `PASS_WITH_RISK`를 수용하고 Product Owner가 완료와
