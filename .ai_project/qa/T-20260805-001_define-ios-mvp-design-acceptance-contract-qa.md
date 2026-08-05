@@ -18,7 +18,7 @@
 - `design/figma-build/manifest.json`
 - `design/prototype/app.js`, `design/prototype/gallery.html`
 - `apps/ios/CookLog/Features/`, `apps/ios/CookLog/App/AppRoute.swift`, `apps/ios/CookLog/App/CookLogApp.swift` 읽기 전용 대조
-- `apps/ios/agents.md`, `apps/ios/docs/STATUS.md`, `apps/ios/docs/DEVELOPMENT_SPEC.md`, `apps/ios/docs/NAVIGATION.md`
+- `apps/ios/AGENTS.md`, `apps/ios/docs/STATUS.md`, `apps/ios/docs/DEVELOPMENT_SPEC.md`, `apps/ios/docs/NAVIGATION.md`
 - `.ai_project/tasks/backlog/T-20260728-003_apply-figma-uiux-to-ios.md`
 
 자동 대조로 통합 manifest의 82개 상태 보존, 계약의 Core Loop 상태 ID·캡처 ID 중복, WCAG 대비 수치를 재계산하고, 실제 SwiftUI ViewModel 프로퍼티와 `AppRoute` 전이를 문서 행별로 확인했다.

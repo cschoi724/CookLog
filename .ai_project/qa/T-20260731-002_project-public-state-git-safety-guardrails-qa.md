@@ -29,7 +29,7 @@
   가능한지
 - squash merge를 `merge-base --is-ancestor`만으로 판정하지 않는지
 - Task `allowed_paths`, `source_of_truth`, `report_to`, `qa_to`가 완전한지
-- 변경이 Task 허용 경로 안에 있고 `agents.md`, `.ai/`, 제품 코드가 변경되지
+- 변경이 Task 허용 경로 안에 있고 `AGENTS.md`, `.ai/`, 제품 코드가 변경되지
   않았는지
 
 ## 필수 명령
@@ -55,7 +55,7 @@ aiops validate task .ai_project/tasks/active/T-20260731-002_project-public-state
 - 추적·신규 후보 문서 충돌 표식 0건
 - T-005 Task·프로젝트/Development/Quality Board·current context `done` 일치
 - 변경 9개 파일 모두 Task `allowed_paths` 안에 있음
-- `agents.md`, `.ai/`, 제품 코드 변경 없음
+- `AGENTS.md`, `.ai/`, 제품 코드 변경 없음
 - 공용·로컬 상태, 보고 필드와 의존성 공용 효력 시점 명확
 - dirty worktree 자동 `reset`, `rebase`, `stash` 금지 확인
 - 병합 직후 자동 삭제 금지, 안전 감사와 Product Owner 승인 조건 확인

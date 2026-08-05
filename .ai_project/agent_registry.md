@@ -1,7 +1,78 @@
+---
+schema: aiops.agent_registry.v1
+project: CookLog
+agents:
+  - agent: Product Lead Agent
+    status: enabled
+    team: Product Team
+    roles: [Direction Role, Lead Role, Completion Role]
+    capabilities: [product_direction, priority_management, product_scoping, product_dependency_management, approval_preparation, parent_task_completion]
+  - agent: Product Planning Agent
+    status: enabled
+    team: Product Team
+    roles: [Execution Role]
+    capabilities: [product_documentation, roadmap_management, task_reporting]
+  - agent: Design Lead Agent
+    status: enabled
+    team: Design Team
+    roles: [Lead Role, Completion Role]
+    capabilities: [design_scoping, design_dependency_management, design_child_completion]
+  - agent: UI/UX Design Agent
+    status: enabled
+    team: Design Team
+    roles: [Execution Role]
+    capabilities: [ux_flow, ui_design, prototyping, design_handoff]
+  - agent: Development Lead Agent
+    status: enabled
+    team: Core Development Team
+    roles: [Lead Role, Completion Role]
+    capabilities: [technical_planning, ownership_review, dependency_management, development_child_completion, merge_coordination]
+  - agent: iOS Agent
+    status: enabled
+    team: Core Development Team
+    roles: [Execution Role]
+    capabilities: [ios_implementation, developer_verification, task_reporting]
+  - agent: Backend Agent
+    status: enabled
+    team: Core Development Team
+    roles: [Execution Role]
+    capabilities: [backend_architecture, api_contract, backend_implementation]
+  - agent: Android Agent
+    status: deferred
+    team: Core Development Team
+    roles: [Execution Role]
+    capabilities: [android_implementation]
+  - agent: Design QA Agent
+    status: enabled
+    team: Quality Team
+    roles: [Verification Role]
+    capabilities: [design_qa, accessibility_review, design_handoff_review]
+  - agent: iOS QA Agent
+    status: enabled
+    team: Quality Team
+    roles: [Verification Role]
+    capabilities: [ios_qa, regression_test, design_fidelity_review]
+  - agent: Backend QA Agent
+    status: enabled
+    team: Quality Team
+    roles: [Verification Role]
+    capabilities: [api_qa, contract_test, security_check, privacy_review]
+  - agent: Product QA Agent
+    status: enabled
+    team: Quality Team
+    roles: [Verification Role]
+    capabilities: [product_documentation, cross_domain_reconciliation, source_of_truth_governance, independent_validation]
+  - agent: AI Ops Agent
+    status: enabled
+    team: AI Ops Team
+    roles: [Ops Governance Role]
+    capabilities: [ops_audit, process_governance, workflow_governance, ops_migration]
+---
+
 # CookLog Project Agent Registry
 
 작성일: 2026-07-01
-최종 업데이트: 2026-08-04
+최종 업데이트: 2026-08-05
 프로젝트: CookLog
 
 ## 1. 목적
@@ -56,7 +127,7 @@
 | `product_documentation`, `cross_domain_reconciliation`, `source_of_truth_governance`, `independent_validation` | Product QA Agent | 제품 문서·운영 문서 정합성과 독립 출시 기준 검증 |
 | `rework_request` | 각 Verification Agent | 담당 Team Lead에 재조율 요청 |
 | `ops_audit`, `process_governance` | AI Ops Agent | 제품 실행 흐름 밖에서 점검 |
-| `workflow_governance`, `ops_migration` | AI Ops Agent | core 0.6.4 운영 기준 |
+| `workflow_governance`, `ops_migration` | AI Ops Agent | core 0.9.0 운영 기준 |
 
 ## 4. Agent 변경 기록
 
@@ -68,3 +139,4 @@
 | 2026-07-28 | Design Lead/Execution과 도메인 QA를 분리하고 Team 하위 Task Completion 범위 추가 | Product Owner 승인 |
 | 2026-07-31 | Product QA Agent와 제품 문서·cross-domain 정합성 독립 검증 capability 등록 | T-20260731-001 재작업 승인 |
 | 2026-08-04 | Product Lead Agent에 Product Team 한정 Lead Role과 scope·의존성 조율 capability 추가 | T-20260804-001 재작업 승인 |
+| 2026-08-05 | core 0.9.0 agent registry schema front matter 적용 | Product Owner 승인 |

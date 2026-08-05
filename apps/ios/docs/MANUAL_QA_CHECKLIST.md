@@ -1,6 +1,6 @@
 # CookLog iOS 수동 검증 체크리스트
 
-이 문서는 사용자가 iOS MVP를 직접 실행해 제품 흐름을 확인하기 위한 체크리스트입니다. 체크 후 결과를 루트 관리 에이전트에게 전달하면, 개발 에이전트가 수정 항목을 이어서 처리합니다.
+이 문서는 사용자가 iOS MVP를 직접 실행해 제품 흐름을 확인하기 위한 체크리스트입니다. 결과는 해당 Task의 QA/report에 기록하고, `PASS`·`PASS_WITH_RISK`는 Task의 Completion Role로, `FAIL`·`BLOCKED`는 Development Lead Agent로 인계합니다.
 
 작성일: 2026-06-22
 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`

@@ -9,7 +9,7 @@
 ## 1. 검증 범위
 
 - T-20260731-001 Task 정의와 Product Lead 작업 보고서
-- 루트 `agents.md`
+- 루트 `AGENTS.md`
 - `.ai_project/` 운영 모델, Source of Truth, 현재 컨텍스트, Task/Team board와 활성 Team context
 - iOS Agent 안내와 상태·계획·스펙·아키텍처·서비스·결정 문서
 - Design README와 구현 핸드오프
@@ -23,7 +23,7 @@
 
 | 성공 기준 | 결과 | 근거 |
 |---|---|---|
-| 루트 `agents.md`에서 변동 가능한 제품 세부 정책 제거 | 통과 | 역할·탐색 순서·책임 경계 중심으로 축소됐고 STT·핸즈프리·검색 세부 계약을 복제하지 않는다. |
+| 루트 `AGENTS.md`에서 변동 가능한 제품 세부 정책 제거 | 통과 | 역할·탐색 순서·책임 경계 중심으로 축소됐고 STT·핸즈프리·검색 세부 계약을 복제하지 않는다. |
 | 활성 iOS 문서가 로컬 검색·진행 저장·첫 공개 출시 핸즈프리를 제외로 오인시키지 않음 | 통과 | 현재 범위를 Task·MVP Scope로 위임하고 과거 Core MVP 이력을 명시적으로 분리했다. |
 | Design 문서가 Figma를 공식 원본으로 안내하지 않음 | 실패 | Design README·핸드오프는 수정됐지만 활성 Design Team context와 운영 문서가 계속 Figma 원본을 `unresolved`로 안내한다. |
 | 운영 문서가 XCTest·CI 완료와 최신 Task 상태를 정확히 안내 | 실패 | 운영 이슈와 상위 Task board에 CI 미확정·하위 전체 승인 대기 문구가 남아 완료된 T-001~003과 충돌한다. |

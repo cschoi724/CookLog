@@ -35,7 +35,7 @@ allowed_paths:
 - .ai_project/teams/development/task_board.md
 - .ai_project/teams/quality/task_board.md
 source_of_truth:
-- apps/backend/agents.md
+- apps/backend/AGENTS.md
 - apps/backend/docs/
 - apps/backend/contracts/
 created_by: Development Lead Agent

@@ -27,14 +27,15 @@
 | 영역 | 최종 기준 | 보조 기준 | 충돌 시 처리 |
 |---|---|---|---|
 | Agent 운영 원칙 | `.ai/` | `.ai_project/` | 운영 원칙은 `.ai/` 우선 |
+| Codex 공통 진입 지침 | 루트 `AGENTS.md` | `.ai/templates/tool_adapters/codex/AGENTS.md` | 두 파일은 바이트 단위로 동일해야 함 |
 | 프로젝트 운영 구성 | `.ai_project/operating_model.md` | `.ai/bootstrap/project_bootstrap_policy.md` | CookLog 선택값은 `operating_model.md` 우선 |
 | Agent 구성 | `.ai_project/agent_registry.md` | `.ai/models/agent_registry.md`, `.ai/models/role_model.md` | 프로젝트 활성 구성은 `.ai_project/` 우선 |
 | Agent 실행 Task | 최신 `origin/develop`의 `.ai_project/tasks/` | 로컬 Task 브랜치의 Task 파일, report/QA 문서 | 공용 판단은 최신 `origin/develop`의 Task 파일 우선. 로컬 파일은 해당 브랜치의 실행 스냅샷 |
 | Agent 작업 상태 요약 | 최신 `origin/develop`의 `.ai_project/task_board.md` | 최신 `origin/develop`의 `.ai_project/tasks/` | 충돌 시 최신 `origin/develop`의 Task 파일 기준으로 보드 갱신 |
-| 제품 방향 요약 | `docs/product/CookLog_PRODUCT.md` | `agents.md` | 상세 동작 충돌 시 PRD v2 우선 |
-| 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog_PRODUCT.md`, `agents.md` | PRD v2와 사용자 최신 결정 우선. `CookLog PRD v2.pdf`는 2026-06-22 역사적 스냅샷 |
-| MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `docs/product/CookLog_PRD_v2.md`, `agents.md` | PRD v2와 MVP Scope를 함께 확인 |
-| 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | `agents.md`, 플랫폼별 `agents.md` | PRD v2와 User Flow 우선 |
+| 제품 방향 요약 | `docs/product/CookLog_PRODUCT.md` | `docs/product/CookLog_PRD_v2.md` | 상세 동작 충돌 시 PRD v2 우선 |
+| 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog_PRODUCT.md` | PRD v2와 사용자 최신 결정 우선. `CookLog PRD v2.pdf`는 2026-06-22 역사적 스냅샷 |
+| MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `docs/product/CookLog_PRD_v2.md` | PRD v2와 MVP Scope를 함께 확인 |
+| 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | `docs/product/CookLog_PRD_v2.md` | PRD v2와 User Flow 우선 |
 | 와이어프레임 | `docs/product/CookLog_WIREFRAME.md` | 디자인 산출물 | 최신 승인 산출물 우선 |
 | UI/UX 원본 | `design/prototype/` | `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `design/figma-build/manifest.json` | Product Owner가 승인한 로컬 Prototype과 Manifest 우선 |
 | iOS 디자인 구현 인수 기준 | `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md` | `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `T-20260805-001` report·QA | 통합 82개 상태는 상위 기준으로 보존하고 Core Loop 23개 상태의 구현·Visual QA 세부 판정에 사용 |
@@ -45,18 +46,18 @@
 | 전체 결정사항 | `docs/PROJECT_DECISIONS.md` | 플랫폼별 `DECISIONS.md` | 공통 결정은 루트, 플랫폼 결정은 플랫폼 문서 우선 |
 | 전체 변경 이력 | `docs/PROJECT_CHANGELOG.md` | 플랫폼별 `CHANGELOG.md`, Git commit | 누락 시 PM Agent가 갱신 |
 | Branch / PR 운영 | `.ai_project/branch_pr_strategy.md` | `docs/GIT_WORKFLOW.md`, `.ai/policies/branch_pr_policy.md` | 전략 선택값은 `.ai_project/branch_pr_strategy.md`, 실제 작업 절차는 `docs/GIT_WORKFLOW.md`를 따르며 두 문서는 일치해야 함 |
-| iOS 세션 기준 | `apps/ios/agents.md` | 루트 `agents.md` | iOS 구현 판단은 iOS 문서 우선 |
+| iOS 세션 기준 | `apps/ios/AGENTS.md` | 루트 `AGENTS.md` | iOS 구현 판단은 iOS 문서 우선 |
 | iOS 현재 상태 | `apps/ios/docs/STATUS.md` | `apps/ios/docs/CHANGELOG.md`, 코드 상태 | 코드/검증 결과 확인 후 갱신 |
 | iOS 구현 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` | `apps/ios/docs/STATUS.md` | 계획 변경은 Product Lead Agent 또는 iOS Agent가 문서화 |
 | iOS 기술 스펙 | `apps/ios/docs/DEVELOPMENT_SPEC.md` | `apps/ios/docs/ARCHITECTURE.md`, `DATA_MODEL.md`, `PERSISTENCE.md`, `NAVIGATION.md`, `SERVICES.md`, `TESTING.md` | 세부 영역 문서와 실제 코드 모두 확인 |
 | iOS QA 기준 | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` | `apps/ios/docs/TESTING.md`, `.ai_project/qa/` | iOS QA Agent가 리스크 분류 |
-| Backend 세션 기준 | `apps/backend/agents.md` | 루트 `agents.md` | Backend 구현·검증은 승인 Task와 확정 계약을 우선 |
+| Backend 세션 기준 | `apps/backend/AGENTS.md` | 루트 `AGENTS.md` | Backend 구현·검증은 승인 Task와 확정 계약을 우선 |
 | Backend 현재 상태 | `apps/backend/docs/STATUS.md` | `apps/backend/docs/CHANGELOG.md` | 공용 `origin/develop`과 실행 Task 상태를 함께 확인 |
 | Backend 구현 계획·스펙 | `apps/backend/docs/DEVELOPMENT_PLAN.md`, `apps/backend/docs/DEVELOPMENT_SPEC.md` | `apps/backend/docs/DECISIONS.md` | Foundation과 실제 provider·배포 범위를 분리 |
 | Backend 런타임·AI provider 추천안 | `apps/backend/docs/ARCHITECTURE_DECISION.md` | T-20260729-020 report·QA | Task 완료와 최종 provider 선택을 구분하며 실제 계약·배포 전 Product Owner 승인 필요 |
 | Backend 공통 API 계약 | `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/` | T-20260729-021 report·QA | T-021 완료 상태와 후속 job·보안·fixture 계약을 함께 확인 |
 | 기본 비활성 원격 STT adapter 계약 | `apps/backend/docs/REMOTE_STT_ADAPTER.md`, `apps/backend/contracts/stt/` | T-20260729-022 report·QA | 첫 출시 기본 비활성·자동 fallback 없음, 활성화는 별도 제품 승인 |
-| Android 세션 기준 | `apps/android/agents.md` | 루트 `agents.md` | Android 착수 전 Android 문서 우선 |
+| Android 세션 기준 | `apps/android/AGENTS.md` | 루트 `AGENTS.md` | Android 착수 전 Android 문서 우선 |
 | Android 현재 상태 | `apps/android/docs/STATUS.md` | Android 개발 문서 | Android는 iOS MVP 안정화 후 착수 |
 | AI Knowledge | `.ai_knowledge/` | 이 Source Of Truth 매트릭스 | Wiki는 원본이 아니며 충돌 시 이 문서의 원본 우선 |
 
@@ -132,6 +133,7 @@ apps/android/docs/
 | 2026-07-29 | Product Charter와 첫 공개 출시 Roadmap 역할, Backend 계약 확정 Task를 Source of Truth 매트릭스에 반영 |
 | 2026-07-31 | PDF를 역사적 스냅샷으로 명시하고 Backend 추천안·API 계약 경계와 iOS CI 검증 기준을 최신화 |
 | 2026-07-31 | T-20260731-001 재작업에서 Backend 계약 검증 script·후속 계약 경계와 Product QA 운영 정합성 반영 |
+| 2026-08-05 | Core 0.9.0 Codex adapter와 프로젝트·플랫폼 지침 경계, 대문자 `AGENTS.md` 경로 반영 |
 | 2026-07-31 | T-20260731-002에서 다중 worktree 공용 상태를 최신 `origin/develop`로 고정하고 로컬 실행 상태와 의존성 판단 경계를 명시 |
 | 2026-08-05 | T-20260805-001의 Core Loop 23개 iOS 구현·Visual QA 계약을 통합 82개 상태의 하위 인수 기준으로 등록 |
 | 2026-08-04 | T-20260728-006 scope에서 Backend 세션·상태·계획·스펙과 Foundation 검증 경계를 등록 |

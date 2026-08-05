@@ -24,7 +24,7 @@ blocks:
 - T-20260728-003
 parallel_group: documentation-reconciliation
 allowed_paths:
-- agents.md
+- AGENTS.md
 - ".ai_project/operating_model.md"
 - ".ai_project/current_context.md"
 - ".ai_project/source_of_truth.md"
@@ -48,7 +48,7 @@ allowed_paths:
 - docs/product/CookLog_PRD_v2.md
 - design/README.md
 - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
-- apps/ios/agents.md
+- apps/ios/AGENTS.md
 - apps/ios/docs/STATUS.md
 - apps/ios/docs/DEVELOPMENT_PLAN.md
 - apps/ios/docs/DEVELOPMENT_SPEC.md
@@ -85,7 +85,7 @@ qa_to: ".ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-
 
 ## 실행 범위
 
-1. 루트 `agents.md`를 역할·탐색 경로·우선순위 규칙 중심으로 축소한다.
+1. 루트 `AGENTS.md`를 역할·탐색 경로·우선순위 규칙 중심으로 축소한다.
 2. iOS Agent·계획·스펙·서비스·상태 문서의 구형 Core MVP 범위와 첫 공개 출시 범위를 구분한다.
 3. Design 문서의 UI Source of Truth를 로컬 Prototype·Manifest 우선, Figma 미러로 통일한다.
 4. 운영 컨텍스트·Source of Truth·Project Status에 최신 Design·Backend·CI 완료 상태를 반영한다.
@@ -101,7 +101,7 @@ qa_to: ".ai_project/qa/T-20260731-001_reconcile-active-document-source-of-truth-
 
 ## 성공 기준
 
-- 루트 `agents.md`에 STT·핸즈프리·검색 같은 변동 가능한 제품 세부사항이 남지 않는다.
+- 루트 `AGENTS.md`에 STT·핸즈프리·검색 같은 변동 가능한 제품 세부사항이 남지 않는다.
 - 활성 iOS 문서가 로컬 검색, 진행 기록 저장과 첫 공개 출시 핸즈프리를 제외 기능으로 오인시키지 않는다.
 - Design 문서가 Figma를 공식 원본으로 안내하지 않는다.
 - 운영 문서가 완료된 XCTest 안정화, CI workflow와 최근 Task 상태를 미완료로 안내하지 않는다.

@@ -15,7 +15,7 @@
 
 | 항목 | 값 |
 |---|---|
-| 현재 운영 모드 | `multi_team`, core `0.6.4` |
+| 현재 운영 모드 | `multi_team`, core `0.9.0` |
 | 활성 Team | Product, Design, Core Development, Quality, AI Ops |
 | 활성 개발 영역 | iOS 최우선, Backend foundation |
 | 보류 영역 | Android, Release Role |
@@ -34,7 +34,7 @@
 - 루트의 보존 WIP와 오래된 로컬 `develop` worktree는 공용 현재 상태 조회에 사용하지 않습니다.
 - 모든 상태 보고에는 확인한 `origin/develop` SHA와 로컬 worktree·branch·HEAD·미커밋 여부를 포함합니다.
 - 별도 비파괴 감사와 Product Owner 승인 전에는 기존 worktree와 branch를 삭제하지 않습니다.
-- CookLog의 기존 루트/플랫폼별 문서는 삭제하거나 대체하지 않고 source of truth로 연결합니다.
+- 루트 `AGENTS.md`는 Core 0.9.0 Codex adapter와 바이트 단위로 동일하게 유지하고, 프로젝트 고유 내용은 `.ai_project/`와 플랫폼별 `AGENTS.md`에 둡니다.
 - `T-20260701-001`, `T-20260701-002`, `T-20260701-003`은 모두 `done`입니다.
 - iOS MVP Core Loop는 조건부 통과 상태입니다.
 - 구형 Mock UI 잔여 검증 `T-20260728-001`은 최종 제품 구현·출시 게이트와 중복되어 `cancelled`입니다.
@@ -50,7 +50,7 @@
 - 수익화 지침과 `T-20260728-010~018` 복구 Task T-20260804-001은 Product QA `PASS`, Product Lead 완료 리뷰와 Product Owner 최종 승인을 거쳐 로컬 `done`입니다. 후보는 모두 `proposed`·실행 동결 상태로 Core v1 출시선과 분리하며 develop 통합 전에는 이 worktree 상태만 유효합니다.
 - Product Lead Agent는 Product Team에 한해 Direction·Lead·Completion Role을 맡고 scope·의존성 조율 후 Product Planning 실행과 Product QA 독립 검증으로 분리합니다.
 - 기존 완료 Task는 legacy 위치에 보존하고 신규 실행 후보는 `tasks/active/` 또는 `tasks/backlog/`에 생성합니다.
-- 모든 신규 실행 Task는 `standard_vnext`와 `scoped` 단계를 사용합니다.
+- 2026-08-05 이후 모든 신규 실행 Task는 `.ai/templates/tasks/task.md`, `schema: aiops.task.v1`, `standard_vnext`와 `scoped` 단계를 사용합니다. 기존 legacy Task는 재개 시 별도 승인 범위에서 전환합니다.
 - Task 병렬 가능 여부는 Development Lead Agent가 ownership과 dependency를 확인합니다.
 - Design/Development Lead는 자기 Team 하위 Task만 완료하고 Product Lead는 상위 제품 Task만 완료합니다.
 - Quality Team은 별도 QA Lead 없이 도메인별 Verification Agent 세션을 Task 라우팅으로 병렬 운영합니다.
@@ -110,3 +110,4 @@ fetch 또는 공용 SHA 확인에 실패하면 `PUBLIC_STATE_UNVERIFIED`로 보�
 | 2026-08-04 | Design T-013 완료 정합화와 T-014 로컬 통합·자체 검증 완료, 독립 Design QA 인계 반영 |
 | 2026-08-04 | Design T-014 최종 QA PASS·PR #68 병합과 상위 T-002 성공 기준 수용, 전체 Design 패키지 `done` 반영 |
 | 2026-08-05 | T-20260805-001 Core Loop 23개 iOS 구현·Visual QA 계약 완료와 T-003 디자인 선행 조건 해소 반영 |
+| 2026-08-05 | Core 0.9.0, 표준 Codex adapter와 신규 Task schema 단계 도입 기준 반영 |

@@ -41,7 +41,7 @@
 ### OI-20260727-004 - 루트 Agent 안내와 adapter 정합성
 
 - 상태: closed
-- 해결: T-20260731-001에서 루트 `agents.md`를 역할·탐색 경로·Source of Truth 참조 중심으로 축소했습니다.
+- 해결: 루트 `AGENTS.md`를 Core 0.9.0 Codex adapter와 바이트 단위로 일치시키고 프로젝트 고유 운영 내용은 `.ai_project/`로 분리했습니다.
 
 ### OI-20260727-005 - Backend와 UI/UX Source of Truth 미확정
 
@@ -58,3 +58,4 @@
 | 2026-07-01 | Ops Issues 문서 초기화 |
 | 2026-07-27 | Git 전략, adapter drift, Backend/Figma, CI 미확정 이슈 추가 |
 | 2026-07-31 | T-20260731-001 재작업에서 해결된 OI-001~005를 닫고 CI 잔여 범위를 T-005~006으로 축소 |
+| 2026-08-05 | Core 0.9.0 adapter 정합성과 신규 Task schema 단계 도입 기준 반영 |

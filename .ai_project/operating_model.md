@@ -1,3 +1,35 @@
+---
+schema: aiops.operating_model.v1
+project: CookLog
+bootstrap_mode: guided_full
+core_version: 0.9.0
+core_source: homebrew
+core_update_policy: manual_review
+start_context: custom_start_context
+readiness_level: implementation_ready
+operating_mode: multi_team
+team_pattern: functional_teams
+workflow_policy: standard_vnext
+ownership_model: path_plus_domain
+coordination: custom
+board_model: project_plus_team_board
+branch_pr: pr_required
+canonical_status_ref: origin/develop
+status_ref_checked_at:
+status_ref_sha:
+knowledge_mode: context_packs
+release_role: inactive
+active_roles:
+  - Direction Role
+  - Lead Role
+  - Execution Role
+  - Verification Role
+  - Completion Role
+  - Ops Governance Role
+deferred_roles:
+  - Release Role
+---
+
 # CookLog Project Operating Model
 
 작성일: 2026-07-27
@@ -29,11 +61,11 @@
 
 | 항목 | 선택값 |
 |---|---|
-| core_version | 0.6.4 |
+| core_version | 0.9.0 |
 | core_source | homebrew |
 | core_update_policy | migration plan 확인 후 사용자 승인 적용 |
 | bootstrap_mode | `guided_full` |
-| knowledge_mode | `full` |
+| knowledge_mode | `context_packs` |
 | start_context | `custom_start_context` |
 | primary_context | `scale_up_existing_ops` |
 | secondary_context | `migration_or_modernization` |
@@ -245,7 +277,7 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | Ownership / Coordination | `path_plus_domain`, `lead_coordinated_parallel` | Product Owner | 2026-07-27 |
 | Board 모델 | `project_plus_team_board` | Product Owner | 2026-07-27 |
 | Branch / PR 전략 | `develop_integration_pr` | Product Owner | 2026-07-28 |
-| Knowledge | `full` | Product Owner | 2026-07-27 |
+| Knowledge | `context_packs` | Product Owner | 2026-08-05 |
 
 ## 14. Open Configuration Questions
 
@@ -272,3 +304,4 @@ Board는 요약판이며 실제 실행 지시는 개별 Task 파일이 기준이
 | 2026-07-31 | T-20260731-001에서 UI/UX 원본, Backend 추천안·계약 경계와 CI 현재 상태를 최신화 |
 | 2026-07-31 | T-20260731-001 재작업에서 Product QA Agent를 정식 등록하고 T-004 done 상태 반영 |
 | 2026-08-04 | T-20260804-001 재작업 승인으로 Product Lead Agent에 Product Team 한정 Lead Role과 scope·의존성 조율 책임 추가 |
+| 2026-08-05 | core 0.9.0 형식에 맞춰 schema front matter, canonical status ref와 context pack 지식 모드를 반영 |

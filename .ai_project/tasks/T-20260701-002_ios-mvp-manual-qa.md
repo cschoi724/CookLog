@@ -18,7 +18,7 @@ allowed_paths:
   - .ai_project/qa/
 source_of_truth:
   - .ai_project/source_of_truth.md
-  - apps/ios/agents.md
+  - apps/ios/AGENTS.md
   - apps/ios/docs/STATUS.md
   - apps/ios/docs/MANUAL_QA_CHECKLIST.md
   - docs/PROJECT_STATUS.md
