@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-005
 title: 원격 STT 비활성 확장 경계와 무승인 활성화 차단 구현
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: Foundation 추가가 첫 출시의 기기 내 STT 정책을 우회하지 못하게 해야 한다.
@@ -96,6 +96,11 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
   해소와 신규 HIGH·MEDIUM 결함 부재를 확인해 `PASS_WITH_RISK`,
   `verification_ready -> verification_in_progress -> verification_passed`로 Development
   Lead Agent에 완료 검토를 인계했다.
+- 2026-08-05: Development Lead Agent가 성공 기준, 13개 변경 파일의 허용 경로,
+  `QA-HIGH-005-001` 해소, T-005 11/11·전체 66/66·공용 계약과 PR #84의
+  `MERGEABLE/CLEAN` 상태를 확인했다. Node 24·container와 공유 app composition을 T-007
+  필수 통합 게이트로 이관하는 조건으로 `PASS_WITH_RISK`를 수용하고
+  `verification_passed -> completion_review`로 전환했다.
 
 - 2026-08-05: 공용 `develop` `ee6a973`에서 선행 `T-20260804-002`, `003`의 `done`과
   T-004 완료 기록을 확인했다.
@@ -126,18 +131,33 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
 - `build-app.ts`, `server.ts`와 T-007의 전체 composition은 수정하지 않는다. 실제 endpoint,
   provider SDK, secret, audio storage·queue·egress와 원격 STT 활성화는 계속 금지한다.
 
+## 완료 리뷰 결과
+
+- 판정: `PASS_WITH_RISK`
+- 첫 출시 config의 원격 STT 활성화 불가, audio 수신 경로 0개, 무승인 설정의 startup
+  fail-closed 성공 기준을 모두 충족한다.
+- QA HIGH 1건은 실제 `loadRuntimeConfig()` 연결과 30개 환경별 반례, 실제 process 3종으로
+  해소됐고 신규 HIGH·MEDIUM 결함은 없다.
+- 변경 13개 파일은 모두 승인된 `allowed_paths` 안에 있고 `git diff --check`를 통과했다.
+- Draft PR #84는 재검증 SHA `785bcd6`, base `develop`, `MERGEABLE/CLEAN`이며 현재 표시된
+  GitHub checks가 통과했다.
+- 목표 Node 24·Docker/Cloud Run 실제 실행과 disabled HTTP plugin의 공유 `buildApp`
+  composition은 T-007 필수 통합 검증으로 이관한다. Backend hosted check 추가 여부도
+  T-007에서 결정한다.
+- Product Owner의 완료·병합 승인 전에는 `done`으로 전환하거나 PR #84를 병합하지 않는다.
+
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Lead Role이야.
-Task T-20260804-005의 독립 재검증이 완료됐어.
+너는 Product Owner야.
+Task T-20260804-005는 독립 재검증과 Development Lead 완료 리뷰를 통과했어.
 
-- 현재 상태: `verification_passed`
+- 현재 상태: `completion_review`
 - 구현 기준 ref: `task/T-20260804-005-enforce-disabled-remote-stt-boundary`
-- 현재 기준 SHA: 재작업 commit 후 Draft PR #84에 기록
-- 다음에 해야 할 일: QA `PASS_WITH_RISK`와 성공 기준·허용 경로를 검토하고 완료 여부를
-  결정해줘.
+- 현재 기준 SHA: `785bcd6`
+- 다음에 해야 할 일: T-007 잔여 위험 이관을 수용하고 Task 완료와 Draft PR #84의
+  squash merge 여부를 승인해줘.
 - 기준 문서: `apps/backend/docs/REMOTE_STT_ADAPTER.md`, `apps/backend/contracts/stt/`,
   `apps/backend/contracts/fixtures/remote-stt-disabled.json`
 - 참고 산출물: `.ai_project/reports/T-20260804-005_enforce-disabled-remote-stt-boundary-report.md`
@@ -147,5 +167,5 @@ Task T-20260804-005의 독립 재검증이 완료됐어.
   T-007 범위다. 실제 remote STT 승인·provider·upload·삭제 SLA는 별도 승인 범위다.
 - 차단/결정 필요: endpoint·provider SDK·secret·audio storage·iOS remote 선택 구현 금지
 - 참고: `.ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md`
-- 완료 시: Product Owner 승인 전 `done`이나 병합으로 전환하지 말고 T-007 잔여 위험
-  이관을 명시해줘.
+- 승인 시: `completion_review -> done`을 기록하고 PR #84를 `develop`에 squash merge한
+  뒤 merge SHA와 T-006 선행 해소 여부를 공용 상태에 반영해줘.
