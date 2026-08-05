@@ -4,6 +4,10 @@
 
 ## 2026-08-05
 
+- 공용 `develop`에서 T-20260805-002의 `done`과 PR #77 병합을 확인하고 Product Owner가
+  `T-20260805-003` Home·전체 보기·검색·상태별 routing 구현을 별도 승인했습니다.
+- Home Core Loop 4개 상태, 제목·재료 로컬 검색, lifecycle별 동일 record ID routing,
+  앱 재실행·refresh와 back swipe·복구 무회귀를 구현·검증 경계로 확정했습니다.
 - Product Owner가 `T-20260728-003` iOS 로컬 제품 적용 진행을 승인했습니다.
 - Development Lead가 T-003을 `T-20260805-002~008` 7개 구현·독립 QA 패키지로 분해했습니다.
 - 첫 `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기를 iOS Agent에 실행 승인 인계했습니다.
