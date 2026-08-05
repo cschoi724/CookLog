@@ -1,5 +1,9 @@
 # Backend 변경 기록
 
+- 2026-08-05: 공용 `develop`에서 T-002·T-003 완료를 확인하고 Product Owner가
+  `T-20260804-005` 원격 STT 비활성 확장 경계·무승인 활성화 차단 구현을 별도 승인했다.
+- 2026-08-05: disabled resolver·activation gate와 route·body read·queue·egress 0회
+  검증만 Backend Agent에 인계하고 endpoint·provider·secret·audio storage는 제외했다.
 - 2026-08-05: Product Owner가 T-20260804-004의 QA·Lead `PASS_WITH_RISK`와 T-006~007
   잔여 위험 이관을 수용하고 최종 완료·PR #79 병합을 승인했다.
 - 2026-08-05: PR #79를 squash merge SHA `a73a028`로 `develop`에 반영해 T-004를
