@@ -3,12 +3,12 @@
 이 문서는 CookLog iOS의 초기 Mock Core MVP 이정표와 구현 이력을 보존하고, 현재 첫 공개 출시 Task의 진입점을 안내합니다. 현재 실행 범위는 이 문서의 과거 M0~M8 체크리스트가 아니라 배정된 `.ai_project/tasks/`와 최신 제품 Source of Truth를 따릅니다.
 
 작성일: 2026-06-19
-최종 업데이트: 2026-07-31
+최종 업데이트: 2026-08-05
 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, 첫 공개 출시 구현 준비
+- 상태: Mock Core MVP 조건부 통과, T-003 로컬 제품 적용 scoped·첫 패키지 approved
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -32,6 +32,20 @@
 8. 확인 결과를 `STATUS.md`, 이 문서, `CHANGELOG.md`에 기록합니다.
 
 사용자 직접 검증은 `MANUAL_QA_CHECKLIST.md`를 기준으로 진행합니다.
+
+## 현재 첫 공개 출시 실행 순서
+
+1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `approved`
+2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `proposed`
+3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `proposed`
+4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `proposed`
+5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `proposed`
+6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `proposed`
+7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `proposed`
+
+각 패키지는 iOS Agent 구현과 iOS QA 독립 검증을 분리하고, 선행 Task가 공용
+`develop`에서 `done`이 된 뒤 다음 패키지를 승인합니다. 실제 Apple STT, Backend AI,
+로컬 TTS·음성 인식 엔진은 각각 T-20260729-004~006의 후속 범위입니다.
 
 ## 현재 개발 원칙
 
