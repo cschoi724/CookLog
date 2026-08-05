@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-002
 title: Backend runtime scaffold·환경 설정·health 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 모든 foundation 패키지가 공유할 실행·빌드·테스트 기준을 먼저 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Backend QA Agent
+target_role: Verification Role
 required_capabilities:
 - backend_architecture
 - backend_implementation
@@ -62,7 +62,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-04
-updated_at: 2026-08-04
+updated_at: 2026-08-05
 report_to: .ai_project/reports/T-20260804-002_build-backend-runtime-scaffold-report.md
 qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
 ---
@@ -125,3 +125,7 @@ qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
   테스트로 범위화했다.
 - 2026-08-04: Product Owner가 재작업을 승인해
   `rework_requested -> scoped -> approved`로 전환하고 Backend Agent에 재라우팅했다.
+- 2026-08-05: Backend Agent가 deadline 초과와 두 번째 signal의 실제 강제 종료를
+  구현하고 정상·keep-alive·hanging close·연속 signal child process 테스트를 추가했다.
+  전체 15/15와 기존 계약 무회귀 자체 검증 후 `approved -> in_progress ->
+  verification_ready`로 Backend QA Agent에 재인계했다.

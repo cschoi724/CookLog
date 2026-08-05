@@ -1,8 +1,8 @@
 # T-20260804-002 실행 보고서
 
-작성일: 2026-08-04
+작성일: 2026-08-05
 작성자: Backend Agent
-상태: Backend QA FAIL, 승인된 재작업 대기
+상태: 승인된 재작업 완료, Backend QA 독립 재검증 대기
 
 ## 결과
 
@@ -15,7 +15,7 @@ local/mock server scaffold를 구현했다.
 - 고정 content-free `GET /healthz`
 - Cloud Run `PORT`, `0.0.0.0`, `SIGTERM` 종료 경계
 - multi-stage, non-root Dockerfile
-- config·health·route 부재·graceful close 테스트 10개
+- config·health·route 부재·실제 process lifecycle 테스트 15개
 
 ## 설정·보안 경계
 
@@ -34,7 +34,7 @@ local/mock server scaffold를 구현했다.
 | `npm ci --ignore-scripts` | PASS, audit 취약점 0건 |
 | `npm run typecheck` | PASS |
 | `npm run build` | PASS |
-| `npm test` | 10/10 PASS |
+| `npm test` | 15/15 PASS |
 | `npm run check` | PASS |
 | 실제 local start + `GET /healthz` | PASS, 고정 `health.v1` 응답 |
 | common·STT·AI·security validator | PASS |
@@ -78,3 +78,16 @@ Development Lead는 다음 재작업만 허용했고 Product Owner가 승인했�
 Backend Agent가 자체 검증 후 `verification_ready`로 재인계하며 Backend QA는 기존
 통과 항목과 `QA-HIGH-002-001`을 독립 재검증한다. Docker가 없는 환경의 Node 24
 container·non-root 실행은 별도 잔여 위험으로 유지한다.
+
+## 재작업 결과
+
+- 첫 SIGTERM/SIGINT는 graceful close를 시작하고 완료 시 명시적 exit 0으로 종료한다.
+- deadline 초과는 active connection과 listener의 close를 시도한 뒤 명시적 exit 1로
+  실제 process를 종료한다.
+- shutdown 중 두 번째 signal은 deadline을 기다리지 않고 즉시 exit 1로 종료한다.
+- 실제 child process 결과: 정상 SIGTERM·SIGINT와 idle keep-alive는 각각 100ms 이내
+  exit 0, hanging close는 약 1.07초 exit 1, 연속 signal은 200ms 이내 exit 1.
+- 정상 SIGTERM·SIGINT, keep-alive, hanging close, 연속 signal 모두 signal 종료가 아닌
+  명시적 exit code를 반환했고 9초 상한 안에 종료됐다. 전체 `npm run check`는
+  15/15 PASS다.
+- 최신 `origin/develop` 위로 rebase하면서 수익화·디자인 등 공용 완료 기록을 보존했다.

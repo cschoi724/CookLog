@@ -1,7 +1,7 @@
 # Backend Foundation 개발 스펙
 
-최종 업데이트: 2026-08-04
-단계: T-002 Runtime Foundation 구현
+최종 업데이트: 2026-08-05
+단계: T-002 Runtime Foundation 재작업 검증 대기
 
 ## 런타임 경계
 
@@ -10,6 +10,8 @@
 - Node.js 24 LTS·TypeScript 7·Fastify 5.11·npm 11을 사용한다.
 - 상세 선택과 Cloud Run lifecycle은 `RUNTIME_FOUNDATION.md`를 따른다.
 - 환경별 설정은 typed validation과 fail closed를 사용한다.
+- 정상 signal은 실제 exit 0, deadline 초과와 shutdown 중 두 번째 signal은 실제 exit 1로
+  종료하며 child process 테스트에서 9초 상한을 검증한다.
 
 ## 공개 endpoint
 

@@ -1,5 +1,13 @@
 # Backend 개발 결정 기록
 
+## 2026-08-05 — Shutdown은 명시적 process exit 경계로 보장
+
+- 상태: 확정
+- 결정: 정상 close는 exit 0, deadline 초과와 shutdown 중 두 번째 signal은 exit 1로
+  실제 process를 종료한다.
+- 이유: `process.exitCode` 설정만으로는 활성 listener가 남아 종료 상한을 보장하지 못한다.
+- 검증: 정상·keep-alive·hanging close·연속 signal을 실제 child process로 검증한다.
+
 ## 2026-08-04 — Foundation을 6개 패키지로 분리
 
 - 상태: 승인

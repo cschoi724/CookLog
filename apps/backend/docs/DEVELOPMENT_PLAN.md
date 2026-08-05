@@ -1,6 +1,6 @@
 # Backend Foundation 개발 계획
 
-최종 업데이트: 2026-08-04
+최종 업데이트: 2026-08-05
 
 ## 목표
 
@@ -9,7 +9,7 @@ STT 활성화를 포함하지 않는다.
 
 ## 실행 순서
 
-1. `T-20260804-002`: runtime scaffold·환경 설정·health — 자체 PASS, Backend QA 대기
+1. `T-20260804-002`: runtime scaffold·환경 설정·health — shutdown 재작업 15/15 PASS, Backend QA 재검증 대기
 2. `T-20260804-003`: 공통 HTTP·인증·제한·idempotency
 3. `T-20260804-004`: Mock AI 비동기 job·status·ACK·복구
 4. `T-20260804-005`: 원격 STT 비활성 확장 경계·활성화 차단

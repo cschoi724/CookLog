@@ -24,27 +24,44 @@ export async function closeWithDeadline(
   }
 }
 
+function forceTerminate(app: FastifyInstance, exitCode: 1): never {
+  try {
+    app.server.closeAllConnections();
+    app.server.close();
+  } catch {
+    // The process exit below is the final shutdown boundary even if a handle is already closed.
+  }
+
+  process.exitCode = exitCode;
+  process.exit(exitCode);
+}
+
+function terminateSuccessfully(): never {
+  process.exitCode = 0;
+  process.exit(0);
+}
+
 export async function startServer(config: RuntimeConfig = loadRuntimeConfig()): Promise<FastifyInstance> {
   const app = await buildApp(config);
   let shutdownStarted = false;
 
   const shutdown = (): void => {
     if (shutdownStarted) {
-      return;
+      forceTerminate(app, 1);
     }
     shutdownStarted = true;
 
     void closeWithDeadline(app, config.shutdownTimeoutMs)
       .then(() => {
-        process.exitCode = 0;
+        terminateSuccessfully();
       })
       .catch(() => {
-        process.exitCode = 1;
+        forceTerminate(app, 1);
       });
   };
 
-  process.once("SIGTERM", shutdown);
-  process.once("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
+  process.on("SIGINT", shutdown);
 
   try {
     await app.listen({ host: config.host, port: config.port });

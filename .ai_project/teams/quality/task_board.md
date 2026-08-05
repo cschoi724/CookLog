@@ -32,7 +32,7 @@
 | `T-20260805-001` | `done` | iOS MVP 디자인 적용 기준과 Visual QA 계약 | DQA-MEDIUM-007~008 해소, Core Loop 23개 상태·대비·접근성 무회귀 | Design QA `PASS`, 구현 후 실제 화면 QA는 T-003 인계 |
 | `T-20260729-002` | `done` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | T-008~014 독립 QA·상위 성공 기준·통합 Source of Truth | 하위 전체 병합·Design Lead 완료 확정 |
 | `T-20260804-001` | `done` | 수익화 Source of Truth와 후보 Task 복구 | Lead Role·schema HIGH 2건, 상태 동결·Task graph·최신 develop 비회귀 | Product QA `PASS`·Product Lead 완료 리뷰·Product Owner 최종 승인 |
-| `T-20260804-002` | `approved` | Backend runtime scaffold·환경 설정·health | Node/Fastify 재현·config fail-closed·health·secret 비노출 | 승인 재작업 후 shutdown 독립 재검증 |
+| `T-20260804-002` | `verification_ready` | Backend runtime scaffold·환경 설정·health | 정상·keep-alive·hanging close·연속 signal 실제 종료와 기존 무회귀 | Backend QA 독립 재검증 |
 
 향후 검증 예정 Task:
 
@@ -61,6 +61,11 @@ T-002는 shutdown deadline 뒤 listener·process 생존과 두 번째 signal 무
 `QA-HIGH-002-001`로 확인해 `FAIL`로 인계했습니다. Product Owner가 재작업을 승인했으며,
 Backend QA는 hanging close·keep-alive·연속 signal의 실제 process 종료, 9초 상한과
 기존 config·health·금지 route·secret 비노출 무회귀를 독립 재검증합니다.
+
+Backend Agent는 deadline 초과 시 active connection 정리 후 명시적 exit 1, shutdown 중
+두 번째 signal의 즉시 exit 1과 정상 close의 명시적 exit 0을 구현했습니다. 실제 child
+process 5개 사례와 기존 검사를 합쳐 15/15를 통과했으며 `verification_ready`로
+재인계했습니다.
 
 T-025는 AI 정상·공개 오류·timeout·만료, 원격 STT 비활성과 negative case의 공용
 fixture를 source schema·catalog에 연결했습니다. Backend 통합 validator는 canonical

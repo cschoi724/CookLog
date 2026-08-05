@@ -1,5 +1,13 @@
 # Backend 변경 기록
 
+## 2026-08-05
+
+- `QA-HIGH-002-001`에 따라 deadline 초과 시 connection 정리와 명시적 exit 1을 추가했다.
+- shutdown 중 두 번째 SIGTERM/SIGINT가 즉시 exit 1로 강제 종료하도록 수정했다.
+- 정상 SIGTERM·SIGINT, idle keep-alive, hanging close, 연속 signal의 실제 child process
+  테스트 5개를 추가해 전체 15/15를 통과했다.
+- 최신 `origin/develop`로 재정렬하고 공용 수익화·디자인 완료 기록을 보존했다.
+
 ## 2026-08-04
 
 - `T-20260728-006` Foundation 구현을 6개 하위 Task로 분해했다.

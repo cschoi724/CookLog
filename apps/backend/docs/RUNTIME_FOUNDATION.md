@@ -35,6 +35,10 @@ Node.js 공식 정책은 production에 Active 또는 Maintenance LTS 사용을 �
 - TLS는 container에서 종료하지 않습니다.
 - `SIGTERM` 수신 후 새 요청 수락을 중단하고 최대 9초 안에 종료합니다. Cloud Run의
   10초 종료 창보다 짧게 제한합니다.
+- 첫 `SIGTERM`/`SIGINT`는 graceful close를 시작합니다. 정상 close는 명시적 exit 0,
+  deadline 초과는 활성 connection을 정리한 뒤 명시적 exit 1로 종료합니다.
+- shutdown 진행 중 두 번째 signal은 deadline을 기다리지 않고 즉시 exit 1로
+  강제 종료합니다.
 - container는 non-root `node` 사용자로 실행합니다.
 - production은 `PORT`, `K_SERVICE`, `K_REVISION`, `K_CONFIGURATION` 누락 시 HTTP
   listener 생성 전에 실패합니다.
@@ -67,6 +71,13 @@ Node.js 공식 정책은 production에 Active 또는 Maintenance LTS 사용을 �
 
 시간, hostname, revision, 환경변수, provider, secret, 사용자 콘텐츠와 상세 dependency
 상태를 반환하지 않습니다. 인증·AI·STT route는 T-002에서 만들지 않습니다.
+
+## 종료 검증 경계
+
+종료 정책은 같은 process의 `exitCode` 값만 확인하지 않습니다. 실제 child process를
+실행해 정상 SIGTERM, 열린 idle keep-alive connection, 완료되지 않는 `app.close()`,
+연속 signal을 검증합니다. 모든 시나리오는 실제 exit code와 signal 종료 여부를
+assertion하고 9초 안에 끝나야 합니다.
 
 ## 한계와 후속 소유권
 
