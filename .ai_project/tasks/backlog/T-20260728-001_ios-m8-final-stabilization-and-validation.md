@@ -31,7 +31,7 @@ allowed_paths:
   - .ai_project/teams/quality/task_board.md
 source_of_truth:
   - docs/product/CookLog_PRD_v2.md
-  - apps/ios/agents.md
+  - apps/ios/AGENTS.md
   - apps/ios/docs/STATUS.md
   - apps/ios/docs/MANUAL_QA_CHECKLIST.md
   - apps/ios/docs/TESTING.md

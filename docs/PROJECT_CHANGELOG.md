@@ -1,5 +1,13 @@
 # CookLog Project Changelog
 
+## 2026-08-05 - AI Ops Core 0.9.0 동기화
+
+- 루트 `AGENTS.md`를 Core 0.9.0 Codex adapter와 바이트 단위로 일치시키고 플랫폼 지침 파일을 대문자 `AGENTS.md`로 정규화했습니다.
+- `operating_model.md`와 `agent_registry.md`에 Core 0.9 schema front matter를 적용했습니다.
+- 고정된 루트 관리 Agent 인계를 Task의 Verification·Completion·Lead Role 라우팅으로 교체했습니다.
+- 2026-08-05 이후 신규 Task에 `schema: aiops.task.v1`을 적용하고 기존 legacy Task 23개는 자동 변환하지 않는 정책을 확정했습니다.
+- 제품 코드, 제품 정책, Task 상태와 기존 QA 판정은 변경하지 않았습니다.
+
 ## 2026-08-04
 
 - 보존 WIP에만 있던 `docs/product/CookLog_MONETIZATION.md`와 `T-20260728-010~018` 후보 Task를 최신 develop 기준으로 선택 복구했습니다.
@@ -13,7 +21,7 @@
 
 ## 2026-07-31
 
-- 루트 `agents.md`를 제품 세부 정책 복제 없이 역할·Source of Truth 탐색 중심으로 재구성했습니다.
+- 루트 `AGENTS.md`를 제품 세부 정책 복제 없이 역할·Source of Truth 탐색 중심으로 재구성했습니다.
 - T-20260731-001에서 운영·iOS·Design 활성 문서와 최신 제품 정책·완료 Task의 정합성 복구를 시작했습니다.
 - 2026-06-22 PDF PRD를 현재 제품 계약이 아닌 역사적 스냅샷으로 명확히 구분했습니다.
 - Product QA가 확인한 활성 Team context·Board·QA routing·최신 develop 정합성 결함 4건의 재작업을 승인받아 반영했습니다.
@@ -131,7 +139,7 @@
 
 ## 2026-06-19
 
-- 루트 `agents.md`를 전체 서비스 관리 에이전트 기준으로 재정리했습니다.
-- `apps/ios/agents.md`를 추가해 iOS 개발 에이전트 기준을 만들었습니다.
+- 루트 `AGENTS.md`를 전체 서비스 관리 에이전트 기준으로 재정리했습니다.
+- `apps/ios/AGENTS.md`를 추가해 iOS 개발 에이전트 기준을 만들었습니다.
 - iOS 개발 환경 권장안, 개발 계획, 의사결정 로그를 추가했습니다.
 - 제품 문서를 v1 형태로 정리했습니다.

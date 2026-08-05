@@ -22,10 +22,10 @@ Git 운영 기준은 [docs/GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md)를 따릅니�
 .
 ├── apps/
 │   ├── ios/
-│   │   ├── agents.md
+│   │   ├── AGENTS.md
 │   │   └── docs/
 │   └── android/
-│       ├── agents.md
+│       ├── AGENTS.md
 │       └── docs/
 ├── design/
 │   ├── exports/

@@ -1,4 +1,4 @@
-# CookLog Backend agents.md
+# CookLog Backend AGENTS.md
 
 이 문서는 `apps/backend/` 구현 세션의 우선 인수인계 기준이다. Backend Agent는 이
 문서와 `apps/backend/docs/`를 먼저 읽고, 루트 제품 문서와 확정 계약을 하향 변경하지

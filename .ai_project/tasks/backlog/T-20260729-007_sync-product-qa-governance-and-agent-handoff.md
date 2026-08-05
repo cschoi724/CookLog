@@ -4,7 +4,7 @@ title: Product QA Agent 운영 등록과 루트 제품 안내 동기화
 status: proposed
 type: documentation
 priority: P1
-priority_reason: Product QA Agent는 활성화됐지만 저장소 registry·운영 모델과 루트 agents.md가 새 검증 역할과 Core MVP·공개 출시 구분을 아직 반영하지 않는다.
+priority_reason: Product QA Agent는 활성화됐지만 저장소 registry·운영 모델과 루트 AGENTS.md가 새 검증 역할과 Core MVP·공개 출시 구분을 아직 반영하지 않는다.
 org_unit: AI Ops Division
 team: AI Ops Team
 team_lead: AI Ops Agent
@@ -19,7 +19,7 @@ depends_on:
 blocks: []
 parallel_group: release-r1-foundation
 allowed_paths:
-  - agents.md
+  - AGENTS.md
   - .ai_project/agent_registry.md
   - .ai_project/operating_model.md
   - .ai_project/current_context.md
@@ -59,7 +59,7 @@ Product Owner가 추가한 Product QA Agent를 CookLog 운영 문서에 정식 �
 - 제품 요구 추적·문서 정합성·출시 범위 검증 capability와 라우팅 기준 정의
 - Product Lead 작성·Product QA 검증·Product Lead 완료 구조 기록
 - Design·iOS·Backend QA와 Product QA의 중복되지 않는 책임 경계
-- 루트 `agents.md`의 Core MVP 음성 명령 제외와 첫 공개 출시 핸즈프리 필수 구분
+- 루트 `AGENTS.md`의 Core MVP 음성 명령 제외와 첫 공개 출시 핸즈프리 필수 구분
 - Product QA 호출 조건과 사소한 문서 수정의 검증 제외 기준
 - current context와 Quality Team context 동기화
 

@@ -31,7 +31,7 @@
 ## 2026-07-01 - 기존 CookLog 문서는 삭제하지 않고 source of truth로 연결
 
 - 상태: 적용
-- 결정: 기존 `agents.md`, `docs/`, `apps/*/docs/` 문서를 유지하고 `.ai_project/source_of_truth.md`에서 기준 문서로 연결합니다.
+- 결정: 제품·플랫폼 문서는 유지하고 `.ai_project/source_of_truth.md`에서 기준 문서로 연결합니다. 루트 `AGENTS.md`는 Core adapter로 관리하고 플랫폼별 `AGENTS.md`는 작업 영역 지침으로 유지합니다.
 - 이유: CookLog에는 이미 루트/플랫폼별 운영 문서가 있고, AI 운영 체계는 이를 대체하지 않고 실행 큐와 Agent 협업 레이어를 추가해야 합니다.
 - 영향: 기존 문서 이동, 삭제, 백업 파일 생성은 하지 않습니다.
 - 승인: 운영 마이그레이션 요청 범위 내 적용
@@ -47,7 +47,7 @@
 | 결정 | 값 |
 |---|---|
 | core_version | 0.6.4 |
-| apply_scope | safe_auto_fix only |
+| apply_scope | safe_auto_fix + Product Owner 승인 수동 정합화 |
 | manual_only | product code, product Docs, Task status, Role mapping, branch/PR, commit/push/deploy |
 
 ## 2026-07-27 - Guided Full 멀티팀 운영 구성 승인
@@ -95,3 +95,24 @@
   - `main`과 `develop` 모두 직접 commit, push와 force push를 금지합니다.
 - 전환: 기존 정책 아래 생성한 `T-20260728-019` PR을 `main`에 병합한 뒤 해당 커밋에서 `develop`을 생성합니다.
 - 승인: Product Owner, 2026-07-28
+
+## 2026-08-05 - Core 0.9.0 adapter와 schema 단계 도입
+
+- 상태: 적용
+- 결정:
+  - 루트 `AGENTS.md`는 설치된 Core 0.9.0의 Codex adapter와 바이트 단위로 동일하게 유지합니다.
+  - 프로젝트 고유 운영 구성은 `.ai_project/`에, 플랫폼 지침은 `apps/*/AGENTS.md`에 둡니다.
+  - `operating_model.md`와 `agent_registry.md`에 Core 0.9 schema front matter를 적용합니다.
+  - 2026-08-05 이후 신규 Task는 `.ai/templates/tasks/task.md`와 `schema: aiops.task.v1`을 사용합니다.
+  - 기존 legacy Task 23개는 자동 변환하지 않고, 실제 재개 시 별도 승인 범위에서 전환합니다.
+- 영향: 고정된 `루트 관리 에이전트` 역할을 제거하고 Task·Role 기반 라우팅을 단일 기준으로 사용합니다.
+- 승인: Product Owner, 2026-08-05
+
+## Migration Decision - 2026-08-05
+
+| 결정 | 값 |
+|---|---|
+| core_version | 0.9.0 |
+| apply_scope | safe_auto_fix only |
+| manual_only | product code, product Docs, source_of_truth, Task metadata/status, Role mapping, branch/PR, commit/push/deploy |
+| review_result | schema front matter·adapter·source of truth 정합화 승인 적용, legacy Task 자동 변환 제외 |

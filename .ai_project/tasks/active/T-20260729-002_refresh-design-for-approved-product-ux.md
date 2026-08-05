@@ -163,7 +163,7 @@ Figma MCP 호출 가능 여부, Starter 플랜 제약과 미러 동기화 완료
 - 2026-07-31: UI/UX Design Agent가 하위 `T-20260729-011` 결함 7건 재작업과 자체 회귀 검증을 완료해 Design QA 독립 재검증으로 인계했다.
 - 2026-07-31: Design QA Agent가 하위 `T-20260729-011` 결함 7건 해소와 기존 통과 항목 무회귀를 확인해 `verification_passed`로 Design Lead 완료 검토에 인계했으며 `done`과 후속 `T-20260729-012` 차단 해제는 보류한다.
 - 2026-07-31: 하위 `T-20260729-011`이 PR #30으로 `develop`에 병합되어 `done`으로 확정됐다. 다음 순차 후보 `T-20260729-012`는 별도 Product Owner 실행 승인 대기다.
-- 2026-07-31: Product Owner가 최신 제품 결정대로 핸즈프리를 첫 출시 범위에 포함하고 하위 `T-20260729-012` 실행을 승인했다. 루트 `agents.md` 동기화는 Product Lead가 별도 수행하며 UI/UX Design Agent는 준비된 전용 worktree에서 작업 시작 대기다.
+- 2026-07-31: Product Owner가 최신 제품 결정대로 핸즈프리를 첫 출시 범위에 포함하고 하위 `T-20260729-012` 실행을 승인했다. 루트 `AGENTS.md` 동기화는 Product Lead가 별도 수행하며 UI/UX Design Agent는 준비된 전용 worktree에서 작업 시작 대기다.
 - 2026-07-31: Product Owner가 하위 `T-20260729-012`의 Design QA 결함 6건 재작업과 최신 develop 정렬을 승인했으며, Design Lead가 SHA `22fe75f` 기반 재작업 worktree를 준비해 UI/UX Design Agent에 재라우팅했다.
 - 2026-07-31: UI/UX Design Agent가 하위 `T-20260729-012` 실행과 자체 검증을 완료해 Design QA 독립 검증으로 인계했다.
 - 2026-07-31: Design QA Agent가 하위 `T-20260729-012`에서 저장 레시피 원본·명령 동등성·권한·재생 보존 HIGH 4건과 포커스·TTS 오류 fallback MEDIUM 2건을 확인해 `rework_requested`로 UI/UX Design Agent에 반환했으며 후속 `T-20260729-013` 차단을 유지한다.

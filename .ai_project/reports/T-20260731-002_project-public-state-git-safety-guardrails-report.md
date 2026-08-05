@@ -27,7 +27,7 @@ Branch 전략과 Git Workflow의 병합 후 정리 정책도 비파괴 감사와
 - `docs/GIT_WORKFLOW.md`: worktree 생성·조회·종료 생명주기
 - `task_board.md`: 정식 AI Ops Task 등록과 상태 집계
 
-`agents.md`는 Task 허용 경로에 포함했지만 변동 가능한 운영 상태를 복제하지 않기
+`AGENTS.md`는 Task 허용 경로에 포함했지만 변동 가능한 운영 상태를 복제하지 않기
 위해 수정하지 않았다. `.ai/` 공통 헌법도 변경하지 않았다.
 
 ## 보존 상태

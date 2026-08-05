@@ -219,7 +219,7 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-07-29 | T-003·005·006·009 범위를 출시 기준으로 수정하고 T-20260729-003~006 Backend/iOS 실서비스 상위 Task 등록 |
 | 2026-07-29 | T-20260729-001 문서·출시 Task 구성을 완료하고 Product QA Agent 독립 검증 대기로 전환 |
 | 2026-07-29 | Product QA PASS_WITH_RISK와 Product Lead Completion Review 후 T-20260729-001 done 확정 |
-| 2026-07-29 | Product QA registry·운영 모델·루트 agents.md 동기화 후속 T-20260729-007 proposed 등록 |
+| 2026-07-29 | Product QA registry·운영 모델·루트 AGENTS.md 동기화 후속 T-20260729-007 proposed 등록 |
 | 2026-07-29 | Product QA Agent가 T-20260729-001을 `PASS_WITH_RISK`로 검증하고 Product Lead 완료 검토로 인계 |
 | 2026-07-29 | `T-20260728-004` PR #8 squash merge SHA `58403a0`을 확인하고 `completion_review -> done` 완료 확정 |
 | 2026-07-29 | 원격 STT 월 약 10만 원의 초기 비용 부담에 따라 T-20260729-026에서 첫 출시 기본값을 Apple 기기 내 STT로 변경하고 Product QA 검증 대기로 전환 |

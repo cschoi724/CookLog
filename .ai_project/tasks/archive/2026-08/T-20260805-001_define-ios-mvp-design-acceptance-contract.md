@@ -36,7 +36,7 @@ source_of_truth:
   - design/prototype/
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
   - .ai_project/tasks/backlog/T-20260728-003_apply-figma-uiux-to-ios.md
-  - apps/ios/agents.md
+  - apps/ios/AGENTS.md
   - apps/ios/docs/STATUS.md
   - apps/ios/docs/DEVELOPMENT_SPEC.md
 created_by: Design Lead Agent

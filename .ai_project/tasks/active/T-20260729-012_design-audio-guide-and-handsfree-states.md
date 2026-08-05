@@ -90,7 +90,7 @@ qa_to: .ai_project/qa/T-20260729-012_design-audio-guide-and-handsfree-states-qa.
 ## 사용자 결정 필요 항목
 
 - 2026-07-31 Product Owner가 최신 제품 결정대로 핸즈프리 음성 명령을 첫 공개 출시 범위에 포함한다고 재확인했다.
-- 루트 `agents.md`의 음성 명령 제외 문구는 Product Lead가 별도 동기화하며 T-012 디자인 실행을 차단하지 않는다.
+- 루트 `AGENTS.md`의 음성 명령 제외 문구는 Product Lead가 별도 동기화하며 T-012 디자인 실행을 차단하지 않는다.
 
 ## Design Lead 준비 결과
 
@@ -99,7 +99,7 @@ qa_to: .ai_project/qa/T-20260729-012_design-audio-guide-and-handsfree-states-qa.
 - 핸즈프리는 Audio Guide 진입 시 꺼져 있고 사용자가 직접 시작하며, 권한 거부·인식 실패·종료 후에도 버튼과 현재 재생 상태를 유지한다.
 - 7개 명령은 동일 버튼 행동과 1:1 대응하고 호출어, Audio Guide 밖 명령, 자동 재생·자동 재활성화는 포함하지 않는다.
 - 전화·Siri·다른 오디오·Bluetooth 중단, 앱 백그라운드와 직접 잠금 뒤에는 일시정지 또는 핸즈프리 종료 상태를 제공하고 사용자가 수동으로 재개한다.
-- 루트 `agents.md` 동기화는 Product Lead 소관이며 T-012 `allowed_paths` 밖이므로 이번 Task에서 수정하지 않는다.
+- 루트 `AGENTS.md` 동기화는 Product Lead 소관이며 T-012 `allowed_paths` 밖이므로 이번 Task에서 수정하지 않는다.
 - 공용 Prototype·Manifest 파일 충돌을 막기 위해 후속 `T-20260729-013` 범위를 포함하지 않는다.
 - 잔존 포커스 재작업 전용 worktree는 `/private/tmp/cooklog-t20260729-012-focus-rework`, 브랜치는 `task/T-20260729-012-design-audio-guide-focus-rework`다.
 - 잔존 포커스 재작업 기준점은 최신 `origin/develop` SHA `93f577e`다.

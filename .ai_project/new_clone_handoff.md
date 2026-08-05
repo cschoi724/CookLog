@@ -5,7 +5,7 @@
 작성자: PM Agent
 목적: CookLog를 새 디렉토리에 Git clone한 뒤 현재 제품/운영 흐름을 끊지 않고 이어가기 위한 인수인계 기준
 
-> 보존 상태: 이 문서는 2026-07-27 새 클론 전환 시점의 역사적 인수인계입니다. 현재 Task, 우선순위, XCTest, Design과 Backend 상태를 판단하는 기준으로 사용하지 않습니다. 새 세션은 루트 `agents.md`, `.ai_project/current_context.md`, `.ai_project/source_of_truth.md`와 개별 Task를 확인합니다.
+> 보존 상태: 이 문서는 2026-07-27 새 클론 전환 시점의 역사적 인수인계입니다. 현재 Task, 우선순위, XCTest, Design과 Backend 상태를 판단하는 기준으로 사용하지 않습니다. 새 세션은 루트 `AGENTS.md`, `.ai_project/current_context.md`, `.ai_project/source_of_truth.md`와 개별 Task를 확인합니다.
 
 ## 1. 현재 전환 목표
 
@@ -63,7 +63,7 @@ Git으로 새 디렉토리에 clone할 때 아래 파일/디렉토리는 반드�
 
 ### 제품/프로젝트 기준
 
-- `agents.md`
+- `AGENTS.md`
 - `README.md`
 - `docs/`
 - `docs/product/`
@@ -74,7 +74,7 @@ Git으로 새 디렉토리에 clone할 때 아래 파일/디렉토리는 반드�
 
 ### iOS 기준
 
-- `apps/ios/agents.md`
+- `apps/ios/AGENTS.md`
 - `apps/ios/CookLog.xcodeproj`
 - `apps/ios/CookLog/`
 - `apps/ios/CookLogTests/`
@@ -86,7 +86,7 @@ Git으로 새 디렉토리에 clone할 때 아래 파일/디렉토리는 반드�
 
 ### Android 기준
 
-- `apps/android/agents.md`
+- `apps/android/AGENTS.md`
 - `apps/android/docs/`
 
 Android는 아직 개발 대기 상태이므로 현재는 문서 기준만 유지한다.
@@ -125,12 +125,12 @@ Android는 아직 개발 대기 상태이므로 현재는 문서 기준만 유�
 
 1. `git status -sb`
 2. `git log --oneline -5`
-3. `agents.md`
+3. `AGENTS.md`
 4. `.ai_project/new_clone_handoff.md`
 5. `.ai_project/task_board.md`
 6. `.ai_project/source_of_truth.md`
 7. `docs/PROJECT_STATUS.md`
-8. `apps/ios/agents.md`
+8. `apps/ios/AGENTS.md`
 9. `apps/ios/docs/STATUS.md`
 10. `apps/ios/docs/DEVELOPMENT_PLAN.md`
 11. `apps/ios/docs/MANUAL_QA_CHECKLIST.md`

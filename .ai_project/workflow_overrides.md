@@ -45,10 +45,10 @@ git merge-base --is-ancestor origin/develop HEAD
 - iOS 구현 Task는 기본적으로 `apps/ios/`로 `allowed_paths`를 제한합니다.
 - Backend 구현 Task는 코드 경로와 API 계약 source of truth를 확정한 뒤 승인합니다.
 - Android 구현 Task는 Android Workstream 활성화에 대한 사용자 승인 전까지 생성하지 않습니다.
-- 제품 공통 문서 Task는 `docs/`와 루트 `agents.md`를 대상으로 합니다.
+- 제품 공통 문서 Task는 `docs/`와 루트 `AGENTS.md`를 대상으로 합니다.
 - `.ai/` 수정은 사용자 승인 없이 하지 않습니다.
-- 신규 Task는 `standard_vnext`와 필수 `scoped` 단계를 사용합니다.
-- 기존 legacy Task의 상태 이력은 자동 변환하지 않습니다.
+- 2026-08-05 이후 신규 Task는 `.ai/templates/tasks/task.md`를 사용하고 front matter에 `schema: aiops.task.v1`을 포함하며, `standard_vnext`와 필수 `scoped` 단계를 적용합니다.
+- 기존 legacy Task 23개의 schema·metadata·상태 이력은 일괄 변환하지 않습니다. 해당 Task를 실제로 재개할 때 Lead Role이 별도 범위와 승인을 확인해 전환합니다.
 - 구현과 독립 검증은 같은 세션이 연속 수행하지 않습니다.
 - Product Lead는 상위 제품 Task, Design Lead는 Design 하위 Task, Development Lead는 개발 하위 Task의 Completion Role만 담당합니다.
 - Verification Agent는 `verification_passed` 이후 Task의 `target_agent`를 해당 하위 Task의 Team Lead로 지정합니다.
@@ -67,3 +67,4 @@ git merge-base --is-ancestor origin/develop HEAD
 | 2026-07-28 | 상위/하위 Task Completion 라우팅과 도메인별 QA 병렬 운영 규칙 추가 |
 | 2026-07-28 | `develop` Task 통합, `main` 승격과 hotfix backport 라우팅 추가 |
 | 2026-07-31 | T-20260731-002에서 최신 `origin/develop` 공용 상태 preflight, 상태 보고 형식, stale worktree 중단과 삭제 동결 규칙 추가 |
+| 2026-08-05 | Core 0.9.0 기준 신규 Task schema 적용과 legacy Task 단계적 전환 정책 추가 |

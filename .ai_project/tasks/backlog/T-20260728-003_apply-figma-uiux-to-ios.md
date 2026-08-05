@@ -38,7 +38,7 @@ allowed_paths:
 source_of_truth:
   - docs/product/CookLog_PRD_v2.md
   - .ai_project/source_of_truth.md
-  - apps/ios/agents.md
+  - apps/ios/AGENTS.md
   - apps/ios/docs/ARCHITECTURE.md
   - apps/ios/docs/STATUS.md
   - design/prototype/

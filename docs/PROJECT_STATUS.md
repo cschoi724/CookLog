@@ -109,17 +109,17 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 
 ## 다음 세션 시작 기준
 
-루트 관리 세션은 이 문서를 먼저 확인합니다.
+모든 Role 세션은 루트 `AGENTS.md`와 `.ai_project/current_context.md`를 확인한 뒤, 제품 현재 상태가 필요할 때 이 문서를 확인합니다.
 
 iOS 개발 세션은 다음 문서를 순서대로 확인합니다.
 
-1. `apps/ios/agents.md`
+1. `apps/ios/AGENTS.md`
 2. `apps/ios/docs/STATUS.md`
 3. `apps/ios/docs/DEVELOPMENT_PLAN.md`
 4. `docs/product/CookLog_PRD_v2.md`
 
 Android 개발 세션은 다음 문서를 순서대로 확인합니다.
 
-1. `apps/android/agents.md`
+1. `apps/android/AGENTS.md`
 2. `apps/android/docs/STATUS.md`
 3. `docs/product/CookLog_PRD_v2.md`

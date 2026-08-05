@@ -27,7 +27,7 @@ allowed_paths:
   - .ai_project/branch_pr_strategy.md
   - .ai_project/task_board.md
   - docs/GIT_WORKFLOW.md
-  - agents.md
+  - AGENTS.md
   - .ai_project/tasks/active/T-20260731-002_project-public-state-git-safety-guardrails.md
   - .ai_project/reports/T-20260731-002_project-public-state-git-safety-guardrails-report.md
   - .ai_project/qa/T-20260731-002_project-public-state-git-safety-guardrails-qa.md

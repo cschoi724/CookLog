@@ -25,7 +25,7 @@ blocks:
 - T-20260804-007
 parallel_group:
 allowed_paths:
-- apps/backend/agents.md
+- apps/backend/AGENTS.md
 - apps/backend/package.json
 - apps/backend/package-lock.json
 - apps/backend/pnpm-lock.yaml
@@ -51,7 +51,7 @@ allowed_paths:
 - .ai_project/teams/development/task_board.md
 - .ai_project/teams/quality/task_board.md
 source_of_truth:
-- apps/backend/agents.md
+- apps/backend/AGENTS.md
 - apps/backend/docs/ARCHITECTURE_DECISION.md
 - apps/backend/docs/DEVELOPMENT_SPEC.md
 - apps/backend/docs/API_CONTRACT.md

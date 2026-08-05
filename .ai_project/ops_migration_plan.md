@@ -19,7 +19,7 @@
 
 ```text
 CookLog/
-  agents.md
+  AGENTS.md
   README.md
   .gitignore
   .ai/
@@ -32,13 +32,13 @@ CookLog/
     product/
   apps/
     ios/
-      agents.md
+      AGENTS.md
       CookLog.xcodeproj
       CookLog/
       CookLogTests/
       docs/
     android/
-      agents.md
+      AGENTS.md
       docs/
   design/
     references/
@@ -71,15 +71,15 @@ CookLog/
 | 영역 | 기준 문서 | 보조 문서 | 비고 |
 |---|---|---|---|
 | 제품 기준 | `docs/product/CookLog_PRD_v2.md` | `docs/product/CookLog_PRODUCT.md` | Markdown PRD v2 우선. `CookLog PRD v2.pdf`는 2026-06-22 역사적 스냅샷 |
-| MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `agents.md`, PRD v2 | MVP 포함/제외 기준 |
-| 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | `agents.md`, 플랫폼별 `agents.md` | 기록 흐름과 다시 요리 흐름 |
+| MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `AGENTS.md`, PRD v2 | MVP 포함/제외 기준 |
+| 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | `AGENTS.md`, 플랫폼별 `AGENTS.md` | 기록 흐름과 다시 요리 흐름 |
 | 전체 현재 상태 | `docs/PROJECT_STATUS.md` | `apps/ios/docs/STATUS.md`, `apps/android/docs/STATUS.md` | 현재 iOS 문서와 차이 있어 동기화 필요 |
 | 전체 결정사항 | `docs/PROJECT_DECISIONS.md` | 플랫폼별 `DECISIONS.md` | 공통/플랫폼 결정 분리 |
 | Git 운영 | `docs/GIT_WORKFLOW.md` | `.ai/commit_policy.md` | 저장소 운영과 Agent 승인 원칙 함께 확인 |
-| iOS 세션 기준 | `apps/ios/agents.md` | 루트 `agents.md` | iOS 구현 판단 우선 |
+| iOS 세션 기준 | `apps/ios/AGENTS.md` | 루트 `AGENTS.md` | iOS 구현 판단 우선 |
 | iOS 구현 계획 | `apps/ios/docs/DEVELOPMENT_PLAN.md` | `apps/ios/docs/STATUS.md` | M8 이후 작업 확인 |
 | iOS QA 기준 | `apps/ios/docs/MANUAL_QA_CHECKLIST.md` | `apps/ios/docs/TESTING.md` | 수동 QA와 테스트 이슈 |
-| Android 세션 기준 | `apps/android/agents.md` | 루트 `agents.md` | Android는 대기 상태 |
+| Android 세션 기준 | `apps/android/AGENTS.md` | 루트 `AGENTS.md` | Android는 대기 상태 |
 
 상세 매핑은 `.ai_project/source_of_truth.md`에 기록했습니다.
 
@@ -94,9 +94,9 @@ CookLog/
 
 | 위치 | 현재 상태 | 처리 방향 | 비고 |
 |---|---|---|---|
-| 루트 `agents.md` | CookLog 루트 관리 에이전트와 플랫폼별 역할 기준 포함 | 유지, `.ai_project/source_of_truth.md`에서 기준 문서로 연결 | 직접 병합 없음 |
-| `apps/ios/agents.md` | iOS 구현 Agent 기준 포함 | 유지, iOS Development Agent source of truth로 연결 | 직접 병합 없음 |
-| `apps/android/agents.md` | Android 구현 Agent 기준 포함 | 유지, Android 착수 전 기준 문서로 연결 | 직접 병합 없음 |
+| 루트 `AGENTS.md` | CookLog 루트 관리 에이전트와 플랫폼별 역할 기준 포함 | 유지, `.ai_project/source_of_truth.md`에서 기준 문서로 연결 | 직접 병합 없음 |
+| `apps/ios/AGENTS.md` | iOS 구현 Agent 기준 포함 | 유지, iOS Development Agent source of truth로 연결 | 직접 병합 없음 |
+| `apps/android/AGENTS.md` | Android 구현 Agent 기준 포함 | 유지, Android 착수 전 기준 문서로 연결 | 직접 병합 없음 |
 | `.ai/templates/tool_adapters/codex/AGENTS.md` | Codex 적용 템플릿 | 참고만 함 | `.ai/` 수정 없음 |
 
 ## 7. 백업/롤백 전략
@@ -136,7 +136,7 @@ CookLog/
 | 루트 상태 문서와 iOS 상태 문서 불일치 | Agent가 서로 다른 현재 상태로 작업 가능 | PM Agent 문서 동기화 Task 생성 |
 | Task Queue 비어 있음 | Development/QA Agent가 Queue 기반으로 작업 선택 불가 | PM Agent가 첫 파일럿 Task 등록 |
 | `.ai/`가 실수로 CookLog 저장소에 포함됨 | 템플릿 저장소와 프로젝트 저장소 책임 경계 붕괴 | `.gitignore`에 `.ai/` 추가 |
-| 기존 `agents.md`와 `.ai_project/` 역할 혼동 | 루트 관리 Agent와 PM/Dev/QA/AI Ops 역할 해석 충돌 가능 | `source_of_truth.md`에서 기존 문서를 제품/플랫폼 기준으로 유지하고 Agent 실행 기준은 `.ai/`/`.ai_project/`로 분리 |
+| 기존 `AGENTS.md`와 `.ai_project/` 역할 혼동 | 루트 관리 Agent와 PM/Dev/QA/AI Ops 역할 해석 충돌 가능 | `source_of_truth.md`에서 기존 문서를 제품/플랫폼 기준으로 유지하고 Agent 실행 기준은 `.ai/`/`.ai_project/`로 분리 |
 
 ## 11. 완료 기준
 
@@ -200,3 +200,14 @@ CookLog/
 ### 롤백
 
 이번 변경은 `ops/aiops-vnext-migration` branch에 한정합니다. merge 전에는 branch 폐기로 롤백할 수 있고, merge 후에는 해당 migration commit revert로 운영 문서만 되돌릴 수 있습니다.
+
+## Migration Record - 2026-08-05
+
+| 항목 | 값 |
+|---|---|
+| core_version | 0.9.0 |
+| core_source | homebrew |
+| apply_scope | safe_auto_fix + Product Owner 승인 수동 정합화 |
+| safe_fixes | core_version, tasks directories, handoffs directory, ops records, knowledge context packs |
+| approved_manual_fixes | operating model·agent registry schema, Core Codex adapter, `AGENTS.md` 경로, source of truth, QA handoff |
+| deferred_scope | 기존 legacy Task 23개 schema·metadata·status 자동 변환 |
