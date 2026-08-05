@@ -7,6 +7,12 @@
 - Product Owner가 `T-20260728-003` iOS 로컬 제품 적용 진행을 승인했습니다.
 - Development Lead가 T-003을 `T-20260805-002~008` 7개 구현·독립 QA 패키지로 분해했습니다.
 - 첫 `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기를 iOS Agent에 실행 승인 인계했습니다.
+- `RecipeRecord`와 `draft_step_preview -> draft_ai_review -> completed` 상태 전이를 추가했습니다.
+- STEP snapshot 잠금, AI 요청 ID, Review draft snapshot과 완료 Recipe의 단일 UUID 전환을 구현했습니다.
+- `RecipeRecordRepository`, SwiftData/InMemory DataSource와 자동 STEP·수동 Review·완료 저장 UseCase를 추가했습니다.
+- 기존 `PersistentRecipe`를 lifecycle 필드로 확장하고 완료 Recipe 조회 호환성과 저장 실패 rollback을 유지했습니다.
+- 여러 draft 복구, legacy completed 기본값, 완료 목록 분리와 저장 실패 원본 보존 테스트를 추가했습니다.
+- iPhone 15 iOS 17.2에서 build, build-for-testing, 전체 XCTest와 기존 store 위 앱 설치·실행을 확인했습니다.
 
 ## 2026-07-31
 

@@ -23,3 +23,27 @@ actor InMemoryRecipeLocalDataSource: RecipeLocalDataSource {
         recipesById[id] = nil
     }
 }
+
+actor InMemoryRecipeRecordLocalDataSource: RecipeRecordLocalDataSource {
+    private var recordsById: [UUID: RecipeRecord]
+
+    init(records: [RecipeRecord] = []) {
+        recordsById = Dictionary(uniqueKeysWithValues: records.map { ($0.id, $0) })
+    }
+
+    func fetchRecords() async throws -> [RecipeRecord] {
+        recordsById.values.sorted { $0.updatedAt > $1.updatedAt }
+    }
+
+    func fetchRecord(id: UUID) async throws -> RecipeRecord? {
+        recordsById[id]
+    }
+
+    func saveRecord(_ record: RecipeRecord) async throws {
+        recordsById[record.id] = record
+    }
+
+    func deleteRecord(id: UUID) async throws {
+        recordsById[id] = nil
+    }
+}
