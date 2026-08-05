@@ -6,7 +6,6 @@ import test from "node:test";
 import Fastify from "fastify";
 
 import { DeterministicMockRecipeAIProvider } from "../../src/ai/mock-recipe-provider.js";
-import { computeSnapshotSha256 } from "../../src/ai/recipe-validation.js";
 import type { RecipeDraft, RecipeJobCreateRequest } from "../../src/ai/types.js";
 import { createAuthenticationGuard } from "../../src/auth/authentication.js";
 import { LocalInstallationTokenService } from "../../src/auth/installation-token.js";
@@ -17,7 +16,7 @@ import { InMemoryRecipeJobRepository } from "../../src/storage/recipe-job-reposi
 
 const installationId = "97882b04-fbb9-4c4b-8b71-a1c71a76a593";
 
-test("authenticated create, recovery GET, version ACK, and ownership normalization follow fixtures", async () => {
+test("authenticated fixture flow and expiry cleanup failure stay fail closed", async () => {
   const sharedFixture = JSON.parse(await readFile(
     resolve(process.cwd(), "contracts/fixtures/ai-recipe-success.json"), "utf8",
   )) as {
@@ -25,9 +24,10 @@ test("authenticated create, recovery GET, version ACK, and ownership normalizati
     poll_response: { body: { data: { result: RecipeDraft } } };
   };
   const rawRequest = sharedFixture.request.body;
-  const request = { ...rawRequest, snapshot_sha256: computeSnapshotSha256(rawRequest.steps) };
+  const request = rawRequest;
   const draft = sharedFixture.poll_response.body.data.result;
-  const repository = new InMemoryRecipeJobRepository({ now: () => Date.parse("2026-07-31T09:01:00Z") });
+  let now = Date.parse("2026-07-31T09:01:00Z");
+  const repository = new InMemoryRecipeJobRepository({ now: () => now });
   const provider = new DeterministicMockRecipeAIProvider({ kind: "success", draft });
   const service = new RecipeJobService({ repository, provider });
   const tokens = new LocalInstallationTokenService();
@@ -138,6 +138,46 @@ test("authenticated create, recovery GET, version ACK, and ownership normalizati
   assert.equal(repository.getStats().contentDeletes, 1);
   assert.equal(provider.callCount, 1);
 
+  const expiringCreate = await app.inject({
+    method: "POST",
+    url: "/v1/ai/recipe-jobs",
+    headers: { ...authHeaders, "idempotency-key": randomUUID() },
+    payload: request,
+  });
+  assert.equal(expiringCreate.statusCode, 202);
+  const expiringJobId = expiringCreate.json().data.job_id as string;
+  await service.execute(expiringJobId);
+  repository.failNextContentDelete();
+  now += 24 * 60 * 60 * 1_000;
+  const cleanupPending = await app.inject({
+    method: "GET",
+    url: `/v1/ai/recipe-jobs/${expiringJobId}`,
+    headers: authHeaders,
+  });
+  assert.equal(cleanupPending.statusCode, 500);
+  assert.equal(cleanupPending.json().code, "INTERNAL_ERROR");
+  assert.equal(cleanupPending.body.includes(request.steps[0]?.transcript ?? "missing"), false);
+  assert.equal(repository.getStats().cleanupPending, 1);
+
+  const blockedCreate = await app.inject({
+    method: "POST",
+    url: "/v1/ai/recipe-jobs",
+    headers: { ...authHeaders, "idempotency-key": randomUUID() },
+    payload: request,
+  });
+  assert.equal(blockedCreate.statusCode, 503);
+  assert.equal(blockedCreate.json().code, "SERVICE_DISABLED");
+  assert.equal(repository.runScheduledCleanup(), 1);
+  const expired = await app.inject({
+    method: "GET",
+    url: `/v1/ai/recipe-jobs/${expiringJobId}`,
+    headers: authHeaders,
+  });
+  assert.equal(expired.statusCode, 200);
+  assert.equal(expired.json().data.result_state, "expired_deleted");
+  assert.equal(repository.getStats().cleanupPending, 0);
+  assert.equal(provider.callCount, 2);
+
   await otherApp.close();
   await app.close();
 });
@@ -146,7 +186,7 @@ test("HTTP create rejects invalid input and quota before domain work", async () 
   const raw = JSON.parse(await readFile(
     resolve(process.cwd(), "contracts/ai/fixtures/recipe-job-create.json"), "utf8",
   )) as RecipeJobCreateRequest;
-  const request = { ...raw, snapshot_sha256: computeSnapshotSha256(raw.steps) };
+  const request = raw;
   const repository = new InMemoryRecipeJobRepository();
   const provider = new DeterministicMockRecipeAIProvider({ kind: "failure", code: "AI_UNAVAILABLE" });
   const service = new RecipeJobService({

@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-004
 title: Mock AI recipe job·status·ACK·복구 저장 경계 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 실제 provider 없이 iOS 연동과 비동기 AI 계약을 실행 검증해야 한다.
@@ -105,6 +105,11 @@ qa_to: .ai_project/qa/T-20260804-004_implement-mock-ai-recipe-jobs-qa.md
   복구·신규 job 차단, create·ACK invalid calendar date 반례를 회귀 테스트에 포함한다.
 - 기존 52개 runtime test와 공용 validator의 무회귀를 다시 확인한다. 실제 provider·cloud·
   production secret·production adapter와 T-005~007 구현은 재작업 범위에 포함하지 않는다.
+- 2026-08-05: Backend Agent가 재작업 승인을 확인하고 최신 `origin/develop` `865f508`로
+  재정렬한 clean worktree에서 lock을 획득해 `approved -> in_progress`로 전환했다.
+- 2026-08-05: jq-compatible LF 종결 canonical bytes, expiry cleanup pending·신규 job 차단과
+  strict RFC 3339 calendar 검증을 구현했다. T-004 16개, T-003 포함 40개, 기존 15개와
+  공용 validator를 통과해 `in_progress -> verification_ready`로 Backend QA에 재인계했다.
 
 ## Next Agent Handoff
 
@@ -113,11 +118,11 @@ qa_to: .ai_project/qa/T-20260804-004_implement-mock-ai-recipe-jobs-qa.md
 너는 Backend Agent / Execution Role이야.
 Task T-20260804-004는 승인된 실행 Task야.
 
-- 현재 상태: `approved`
+- 현재 상태: `verification_ready`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `ba9bb381cf6d8841d90ab7d35b78527feb9c25d0`
-- 다음에 해야 할 일: 최신 `origin/develop`을 확인한 clean worktree에서 승인된 결함 3건을
-  수정하고 직접 반례 회귀 테스트를 추가해줘.
+- 다음에 해야 할 일: clean 환경에서 승인된 결함 3건의 직접 반례와 기존 전체 회귀를
+  독립 재검증하고 판정을 기록해줘.
 - 기준 문서: `apps/backend/docs/AI_RECIPE_CONTRACT.md`, `apps/backend/contracts/ai/`,
   `apps/backend/contracts/fixtures/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
@@ -129,5 +134,5 @@ Task T-20260804-004는 승인된 실행 Task야.
 - 남은 리스크: in-memory 저장의 process 재시작 비내구성은 명시하고 production adapter는
   후속 승인 범위로 유지한다.
 - 차단/결정 필요: 실제 provider·cloud·production secret과 T-005~007 범위 확장 금지
-- 완료 시: 구현 보고서를 갱신하고 자체 검증을 통과하면 `verification_ready`로 Backend QA
-  Agent / Verification Role에 독립 재검증을 인계해줘.
+- 완료 시: QA 보고서에 재검증 결과를 추가하고 통과하면 `verification_passed`로
+  Development Lead Agent / Lead Role에 완료 검토를 인계해줘.

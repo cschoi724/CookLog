@@ -31,6 +31,7 @@ interface StoredJob {
   providerAttempt: 0 | 1;
   providerStartedAt: number | null;
   providerIdempotencyKey: string | null;
+  cleanupPending: boolean;
 }
 
 interface ContentRecord {
@@ -70,6 +71,13 @@ export type AcknowledgeResult =
   | { readonly kind: "reused" }
   | { readonly kind: "delete_failed" };
 
+export class ContentCleanupPendingError extends Error {
+  constructor() {
+    super("expired content cleanup is pending");
+    this.name = "ContentCleanupPendingError";
+  }
+}
+
 function failureFor(code: RecipeJobFailureCode): RecipeJobFailure {
   return {
     code,
@@ -87,7 +95,7 @@ export class InMemoryRecipeJobRepository {
   readonly #cleanupTasks: Array<{ readonly jobId: string; readonly deleteAfter: number }> = [];
   #contentDeleteCount = 0;
   #contentReadCount = 0;
-  #failNextDelete = false;
+  #remainingDeleteFailures = 0;
 
   constructor(options: { readonly now?: () => number } = {}) {
     this.#now = options.now ?? Date.now;
@@ -134,6 +142,7 @@ export class InMemoryRecipeJobRepository {
       providerAttempt: 0,
       providerStartedAt: null,
       providerIdempotencyKey: null,
+      cleanupPending: false,
     };
     this.#jobs.set(jobId, job);
     this.#contents.set(jobId, {
@@ -225,6 +234,7 @@ export class InMemoryRecipeJobRepository {
     const job = this.#jobs.get(jobId);
     if (job === undefined || job.installationId !== installationId) return undefined;
     this.#expireIfDue(job);
+    if (job.cleanupPending) throw new ContentCleanupPendingError();
     let result: RecipeDraft | null = null;
     if (job.state === "succeeded" && job.resultState === "available") {
       const content = this.#contents.get(jobId);
@@ -245,6 +255,7 @@ export class InMemoryRecipeJobRepository {
     const job = this.#jobs.get(jobId);
     if (job === undefined || job.installationId !== installationId) return { kind: "not_found" };
     this.#expireIfDue(job);
+    if (job.cleanupPending) return { kind: "delete_failed" };
     const ackKey = `${installationId}\u0000${jobId}\u0000${idempotencyKey}`;
     const existing = this.#ackIdempotency.get(ackKey);
     if (existing !== undefined) {
@@ -275,24 +286,48 @@ export class InMemoryRecipeJobRepository {
     let deleted = 0;
     for (const task of this.#cleanupTasks) {
       if (task.deleteAfter > now || !this.#contents.has(task.jobId)) continue;
+      const job = this.#jobs.get(task.jobId);
       if (this.#deleteContent(task.jobId)) {
         deleted += 1;
-        const job = this.#jobs.get(task.jobId);
-        if (job !== undefined && job.resultState === "available") {
+        if (job !== undefined && job.resultState !== "acknowledged_deleted" &&
+          job.resultState !== "expired_deleted") {
+          const wasPending = job.cleanupPending;
           job.state = "expired";
           job.resultState = "expired_deleted";
           job.resultVersion = null;
           job.failure = null;
+          job.cleanupPending = false;
           job.stateVersion += 1;
           job.updatedAt = now;
+          if (wasPending) job.activeGeneration = null;
         }
+      } else if (job !== undefined && now >= job.expiresAt) {
+        if (job.state !== "expired") job.stateVersion += 1;
+        job.state = "expired";
+        job.resultState = "none";
+        job.resultVersion = null;
+        job.failure = null;
+        job.cleanupPending = true;
+        job.activeGeneration = null;
+        job.updatedAt = now;
       }
     }
     return deleted;
   }
 
   failNextContentDelete(): void {
-    this.#failNextDelete = true;
+    this.#remainingDeleteFailures = Math.max(this.#remainingDeleteFailures, 1);
+  }
+
+  failContentDeletes(attempts: number): void {
+    if (!Number.isInteger(attempts) || attempts < 1) throw new Error("delete failure count must be positive");
+    this.#remainingDeleteFailures = attempts;
+  }
+
+  isNewJobBlocked(): boolean {
+    const now = this.#now();
+    return [...this.#contents.entries()].some(([jobId, content]) =>
+      content.expiresAt <= now || this.#jobs.get(jobId)?.cleanupPending === true);
   }
 
   getExecutionFacts(jobId: string): {
@@ -314,6 +349,8 @@ export class InMemoryRecipeJobRepository {
     readonly contentDeletes: number;
     readonly contentReads: number;
     readonly providerAttempts: number;
+    readonly cleanupPending: number;
+    readonly newJobsBlocked: boolean;
   } {
     return {
       jobs: this.#jobs.size,
@@ -323,6 +360,8 @@ export class InMemoryRecipeJobRepository {
       contentDeletes: this.#contentDeleteCount,
       contentReads: this.#contentReadCount,
       providerAttempts: [...this.#jobs.values()].reduce((sum, job) => sum + job.providerAttempt, 0),
+      cleanupPending: [...this.#jobs.values()].filter((job) => job.cleanupPending).length,
+      newJobsBlocked: this.isNewJobBlocked(),
     };
   }
 
@@ -335,22 +374,30 @@ export class InMemoryRecipeJobRepository {
   }
 
   #expireIfDue(job: StoredJob): boolean {
-    if (job.state === "expired" || this.#now() < job.expiresAt) return job.state === "expired";
+    const now = this.#now();
+    if (job.state === "expired" && job.resultState === "expired_deleted") return true;
+    if (now < job.expiresAt) return job.state === "expired";
+    const wasPending = job.cleanupPending;
+    if (job.state !== "expired") job.stateVersion += 1;
     job.state = "expired";
-    job.resultState = "expired_deleted";
+    job.resultState = "none";
     job.resultVersion = null;
     job.failure = null;
-    job.stateVersion += 1;
-    job.updatedAt = this.#now();
+    job.cleanupPending = true;
+    job.updatedAt = now;
     job.activeGeneration = null;
-    this.#deleteContent(job.jobId);
+    if (this.#deleteContent(job.jobId)) {
+      job.resultState = "expired_deleted";
+      job.cleanupPending = false;
+      if (wasPending) job.stateVersion += 1;
+    }
     return true;
   }
 
   #deleteContent(jobId: string): boolean {
     if (!this.#contents.has(jobId)) return true;
-    if (this.#failNextDelete) {
-      this.#failNextDelete = false;
+    if (this.#remainingDeleteFailures > 0) {
+      this.#remainingDeleteFailures -= 1;
       return false;
     }
     this.#contents.delete(jobId);

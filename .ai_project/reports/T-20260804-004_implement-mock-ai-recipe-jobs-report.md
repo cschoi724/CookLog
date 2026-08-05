@@ -2,7 +2,7 @@
 
 작성일: 2026-08-05
 작성자: Backend Agent
-상태: 자체 검증 완료, Backend QA 독립 검증 대기
+상태: QA 차단 결함 재작업·자체 검증 완료, Backend QA 독립 재검증 대기
 
 ## 결과
 
@@ -42,21 +42,28 @@
 |---|---|
 | `npm ci --ignore-scripts` | PASS, audit 취약점 0건, Host Node 26 engine 경고 |
 | `npm run check` | PASS, 기존 health/lifecycle 15/15 |
-| `node --test dist/tests/ai/*.test.js dist/tests/jobs/*.test.js` | PASS, T-004 13/13 |
-| T-003 HTTP/auth + T-004 전체 | PASS, 37/37 |
-| 전체 runtime 합계 | PASS, 52/52 |
+| `node --test dist/tests/ai/*.test.js dist/tests/jobs/*.test.js` | PASS, T-004 16/16 |
+| T-003 HTTP/auth + T-004 전체 | PASS, 40/40 |
+| 전체 runtime 합계 | PASS, 55/55 |
 | timeout decision fixture 6종·late result | PASS, provider 최대 1회 |
 | invalid output 4종·ACK 동시성·expiry before-read | PASS |
 | common·STT·AI·security·shared fixture validator | PASS |
 | source network·credential·logging 정적 scan | PASS, 금지 패턴 0건 |
 | `aiops validate task --strict`·`git diff --check` | 문서 완료 후 재실행 |
 
-## 제한과 QA 확인 위험
+## QA 재작업 결과
 
-- 제공된 shared fixture의 `snapshot_sha256`은 문서에 byte-level canonicalization 알고리즘이
-  없고 runtime의 key-sorted canonical JSON SHA-256과 일치하지 않는다. integration test는
-  shared fixture의 나머지 request/result를 그대로 사용하되 hash를 runtime canonical 값으로
-  계산한다. Backend QA는 이를 계약 fixture 보정 Task가 필요한 위험으로 판정해야 한다.
+| 결함 | 해소 내용 | 직접 회귀 |
+|---|---|---|
+| `QA-HIGH-004-001` | canonical JSON 뒤 LF 한 바이트를 포함해 계약의 `jq -cS` byte 규칙과 동일하게 SHA-256 계산 | 승인 shared fixture 원문 service·HTTP create 202, key order·UTF-8·배열 순서·LF golden vector |
+| `QA-HIGH-004-002` | +24시간 delete 실패를 내부 `cleanupPending`으로 유지하고 공개 status는 500 fail closed, 신규 job은 503 차단 | 반복 delete 실패·content read 0·sweeper 복구 후에만 `expired_deleted`, 차단 자동 해제 |
+| `QA-MEDIUM-004-003` | regex capture의 실제 Gregorian 일수·윤년·시각·timezone 범위를 검증 | create·ACK의 2월 30일·비윤년 2월 29일·24시·잘못된 offset 거부, 윤년 승인 |
+
+재작업 후 기존 15개, T-003 24개와 T-004 16개, 공통·STT·AI·security·shared fixture
+validator가 모두 통과했다. 최신 `origin/develop` `865f508` 대비 behind 0으로 정렬했다.
+
+## 제한과 후속 소유권
+
 - content는 production encryption adapter가 아닌 process-local in-memory test record다.
   process 재시작 내구성, 실제 encryption, datastore transaction, Cloud Tasks와 sweeper는
   production adapter 또는 T-006~007 통합 게이트 범위다.
@@ -67,8 +74,8 @@
 
 ## Backend QA 인계
 
-Backend QA Agent는 clean 환경에서 기존 15개, T-003 24개와 T-004 13개를 재실행한다.
+Backend QA Agent는 clean 환경에서 기존 15개, T-003 24개와 T-004 16개를 재실행한다.
 shared fixture의 정상·오류·timeout·만료 상태, worker 중복·crash 전후 provider 1회, output
 invalid 비저장, GET 무호출 복구, ACK delete CAS, expiry before-read와 민감정보 비노출을
-독립 반례로 검증한다. 특히 snapshot hash canonicalization 차이를 별도 위험 또는 차단
-결함으로 판정한다.
+독립 반례로 검증한다. 특히 승인 fixture 원문 create, canonical bytes golden vector,
+expiry delete 반복 실패·sweeper 복구·신규 job 차단과 invalid calendar date를 재실행한다.

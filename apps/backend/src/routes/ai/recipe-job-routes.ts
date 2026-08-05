@@ -40,6 +40,7 @@ export function installRecipeJobRoutes(
       case "idempotency_reused": sendProblem(request, reply, "IDEMPOTENCY_KEY_REUSED"); return;
       case "quota_exceeded": sendProblem(request, reply, "QUOTA_EXCEEDED", { retryAfterSeconds: 3_600 }); return;
       case "service_disabled": sendProblem(request, reply, "SERVICE_DISABLED"); return;
+      case "internal_error": sendProblem(request, reply, "INTERNAL_ERROR"); return;
     }
   });
 

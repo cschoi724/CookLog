@@ -7,7 +7,10 @@ import {
   validateRecipeJobCreate,
 } from "../ai/recipe-validation.js";
 import type { RecipeJobCreateRequest, RecipeJobStatus } from "../ai/types.js";
-import { InMemoryRecipeJobRepository } from "../storage/recipe-job-repository.js";
+import {
+  ContentCleanupPendingError,
+  InMemoryRecipeJobRepository,
+} from "../storage/recipe-job-repository.js";
 
 export interface RecipeJobAdmission {
   reserve(input: {
@@ -27,7 +30,8 @@ export type CreateJobResult =
   | { readonly kind: "invalid_idempotency_key" }
   | { readonly kind: "idempotency_reused" }
   | { readonly kind: "quota_exceeded" }
-  | { readonly kind: "service_disabled" };
+  | { readonly kind: "service_disabled" }
+  | { readonly kind: "internal_error" };
 
 export type AcknowledgeJobResult =
   | { readonly kind: "success"; readonly status: RecipeJobStatus; readonly replayed: boolean }
@@ -74,11 +78,18 @@ export class RecipeJobService {
     const existing = this.#repository.inspectCreate(installationId, idempotencyKey, bodyHash);
     if (existing?.kind === "reused") return { kind: "idempotency_reused" };
     if (existing?.kind === "replay") {
-      const status = this.#repository.getStatus(installationId, existing.jobId);
+      let status;
+      try {
+        status = this.#repository.getStatus(installationId, existing.jobId);
+      } catch (error) {
+        if (error instanceof ContentCleanupPendingError) return { kind: "internal_error" };
+        throw error;
+      }
       return status === undefined
         ? { kind: "invalid_request" }
         : { kind: "accepted", status, replayed: true };
     }
+    if (this.#repository.isNewJobBlocked()) return { kind: "service_disabled" };
     const admission = this.#admission.reserve({ installationId, request: structuredClone(request) });
     if (admission !== "accepted") return { kind: admission };
     const created = this.#repository.create(installationId, idempotencyKey, bodyHash, request);

@@ -1,5 +1,13 @@
 # Backend 변경 기록
 
+- 2026-08-05: `QA-HIGH-004-001`에 따라 snapshot canonical JSON에 LF 종결 byte를 포함해
+  계약 `jq -cS`와 일치시켰고 승인 fixture 원문 service·HTTP create와 golden vector를
+  추가했다.
+- 2026-08-05: `QA-HIGH-004-002`에 따라 +24시간 delete 실패는 내부 cleanup pending과
+  공개 500으로 fail closed하고 신규 job을 503으로 차단한다. sweeper 삭제 성공 후에만
+  `expired_deleted`를 확정한다.
+- 2026-08-05: `QA-MEDIUM-004-003`에 따라 Gregorian 달력·윤년·timezone 범위를 검증하고
+  create·ACK invalid date 반례를 추가했다. 전체 55/55와 공용 validator를 통과했다.
 - 2026-08-05: Product Owner가 `T-20260804-004` 독립 QA의 shared fixture snapshot hash
   불일치, +24시간 삭제 실패 거짓 완료 HIGH 2건과 invalid calendar date 허용 MEDIUM 1건의
   제한된 재작업을 승인해 Backend Agent에 다시 인계했다.

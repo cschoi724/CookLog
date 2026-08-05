@@ -10,7 +10,7 @@ import type {
 
 const sha256Pattern = /^[a-f0-9]{64}$/u;
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
-const rfc3339Pattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/u;
+const rfc3339Pattern = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|[+-](\d{2}):(\d{2}))$/u;
 const reviewFlagPathPattern = /^(ingredients|steps|estimated_total_minutes)(\[[0-9]+\])?(\.[a-z_]+)?$/u;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -23,7 +23,22 @@ function hasExactKeys(value: Record<string, unknown>, keys: readonly string[]): 
 }
 
 function isRfc3339(value: unknown): value is string {
-  return typeof value === "string" && rfc3339Pattern.test(value) && Number.isFinite(Date.parse(value));
+  if (typeof value !== "string") return false;
+  const match = rfc3339Pattern.exec(value);
+  if (match === null) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const offsetHour = match[7] === undefined ? 0 : Number(match[7]);
+  const offsetMinute = match[8] === undefined ? 0 : Number(match[8]);
+  if (year < 1 || month < 1 || month > 12 || hour > 23 || minute > 59 || second > 59 ||
+    offsetHour > 23 || offsetMinute > 59) return false;
+  const leapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const daysInMonth = [31, leapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  return day >= 1 && day <= (daysInMonth[month - 1] ?? 0);
 }
 
 function isUuid(value: unknown): value is string {
@@ -34,8 +49,12 @@ function isIntegerInRange(value: unknown, minimum: number, maximum: number): val
   return Number.isInteger(value) && (value as number) >= minimum && (value as number) <= maximum;
 }
 
+export function canonicalSnapshotBytes(steps: readonly RecipeStepSnapshot[]): Buffer {
+  return Buffer.from(`${canonicalJson(steps)}\n`, "utf8");
+}
+
 export function computeSnapshotSha256(steps: readonly RecipeStepSnapshot[]): string {
-  return createHash("sha256").update(canonicalJson(steps), "utf8").digest("hex");
+  return createHash("sha256").update(canonicalSnapshotBytes(steps)).digest("hex");
 }
 
 export function validateRecipeJobCreate(value: unknown): RecipeJobCreateRequest | undefined {
