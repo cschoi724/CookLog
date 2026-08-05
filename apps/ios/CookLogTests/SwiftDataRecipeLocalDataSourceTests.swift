@@ -121,6 +121,51 @@ final class SwiftDataRecipeLocalDataSourceTests: XCTestCase {
         XCTAssertEqual(fetchedRecipe, recipe)
     }
 
+    func testUnknownLegacyLifecycleRemainsVisibleThroughCompletedRecipeQueries() async throws {
+        let store = try makeTestStore()
+        let recipe = makeRecipe(
+            id: UUID(),
+            title: "알 수 없는 lifecycle의 기존 레시피",
+            updatedAt: Date(timeIntervalSince1970: 100)
+        )
+        let persistentRecipe = RecipePersistenceMapper.makePersistentRecipe(from: recipe)
+        persistentRecipe.lifecycleStateRawValue = "legacy_unknown"
+        store.modelContainer.mainContext.insert(persistentRecipe)
+        try store.modelContainer.mainContext.save()
+
+        let record = try await store.dataSource.fetchRecord(id: recipe.id)
+        let fetchedRecipe = try await store.dataSource.fetchRecipe(id: recipe.id)
+        let fetchedRecipes = try await store.dataSource.fetchRecipes()
+
+        XCTAssertEqual(record?.lifecycleState, .completed)
+        XCTAssertEqual(fetchedRecipe, recipe)
+        XCTAssertEqual(fetchedRecipes, [recipe])
+    }
+
+    func testMigratesNonEmptyLegacyStoreAndPreservesCompletedRecipe() async throws {
+        let storeURL = FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("T-20260805-002-legacy.store")
+        let configuration = ModelConfiguration(url: storeURL)
+        let modelContainer = try ModelContainer(
+            for: PersistentRecipe.self,
+            PersistentIngredient.self,
+            PersistentRecipeStep.self,
+            configurations: configuration
+        )
+        let dataSource = SwiftDataRecipeLocalDataSource(modelContext: modelContainer.mainContext)
+        let recipeID = UUID(uuidString: "11111111-1111-1111-1111-111111111111")!
+
+        let record = try await dataSource.fetchRecord(id: recipeID)
+        let recipe = try await dataSource.fetchRecipe(id: recipeID)
+
+        XCTAssertEqual(record?.lifecycleState, .completed)
+        XCTAssertEqual(record?.completedRecipe?.title, "실제 legacy migration 레시피")
+        XCTAssertEqual(recipe?.title, "실제 legacy migration 레시피")
+        XCTAssertEqual(recipe?.ingredients.first?.name, "양파")
+        XCTAssertEqual(recipe?.steps.first?.text, "실제 legacy migration 레시피 조리")
+    }
+
     func testCompletedRecipeQueriesExcludeInProgressRecords() async throws {
         let store = try makeTestStore()
         let draft = RecipeRecord(

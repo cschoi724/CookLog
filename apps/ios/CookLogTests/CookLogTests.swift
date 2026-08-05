@@ -68,6 +68,32 @@ final class CookLogTests: XCTestCase {
         XCTAssertEqual(restored?.stepPreviews, [originalStep])
     }
 
+    func testCreatingDraftWithCompletedRecordIdentifierDoesNotOverwriteCompletedRecipe() async throws {
+        let recordID = UUID()
+        let completedRecipe = makeDraft(title: "보존되어야 할 완료 레시피").makeRecipe(
+            id: recordID,
+            createdAt: Date(timeIntervalSince1970: 100),
+            updatedAt: Date(timeIntervalSince1970: 200)
+        )
+        let completedRecord = RecipeRecord(completedRecipe: completedRecipe)
+        let dataSource = InMemoryRecipeRecordLocalDataSource(records: [completedRecord])
+        let repository = DefaultRecipeRecordRepository(localDataSource: dataSource)
+        let useCase = CreateRecipeRecordUseCase(repository: repository)
+
+        do {
+            _ = try await useCase.execute(
+                id: recordID,
+                createdAt: Date(timeIntervalSince1970: 300)
+            )
+            XCTFail("완료 record 식별자를 재사용한 역방향 전이는 거부되어야 합니다.")
+        } catch {
+            // Expected: identifier collision or invalid backward transition.
+        }
+
+        let restored = try await repository.fetchRecord(id: recordID)
+        XCTAssertEqual(restored, completedRecord)
+    }
+
     private func makeDraft(title: String) -> RecipeDraft {
         RecipeDraft(
             title: title,

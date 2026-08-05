@@ -36,7 +36,7 @@
 | `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
 | `T-20260804-006` | `proposed` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` | 도메인 경계 완료 대기 |
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
-| `T-20260805-002` | `verification_ready` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | iOS QA Agent | 디자인 기준 완료 | lifecycle·SwiftData·전체 XCTest 자체 검증 완료, 독립 QA |
+| `T-20260805-002` | `rework_requested` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | Development Lead Agent | 디자인 기준 완료 | legacy 완료 조회 fallback·완료 UUID 충돌 HIGH 2건 재작업 조율 |
 | `T-20260805-003` | `proposed` | iOS | Home·전체 보기·검색·상태별 routing | iOS Agent | `T-20260805-002` | 로컬 모델 완료 대기 |
 | `T-20260805-004` | `proposed` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `T-20260805-003` | Home·routing 완료 대기 |
 | `T-20260805-005` | `proposed` | iOS | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `T-20260805-004` | Cooking Log 완료 대기 |
