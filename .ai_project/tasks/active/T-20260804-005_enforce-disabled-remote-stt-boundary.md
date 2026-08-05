@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-005
 title: 원격 STT 비활성 확장 경계와 무승인 활성화 차단 구현
-status: verification_ready
+status: rework_requested
 type: feature
 priority: P0
 priority_reason: Foundation 추가가 첫 출시의 기기 내 STT 정책을 우회하지 못하게 해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_implementation
 - security_review
@@ -75,6 +75,12 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
 - 2026-08-05: disabled release config·resolver·activation gate와 route 미등록 HTTP
   선차단 경계를 구현했다. T-005 10/10, Backend 전체 65/65와 공용 validator를 통과해
   `in_progress -> verification_ready`로 전환하고 Backend QA Agent에 인계했다.
+- 2026-08-05: Backend QA Agent가 구현 커밋과 clean 전용 worktree를 확인하고
+  `verification_ready -> verification_in_progress`로 전환해 독립 검증했다.
+- 2026-08-05: 공식 65/65와 공용 validator는 통과했으나 실제 production startup이
+  원격 STT 활성화·provider·endpoint·credential·egress·fallback·unknown 설정 9종을
+  수용하는 `QA-HIGH-005-001`을 재현했다. 최종 `FAIL`,
+  `verification_in_progress -> rework_requested`로 Development Lead Agent에 인계했다.
 
 - 2026-08-05: 공용 `develop` `ee6a973`에서 선행 `T-20260804-002`, `003`의 `done`과
   T-004 완료 기록을 확인했다.
@@ -98,21 +104,21 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Backend QA Agent / Verification Role이야.
-Task T-20260804-005의 구현 자체 검증이 완료됐어.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260804-005의 독립 QA에서 startup fail-closed 결함이 확인됐어.
 
-- 현재 상태: `verification_ready`
+- 현재 상태: `rework_requested`
 - 구현 기준 ref: `task/T-20260804-005-enforce-disabled-remote-stt-boundary`
 - 구현 기준 SHA: commit 후 report와 Draft PR에 기록
-- 다음에 해야 할 일: 구현 Agent와 분리된 clean worktree에서 disabled config·resolver·
-  HTTP 선차단과 무승인 설정 fail-closed를 독립 검증해줘.
+- 다음에 해야 할 일: `QA-HIGH-005-001` 재작업 경로를 승인하고 실제 startup 또는 필수
+  deployment validation에 remote STT validator를 연결해줘.
 - 기준 문서: `apps/backend/docs/REMOTE_STT_ADAPTER.md`, `apps/backend/contracts/stt/`,
   `apps/backend/contracts/fixtures/remote-stt-disabled.json`
 - 참고 산출물: `.ai_project/reports/T-20260804-005_enforce-disabled-remote-stt-boundary-report.md`
-- 필수 검증: release profile disabled, route·body read·temporary object·queue·provider·egress
-  0회, 무승인 config startup/deployment fail closed, 자동 fallback 0회, 기존 runtime·공용
-  STT fixture 무회귀
+- 필수 재작업: production·local·test startup에서 활성화·연결·unknown 설정을 listener 전
+  거부하고, validator 직접 호출이 아닌 실제 startup integration 반례를 추가한다.
 - 남은 리스크: 비활성 HTTP 경계의 공유 app composition, Node 24/container 실검증은
   T-007 범위다. 실제 remote STT 승인·provider·upload·삭제 SLA는 별도 승인 범위다.
 - 차단/결정 필요: endpoint·provider SDK·secret·audio storage·iOS remote 선택 구현 금지
-- 완료 시: QA report에 판정과 직접 반례를 기록하고 Development Lead Agent에 인계해줘.
+- 참고: `.ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md`
+- 완료 시: Backend Agent 자체 검증 뒤 `verification_ready`로 Backend QA 재검증에 인계해줘.

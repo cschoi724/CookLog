@@ -36,7 +36,7 @@
 | `T-20260804-002` | `done` | Backend runtime scaffold·환경 설정·health | QA-HIGH-002-001 해소·15/15·실제 process 종료·기존 계약 무회귀 | PASS_WITH_RISK 수용·최종 승인, container는 T-007 인계 |
 | `T-20260804-003` | `done` | Backend 공통 HTTP·인증·제한·idempotency middleware | HIGH 2·MEDIUM 1 해소·기존 15/15·T-003 24/24·공용 계약 무회귀 | Product Owner PASS_WITH_RISK 수용·PR #76 병합 승인 |
 | `T-20260804-004` | `done` | Backend Mock AI recipe job·status·ACK·복구 | HIGH 2·MEDIUM 1 해소·전체 55/55·공용 계약 무회귀 | Product Owner 최종 승인·PR #79 squash merge `a73a028` |
-| `T-20260804-005` | `verification_ready` | Backend 원격 STT 비활성 확장 경계·활성화 차단 | disabled profile·route/body read/queue/egress 0·무승인 config 차단 | Backend 전체 65/65, Backend QA 독립 검증 대기 |
+| `T-20260804-005` | `rework_requested` | Backend 원격 STT 비활성 확장 경계·활성화 차단 | disabled profile·route/body read/queue/egress 0·무승인 config 차단 | FAIL: QA-HIGH-005-001 startup validator 미연결, Development Lead 재작업 조율 |
 
 향후 검증 예정 Task:
 
