@@ -13,6 +13,10 @@
 - 기존 `PersistentRecipe`를 lifecycle 필드로 확장하고 완료 Recipe 조회 호환성과 저장 실패 rollback을 유지했습니다.
 - 여러 draft 복구, legacy completed 기본값, 완료 목록 분리와 저장 실패 원본 보존 테스트를 추가했습니다.
 - iPhone 15 iOS 17.2에서 build, build-for-testing, 전체 XCTest와 기존 store 위 앱 설치·실행을 확인했습니다.
+- iOS QA가 알 수 없는 legacy lifecycle 완료 행의 기존 Recipe 조회 누락과 완료 UUID의
+  draft 덮어쓰기 `QA-HIGH-805002-001~002`를 재현해 `FAIL`로 판정했습니다.
+- Product Owner가 legacy 완료 조회 fallback 통일, UUID 충돌 거부와 QA 회귀 테스트
+  통과를 데이터 무손실 재작업 범위로 승인해 iOS Agent에 다시 인계했습니다.
 
 ## 2026-07-31
 
