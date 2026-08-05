@@ -1,0 +1,122 @@
+---
+schema: aiops.task.v1
+id: T-20260804-006
+title: Backend redacted logging·비용 원장·TTL cleanup 경계 구현
+status: approved
+type: feature
+priority: P0
+priority_reason: Mock 실행에서도 콘텐츠 비노출·비용 hard cutoff·삭제 불변식을 강제해야 한다.
+org_unit: Development Division
+team: Core Development Team
+team_lead: Development Lead Agent
+workflow: feature
+target_agent: Backend Agent
+target_role: Execution Role
+required_capabilities:
+- backend_implementation
+- security_review
+depends_on:
+- T-20260804-003
+- T-20260804-004
+- T-20260804-005
+blocks:
+- T-20260804-007
+parallel_group:
+allowed_paths:
+- apps/backend/src/observability/
+- apps/backend/src/cost/
+- apps/backend/src/cleanup/
+- apps/backend/src/jobs/
+- apps/backend/src/storage/
+- apps/backend/tests/security/
+- apps/backend/tests/cleanup/
+- apps/backend/docs/STATUS.md
+- apps/backend/docs/CHANGELOG.md
+- .ai_project/tasks/backlog/T-20260804-006_implement-backend-safety-runtime.md
+- .ai_project/tasks/active/T-20260804-006_implement-backend-safety-runtime.md
+- .ai_project/reports/T-20260804-006_implement-backend-safety-runtime-report.md
+- .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
+- .ai_project/teams/development/task_board.md
+- .ai_project/teams/quality/task_board.md
+source_of_truth:
+- apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md
+- apps/backend/contracts/security/
+created_by: Development Lead Agent
+approved_by: Product Owner
+locked_by:
+locked_at:
+lock_session:
+lock_timeout_minutes: 240
+created_at: 2026-08-04
+updated_at: 2026-08-05
+report_to: .ai_project/reports/T-20260804-006_implement-backend-safety-runtime-report.md
+qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
+---
+
+# Backend 안전 runtime 경계 구현
+
+## 범위
+
+- allowlist structured logger와 redaction scanner
+- operation 단위 비용 전액 예약·거절·초과 actual 정산
+- ACK 즉시 삭제, +22시간 cleanup, sweeper, +24시간 접근 차단
+- 주입 가능한 clock과 장애·동시성 테스트
+
+## 성공 기준
+
+- 콘텐츠·secret·token·provider raw body 로그 0건
+- 월 KRW 50,000 hard cutoff 불변식 유지
+- cleanup 실패·재시도·만료 접근 차단 fixture 통과
+
+## 승인 및 실행 경계
+
+- 2026-08-05: 공용 `develop@2092e1d`에서 선행 `T-20260804-003~005`의 `done`과
+  PR #84 병합을 확인했다.
+- 2026-08-05: Product Owner가 redacted logging·비용 원장·TTL cleanup 경계 구현을
+  별도 승인했다. Development Lead Agent가 `proposed -> scoped -> approved`로 전환하고
+  Backend Agent에 인계한다.
+- 구현은 local/mock runtime의 allowlist logger·redaction scanner, 주입 가능한 clock을
+  사용하는 비용 원장·cleanup repository/service와 장애·동시성 테스트로 제한한다.
+- telemetry는 계약 allowlist 필드만 새 object로 복사하고 body·header·query·자유 문자열·
+  exception·provider raw response·secret·token을 기록하지 않는다. schema/redaction 실패는
+  event를 폐기하고 고정 reason counter만 증가시킨다.
+- 비용 원장은 provider뿐 아니라 runtime·Tasks·Firestore·TTL·logging·egress 등 fixture의
+  전체 외부비를 operation 단위로 전액 원자 예약하거나 전액 거절한다. 월 KRW 50,000과
+  KRW 5,000 delayed billing reserve를 넘길 수 없고, 가격·환율·billing snapshot이
+  누락·만료되면 새 비용 동작을 fail closed한다.
+- AI 콘텐츠는 ACK 즉시 삭제, +22시간 cleanup, +24시간 read/access 차단을 유지한다.
+  raw metadata는 +28일 cleanup outbox, 15분 독립 sweeper, +30일 read·export·aggregate
+  차단과 필수 sink receipt 완료를 deterministic in-memory 경계로 검증한다.
+- cleanup 비용은 사전 예약된 privacy envelope 안에서 hard cutoff 뒤에도 계속 수행하되
+  새 provider·비필수 외부 작업은 kill switch로 차단한다.
+- 실제 Cloud Logging·Firestore·Cloud Tasks·Billing API·Secret Manager·KMS·provider,
+  production adapter·credential·배포·공유 app wiring은 구현하지 않는다. Provider 지역
+  활성화 gate와 Node 24·container·전체 composition은 T-007 범위로 유지한다.
+- 기존 T-003~005 테스트, common·STT·AI·security·shared fixture validator를 회귀
+  검증하고 완료 후 Backend QA Agent에 독립 검증을 인계한다.
+
+## Next Agent Handoff
+
+다음 Agent에게 전달할 말:
+
+너는 Backend Agent / Execution Role이야.
+Task T-20260804-006은 Product Owner가 별도 승인한 Backend 안전 runtime Task야.
+
+- 현재 상태: `approved`
+- 기준 상태 ref: `origin/develop`
+- 기준 상태 SHA: `2092e1d9e077e656bea050815a196ffed5d0720c`
+- 다음에 해야 할 일: 최신 `origin/develop` 기반 clean 전용 worktree에서 lock을 획득하고
+  allowlist logger, 전체 외부비 원장, 콘텐츠·raw metadata cleanup을 `allowed_paths` 안에서
+  구현해줘.
+- 기준 문서: `apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md`,
+  `apps/backend/contracts/security/`
+- 허용 경로: Task frontmatter의 `allowed_paths`
+- 필수 검증: 콘텐츠·secret telemetry 0건, 비용 operation 전액 승인·거절과 동시성,
+  KRW 50,000 hard cutoff, delayed reserve 정산, ACK/+22h/+24h 콘텐츠 수명, raw metadata
+  +28d/+30d·task 누락·worker crash·queue 장애·sink delete 실패·TTL 지연
+- 기존 회귀: T-003~005 전체 runtime과 common·STT·AI·security·shared fixture validator
+- 남은 리스크: 실제 cloud sink·billing·datastore·queue·KMS·Node 24/container·공유 app
+  composition은 T-007에서 통합 검증
+- 차단/결정 필요: 실제 provider·cloud resource·secret·배포와 원격 STT 활성화 금지
+- 완료 시: 실행 보고서를 작성하고 자체 검증 후 lock을 해제해 `verification_ready`로
+  Backend QA Agent / Verification Role에 독립 검증을 요청해줘.

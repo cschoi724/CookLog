@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-05
-상태: T-20260804-004~005 done·T-20260804-006 별도 실행 승인 대기
+상태: T-20260804-004~005 done·T-20260804-006 실행 승인
 
 ## 현재 단계
 
@@ -11,7 +11,8 @@
 - 공통 middleware `T-20260804-003`: `done`, Backend QA `PASS_WITH_RISK` 수용
 - Mock AI job `T-20260804-004`: `done`, PR #79 squash merge `a73a028`
 - 원격 STT 비활성 경계 `T-20260804-005`: `done`, HIGH 해소·독립 재검증·완료 리뷰·PR #84 병합 승인 완료
-- 후속 `T-20260804-006~007`: `proposed`
+- 안전 runtime `T-20260804-006`: `approved`, Backend Agent clean worktree lock 후 구현
+- 최종 통합 `T-20260804-007`: `proposed`, T-006 완료 대기
 
 Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock server scaffold, typed 환경
 설정, `GET /healthz`와 독립 조립 가능한 Mock AI job route를 구현했다. 실제 provider·
@@ -19,10 +20,10 @@ network·production datastore·원격 STT route는 없다.
 
 ## 다음 조치
 
-Backend QA Agent가 `QA-HIGH-005-001`의 local·test·production startup 직접 반례와
-disabled release config, route·body read·temporary object·queue·provider·egress 0회를
-독립 재검증한다. 비활성 HTTP 경계의 공유 app composition은 T-007 소유다. 실제 endpoint·
-provider SDK·secret·audio storage·활성 배포는 범위 밖이며 T-006은 T-005 완료를 기다린다.
+Backend Agent가 allowlist logger·전체 외부비 비용 원장·콘텐츠와 raw metadata cleanup을
+local/mock 경계로 구현하고 장애·동시성 회귀를 완료한 뒤 Backend QA에 독립 검증을
+인계한다. 실제 cloud sink·billing·datastore·queue·KMS·provider와 공유 app composition은
+T-007 소유다.
 
 ## 차단 경계
 
