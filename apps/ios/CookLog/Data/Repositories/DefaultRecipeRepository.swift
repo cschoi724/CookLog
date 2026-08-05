@@ -39,6 +39,10 @@ struct DefaultRecipeRecordRepository: RecipeRecordRepository {
         try await localDataSource.fetchRecord(id: id)
     }
 
+    func createRecord(_ record: RecipeRecord) async throws {
+        try await localDataSource.createRecord(record)
+    }
+
     func saveRecord(_ record: RecipeRecord) async throws {
         try await localDataSource.saveRecord(record)
     }

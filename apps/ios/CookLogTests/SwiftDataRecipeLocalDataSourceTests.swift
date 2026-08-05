@@ -142,6 +142,37 @@ final class SwiftDataRecipeLocalDataSourceTests: XCTestCase {
         XCTAssertEqual(fetchedRecipes, [recipe])
     }
 
+    func testCreatingDraftWithExistingIdentifierPreservesSwiftDataCompletedRecord() async throws {
+        let store = try makeTestStore()
+        let recipe = makeRecipe(
+            id: UUID(),
+            title: "SwiftData에서 보존할 완료 레시피",
+            updatedAt: Date(timeIntervalSince1970: 200)
+        )
+        try await store.dataSource.saveRecipe(recipe)
+        let repository = DefaultRecipeRecordRepository(localDataSource: store.dataSource)
+        let useCase = CreateRecipeRecordUseCase(repository: repository)
+
+        do {
+            _ = try await useCase.execute(
+                id: recipe.id,
+                createdAt: Date(timeIntervalSince1970: 300)
+            )
+            XCTFail("기존 SwiftData record 식별자의 draft 생성은 거부되어야 합니다.")
+        } catch {
+            XCTAssertEqual(
+                error as? RecipeRecordRepositoryError,
+                .recordAlreadyExists(recipe.id)
+            )
+        }
+
+        let restoredRecord = try await store.dataSource.fetchRecord(id: recipe.id)
+        let restoredRecipe = try await store.dataSource.fetchRecipe(id: recipe.id)
+
+        XCTAssertEqual(restoredRecord, RecipeRecord(completedRecipe: recipe))
+        XCTAssertEqual(restoredRecipe, recipe)
+    }
+
     func testMigratesNonEmptyLegacyStoreAndPreservesCompletedRecipe() async throws {
         let storeURL = FileManager.default
             .urls(for: .documentDirectory, in: .userDomainMask)[0]

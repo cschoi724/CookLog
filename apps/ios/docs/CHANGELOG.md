@@ -17,6 +17,12 @@
   draft 덮어쓰기 `QA-HIGH-805002-001~002`를 재현해 `FAIL`로 판정했습니다.
 - Product Owner가 legacy 완료 조회 fallback 통일, UUID 충돌 거부와 QA 회귀 테스트
   통과를 데이터 무손실 재작업 범위로 승인해 iOS Agent에 다시 인계했습니다.
+- 알 수 없는 lifecycle raw value를 `completed`로 복원하는 단일 규칙을 Mapper와 완료
+  Recipe 단건·목록 조회에 적용해 구버전 레시피가 숨겨지지 않게 수정했습니다.
+- `createRecord(_:)` 저장 계약과 `recordAlreadyExists` 오류를 추가해 InMemory·SwiftData에서
+  기존 UUID의 새 draft 생성을 원자적으로 거부하고 completed 내용을 보존했습니다.
+- QA 회귀 2건과 SwiftData UUID 충돌 보존 테스트를 통과했으며, 실제 non-empty legacy
+  migration을 포함한 전체 XCTest 43개를 iPhone 15 iOS 17.2에서 재통과했습니다.
 
 ## 2026-07-31
 

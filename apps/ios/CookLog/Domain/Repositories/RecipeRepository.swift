@@ -10,6 +10,11 @@ protocol RecipeRepository {
 protocol RecipeRecordRepository {
     func fetchRecords() async throws -> [RecipeRecord]
     func fetchRecord(id: UUID) async throws -> RecipeRecord?
+    func createRecord(_ record: RecipeRecord) async throws
     func saveRecord(_ record: RecipeRecord) async throws
     func deleteRecord(id: UUID) async throws
+}
+
+enum RecipeRecordRepositoryError: Error, Equatable {
+    case recordAlreadyExists(UUID)
 }

@@ -10,6 +10,7 @@ protocol RecipeLocalDataSource {
 protocol RecipeRecordLocalDataSource {
     func fetchRecords() async throws -> [RecipeRecord]
     func fetchRecord(id: UUID) async throws -> RecipeRecord?
+    func createRecord(_ record: RecipeRecord) async throws
     func saveRecord(_ record: RecipeRecord) async throws
     func deleteRecord(id: UUID) async throws
 }

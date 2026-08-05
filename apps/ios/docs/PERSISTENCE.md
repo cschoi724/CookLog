@@ -61,6 +61,8 @@ MVP 저장 모델:
 - 서버가 생기면 `remoteId`는 그 시점에 추가합니다.
 - 진행 기록은 첫 공개 출시 범위에서 `PersistentRecipe`와 같은 UUID로 영구 저장합니다.
 - 기존 lifecycle 필드가 없는 `PersistentRecipe`는 기본 `completed`로 해석합니다.
+- 비어 있거나 알 수 없는 lifecycle raw value도 Mapper와 완료 Recipe 단건·목록 조회에서
+  모두 `completed`로 해석해 구버전 레시피가 숨겨지지 않게 합니다.
 - STEP Preview는 순서·UUID·원문·생성 시각을 JSON `Data`로 저장하고 Mapper에서 도메인 배열로 복원합니다.
 - AI Review 관계 필드는 마지막으로 성공한 수동 임시 저장 snapshot을 나타냅니다.
 - SwiftData 모델은 `Data/Persistence/`에 둡니다.
@@ -84,6 +86,9 @@ MVP 로컬 저장 DataSource:
 - `SwiftDataRecipeLocalDataSource`는 `ModelContext`를 내부에 보관하고, save/fetch/delete만 `RecipeLocalDataSource` 계약으로 노출합니다.
 - `RecipeRecordLocalDataSource`는 draft와 completed를 함께 다루고 `updatedAt` 내림차순으로 반환합니다.
 - 기존 `RecipeLocalDataSource` 조회는 `completed` record만 반환해 과거 화면 경로와의 호환성을 유지합니다.
+- 새 draft는 `createRecord(_:)`로만 생성하며, InMemory와 SwiftData 모두 기존 UUID가 있으면
+  `recordAlreadyExists` 오류로 원자적으로 거부합니다. 기존 record 갱신은 `saveRecord(_:)`로
+  분리해 생성 충돌이 완료 Recipe의 내용이나 lifecycle을 변경하지 않게 합니다.
 
 ## 5. 저장 실패 처리
 
@@ -102,5 +107,7 @@ MVP 로컬 저장 DataSource:
 - 기존 `PersistentRecipe` 모델 이름과 완료 Recipe 필드는 유지합니다.
 - 새 lifecycle 필드는 기본값 또는 optional로 추가해 SwiftData의 경량 자동 migration 경계를 사용합니다.
 - lifecycle 값이 없거나 알 수 없는 기존 행은 데이터 손실을 막기 위해 `completed`로 복원합니다.
+- 이 fallback은 `RecipeRecord` 변환과 기존 완료 Recipe 단건·목록 조회에 동일하게 적용합니다.
 - iPhone 15 iOS 17.2 Simulator의 기존 store 위에 새 앱을 설치·실행해 schema 확장과 앱 시작을 확인했습니다.
-- 해당 기존 store에는 Recipe 행이 없어, 실제 legacy 행 보존은 initializer 기본값과 Mapper 단위 테스트로 별도 검증했습니다.
+- iOS QA가 준비한 실제 non-empty legacy store fixture를 새 schema로 열어 제목·재료·단계가
+  유지된 completed record와 Recipe로 복원되는 것을 전체 XCTest에서 검증했습니다.

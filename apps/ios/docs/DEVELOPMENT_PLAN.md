@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-003 첫 패키지 구현 완료·독립 iOS QA 대기
+- 상태: Mock Core MVP 조건부 통과, T-003 첫 패키지 HIGH 2건 재작업 완료·독립 iOS QA 재검증 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -58,6 +58,9 @@
 - [x] 여러 draft 재실행 복구·legacy completed·저장 실패 원본 보존 테스트
 - [x] iPhone 15 iOS 17.2 전체 XCTest 통과
 - [x] 기존 Simulator store 위 schema 자동 migration 후 앱 실행 확인
+- [x] 알 수 없는 legacy lifecycle의 Mapper·완료 Recipe 조회 fallback 통일
+- [x] 원자적 record 생성과 InMemory·SwiftData UUID 충돌 시 기존 completed 보존
+- [x] QA 회귀·실제 non-empty migration 포함 전체 XCTest 43개 재통과
 
 ## 현재 개발 원칙
 
