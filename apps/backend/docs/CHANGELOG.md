@@ -1,5 +1,32 @@
 # Backend 변경 기록
 
+- 2026-08-05: Backend QA가 T-20260804-004의 HIGH 2건·MEDIUM 1건 해소, 전체 55/55와
+  공용 계약 무회귀를 `PASS_WITH_RISK`로 확인했다.
+- 2026-08-05: Development Lead가 성공 기준·허용 경로, PR #79 `CLEAN`과 필수 check를
+  재확인하고 production adapter·재시작 내구성을 T-006~007에 이관하는 조건으로 완료
+  리뷰를 수용해 Product Owner 최종 승인 단계로 전환했다.
+- 2026-08-05: `QA-HIGH-004-001`에 따라 snapshot canonical JSON에 LF 종결 byte를 포함해
+  계약 `jq -cS`와 일치시켰고 승인 fixture 원문 service·HTTP create와 golden vector를
+  추가했다.
+- 2026-08-05: `QA-HIGH-004-002`에 따라 +24시간 delete 실패는 내부 cleanup pending과
+  공개 500으로 fail closed하고 신규 job을 503으로 차단한다. sweeper 삭제 성공 후에만
+  `expired_deleted`를 확정한다.
+- 2026-08-05: `QA-MEDIUM-004-003`에 따라 Gregorian 달력·윤년·timezone 범위를 검증하고
+  create·ACK invalid date 반례를 추가했다. 전체 55/55와 공용 validator를 통과했다.
+- 2026-08-05: Product Owner가 `T-20260804-004` 독립 QA의 shared fixture snapshot hash
+  불일치, +24시간 삭제 실패 거짓 완료 HIGH 2건과 invalid calendar date 허용 MEDIUM 1건의
+  제한된 재작업을 승인해 Backend Agent에 다시 인계했다.
+- 2026-08-05: 원본 fixture 무변조 성공·canonical golden vector, cleanup pending/retry·
+  sweeper 복구, strict RFC 3339 create·ACK 반례를 필수 회귀 범위로 확정했다.
+- 2026-08-05: `T-20260804-004`에서 `RecipeAIProvider` interface와 deterministic Mock,
+  strict create/output validator를 구현했다.
+- 2026-08-05: 원자 in-memory job/content/idempotency/outbox 저장, duplicate worker CAS,
+  provider 최대 1회, timeout decision과 late result 폐기 경계를 추가했다.
+- 2026-08-05: 인증 기반 create·status·ACK route, result version 동시 삭제 1회·replay,
+  +22시간 cleanup과 +24시간 content read 전 expiry를 구현했다.
+- 2026-08-05: T-004 13/13, T-003 포함 37/37, 기존 15/15와 공용 계약 validator를 통과해
+  Backend QA에 인계했다. shared fixture snapshot hash canonicalization 불명확성은 QA 위험으로
+  명시했다.
 - 2026-08-05: 공용 `develop`에서 T-002·T-003 완료를 확인하고 Product Owner가
   `T-20260804-004` deterministic Mock AI recipe job·status·ACK·복구 저장 경계 구현을
   별도 승인해 Backend Agent에 인계했다.
