@@ -32,13 +32,18 @@
 | `T-20260805-001` | `done` | iOS MVP 디자인 적용 기준과 Visual QA 계약 | DQA-MEDIUM-007~008 해소, Core Loop 23개 상태·대비·접근성 무회귀 | Design QA `PASS`, 구현 후 실제 화면 QA는 T-003 인계 |
 | `T-20260729-002` | `done` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | T-008~014 독립 QA·상위 성공 기준·통합 Source of Truth | 하위 전체 병합·Design Lead 완료 확정 |
 | `T-20260804-001` | `done` | 수익화 Source of Truth와 후보 Task 복구 | Lead Role·schema HIGH 2건, 상태 동결·Task graph·최신 develop 비회귀 | Product QA `PASS`·Product Lead 완료 리뷰·Product Owner 최종 승인 |
+| `T-20260804-002` | `done` | Backend runtime scaffold·환경 설정·health | QA-HIGH-002-001 해소·15/15·실제 process 종료·기존 계약 무회귀 | PASS_WITH_RISK 수용·최종 승인, container는 T-007 인계 |
 
 향후 검증 예정 Task:
 
 | Task ID | 도메인 | 예정 Verification Agent | 검증 초점 |
 |---|---|---|---|
 | `T-20260728-003` | iOS/Design | iOS QA Agent | 기능 회귀와 Figma 정합성 |
-| `T-20260728-006` | Backend | Backend QA Agent | 계약 테스트, secret, 로그 |
+| `T-20260804-003` | Backend | Backend QA Agent | 공통 envelope·인증·replay·제한·idempotency |
+| `T-20260804-004` | Backend | Backend QA Agent | Mock AI 단일 호출·status·ACK·timeout·복구 |
+| `T-20260804-005` | Backend | Backend QA Agent | 원격 STT route·body read·egress 0·활성화 차단 |
+| `T-20260804-006` | Backend | Backend QA Agent | redaction·비용 hard cutoff·TTL cleanup |
+| `T-20260804-007` | Backend | Backend QA Agent | 전체 계약 동등성·보안 회귀·로컬 재현 |
 | `T-20260728-008` | CI | iOS QA Agent | 실패 감지, 결과물, 회귀 검증 |
 | `T-20260728-010` | Product | Product QA Agent | 비용 모델·Free/Pro·가격·quota·출시 범위 |
 | `T-20260728-011` | Design | Design QA Agent | Paywall 진입·가격·복원·접근성·로컬 데이터 접근 유지 |
@@ -51,6 +56,16 @@ strict validation 10/10, 후보 상태 동결·Task graph와 최신 develop 완�
 로컬 `done`으로 확정했으며 가격·quota 가설과 수익화 실행 동결은 유지합니다.
 
 `T-20260729-014`는 최종 독립 재재검증에서 DQA-HIGH-014-001과 DQA-MEDIUM-014-001 해소, 기존 통과 항목 무회귀를 확인하고 PR #68로 병합돼 `done`입니다. 상위 `T-20260729-002`도 하위 전체 QA와 성공 기준을 수용해 `done`입니다.
+
+T-002는 shutdown deadline 뒤 listener·process 생존과 두 번째 signal 무시를
+`QA-HIGH-002-001`로 확인해 `FAIL`로 인계했습니다. Product Owner가 재작업을 승인했으며,
+Backend QA는 hanging close·keep-alive·연속 signal의 실제 process 종료, 9초 상한과
+기존 config·health·금지 route·secret 비노출 무회귀를 독립 재검증합니다.
+
+Backend Agent는 deadline 초과 시 active connection 정리 후 명시적 exit 1, shutdown 중
+두 번째 signal의 즉시 exit 1과 정상 close의 명시적 exit 0을 구현했습니다. 실제 child
+process 5개 사례와 기존 검사를 합쳐 15/15를 통과했으며 `verification_ready`로
+재인계했습니다.
 
 T-025는 AI 정상·공개 오류·timeout·만료, 원격 STT 비활성과 negative case의 공용
 fixture를 source schema·catalog에 연결했습니다. Backend 통합 validator는 canonical
@@ -83,6 +98,11 @@ T-005 상위 완료 리뷰는 새로운 runtime 산출물을 추가하지 않고
 각각 독립 검증했고 모두 `done`이므로 추가 중복 QA 없이 `PASS_WITH_RISK`로 수용했습니다.
 Product Owner가 잔여 위험을 수용하고 PR #65를 squash merge해 `done`으로 확정했습니다.
 runtime·cloud·iOS·staging 잔여 위험은 후속 구현·출시 Task로 인계합니다.
+
+T-006은 6개 Foundation 실행 패키지로 분해됐습니다. Backend QA는 각 패키지의 계약·
+secret·콘텐츠 비노출을 독립 검증하며, 마지막 T-007에서 공용 fixture와 runtime 응답의
+전체 동등성을 재검증합니다. 실제 provider·배포와 원격 STT 활성화는 검증 범위 밖이며
+승인 없이 추가할 수 없습니다.
 
 `T-20260728-004`는 전체 XCTest 종료, timeout, 로그와 `xcresult` 절차의 독립 재현을 `PASS_WITH_RISK`로 통과했습니다. Product Owner가 `QA-RISK-004-001`을 수용하고 PR #8을 `develop`에 squash merge해 `done`으로 확정했습니다. Xcode·Simulator 고정 검증은 T-008로 인계했습니다. `T-20260728-002`도 `done`으로 확정되어 추가 Design QA가 필요하지 않습니다.
 
