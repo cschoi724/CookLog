@@ -4,10 +4,35 @@
 
 ## 2026-08-05
 
+- `T-20260805-003` 재작업 독립 재검증에서 Home 13개·전체 XCTest 54/54와
+  `QA-HIGH-805003-001`, `QA-MEDIUM-805003-002~004` 해소를 확인했습니다.
+- Development Lead가 최신 develop 기준 전체 XCTest 54/54를 재실행하고 완료 리뷰를
+  `PASS_WITH_RISK`로 확정했습니다. Product Owner의 완료·병합 승인 조건을 충족했으며,
+  T-004 선행은 해소하고 375x667 full-screen 위험은 T-008에 유지합니다.
+- `T-20260805-003` 독립 QA의 진행 기록 삭제 HIGH 1건과 AI Review 준비 배너·카드
+  metadata·생성 실패 재시도 MEDIUM 3건에 대해 승인된 `WP-R1~R4`를 반영했습니다.
+- 진행 record에만 `⋯` 메뉴와 복구 불가 삭제 확인을 제공하고, 같은 UUID 삭제·최근 3개
+  backfill·실패 record 보존·실패한 삭제만 재시도하는 흐름을 추가했습니다.
+- AI Review 준비 완료 성공 배너와 같은 UUID의 `레시피 검토하기` CTA를 추가했습니다.
+- 완료 badge를 제거하고 카드에 lifecycle별 최근 활동, 주요 재료 최대 3개, 예상 시간과
+  단계 수를 표시했습니다.
+- 조회 오류와 새 기록 생성 오류를 분리하고 생성 실패 재시도가 생성만 다시 수행하도록
+  수정했습니다.
+- 결함별 회귀 테스트를 추가해 iPhone 15 iOS 17.2 전체 XCTest 54/54를 통과하고
+  Simulator 설치·실행, Home 빈 상태 렌더링과 기록 CTA의 Cooking Log 실제 전환을
+  재확인했습니다.
 - 공용 `develop`에서 T-20260805-002의 `done`과 PR #77 병합을 확인하고 Product Owner가
   `T-20260805-003` Home·전체 보기·검색·상태별 routing 구현을 별도 승인했습니다.
 - Home Core Loop 4개 상태, 제목·재료 로컬 검색, lifecycle별 동일 record ID routing,
   앱 재실행·refresh와 back swipe·복구 무회귀를 구현·검증 경계로 확정했습니다.
+- Home 데이터 원본을 완료 Recipe 목록에서 진행·완료 `RecipeRecord` 단일 목록으로 전환하고
+  최근 활동순 3개 카드, 전체 보기, loading·empty·error·retry를 구현했습니다.
+- AI Review·완료 record의 제목 우선·재료명 로컬 검색을 추가하고 STEP Preview 초안·
+  조리 순서·메모는 검색하지 않도록 범위를 고정했습니다.
+- 새 기록을 먼저 로컬에 생성하고 lifecycle별 Cooking Log·AI Review·Recipe Detail route에
+  동일 record ID와 STEP snapshot을 전달하도록 `AppRoute`를 확장했습니다.
+- Home 선별 테스트와 build, 전체 XCTest 48개를 통과하고 iPhone 15 iOS 17.2
+  Simulator에서 디자인 토큰·핵심 메시지·기록 CTA의 빈 상태 렌더링을 확인했습니다.
 - Product Owner가 `T-20260728-003` iOS 로컬 제품 적용 진행을 승인했습니다.
 - Development Lead가 T-003을 `T-20260805-002~008` 7개 구현·독립 QA 패키지로 분해했습니다.
 - 첫 `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기를 iOS Agent에 실행 승인 인계했습니다.

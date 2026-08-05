@@ -37,8 +37,8 @@
 | `T-20260804-006` | `approved` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` 완료 | Product Owner 별도 실행 승인, clean worktree lock 후 구현 |
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
-| `T-20260805-003` | `approved` | iOS | Home·전체 보기·검색·상태별 routing | iOS Agent | `T-20260805-002` 완료 | Product Owner 별도 실행 승인·전용 worktree lock 후 구현 |
-| `T-20260805-004` | `proposed` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `T-20260805-003` | Home·routing 완료 대기 |
+| `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
+| `T-20260805-004` | `proposed` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `T-20260805-003` 완료 | 선행 해소, Product Owner 별도 실행 승인 대기 |
 | `T-20260805-005` | `proposed` | iOS | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `T-20260805-004` | Cooking Log 완료 대기 |
 | `T-20260805-006` | `proposed` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` | Review·Recipe 완료 대기 |
 | `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
@@ -95,6 +95,25 @@ Development Lead 완료 리뷰와 Product Owner 완료·PR #77 병합 승인을 
 squash merge SHA `3d1d012`로 공용 `done`을 확정했습니다. T-003 선행은 해소됐으며
 Product Owner가 별도 실행을 승인해 iOS Agent에 인계했습니다. Home·전체 보기·검색·
 상태별 routing만 구현하고 T-004~008과 실제 STT·Backend AI·TTS는 선행하지 않습니다.
+
+T-20260805-003 독립 QA에서 전체 XCTest 48/48과 검색·동일 UUID route는 통과했으나
+진행 기록 삭제 HIGH 1건과 AI 준비 배너·카드 metadata·생성 실패 재시도 MEDIUM 3건이
+확인됐습니다. Development Lead가 네 결함을 `WP-R1~R4`로 범위화했고 Product Owner가
+재작업을 승인해 iOS Agent에 다시 인계했습니다. T-004는 재검증 완료 전까지 차단합니다.
+
+iOS Agent가 진행 record 삭제·backfill·실패한 삭제 전용 retry, AI Review 준비 배너,
+lifecycle별 카드 metadata, 조회·생성 오류 분리를 구현했습니다. 신규 회귀를 포함한 전체
+XCTest 54/54와 Simulator 설치·실행을 통과해 iOS QA Agent의 독립 재검증을 기다립니다.
+
+iOS QA Agent 재검증에서 기존 HIGH 1건·MEDIUM 3건 해소와 Home 13개·전체 XCTest
+54/54, 실제 생성·전환·재실행 복구, 375×667 Light/Dark 무회귀를 확인했습니다.
+`PASS_WITH_RISK`, `verification_passed`이며 Development Lead가 완료 검토와 T-004
+의존성 해제를 판단합니다. launch configuration 위험은 계획된 T-008로 인계합니다.
+
+Development Lead가 최신 develop 기준 허용 경로와 성공 기준을 검토하고 전체 XCTest
+54/54를 직접 재실행해 완료 리뷰를 `PASS_WITH_RISK`로 확정했습니다. Product Owner의
+조건부 완료·병합 승인 조건을 충족해 T-003을 `done`으로 확정했으며, 공용 효력은 develop
+병합 후 발생합니다. T-004 선행은 해소됐지만 별도 실행 승인 전 `proposed`로 유지합니다.
 
 수익화 개발 `T-20260728-012`, `014~017`은 Core v1과 분리된 `proposed` 후보입니다. T-010 정책과 각 activation gate가 완료돼도 Product Owner의 별도 실행 승인 전에는 scope·구현하지 않습니다.
 
