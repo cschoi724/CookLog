@@ -4,6 +4,9 @@
 
 ## 2026-08-05
 
+- Product Owner가 `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 구현을
+  별도 승인했습니다. Mock Service 기반 5개 상태와 반복 기록·데이터 보존 경계를 확정해
+  iOS Agent에 인계하고 실제 Apple STT와 T-005~008은 후속 범위로 유지했습니다.
 - `T-20260805-003` 재작업 독립 재검증에서 Home 13개·전체 XCTest 54/54와
   `QA-HIGH-805003-001`, `QA-MEDIUM-805003-002~004` 해소를 확인했습니다.
 - Development Lead가 최신 develop 기준 전체 XCTest 54/54를 재실행하고 완료 리뷰를
