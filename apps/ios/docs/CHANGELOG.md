@@ -23,6 +23,10 @@
   기존 UUID의 새 draft 생성을 원자적으로 거부하고 completed 내용을 보존했습니다.
 - QA 회귀 2건과 SwiftData UUID 충돌 보존 테스트를 통과했으며, 실제 non-empty legacy
   migration을 포함한 전체 XCTest 43개를 iPhone 15 iOS 17.2에서 재통과했습니다.
+- iOS QA 독립 재검증에서 집중 4/4·전체 43/43 XCTest와 실제 non-empty migration을
+  통과했으며 신규 결함과 잔여 위험이 없음을 확인했습니다.
+- Development Lead 완료 리뷰와 Product Owner 완료·PR #77 병합 승인을 거쳐
+  T-20260805-002를 로컬 `done` 후보로 확정했습니다.
 
 ## 2026-07-31
 

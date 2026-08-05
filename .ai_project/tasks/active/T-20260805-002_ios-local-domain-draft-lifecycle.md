@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-002
 title: iOS 로컬 도메인·SwiftData migration·draft 생명주기 구현
-status: verification_passed
+status: done
 type: feature
 priority: P0
 priority_reason: 모든 화면이 공유하는 진행 기록·임시 저장·완료 전환과 영속화 경계를 먼저 고정해야 한다.
@@ -98,6 +98,12 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
   non-empty migration 포함 전체 XCTest 43개를 독립 실행해 모두 통과시켰다. 신규 결함과
   잔여 위험 없이 `verification_in_progress -> verification_passed`로 Development Lead
   Agent / Completion Role에 인계했다.
+- 2026-08-05: Development Lead Agent가 HIGH 2건 해소, 집중 회귀 4/4, 전체 XCTest
+  43/43, non-empty migration 데이터 보존과 잔여 위험 없음 판정을 검토해
+  `verification_passed -> completion_review`를 통과시켰다.
+- 2026-08-05: Product Owner가 완료 확정과 PR #77의 `develop` 병합까지 승인해
+  `completion_review -> done`으로 전환했다. 공용 완료 효력은 PR 병합 후 발생하며,
+  후속 `T-20260805-003`은 별도 실행 승인 전까지 `proposed`를 유지한다.
 
 ## 재작업 승인 범위
 
@@ -108,6 +114,17 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 - QA 회귀 테스트 2개와 실제 non-empty legacy migration, 기존 XCTest 39개를 모두
   통과시키고 iOS QA Agent에 독립 재검증을 요청한다.
 - 화면·STT·AI·TTS·후속 `T-20260805-003~008` 구현은 이번 재작업에 포함하지 않는다.
+
+## 완료 리뷰 결과
+
+- 판정: `PASS`
+- 성공 기준: 기존 Recipe 보존, 다중 draft 독립성, 금지 전이·부분 저장 실패 시 원본
+  보존, 실제 API·화면 범위 제외를 모두 충족했다.
+- 독립 검증: `QA-HIGH-805002-001~002` 해소, 집중 4/4·전체 43/43 XCTest와 실제
+  non-empty migration 통과를 확인했다.
+- 잔여 위험: 없음.
+- 다음 단계: PR #77의 required checks 통과와 `develop` 병합을 확인한 뒤
+  `T-20260805-003`의 별도 실행 승인을 검토한다.
 
 ## Next Agent Handoff
 

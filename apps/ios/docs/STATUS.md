@@ -4,21 +4,21 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-002 데이터 보존 HIGH 2건 재작업 완료·iOS QA 독립 재검증 대기
+- 상태: T-20260805-002 독립 재검증·완료 리뷰 통과, PR #77 병합 진행
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002 verification_ready 재작업
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002 done 후보
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS QA Agent가 `T-20260805-002`의 `QA-HIGH-805002-001~002` 해소와 전체 회귀 독립 재검증
-2. T-20260805-002 공용 develop 완료 후 `T-20260805-003` 실행 승인
+1. T-20260805-002 PR #77 required checks 통과와 공용 `develop` 병합 확인
+2. 선행 해소 후 `T-20260805-003` 별도 실행 승인
 3. `T-20260805-003~007` 화면·상태 패키지 순차 구현
 4. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 5. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
@@ -38,6 +38,9 @@
   InMemory·SwiftData의 기존 completed record와 내용을 보존합니다.
 - QA 회귀 2건, SwiftData 충돌 보존 추가 회귀와 실제 non-empty migration을 포함한 전체
   XCTest 43개를 iPhone 15 iOS 17.2에서 통과했습니다.
+- iOS QA 독립 재검증에서 집중 4/4·전체 43/43 XCTest와 실제 non-empty migration을
+  통과했고, Development Lead 완료 리뷰와 Product Owner 완료·PR #77 병합 승인을
+  받았습니다.
 - T-20260730-001에서 `macos-26`, Xcode 26.6, iPhone 17·iOS 26.5 CI 계약을 확정했습니다.
 - T-20260730-002와 T-20260730-003에서 `ios-build`, `ios-xctest` workflow를 구현하고 GitHub-hosted check·33/33·artifact를 검증했습니다.
 - T-20260730-004에서 concurrency 격리, 공통 진단 action과 artifact 요약을 통합하고 독립 QA·PR #34를 거쳐 `done`으로 확정했습니다.
