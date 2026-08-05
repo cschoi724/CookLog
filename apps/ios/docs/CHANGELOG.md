@@ -2,6 +2,12 @@
 
 이 문서는 iOS 앱 개발 변경 기록을 관리합니다.
 
+## 2026-08-05
+
+- Product Owner가 `T-20260728-003` iOS 로컬 제품 적용 진행을 승인했습니다.
+- Development Lead가 T-003을 `T-20260805-002~008` 7개 구현·독립 QA 패키지로 분해했습니다.
+- 첫 `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기를 iOS Agent에 실행 승인 인계했습니다.
+
 ## 2026-07-31
 
 - iOS Agent 안내를 제품 세부 범위 복제 없이 Task·제품·Design Source of Truth 참조 중심으로 재구성했습니다.

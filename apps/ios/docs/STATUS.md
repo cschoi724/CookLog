@@ -1,27 +1,27 @@
 # CookLog iOS Status
 
-최종 업데이트: 2026-07-31
+최종 업데이트: 2026-08-05
 
 ## 현재 상태
 
-- 상태: Mock Core MVP 조건부 통과, 첫 공개 출시 Foundation 구현 중
+- 상태: Mock Core MVP 조건부 통과, 첫 공개 출시 로컬 제품 적용 착수
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: Design 완료 대기와 iOS 첫 공개 출시 구현 준비
+- 현재 이정표: T-20260728-003 scoped, 첫 T-20260805-002 실행 승인
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. Design T-20260729-012~014 완료 후 T-20260728-003 iOS 로컬 제품 적용 scope
-2. T-20260729-004 Apple 기기 내 STT 구현과 실제 기기 품질 검증
-3. Backend 계약 이후 T-20260729-005 AI 정리·Review 실서비스 연동
-4. T-20260729-006 로컬 TTS·핸즈프리 Audio Guide 구현
-5. CI T-20260730-005 dry run·T-006 required check 적용
+1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 구현
+2. `T-20260805-003~007` 화면·상태 패키지 순차 구현
+3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
+4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
+5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 

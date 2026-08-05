@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260728-003
 title: 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용
-status: proposed
+status: scoped
 type: feature
 priority: P0
 priority_reason: 첫 공개 출시의 모든 iOS 화면과 로컬 데이터 생명주기를 실제 서비스 연동 전에 확정해야 한다.
@@ -18,6 +18,13 @@ required_capabilities:
 depends_on:
   - T-20260729-002
   - T-20260805-001
+  - T-20260805-002
+  - T-20260805-003
+  - T-20260805-004
+  - T-20260805-005
+  - T-20260805-006
+  - T-20260805-007
+  - T-20260805-008
 blocks:
   - T-20260729-004
   - T-20260729-005
@@ -47,7 +54,7 @@ source_of_truth:
   - T-20260729-002의 승인된 디자인 핸드오프
   - T-20260805-001의 승인된 Core Loop 구현·Visual QA 계약
 created_by: Product Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
@@ -121,3 +128,20 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 7. 접근성·작은 화면·다크 모드·회귀 테스트
 
 각 하위 Task는 iOS Agent 실행과 iOS QA 독립 검증 경계를 분리해야 한다.
+
+## 승인된 실행 계획
+
+| 순서 | Task | 패키지 | 상태 |
+|---:|---|---|---|
+| 1 | `T-20260805-002` | 로컬 도메인·SwiftData migration·draft 생명주기 | `approved` |
+| 2 | `T-20260805-003` | Home·전체 보기·검색·상태별 routing | `proposed` |
+| 3 | `T-20260805-004` | Cooking Log·STEP Preview 자동 저장·오류 상태 | `proposed` |
+| 4 | `T-20260805-005` | AI Review·완료 레시피 편집·삭제 | `proposed` |
+| 5 | `T-20260805-006` | Audio Guide·핸즈프리 UI·공통 action model | `proposed` |
+| 6 | `T-20260805-007` | 앱 정보·권한·오프라인·서비스 장애 | `proposed` |
+| 7 | `T-20260805-008` | 접근성·작은 화면·다크 모드·통합 회귀 | `proposed` |
+
+- 2026-08-05: Product Owner가 T-003 진행을 승인했다.
+- Development Lead가 7개 구현·독립 QA 패키지로 범위화해 `proposed -> scoped`로 전환했다.
+- 공유 모델·저장 경계를 먼저 고정하기 위해 T-002만 `approved`로 iOS Agent에 인계한다.
+- 후속 Task는 선행 Task가 공용 `develop`에서 `done`이 된 뒤 별도 실행 승인한다.

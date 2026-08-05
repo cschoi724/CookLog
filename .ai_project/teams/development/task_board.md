@@ -8,7 +8,7 @@
 | Task ID | 상태 | Workstream | 제목 | 담당 Role | 의존성 | 다음 조치 |
 |---|---|---|---|---|---|---|
 | `T-20260728-001` | `cancelled` | iOS | iOS M8 잔여 안정화와 최종 검증 | - | - | 유효 항목 T-003/T-009 통합 |
-| `T-20260728-003` | `proposed` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002`, `T-20260805-001` 완료 | 통합 82개 상태·Core Loop 23개 인수 기준으로 7개 iOS 하위 패키지 scope |
+| `T-20260728-003` | `scoped` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | 하위 `T-20260805-002~008` | Product Owner 진행 승인, T-002 iOS Agent 인계 |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
 | `T-20260728-005` | `done` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | 하위 `T-20260729-020~025` 완료 | PR #65 squash merge `4e0bca4`·완료 확정 |
 | `T-20260728-006` | `scoped` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | 하위 `T-20260804-002~007` | Product Owner 진행 승인, T-002 Backend Agent 인계 |
@@ -36,6 +36,13 @@
 | `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
 | `T-20260804-006` | `proposed` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` | 도메인 경계 완료 대기 |
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
+| `T-20260805-002` | `approved` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | iOS Agent | 디자인 기준 완료 | 전용 worktree lock 후 구현 시작 |
+| `T-20260805-003` | `proposed` | iOS | Home·전체 보기·검색·상태별 routing | iOS Agent | `T-20260805-002` | 로컬 모델 완료 대기 |
+| `T-20260805-004` | `proposed` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `T-20260805-003` | Home·routing 완료 대기 |
+| `T-20260805-005` | `proposed` | iOS | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `T-20260805-004` | Cooking Log 완료 대기 |
+| `T-20260805-006` | `proposed` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` | Review·Recipe 완료 대기 |
+| `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
+| `T-20260805-008` | `proposed` | iOS | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `T-20260805-002~007` | 전체 구현 완료 후 통합 검증 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
 T-020~025는 모두 `done`입니다. T-025는 공통 header와 negative validator 재작업,
@@ -68,6 +75,11 @@ Development Lead는 T-020~025의 `done`, 하위 Backend QA 최종 판정, Source
 실제 runtime·provider·iOS·staging 위험은 후속 Task에 유지합니다. Product Owner가
 잔여 위험을 수용하고 PR #65를 `develop`에 squash merge했으며 merge SHA `4e0bca4`를
 확인해 `done`으로 확정했습니다.
+
+Product Owner가 iOS T-003 진행을 승인했습니다. Development Lead는 로컬 생명주기,
+Home, Cooking Log, AI Review·Recipe, Audio Guide, 앱 정보·실패 상태, 통합 접근성의
+7개 패키지로 분해했습니다. T-002만 `approved`로 iOS Agent에 인계하고 T-003~008은
+선행 완료 전 `proposed`로 유지합니다. 실제 STT·Backend AI·TTS는 후속 Task 범위입니다.
 
 수익화 개발 `T-20260728-012`, `014~017`은 Core v1과 분리된 `proposed` 후보입니다. T-010 정책과 각 activation gate가 완료돼도 Product Owner의 별도 실행 승인 전에는 scope·구현하지 않습니다.
 

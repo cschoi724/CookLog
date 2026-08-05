@@ -14,9 +14,9 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 21 |
-| `scoped` | 2 |
-| `approved` | 0 |
+| `proposed` | 26 |
+| `scoped` | 3 |
+| `approved` | 1 |
 | `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation 첫 하위 T-20260804-002도 QA·완료 리뷰·Product Owner 승인을 거쳐 `done`이며 상위 T-006은 `scoped`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation 첫 하위 T-20260804-002도 `done`이며 상위 T-006은 `scoped`입니다. iOS T-003은 7개 하위 패키지로 `scoped`, 첫 T-20260805-002는 `approved`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -39,7 +39,7 @@ Team별 요약:
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 0 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
-| Core Development | 7 | 1 | 0 | `.ai_project/teams/development/task_board.md` |
+| Core Development | 14 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 | AI Ops | 0 | 0 | 0 | `T-20260730-006`, `T-20260731-002` `done` |
 
@@ -51,7 +51,7 @@ Team별 요약:
 |---|---|---|---|---|
 | `T-20260728-001` | - | iOS M8 잔여 안정화와 최종 검증 | - | `cancelled`, 유효 항목은 T-003/T-009로 통합 |
 | `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | `done` |
-| `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002`, `T-20260805-001` |
+| `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `scoped`; T-20260805-002 승인·003~008 제안 |
 | `T-20260805-001` | P1 | iOS MVP 디자인 적용 기준과 Visual QA 계약 확정 | - | `done`, 통합 82개 상태 아래 Core Loop 23개 인수 계약 |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #65 squash merge `4e0bca4` |
@@ -99,6 +99,18 @@ Backend `T-20260728-005` 하위 실행 후보:
 | `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `proposed`, T-002·003 선행 |
 | `T-20260804-006` | P0 | Backend redacted logging·비용 원장·TTL cleanup | Backend Agent | `proposed`, T-003~005 선행 |
 | `T-20260804-007` | P0 | Backend Foundation 통합 계약·보안 검증·handoff | Backend Agent | `proposed`, T-002~006 선행 |
+
+iOS `T-20260728-003` 하위 실행 후보:
+
+| Task ID | Priority | 제목 | 담당 Agent | 의존성 |
+|---|---|---|---|---|
+| `T-20260805-002` | P0 | 로컬 도메인·SwiftData migration·draft 생명주기 | iOS Agent | `approved`, 디자인 기준 완료 |
+| `T-20260805-003` | P0 | Home·전체 보기·검색·상태별 routing | iOS Agent | `proposed`, T-002 선행 |
+| `T-20260805-004` | P0 | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `proposed`, T-003 선행 |
+| `T-20260805-005` | P0 | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `proposed`, T-004 선행 |
+| `T-20260805-006` | P0 | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `proposed`, T-005 선행 |
+| `T-20260805-007` | P0 | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `proposed`, T-006 선행 |
+| `T-20260805-008` | P0 | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `proposed`, T-002~007 선행 |
 
 CI `T-20260728-008` 하위 실행 후보:
 
@@ -304,3 +316,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-04 | Backend QA가 T-20260804-002 shutdown deadline 결함을 FAIL로 인계하고 Product Owner가 강제 종료·process-level 회귀 재작업을 승인 |
 | 2026-08-05 | T-20260804-002 Backend QA 재검증 PASS_WITH_RISK와 Lead 완료 리뷰를 수용해 `completion_review`로 전환, container 실검증은 T-007 인계 |
 | 2026-08-05 | Product Owner가 T-20260804-002 완료와 PR #70 병합을 승인해 `done` 확정, 후속 T-003 실행 승인 검토로 인계 |
+| 2026-08-05 | Product Owner가 iOS T-20260728-003 진행을 승인하고 7개 하위 패키지로 scope, 첫 T-20260805-002를 iOS Agent 실행 승인 인계 |

@@ -38,7 +38,7 @@
 
 | Task ID | 도메인 | 예정 Verification Agent | 검증 초점 |
 |---|---|---|---|
-| `T-20260728-003` | iOS/Design | iOS QA Agent | 기능 회귀와 Figma 정합성 |
+| `T-20260728-003`, `T-20260805-002~008` | iOS/Design | iOS QA Agent | 패키지별 기능·데이터 보존과 최종 82/23 상태·접근성·Visual QA |
 | `T-20260804-003` | Backend | Backend QA Agent | 공통 envelope·인증·replay·제한·idempotency |
 | `T-20260804-004` | Backend | Backend QA Agent | Mock AI 단일 호출·status·ACK·timeout·복구 |
 | `T-20260804-005` | Backend | Backend QA Agent | 원격 STT route·body read·egress 0·활성화 차단 |
