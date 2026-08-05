@@ -1,5 +1,35 @@
 # Backend 변경 기록
 
+- 2026-08-05: Backend QA가 `T-20260804-003` 재검증에서 HIGH 2건·MEDIUM 1건 해소와
+  기존 15/15·T-003 24/24·공용 계약 무회귀를 확인해 `PASS_WITH_RISK`로 판정했다.
+- 2026-08-05: Development Lead가 성공 기준·허용 경로·PR #76 CLEAN과 필수 check를
+  재확인하고 Node 24·production adapter 위험을 T-007에 이관하는 조건으로 완료 리뷰를
+  통과시켜 Product Owner 최종 승인 단계로 전환했다.
+- 2026-08-05: Product Owner가 `PASS_WITH_RISK`와 T-007 잔여 위험 이관을 수용하고
+  PR #76 `develop` 병합을 승인해 T-003을 `done`으로 확정했다. T-004는 별도 실행
+  승인 후 착수한다.
+- 2026-08-05: `T-20260804-003` 재작업에서 violation을 exact own descriptor로 검증한 뒤
+  새 공개 객체로 투영해 extra property·getter·custom prototype·symbol·20개 초과 입력을
+  `INTERNAL_ERROR`로 fail closed했다.
+- 2026-08-05: strict schema required·unknown·child lookup을 own property 기준으로 통일하고
+  query를 제외한 pathname으로 unsupported API version을 판정했다. 직접 반례 3개를 포함한
+  T-003 전용 24개와 기존 15개, 공용 계약 validator를 통과해 독립 재검증에 인계했다.
+- 2026-08-05: Backend QA가 `T-20260804-003`에서 violation 추가 필드 secret 누출과
+  strict schema prototype-key 우회 HIGH 2건, query 포함 unsupported version 오분류
+  MEDIUM 1건을 확인해 `FAIL`로 판정했다.
+- 2026-08-05: Product Owner가 세 결함 수정과 직접 반례 회귀 테스트 추가를 재작업으로
+  승인해 Backend Agent에 다시 인계했다. T-004~007 차단은 재검증 통과 전까지 유지한다.
+- 2026-08-05: `T-20260804-003`에서 canonical request ID, 성공 envelope와 catalog 기반
+  RFC 9457 problem renderer, fail-closed schema validation을 구현했다.
+- 2026-08-05: non-production attestation verifier와 hash 저장 opaque installation token,
+  인증 pre-handler를 추가했다.
+- 2026-08-05: installation·IP HMAC·project fixed-window limiter, emergency limit 0과
+  limiter unavailable fail-closed 경계를 추가했다.
+- 2026-08-05: canonical JSON SHA-256, UUID v4 key, 24시간 in-memory record, 동시 단일
+  승자·처리 중·outcome unknown·원본 response replay를 구현했다.
+- 2026-08-05: 신규 HTTP/auth suite 21개와 기존 health/lifecycle 15개, 공용 계약
+  validator를 통과해 Backend QA에 인계했다.
+
 - 2026-08-05: `T-20260804-002` shutdown 재작업 독립 QA 15/15와 Lead 완료 리뷰를
   Product Owner가 승인해 `done`으로 확정했다. Docker·Node 24 container 실검증은
   `T-20260804-007` 필수 통합 게이트로 이관했다.
