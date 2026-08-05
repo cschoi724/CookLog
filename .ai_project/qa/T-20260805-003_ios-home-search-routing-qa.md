@@ -2,9 +2,10 @@
 
 작성일: 2026-08-05
 작성 Role: iOS QA Agent / Verification Role
-대상 구현: `9b1e44cb2f622902b382f335a39b22528e6d5efe`
-기준 상태: `origin/develop@865f508ae505e3b1a80d9f3cda1c5bf6f8d5c0a7`
-최종 판정: `FAIL — rework_requested`
+대상 구현: `969ceb5cd912c5469e00624cdc4298ae1b3421a7`
+최초 검증 대상: `9b1e44cb2f622902b382f335a39b22528e6d5efe`
+기준 상태: `origin/develop@97f434df8188bfede4d6e82768817b497df670c0`
+최종 판정: `PASS_WITH_RISK — verification_passed`
 
 ## 1. 검증 범위
 
@@ -119,3 +120,84 @@ configuration 현상도 관찰했습니다. 이번 구현 diff 밖의 baseline�
 `origin/develop`을 반영한 구현 브랜치에서 네 결함만 수정하고 자체 검증 후
 `verification_ready`로 재인계합니다. 기존 `FAIL` 판정은 독립 재검증 전까지 이력으로
 유지합니다.
+
+## 7. 재작업 독립 재검증
+
+재검증일: 2026-08-05
+재검증 대상: `969ceb5cd912c5469e00624cdc4298ae1b3421a7`
+기준 상태: `origin/develop@97f434df8188bfede4d6e82768817b497df670c0`
+최종 판정: `PASS_WITH_RISK — verification_passed`
+
+### QA-HIGH-805003-001
+
+- [x] Home과 전체 보기에 진행 record 전용 44pt `⋯` 메뉴가 추가됐다.
+- [x] 완료 record에는 진행 삭제 메뉴가 없고 ViewModel 삭제 호출도 거부한다.
+- [x] 복구 불가 설명과 취소·영구 삭제가 있는 시스템 confirmation dialog를 제공한다.
+- [x] 성공 시 동일 UUID를 repository와 화면 목록에서 제거하고 최근 3개를 backfill한다.
+- [x] 실패 시 record를 보존하며 재시도는 실패한 UUID만 다시 삭제한다.
+
+판정: 해소.
+
+### QA-MEDIUM-805003-002
+
+- [x] 최근 `draft_ai_review`를 성공 배너와 `레시피 검토하기` CTA로 노출한다.
+- [x] CTA는 해당 record의 동일 UUID·STEP으로 AI Review route를 만든다.
+- [x] refresh 전후 준비 record UUID가 유지되고 새 record 생성 호출이 없다.
+
+판정: 해소.
+
+### QA-MEDIUM-805003-003
+
+- [x] 완료 카드의 별도 `완료` badge가 제거됐다.
+- [x] 완료 카드는 주요 재료 최대 3개, 예상 시간, 단계 수와 최근 활동을 표시한다.
+- [x] Review 카드는 주요 재료 최대 3개와 최근 활동을 함께 표시한다.
+- [x] 375×667 Dark 실제 렌더링에서 진행 카드 메뉴와 완료 카드 정보 계층을 확인했다.
+
+판정: 해소.
+
+### QA-MEDIUM-805003-004
+
+- [x] 조회·생성·삭제 오류 상태가 별도 프로퍼티로 분리됐다.
+- [x] 생성 실패는 `기록 시작 다시 시도`로 생성 동작만 다시 실행한다.
+- [x] 실패 시 기존 record를 보존하고 성공 시 새 UUID를 한 번만 추가한다.
+
+판정: 해소.
+
+### 독립 테스트와 실제 화면
+
+- Home 집중 XCTest `13/13`: 통과
+- 전체 XCTest `54/54`, 실패·skip 0: 통과
+  - `/private/tmp/cooklog-derived-t003-reverification/Logs/Test/Test-CookLog-2026.08.05_16-43-22-+0900.xcresult`
+- iPhone SE 3세대 iOS 17.2, 375×667:
+  - Light Home 설치·실행 및 가로 잘림 없음
+  - `10초 요리 기록 시작` 실제 탭 → 새 record 생성 → Cooking Log 전환
+  - 앱 종료·재실행 후 생성한 진행 record 복구
+  - Dark Home에서 진행 card `⋯`, 완료 card badge 부재와 metadata 렌더링
+- 구현 전체 변경 경로가 Task `allowed_paths` 안에 있음
+- 구현 diff와 QA 변경 `git diff --check`: 통과
+
+### 기존 통과 항목 무회귀
+
+- 최근 활동순 혼합 목록과 Home 최대 3개
+- 전체 보기, 제목 우선·재료 검색, STEP Preview 초안 검색 제외
+- lifecycle별 Cooking Log·AI Review·Recipe Detail 동일 UUID route
+- refresh 실패 시 기존 목록 보존과 재시도 복구
+- 시스템 `NavigationStack`을 가로막는 커스텀 navigation 없음
+
+### 잔여 위험
+
+- 375×667 Simulator에서 확인한 기존 launch configuration 레터박스는 이번 구현 diff와
+  허용 경로 밖 baseline이다. 실제 full-screen viewport, Accessibility 3·VoiceOver의
+  최종 화면 행렬은 계획된 `T-20260805-008`에서 확인한다.
+- AI Review draft 직접 복원·동일 UUID 완료 저장과 실제 음성·AI·TTS는 T-004~007
+  범위다.
+
+## 8. 최종 판정과 인계
+
+기존 HIGH 1건과 MEDIUM 3건이 모두 해소됐고 전체 54개 XCTest, 실제 생성·전환·재실행
+복구와 Light/Dark 작은 화면에서 신규 기능 회귀가 없습니다. 따라서
+`PASS_WITH_RISK`, `verification_passed`로 판정합니다.
+
+Development Lead Agent / Completion Role은 이 QA 결과와 launch configuration의 T-008
+인계를 검토하고 Task 완료 확정 및 후속 T-20260805-004 의존성 해제 여부를 판단해야
+합니다.

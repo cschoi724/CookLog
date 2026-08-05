@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-003
 title: iOS Home·전체 보기·검색·상태별 routing 구현
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P0
 priority_reason: 저장·진행 Recipe를 다시 찾고 기록 흐름으로 진입하는 첫 화면을 제품 상태 모델과 일치시켜야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities: [ios_implementation, swiftui, navigation]
 depends_on: [T-20260805-002]
 blocks: [T-20260805-004, T-20260728-003]
@@ -85,6 +85,12 @@ qa_to: .ai_project/qa/T-20260805-003_ios-home-search-routing-qa.md
 - 2026-08-05: iOS Agent가 `WP-R1~R4` 구현과 결함별 회귀를 완료하고 전체 XCTest
   54/54·Simulator 설치·실행을 통과해 `in_progress -> verification_ready`로 전환하고
   lock을 해제했다.
+- 2026-08-05: iOS QA Agent가 별도 재검증 worktree에서 lock을 획득하고
+  `verification_ready -> verification_in_progress`로 전환했다.
+- 2026-08-05: iOS QA Agent가 `WP-R1~R4` 해소, Home 집중 13개와 전체 XCTest 54/54,
+  새 record 생성·Cooking Log 전환·재실행 복구, 375×667 Light/Dark와 기존 검색·동일
+  UUID route 무회귀를 확인해 `verification_in_progress -> verification_passed`로
+  전환하고 lock을 해제했다. 기존 launch configuration 위험은 T-008로 유지한다.
 - 구현은 Home의 최근·진행·완료 단일 목록과 전체 보기, 제목·재료 로컬 검색, 빈 상태·
   loading·error·retry, lifecycle별 route 연결로 제한한다.
 - `draft_step_preview`는 Cooking Log, `draft_ai_review`는 AI Review, `completed`는 Recipe
@@ -116,27 +122,24 @@ qa_to: .ai_project/qa/T-20260805-003_ios-home-search-routing-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 iOS QA Agent / Verification Role이야.
-Task T-20260805-003은 독립 QA 실패 후 승인된 재작업을 완료한 독립 재검증 Task야.
+너는 Development Lead Agent / Completion Role이야.
+Task T-20260805-003은 재작업 독립 재검증을 통과한 완료 검토 Task야.
 
-- 현재 상태: `verification_ready`
+- 현재 상태: `verification_passed`
 - 기준 상태 ref: 최신 `origin/develop`
 - 구현 ref: `task/T-20260805-003-implement-ios-home-search-routing`
-- 다음에 해야 할 일: 구현 ref를 독립 QA worktree에서 검증하고 lock을 획득한 뒤
-  `WP-R1~R4`와 기존 통과 범위를 재검증해줘.
+- 다음에 해야 할 일: QA `PASS_WITH_RISK`, 허용 경로와 산출물 완결성을 검토하고
+  completion review 및 후속 T-004 의존성 해제를 판단해줘.
 - 기준 문서: `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`,
   `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`, `apps/ios/docs/NAVIGATION.md`
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260805-003_ios-home-search-routing-report.md`,
   `.ai_project/qa/T-20260805-003_ios-home-search-routing-qa.md`
-- 구현 완료: 진행 record `⋯` 메뉴·영구 삭제 확인·삭제 후 backfill·실패한 삭제 전용
-  retry, AI Review 준비 완료 배너, lifecycle별 카드 metadata와 완료 badge 제거, 조회·
-  생성 오류 분리와 생성 실패 전용 retry
-- 자체 검증: Home 13개와 전체 XCTest 54/54, Simulator 설치·실행·Home 빈 상태 및
-  기록 CTA에서 Cooking Log로 실제 전환
-- 기존 통과: 최근 3개·검색·STEP 초안 제외·동일 UUID route·refresh
+- QA 통과: `QA-HIGH-805003-001`, `QA-MEDIUM-805003-002~004` 해소, Home 13개와
+  전체 XCTest 54/54, 기록 CTA 실제 전환·재실행 복구, 375×667 Light/Dark
+- 기존 통과: 최근 3개·검색·STEP 초안 제외·동일 UUID route·refresh 무회귀
 - 남은 리스크: AI Review의 기존 review draft 직접 복원·동일 ID 완료 저장은 T-005,
   실제 음성·AI·TTS와 후속 화면 내부 동작은 T-004~007 범위다.
 - 차단/결정 필요: T-004~008 범위 선행 구현과 실제 외부 서비스 연결 금지
-- 완료 시: QA 보고서에 결함별 재검증 결과와 기존 회귀 결과를 기록하고 QA workflow에
-  따라 lock을 해제한 뒤 Development Lead Agent에 완료 리뷰 또는 재작업을 인계해줘.
+- 완료 시: 완료 검토 결과와 develop 통합 전 상태를 기록하고 승인 전 commit·push·PR을
+  진행하지 마.
