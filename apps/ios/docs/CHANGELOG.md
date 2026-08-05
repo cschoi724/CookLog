@@ -4,6 +4,11 @@
 
 ## 2026-08-05
 
+- `T-20260805-003` 재작업 독립 재검증에서 Home 13개·전체 XCTest 54/54와
+  `QA-HIGH-805003-001`, `QA-MEDIUM-805003-002~004` 해소를 확인했습니다.
+- Development Lead가 최신 develop 기준 전체 XCTest 54/54를 재실행하고 완료 리뷰를
+  `PASS_WITH_RISK`로 확정했습니다. Product Owner의 완료·병합 승인 조건을 충족했으며,
+  T-004 선행은 해소하고 375x667 full-screen 위험은 T-008에 유지합니다.
 - `T-20260805-003` 독립 QA의 진행 기록 삭제 HIGH 1건과 AI Review 준비 배너·카드
   metadata·생성 실패 재시도 MEDIUM 3건에 대해 승인된 `WP-R1~R4`를 반영했습니다.
 - 진행 record에만 `⋯` 메뉴와 복구 불가 삭제 확인을 제공하고, 같은 UUID 삭제·최근 3개

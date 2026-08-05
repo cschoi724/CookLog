@@ -4,27 +4,32 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-003 Home 상태·행동 재작업 완료, iOS QA 독립 재검증 대기
+- 상태: T-20260805-003 완료 리뷰 통과·병합 승인, T-20260805-004 선행 해소
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002 done, T-20260805-003 verification_ready
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~003 done, T-20260805-004 proposed
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS QA Agent가 `T-20260805-003` `WP-R1~R4`와 기존 Home 회귀를 독립 재검증
-2. `T-20260805-004~007` 화면·상태 패키지 순차 구현
+1. Product Owner 별도 실행 승인 후 `T-20260805-004` Cooking Log·STEP Preview 구현
+2. `T-20260805-005~007` 화면·상태 패키지 순차 구현
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- T-20260805-003 독립 재검증에서 `WP-R1~R4`, Home 13개와 전체 XCTest 54/54를
+  통과했습니다. Development Lead가 최신 develop 기준 전체 54/54를 다시 실행해 완료
+  리뷰를 `PASS_WITH_RISK`로 확정했고 Product Owner의 완료·병합 승인 조건을 충족했습니다.
+- T-003 완료로 T-20260805-004 선행 조건은 해소됐습니다. 별도 실행 승인 전에는
+  `proposed`로 유지하며, 375x667 full-screen viewport 위험은 T-008에서 확인합니다.
 - 독립 QA의 `QA-HIGH-805003-001`과 MEDIUM 3건에 대해 Product Owner가 승인한
   `WP-R1~R4` 재작업을 완료했습니다.
 - 진행 record 전용 `⋯` 메뉴·복구 불가 확인·동일 UUID 삭제를 추가하고, 삭제 실패 시

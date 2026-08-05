@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-003
 title: iOS Home·전체 보기·검색·상태별 routing 구현
-status: verification_passed
+status: done
 type: feature
 priority: P0
 priority_reason: 저장·진행 Recipe를 다시 찾고 기록 흐름으로 진입하는 첫 화면을 제품 상태 모델과 일치시켜야 한다.
@@ -91,6 +91,13 @@ qa_to: .ai_project/qa/T-20260805-003_ios-home-search-routing-qa.md
   새 record 생성·Cooking Log 전환·재실행 복구, 375×667 Light/Dark와 기존 검색·동일
   UUID route 무회귀를 확인해 `verification_in_progress -> verification_passed`로
   전환하고 lock을 해제했다. 기존 launch configuration 위험은 T-008로 유지한다.
+- 2026-08-05: Development Lead Agent가 최신 `origin/develop` 재정렬 후 허용 경로,
+  성공 기준과 독립 QA 산출물을 완료 리뷰했다. iPhone 15 iOS 17.2에서 전체 XCTest
+  54/54를 직접 재실행해 `PASS_WITH_RISK`를 수용하고 `verification_passed ->
+  completion_review`로 전환했다.
+- 2026-08-05: Product Owner가 완료 리뷰에 이상이 없을 때 완료 확정과 PR 병합까지
+  승인했다. 완료 리뷰가 통과해 `completion_review -> done`으로 확정하며, 공용
+  `done`은 `develop` 병합 후 효력이 발생한다.
 - 구현은 Home의 최근·진행·완료 단일 목록과 전체 보기, 제목·재료 로컬 검색, 빈 상태·
   loading·error·retry, lifecycle별 route 연결로 제한한다.
 - `draft_step_preview`는 Cooking Log, `draft_ai_review`는 AI Review, `completed`는 Recipe
@@ -100,6 +107,22 @@ qa_to: .ai_project/qa/T-20260805-003_ios-home-search-routing-qa.md
   디자인 인수 계약의 route 차이는 코드 기준으로 문서와 함께 동기화한다.
 - Cooking Log의 10초 기록·STEP 저장, AI Review 편집·저장, Recipe Detail 편집·삭제,
   Audio Guide, 실제 STT·Backend AI·TTS 구현은 T-004~007 또는 후속 Task 범위로 유지한다.
+
+## 완료 리뷰 결과
+
+- 판정: `PASS_WITH_RISK`
+- 허용 경로: 변경 파일 16개가 Task `allowed_paths` 안에 있음을 확인했다.
+- 코드·문서 정합성: 최신 `origin/develop` 위로 재정렬했고 `git diff --check`와 strict
+  Task validation을 통과했다.
+- 자동 검증: iPhone 15 iOS 17.2에서 Home 집중 13개를 포함한 전체 XCTest 54/54를
+  독립 QA와 Development Lead 재실행에서 모두 통과했다.
+- 결함 해소: `QA-HIGH-805003-001`, `QA-MEDIUM-805003-002~004`의 진행 기록 삭제,
+  AI Review 준비 CTA, 카드 정보 계층, 생성 실패 전용 재시도를 확인했다.
+- 수용 위험: 375x667 launch configuration의 full-screen viewport 기준은 이번 변경과
+  분리된 `T-20260805-008`에서 확인한다. T-004~007 내부 화면과 실제 STT·AI·TTS도
+  후속 Task 범위다.
+- 후속 의존성: T-003 완료로 `T-20260805-004`의 선행 조건이 해소된다. 별도 실행 승인
+  전까지 상태는 `proposed`로 유지한다.
 
 ## 승인된 재작업 범위
 
@@ -122,14 +145,14 @@ qa_to: .ai_project/qa/T-20260805-003_ios-home-search-routing-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Completion Role이야.
-Task T-20260805-003은 재작업 독립 재검증을 통과한 완료 검토 Task야.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260805-003은 완료 리뷰와 병합 승인을 받은 완료 Task야.
 
-- 현재 상태: `verification_passed`
+- 현재 상태: `done` (`develop` 병합 후 공용 효력)
 - 기준 상태 ref: 최신 `origin/develop`
 - 구현 ref: `task/T-20260805-003-implement-ios-home-search-routing`
-- 다음에 해야 할 일: QA `PASS_WITH_RISK`, 허용 경로와 산출물 완결성을 검토하고
-  completion review 및 후속 T-004 의존성 해제를 판단해줘.
+- 다음에 해야 할 일: 승인된 PR을 squash merge하고 `develop` 동기화 후 T-004의
+  선행 해소를 확인해줘. T-004는 Product Owner 별도 실행 승인 전 착수하지 마.
 - 기준 문서: `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`,
   `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`, `apps/ios/docs/NAVIGATION.md`
 - 허용 경로: Task frontmatter의 `allowed_paths`
@@ -141,5 +164,4 @@ Task T-20260805-003은 재작업 독립 재검증을 통과한 완료 검토 Tas
 - 남은 리스크: AI Review의 기존 review draft 직접 복원·동일 ID 완료 저장은 T-005,
   실제 음성·AI·TTS와 후속 화면 내부 동작은 T-004~007 범위다.
 - 차단/결정 필요: T-004~008 범위 선행 구현과 실제 외부 서비스 연결 금지
-- 완료 시: 완료 검토 결과와 develop 통합 전 상태를 기록하고 승인 전 commit·push·PR을
-  진행하지 마.
+- 완료 시: PR·merge SHA와 공용 `done`, T-004의 `proposed`·선행 해소 상태를 확인해.

@@ -7,7 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
-| `T-20260805-003` | `verification_passed` | iOS Home·전체 보기·검색·상태별 routing | WP-R1~R4 해소·Home 13개·전체 XCTest 54개 | PASS_WITH_RISK, Development Lead 완료 검토 |
+| `T-20260805-003` | `done` | iOS Home·전체 보기·검색·상태별 routing | WP-R1~R4 해소·Home 13개·전체 XCTest 54개 | 완료 리뷰 PASS_WITH_RISK·Product Owner 완료/병합 승인 |
 | `T-20260805-002` | `done` | iOS 로컬 도메인·SwiftData migration·draft 생명주기 | HIGH 2건 해소·단일 UUID·legacy completed·non-empty migration·전체 XCTest | PASS·PR #77 squash merge `3d1d012` |
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |
 | `T-20260730-007` | `done` | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | iOS 26.5·17.2 전체 33/33, QA-HIGH-007-001 해소 | PR #18 squash merge·완료 확정 |
@@ -90,6 +90,11 @@ iOS Agent가 `WP-R1~R4` 구현과 신규 회귀를 포함한 전체 XCTest 54/54
 동일 UUID route에도 회귀가 없어 `PASS_WITH_RISK`, `verification_passed`로 Development
 Lead Agent에 인계했습니다. launch configuration의 full-screen 위험은 T-008에서
 확인합니다.
+
+Development Lead가 최신 develop 기준 변경 범위와 성공 기준을 재검토하고 전체 XCTest
+54/54를 직접 재실행해 `PASS_WITH_RISK`를 수용했습니다. Product Owner의 완료·병합 승인
+조건을 충족해 T-003을 `done`으로 확정했으며, 375x667 full-screen viewport 위험은
+계획대로 T-008에 유지합니다.
 
 PR #77 최종 CI에서 migration 테스트의 로컬 Simulator fixture 의존성이 확인됐습니다.
 production 코드 변경 없이 과거 schema non-empty store를 테스트 resource로 고정하고
