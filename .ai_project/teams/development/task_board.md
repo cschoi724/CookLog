@@ -32,7 +32,7 @@
 | `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` | 외부 설정 별도 승인 필요 |
 | `T-20260804-002` | `done` | Backend | runtime scaffold·환경 설정·health | - | `T-20260728-005` 완료 | Product Owner 최종 승인·PR #70 병합, T-003 별도 실행 승인 검토 |
 | `T-20260804-003` | `done` | Backend | 공통 HTTP·인증·제한·idempotency middleware | - | `T-20260804-002` 완료 | Product Owner 잔여 위험 수용·PR #76 병합 승인, T-004 별도 승인 검토 |
-| `T-20260804-004` | `rework_requested` | Backend | Mock AI recipe job·status·ACK·복구 | Development Lead Agent | `T-20260804-002`, `003` 완료 | HIGH 2·MEDIUM 1 재작업 범위 조율 |
+| `T-20260804-004` | `approved` | Backend | Mock AI recipe job·status·ACK·복구 | Backend Agent | `T-20260804-002`, `003` 완료 | HIGH 2·MEDIUM 1 재작업 승인·직접 반례 추가 |
 | `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
 | `T-20260804-006` | `proposed` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` | 도메인 경계 완료 대기 |
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
@@ -53,7 +53,9 @@ Backend QA 독립 재검증과 완료 검토를 통과하고 PR #63으로 `devel
 Product Owner가 T-006 진행을 승인했습니다. Development Lead는 runtime scaffold,
 공통 middleware, Mock AI, STT 비활성 경계, 보안·cleanup, 통합 검증의 6개 패키지로
 분해했습니다. T-002는 `done`이고 Product Owner가 T-003 실행을 별도 승인해 Backend
-Agent가 QA 재작업과 자체 검증을 완료해 독립 재검증 대기 중입니다. T-004~007은 선행 완료 전 `proposed`로 유지합니다. 실제
+Agent가 QA 재작업과 자체 검증을 완료해 독립 재검증 대기 중입니다. T-004는 독립 QA
+실패 HIGH 2건·MEDIUM 1건의 제한된 재작업이 승인됐고, T-005~007은 선행 완료 전
+`proposed`로 유지합니다. 실제
 provider·cloud 배포·원격 STT endpoint는 범위 밖입니다.
 
 Backend QA는 T-002의 shutdown deadline 뒤 listener·process 생존을

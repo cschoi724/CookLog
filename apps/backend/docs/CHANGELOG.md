@@ -1,5 +1,10 @@
 # Backend 변경 기록
 
+- 2026-08-05: Product Owner가 `T-20260804-004` 독립 QA의 shared fixture snapshot hash
+  불일치, +24시간 삭제 실패 거짓 완료 HIGH 2건과 invalid calendar date 허용 MEDIUM 1건의
+  제한된 재작업을 승인해 Backend Agent에 다시 인계했다.
+- 2026-08-05: 원본 fixture 무변조 성공·canonical golden vector, cleanup pending/retry·
+  sweeper 복구, strict RFC 3339 create·ACK 반례를 필수 회귀 범위로 확정했다.
 - 2026-08-05: `T-20260804-004`에서 `RecipeAIProvider` interface와 deterministic Mock,
   strict create/output validator를 구현했다.
 - 2026-08-05: 원자 in-memory job/content/idempotency/outbox 저장, duplicate worker CAS,
