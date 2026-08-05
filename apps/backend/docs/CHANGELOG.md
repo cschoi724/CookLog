@@ -1,5 +1,11 @@
 # Backend 변경 기록
 
+- 2026-08-05: `T-20260804-005` startup validator 연결 재작업의 독립 재검증에서
+  `QA-HIGH-005-001` 해소, 30/30 startup mutation·실제 process 3/3·전체 66/66을
+  확인했다. Development Lead가 `PASS_WITH_RISK`를 수용하고 Product Owner가 완료와
+  PR #84 squash merge를 승인했다. Node 24·container·공유 composition은 T-007로
+  이관하고 T-006은 별도 실행 승인 대기로 유지한다.
+
 - 2026-08-05: `QA-HIGH-005-001`에 따라 실제 `loadRuntimeConfig()`가 remote STT 환경
   validator를 반드시 실행하도록 연결해 listener 생성 전 무승인 설정을 fail closed했다.
 - 2026-08-05: QA 설정 9종과 기존 enabled flag를 local·test·production 진입점에 입력하는

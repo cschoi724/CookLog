@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-005
 title: 원격 STT 비활성 확장 경계와 무승인 활성화 차단 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: Foundation 추가가 첫 출시의 기기 내 STT 정책을 우회하지 못하게 해야 한다.
@@ -101,6 +101,9 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
   `MERGEABLE/CLEAN` 상태를 확인했다. Node 24·container와 공유 app composition을 T-007
   필수 통합 게이트로 이관하는 조건으로 `PASS_WITH_RISK`를 수용하고
   `verification_passed -> completion_review`로 전환했다.
+- 2026-08-05: Product Owner가 완료 리뷰와 T-007 잔여 위험 이관을 수용하고 PR #84의
+  `develop` squash merge를 승인했다. Task를 `completion_review -> done`으로 확정하고
+  T-006은 병합 후 선행 해소·별도 실행 승인 대기로 인계한다.
 
 - 2026-08-05: 공용 `develop` `ee6a973`에서 선행 `T-20260804-002`, `003`의 `done`과
   T-004 완료 기록을 확인했다.
@@ -144,20 +147,21 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
 - 목표 Node 24·Docker/Cloud Run 실제 실행과 disabled HTTP plugin의 공유 `buildApp`
   composition은 T-007 필수 통합 검증으로 이관한다. Backend hosted check 추가 여부도
   T-007에서 결정한다.
-- Product Owner의 완료·병합 승인 전에는 `done`으로 전환하거나 PR #84를 병합하지 않는다.
+- Product Owner가 완료와 PR #84 squash merge를 승인했다. 공용 `done`은 `develop` 병합
+  완료 후 효력이 발생한다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Product Owner야.
-Task T-20260804-005는 독립 재검증과 Development Lead 완료 리뷰를 통과했어.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260804-005는 Product Owner 완료·병합 승인을 받은 Backend Task야.
 
-- 현재 상태: `completion_review`
+- 현재 상태: `done`
 - 구현 기준 ref: `task/T-20260804-005-enforce-disabled-remote-stt-boundary`
 - 현재 기준 SHA: `785bcd6`
-- 다음에 해야 할 일: T-007 잔여 위험 이관을 수용하고 Task 완료와 Draft PR #84의
-  squash merge 여부를 승인해줘.
+- 다음에 해야 할 일: PR #84의 `develop` squash merge와 merge SHA를 확인하고 T-006
+  선행 해소를 공용 상태에 반영해줘. T-006 실행은 별도 Product Owner 승인을 받아야 해.
 - 기준 문서: `apps/backend/docs/REMOTE_STT_ADAPTER.md`, `apps/backend/contracts/stt/`,
   `apps/backend/contracts/fixtures/remote-stt-disabled.json`
 - 참고 산출물: `.ai_project/reports/T-20260804-005_enforce-disabled-remote-stt-boundary-report.md`
@@ -167,5 +171,5 @@ Task T-20260804-005는 독립 재검증과 Development Lead 완료 리뷰를 통
   T-007 범위다. 실제 remote STT 승인·provider·upload·삭제 SLA는 별도 승인 범위다.
 - 차단/결정 필요: endpoint·provider SDK·secret·audio storage·iOS remote 선택 구현 금지
 - 참고: `.ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md`
-- 승인 시: `completion_review -> done`을 기록하고 PR #84를 `develop`에 squash merge한
-  뒤 merge SHA와 T-006 선행 해소 여부를 공용 상태에 반영해줘.
+- 완료 시: T-006을 `proposed`·별도 실행 승인 대기로 유지하고 Node 24·container·공유
+  composition 위험을 T-007에서 반드시 검증해줘.

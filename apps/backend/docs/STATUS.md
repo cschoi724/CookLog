@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-05
-상태: T-20260804-004 done·T-20260804-005 원격 STT 비활성 경계 QA 검증 대기
+상태: T-20260804-004~005 done·T-20260804-006 별도 실행 승인 대기
 
 ## 현재 단계
 
@@ -10,7 +10,7 @@
 - Runtime scaffold `T-20260804-002`: `done`, Backend QA `PASS_WITH_RISK`·최종 승인
 - 공통 middleware `T-20260804-003`: `done`, Backend QA `PASS_WITH_RISK` 수용
 - Mock AI job `T-20260804-004`: `done`, PR #79 squash merge `a73a028`
-- 원격 STT 비활성 경계 `T-20260804-005`: `verification_ready`, startup 연결 재작업 후 Backend QA 재인계
+- 원격 STT 비활성 경계 `T-20260804-005`: `done`, HIGH 해소·독립 재검증·완료 리뷰·PR #84 병합 승인 완료
 - 후속 `T-20260804-006~007`: `proposed`
 
 Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock server scaffold, typed 환경
