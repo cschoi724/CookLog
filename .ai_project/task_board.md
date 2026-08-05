@@ -24,14 +24,14 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 35 |
+| `done` | 36 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다. Product `T-20260804-001`도 수익화 Source of Truth 복구 HIGH 2건 해소와 무회귀 재검증 `PASS`, Product Lead 완료 리뷰와 Product Owner 최종 승인을 거쳐 로컬 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`는 모두 `done`입니다. Backend T-020~025와 상위 T-005는 모두 `done`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005는 모두 `done`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -51,7 +51,8 @@ Team별 요약:
 |---|---|---|---|---|
 | `T-20260728-001` | - | iOS M8 잔여 안정화와 최종 검증 | - | `cancelled`, 유효 항목은 T-003/T-009로 통합 |
 | `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | `done` |
-| `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002` |
+| `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `T-20260729-002`, `T-20260805-001` |
+| `T-20260805-001` | P1 | iOS MVP 디자인 적용 기준과 Visual QA 계약 확정 | - | `done`, 통합 82개 상태 아래 Core Loop 23개 인수 계약 |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #65 squash merge `4e0bca4` |
 | `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | T-005 완료, 별도 실행 승인 대기 |
@@ -292,3 +293,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-04 | Product Owner가 T-20260728-005 잔여 위험과 병합을 승인하고 PR #65 merge SHA `4e0bca4`를 확인해 `done`으로 확정 |
 | 2026-08-04 | T-20260729-014 최종 Design QA·Design Lead 완료 검토와 PR #68 merge SHA `3d9a9a4`를 확인해 `done`으로 확정 |
 | 2026-08-04 | Design Lead가 T-008~014 완료·통합 QA·상위 성공 기준을 수용해 T-20260729-002를 `done`으로 확정 |
+| 2026-08-05 | T-20260805-001 Core Loop 23개 iOS 구현·Visual QA 계약을 공용화하고 T-20260728-003의 선행 기준으로 연결 |

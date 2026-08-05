@@ -1,4 +1,5 @@
 ---
+schema: aiops.task.v1
 id: T-20260728-003
 title: 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용
 status: proposed
@@ -16,6 +17,7 @@ required_capabilities:
   - dependency_management
 depends_on:
   - T-20260729-002
+  - T-20260805-001
 blocks:
   - T-20260729-004
   - T-20260729-005
@@ -41,7 +43,9 @@ source_of_truth:
   - apps/ios/docs/STATUS.md
   - design/prototype/
   - design/figma-build/manifest.json
+  - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
   - T-20260729-002의 승인된 디자인 핸드오프
+  - T-20260805-001의 승인된 Core Loop 구현·Visual QA 계약
 created_by: Product Lead Agent
 approved_by:
 locked_by:
@@ -49,7 +53,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-07-29
+updated_at: 2026-08-05
 report_to: .ai_project/reports/T-20260728-003_apply-figma-uiux-to-ios-report.md
 qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 ---
@@ -86,6 +90,7 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 ## 성공 기준
 
 - 승인된 Prototype과 Manifest의 화면·상태가 SwiftUI에 일관되게 구현된다.
+- 통합 82개 상태는 상위 구현·회귀 범위로 유지하고, Core Loop 23개 상태는 `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`의 측정 가능한 인수 기준으로 검증한다.
 - 진행 기록, 임시 저장, 완료 전환, 검색·수정·삭제와 앱 재실행 복구가 PRD와 일치한다.
 - 실제 서비스 어댑터 없이도 모든 성공·처리·오류 상태를 Mock으로 검증할 수 있다.
 - iPhone 작은 화면과 다크 모드에서 레이아웃 결함이 없다.
@@ -103,6 +108,7 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 - `T-20260728-002`는 Design QA 통과 후 PR #6으로 `develop`에 병합되어 완료됐다.
 - `T-20260728-001`의 유효 검증 항목은 이 Task와 최종 출시 게이트로 통합했고 기존 의존성을 제거했다.
 - `T-20260729-002`의 완료·승인 전에는 구현을 시작하지 않는다.
+- `T-20260805-001`은 완료됐으며 Core Loop 23개 상태 인수 계약을 제공한다. 이 하위 계약은 통합 핸드오프의 82개 상태를 축소하거나 대체하지 않는다.
 
 ## Development Lead 하위 Task 분해 요구
 

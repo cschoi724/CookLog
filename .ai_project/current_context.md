@@ -1,7 +1,7 @@
 # Current Agent Context
 
 작성일: 2026-07-01
-최종 업데이트: 2026-08-04
+최종 업데이트: 2026-08-05
 프로젝트: CookLog
 상태: Active
 
@@ -42,6 +42,7 @@
 - `T-20260729-001`은 Product QA `PASS_WITH_RISK`와 Product Lead 완료 검토를 거쳐 `done`입니다.
 - Product `T-20260731-001`은 Product QA 최종 `PASS`, Product Lead 완료 검토와 Product Owner 최종 승인을 거쳐 `done`입니다.
 - Design 상위 `T-20260729-002`와 하위 `T-20260729-008~014`는 통합 Design QA와 PR #68 병합을 마쳐 모두 `done`입니다.
+- Design `T-20260805-001`은 통합 82개 상태를 보존한 Core Loop 23개 iOS 구현·Visual QA 계약과 독립 Design QA를 완료해 `done`이며, T-003의 디자인 선행 조건은 해소됐습니다.
 - Backend Contract 상위 `T-20260728-005`는 하위 T-020~025 완료 집계와 Product Owner 승인을 거쳐 `done`이며 T-006 실행 승인 준비로 인계됐습니다.
 - CI 상위 `T-20260728-008`은 scoped 상태이며 T-20260730-001~006은 모두 `done`입니다.
 - AI Ops `T-20260731-002`는 독립 검증 `PASS`와 PR #48 squash merge를 거쳐 `done`입니다.
@@ -108,3 +109,4 @@ fetch 또는 공용 SHA 확인에 실패하면 `PUBLIC_STATE_UNVERIFIED`로 보�
 | 2026-07-31 | T-20260731-002 독립 AI Ops PASS와 PR #48 squash merge를 확인해 `done`으로 동기화 |
 | 2026-08-04 | Design T-013 완료 정합화와 T-014 로컬 통합·자체 검증 완료, 독립 Design QA 인계 반영 |
 | 2026-08-04 | Design T-014 최종 QA PASS·PR #68 병합과 상위 T-002 성공 기준 수용, 전체 Design 패키지 `done` 반영 |
+| 2026-08-05 | T-20260805-001 Core Loop 23개 iOS 구현·Visual QA 계약 완료와 T-003 디자인 선행 조건 해소 반영 |
