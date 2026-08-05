@@ -1,5 +1,12 @@
 # Backend 변경 기록
 
+- 2026-08-05: `T-20260804-005`에서 승인 fixture와 동일한 첫 출시 disabled config,
+  미승인 mode·route·provider·credential·egress·fallback 설정을 거부하는 fail-closed
+  validator를 구현했다.
+- 2026-08-05: transcribe/audio 입력 surface가 없는 disabled resolver·activation gate와
+  route 등록 없이 `onRequest`에서 `SERVICE_DISABLED`를 반환하는 HTTP 경계를 추가했다.
+- 2026-08-05: T-005 10/10, Backend 전체 65/65, 표준 health 15/15와 common·STT·AI·
+  security·shared fixture validator를 통과해 Backend QA 독립 검증에 인계했다.
 - 2026-08-05: 공용 `develop`에서 T-002·T-003 완료를 확인하고 Product Owner가
   `T-20260804-005` 원격 STT 비활성 확장 경계·무승인 활성화 차단 구현을 별도 승인했다.
 - 2026-08-05: disabled resolver·activation gate와 route·body read·queue·egress 0회

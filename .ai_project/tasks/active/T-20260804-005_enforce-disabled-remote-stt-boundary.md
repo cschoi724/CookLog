@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-005
 title: 원격 STT 비활성 확장 경계와 무승인 활성화 차단 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: Foundation 추가가 첫 출시의 기기 내 STT 정책을 우회하지 못하게 해야 한다.
@@ -70,6 +70,12 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
 
 ## 승인 및 실행 경계
 
+- 2026-08-05: Backend Agent가 최신 `origin/develop` `97f434d` 기반 전용 worktree에서
+  lock을 획득하고 `approved -> in_progress`로 전환했다.
+- 2026-08-05: disabled release config·resolver·activation gate와 route 미등록 HTTP
+  선차단 경계를 구현했다. T-005 10/10, Backend 전체 65/65와 공용 validator를 통과해
+  `in_progress -> verification_ready`로 전환하고 Backend QA Agent에 인계했다.
+
 - 2026-08-05: 공용 `develop` `ee6a973`에서 선행 `T-20260804-002`, `003`의 `done`과
   T-004 완료 기록을 확인했다.
 - 2026-08-05: Product Owner가 원격 STT 비활성 확장 경계와 무승인 활성화 차단 구현을
@@ -92,23 +98,21 @@ qa_to: .ai_project/qa/T-20260804-005_enforce-disabled-remote-stt-boundary-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Backend Agent / Execution Role이야.
-Task T-20260804-005는 승인된 실행 Task야.
+너는 Backend QA Agent / Verification Role이야.
+Task T-20260804-005의 구현 자체 검증이 완료됐어.
 
-- 현재 상태: `approved`
-- 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `ee6a97337a7ce5f94f728de4782bffd563463847`
-- 다음에 해야 할 일: 최신 `origin/develop` 기반 clean 전용 worktree에서 lock을 획득하고
-  disabled resolver·activation gate·무승인 config 차단을 `allowed_paths` 안에서 구현해줘.
+- 현재 상태: `verification_ready`
+- 구현 기준 ref: `task/T-20260804-005-enforce-disabled-remote-stt-boundary`
+- 구현 기준 SHA: commit 후 report와 Draft PR에 기록
+- 다음에 해야 할 일: 구현 Agent와 분리된 clean worktree에서 disabled config·resolver·
+  HTTP 선차단과 무승인 설정 fail-closed를 독립 검증해줘.
 - 기준 문서: `apps/backend/docs/REMOTE_STT_ADAPTER.md`, `apps/backend/contracts/stt/`,
   `apps/backend/contracts/fixtures/remote-stt-disabled.json`
-- 허용 경로: Task frontmatter의 `allowed_paths`
-- 참고 산출물: `.ai_project/tasks/active/T-20260804-005_enforce-disabled-remote-stt-boundary.md`
+- 참고 산출물: `.ai_project/reports/T-20260804-005_enforce-disabled-remote-stt-boundary-report.md`
 - 필수 검증: release profile disabled, route·body read·temporary object·queue·provider·egress
   0회, 무승인 config startup/deployment fail closed, 자동 fallback 0회, 기존 runtime·공용
   STT fixture 무회귀
-- 남은 리스크: 실제 remote STT 승인·provider·upload·삭제 SLA와 production wiring은 후속
-  별도 승인 또는 T-007 통합 범위다.
+- 남은 리스크: 비활성 HTTP 경계의 공유 app composition, Node 24/container 실검증은
+  T-007 범위다. 실제 remote STT 승인·provider·upload·삭제 SLA는 별도 승인 범위다.
 - 차단/결정 필요: endpoint·provider SDK·secret·audio storage·iOS remote 선택 구현 금지
-- 완료 시: report를 작성하고 자체 검증 통과 후 `verification_ready`로 전환해 Backend QA
-  Agent / Verification Role에 독립 검증을 인계해줘.
+- 완료 시: QA report에 판정과 직접 반례를 기록하고 Development Lead Agent에 인계해줘.
