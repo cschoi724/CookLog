@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-004
 title: Mock AI recipe job·status·ACK·복구 저장 경계 구현
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P0
 priority_reason: 실제 provider 없이 iOS 연동과 비동기 AI 계약을 실행 검증해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -110,19 +110,26 @@ qa_to: .ai_project/qa/T-20260804-004_implement-mock-ai-recipe-jobs-qa.md
 - 2026-08-05: jq-compatible LF 종결 canonical bytes, expiry cleanup pending·신규 job 차단과
   strict RFC 3339 calendar 검증을 구현했다. T-004 16개, T-003 포함 40개, 기존 15개와
   공용 validator를 통과해 `in_progress -> verification_ready`로 Backend QA에 재인계했다.
+- 2026-08-05: Backend QA Agent가 최신 `origin/develop`, 재작업 커밋과 clean worktree를
+  확인하고 담당 메타데이터를 바로잡아 `verification_ready -> verification_in_progress`로
+  독립 재검증을 시작했다.
+- 2026-08-05: Backend QA Agent가 HIGH 2건·MEDIUM 1건 직접 반례 해소, 전체 55개와
+  공용 계약 무회귀를 확인했다. in-memory 재시작 비내구성과 production adapter를 잔여
+  위험으로 기록하고 `verification_in_progress -> verification_passed`,
+  `PASS_WITH_RISK`로 Development Lead Agent에 완료 검토를 인계했다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Backend Agent / Execution Role이야.
-Task T-20260804-004는 승인된 실행 Task야.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260804-004는 Backend QA 독립 재검증을 통과한 완료 검토 Task야.
 
-- 현재 상태: `verification_ready`
+- 현재 상태: `verification_passed`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `ba9bb381cf6d8841d90ab7d35b78527feb9c25d0`
-- 다음에 해야 할 일: clean 환경에서 승인된 결함 3건의 직접 반례와 기존 전체 회귀를
-  독립 재검증하고 판정을 기록해줘.
+- 다음에 해야 할 일: QA `PASS_WITH_RISK`와 잔여 위험을 검토하고 `completion_review`
+  전환 또는 추가 재작업 필요 여부를 결정해줘.
 - 기준 문서: `apps/backend/docs/AI_RECIPE_CONTRACT.md`, `apps/backend/contracts/ai/`,
   `apps/backend/contracts/fixtures/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
@@ -134,5 +141,4 @@ Task T-20260804-004는 승인된 실행 Task야.
 - 남은 리스크: in-memory 저장의 process 재시작 비내구성은 명시하고 production adapter는
   후속 승인 범위로 유지한다.
 - 차단/결정 필요: 실제 provider·cloud·production secret과 T-005~007 범위 확장 금지
-- 완료 시: QA 보고서에 재검증 결과를 추가하고 통과하면 `verification_passed`로
-  Development Lead Agent / Lead Role에 완료 검토를 인계해줘.
+- 완료 시: Product Owner 최종 승인과 PR 병합이 필요한 완료 절차로 인계해줘.

@@ -35,7 +35,7 @@
 | `T-20260804-001` | `done` | 수익화 Source of Truth와 후보 Task 복구 | Lead Role·schema HIGH 2건, 상태 동결·Task graph·최신 develop 비회귀 | Product QA `PASS`·Product Lead 완료 리뷰·Product Owner 최종 승인 |
 | `T-20260804-002` | `done` | Backend runtime scaffold·환경 설정·health | QA-HIGH-002-001 해소·15/15·실제 process 종료·기존 계약 무회귀 | PASS_WITH_RISK 수용·최종 승인, container는 T-007 인계 |
 | `T-20260804-003` | `done` | Backend 공통 HTTP·인증·제한·idempotency middleware | HIGH 2·MEDIUM 1 해소·기존 15/15·T-003 24/24·공용 계약 무회귀 | Product Owner PASS_WITH_RISK 수용·PR #76 병합 승인 |
-| `T-20260804-004` | `verification_ready` | Backend Mock AI recipe job·status·ACK·복구 | HIGH 2: fixture hash 불일치·+24h delete 거짓 완료, MEDIUM 1: invalid date 허용 | 세 결함 수정·55/55 PASS, Backend QA 독립 재검증 대기 |
+| `T-20260804-004` | `verification_passed` | Backend Mock AI recipe job·status·ACK·복구 | HIGH 2·MEDIUM 1 해소·전체 55/55·공용 계약 무회귀 | PASS_WITH_RISK, Development Lead 완료 검토 인계 |
 
 향후 검증 예정 Task:
 
