@@ -26,10 +26,12 @@
 - iOS QA 독립 재검증에서 집중 4/4·전체 43/43 XCTest와 실제 non-empty migration을
   통과했으며 신규 결함과 잔여 위험이 없음을 확인했습니다.
 - Development Lead 완료 리뷰와 Product Owner 완료·PR #77 병합 승인을 거쳐
-  T-20260805-002를 로컬 `done` 후보로 확정했습니다.
+  T-20260805-002를 `done`으로 확정했습니다.
 - PR #77 `ios-xctest`에서 확인된 로컬 Simulator legacy store 의존성을 제거하고,
   과거 schema non-empty store fixture를 테스트 resource에서 고유 임시 경로로 복원해
   migration을 검증하도록 보강했습니다. 전체 XCTest 43/43을 재통과했습니다.
+- 최신 develop rebase 후 hosted `ios-build`·`ios-xctest` required checks를 통과하고
+  PR #77을 squash merge SHA `3d1d012`로 병합했습니다.
 
 ## 2026-07-31
 

@@ -4,25 +4,24 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-002 독립 재검증·완료 리뷰 통과, PR #77 병합 진행
+- 상태: T-20260805-002 독립 재검증·완료 리뷰·PR #77 병합 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002 done 후보
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002 done
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. T-20260805-002 PR #77 required checks 통과와 공용 `develop` 병합 확인
-2. 선행 해소 후 `T-20260805-003` 별도 실행 승인
-3. `T-20260805-003~007` 화면·상태 패키지 순차 구현
-4. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
-5. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
-6. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
+1. 선행 해소된 `T-20260805-003` 별도 실행 승인
+2. `T-20260805-003~007` 화면·상태 패키지 순차 구현
+3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
+4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
+5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
@@ -44,6 +43,8 @@
 - PR #77의 깨끗한 runner에서 드러난 legacy store 사전 생성 의존성을 제거하고, 과거
   schema non-empty store를 테스트 resource로 복원하는 독립 실행형 migration 테스트로
   보강해 전체 XCTest 43/43을 재통과했습니다.
+- 최신 develop rebase 후 hosted `ios-build`·`ios-xctest`를 통과하고 PR #77을 squash
+  merge SHA `3d1d012`로 병합해 T-20260805-002를 공용 `done`으로 확정했습니다.
 - T-20260730-001에서 `macos-26`, Xcode 26.6, iPhone 17·iOS 26.5 CI 계약을 확정했습니다.
 - T-20260730-002와 T-20260730-003에서 `ios-build`, `ios-xctest` workflow를 구현하고 GitHub-hosted check·33/33·artifact를 검증했습니다.
 - T-20260730-004에서 concurrency 격리, 공통 진단 action과 artifact 요약을 통합하고 독립 QA·PR #34를 거쳐 `done`으로 확정했습니다.

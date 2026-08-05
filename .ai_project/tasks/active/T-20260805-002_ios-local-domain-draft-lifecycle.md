@@ -109,6 +109,9 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
   Product Owner 승인 후 과거 schema non-empty store를 테스트 resource로 고정하고 매
   실행마다 고유 임시 경로로 복원하도록 보강했다. migration 단독 테스트와 전체 XCTest
   43/43을 재통과했으며 production 코드는 변경하지 않았다.
+- 2026-08-05: 최신 `develop` rebase 후 `ios-build`·`ios-xctest` required checks를 모두
+  통과하고 PR #77을 squash merge SHA `3d1d012`로 병합했다. 원격 Task 브랜치를 삭제해
+  공용 `done` 효력을 확정했으며 T-20260805-003의 선행 조건을 해소했다.
 
 ## 재작업 승인 범위
 
@@ -130,8 +133,7 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 - 잔여 위험: 없음.
 - CI 보강: legacy migration fixture의 runner 독립성을 확보했고 전체 XCTest 43/43을
   다시 통과했다.
-- 다음 단계: PR #77 최신 헤드의 required checks 통과와 `develop` 병합을 확인한 뒤
-  `T-20260805-003`의 별도 실행 승인을 검토한다.
+- 다음 단계: 선행 조건이 해소된 `T-20260805-003`의 별도 실행 승인을 검토한다.
 
 ## Next Agent Handoff
 
@@ -140,10 +142,10 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 너는 Development Lead Agent / Completion Role이야.
 Task `T-20260805-002`의 완료 확정 여부를 검토해줘.
 
-- 현재 상태: `done` 후보, PR #77 required checks 재실행
+- 현재 상태: `done`, PR #77 squash merge `3d1d012`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
-- 다음에 해야 할 일: PR #77 최신 required checks 통과와 `develop` 병합을 확인해줘.
+- 다음에 해야 할 일: T-20260805-003 별도 실행 승인 여부를 검토해줘.
 - 기준 문서: `docs/product/CookLog_PRD_v2.md`, `apps/ios/docs/DATA_MODEL.md`, `apps/ios/docs/PERSISTENCE.md`, `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`
 - 허용 경로: 현재 Task의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260805-002_ios-local-domain-draft-lifecycle-report.md`, `.ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md`
@@ -151,6 +153,6 @@ Task `T-20260805-002`의 완료 확정 여부를 검토해줘.
 - 검증 결과: `QA-HIGH-805002-001~002` 해소, 집중 4/4·전체 43/43 XCTest 통과,
   실제 non-empty migration과 completed 내용 보존 확인
 - 남은 리스크: 없음
-- 차단/결정 필요: 완료 확정 후 `T-20260805-003` 의존성 해제 판단이 필요하다.
+- 차단/결정 필요: T-20260805-003 선행은 해소됐고 별도 실행 승인만 필요하다.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
-- 완료 가능 시: PR #77을 squash merge하고 후속 T-003의 선행 해소를 확인해줘.
+- 완료 상태를 유지하고 승인 전에는 후속 T-003을 실행하지 마.

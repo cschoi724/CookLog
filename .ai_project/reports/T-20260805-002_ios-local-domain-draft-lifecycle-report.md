@@ -2,7 +2,7 @@
 
 작성일: 2026-08-05
 작성 Role: iOS Agent / Execution Role
-상태: `done` 후보 — PR #77 required checks 재실행
+상태: `done` — PR #77 squash merge `3d1d012`
 
 ## 결과
 
@@ -70,6 +70,8 @@ non-empty legacy store fixture를 추가했습니다. 재작업 전체 XCTest에
   고정하고, 매 실행마다 고유 임시 store로 복원하도록 수정했습니다.
 - CI 실패 migration 단독 테스트와 표준 직렬 runner 전체 XCTest 43/43을 통과했습니다.
 - fixture SHA-256 round-trip, `plutil -lint`, `git diff --check`를 통과했습니다.
+- 최신 `develop` rebase 후 `ios-build`·`ios-xctest` required checks를 재통과하고 PR #77이
+  squash merge SHA `3d1d012`로 공용 `develop`에 반영됐습니다.
 
 ## 제외 범위
 
