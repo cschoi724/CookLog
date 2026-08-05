@@ -126,6 +126,9 @@ draft_step_preview -> draft_ai_review -> completed
 
 `RecipeRecordRepository`는 여러 진행 기록과 완료 레시피를 최근 활동 시간순으로 조회하고,
 자동 STEP 저장·수동 Review 임시 저장·완료 전환을 같은 record 단위로 영속화합니다.
+새 기록 생성은 기존 record 갱신과 분리된 `createRecord(_:)` 계약을 사용합니다. 같은 UUID가
+이미 있으면 `RecipeRecordRepositoryError.recordAlreadyExists`로 거부해 완료 Recipe가 빈
+draft로 역전되거나 덮어써지지 않게 합니다.
 
 ## 9. RecipeGenerationInput
 

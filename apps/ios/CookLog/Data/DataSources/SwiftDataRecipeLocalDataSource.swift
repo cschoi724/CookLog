@@ -16,13 +16,13 @@ final class SwiftDataRecipeLocalDataSource: RecipeLocalDataSource, RecipeRecordL
         descriptor.includePendingChanges = true
 
         return try modelContext.fetch(descriptor)
-            .filter { RecipeLifecycleState(rawValue: $0.lifecycleStateRawValue) == .completed }
+            .filter { RecipeLifecycleState.restored(from: $0.lifecycleStateRawValue) == .completed }
             .map(RecipePersistenceMapper.makeRecipe)
     }
 
     func fetchRecipe(id: UUID) async throws -> Recipe? {
         guard let persistentRecipe = try fetchPersistentRecipe(id: id),
-              RecipeLifecycleState(rawValue: persistentRecipe.lifecycleStateRawValue) == .completed else {
+              RecipeLifecycleState.restored(from: persistentRecipe.lifecycleStateRawValue) == .completed else {
             return nil
         }
         return RecipePersistenceMapper.makeRecipe(from: persistentRecipe)
@@ -68,6 +68,20 @@ final class SwiftDataRecipeLocalDataSource: RecipeLocalDataSource, RecipeRecordL
 
     func fetchRecord(id: UUID) async throws -> RecipeRecord? {
         try fetchPersistentRecipe(id: id).map(RecipePersistenceMapper.makeRecord)
+    }
+
+    func createRecord(_ record: RecipeRecord) async throws {
+        guard try fetchPersistentRecipe(id: record.id) == nil else {
+            throw RecipeRecordRepositoryError.recordAlreadyExists(record.id)
+        }
+
+        do {
+            modelContext.insert(try RecipePersistenceMapper.makePersistentRecord(from: record))
+            try modelContext.save()
+        } catch {
+            modelContext.rollback()
+            throw error
+        }
     }
 
     func saveRecord(_ record: RecipeRecord) async throws {

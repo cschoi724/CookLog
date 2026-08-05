@@ -39,6 +39,13 @@ actor InMemoryRecipeRecordLocalDataSource: RecipeRecordLocalDataSource {
         recordsById[id]
     }
 
+    func createRecord(_ record: RecipeRecord) async throws {
+        guard recordsById[record.id] == nil else {
+            throw RecipeRecordRepositoryError.recordAlreadyExists(record.id)
+        }
+        recordsById[record.id] = record
+    }
+
     func saveRecord(_ record: RecipeRecord) async throws {
         recordsById[record.id] = record
     }

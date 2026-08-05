@@ -87,7 +87,10 @@ final class CookLogTests: XCTestCase {
             )
             XCTFail("완료 record 식별자를 재사용한 역방향 전이는 거부되어야 합니다.")
         } catch {
-            // Expected: identifier collision or invalid backward transition.
+            XCTAssertEqual(
+                error as? RecipeRecordRepositoryError,
+                .recordAlreadyExists(recordID)
+            )
         }
 
         let restored = try await repository.fetchRecord(id: recordID)
@@ -129,7 +132,18 @@ private actor FailingRecipeRecordLocalDataSource: RecipeRecordLocalDataSource {
         recordsByID[id]
     }
 
+    func createRecord(_ record: RecipeRecord) async throws {
+        guard recordsByID[record.id] == nil else {
+            throw RecipeRecordRepositoryError.recordAlreadyExists(record.id)
+        }
+        try save(record)
+    }
+
     func saveRecord(_ record: RecipeRecord) async throws {
+        try save(record)
+    }
+
+    private func save(_ record: RecipeRecord) throws {
         if shouldFailNextSave {
             shouldFailNextSave = false
             throw TestPersistenceError.saveFailed

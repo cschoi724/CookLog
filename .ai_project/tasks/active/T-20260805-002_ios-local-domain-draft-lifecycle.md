@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-002
 title: iOS 로컬 도메인·SwiftData migration·draft 생명주기 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 모든 화면이 공유하는 진행 기록·임시 저장·완료 전환과 영속화 경계를 먼저 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS Agent
-target_role: Execution Role
+target_agent: iOS QA Agent
+target_role: Verification Role
 required_capabilities:
   - ios_implementation
   - data_modeling
@@ -87,6 +87,11 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 - 2026-08-05: Product Owner가 `QA-HIGH-805002-001~002`를 하나의 데이터 무손실
   재작업 범위로 승인했다. Development Lead Agent가 `rework_requested -> approved`로
   전환하고 iOS Agent에 재인계했다.
+- 2026-08-05: iOS Agent가 승인된 재작업을 위해 전용 구현 worktree에서 lock을 다시
+  획득하고 `approved -> in_progress`로 전환했다.
+- 2026-08-05: legacy lifecycle fallback과 원자적 UUID 충돌 거부를 구현하고 QA 회귀·
+  실제 non-empty migration 포함 전체 XCTest 43개를 통과해 `in_progress ->
+  verification_ready`로 iOS QA Agent에 독립 재검증을 인계했다.
 
 ## 재작업 승인 범위
 
@@ -102,21 +107,22 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 iOS Agent / Execution Role이야.
-Task `T-20260805-002`는 승인된 재작업 Task야.
+너는 iOS QA Agent / Verification Role이야.
+Task `T-20260805-002`는 재작업 구현을 마친 독립 재검증 Task야.
 
-- 현재 상태: `approved`
-- 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
-- 다음에 해야 할 일: 전용 구현 worktree에서 lock을 획득하고 legacy lifecycle 완료 조회
-  fallback과 완료 UUID 충돌 방지를 승인 범위 안에서 수정한 뒤 전체 회귀 검증을 수행해줘.
+- 현재 상태: `verification_ready`
+- 구현 ref: `task/T-20260805-002-implement-ios-local-lifecycle`
+- 다음에 해야 할 일: 별도 QA worktree에서 lock을 획득하고
+  `QA-HIGH-805002-001~002` 해소와 기존 통과 항목의 무회귀를 독립 재검증해줘.
 - 기준 문서: `docs/product/CookLog_PRD_v2.md`, `apps/ios/docs/DATA_MODEL.md`, `apps/ios/docs/PERSISTENCE.md`, `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`
 - 허용 경로: 현재 Task의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260805-002_ios-local-domain-draft-lifecycle-report.md`, `.ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md`
-- 변경/검토 대상: `apps/ios/CookLog/Domain/`, `apps/ios/CookLog/Data/`, `apps/ios/CookLogTests/`, 관련 iOS 문서
-- 남은 리스크: 실제 non-empty 구버전 store migration은 통과했으나 두 HIGH 데이터 보존
-  결함은 아직 미해소다.
+- 필수 검증: 알 수 없는 lifecycle의 record·완료 Recipe 단건·목록 조회, InMemory와
+  SwiftData UUID 충돌 오류 및 기존 completed 내용 보존, 실제 non-empty migration,
+  전체 XCTest 43개
+- 자체 검증: QA 회귀 2개와 SwiftData 충돌 보존 추가 테스트 선별 통과, 전체 XCTest
+  43개 통과
+- 남은 리스크: HIGH 2건 해소는 구현 Agent 자체 검증 결과이므로 독립 QA 확정이 필요하다.
 - 차단/결정 필요: `T-20260805-003`은 독립 재검증과 T-002 완료 전까지 차단한다.
-- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
-- 완료 시: status를 `verification_ready`로 전환하고 iOS QA Agent / Verification Role에
-  독립 재검증을 인계해줘.
+- 완료 시: QA 보고서를 갱신하고 판정에 따라 `verification_passed` 또는
+  `rework_requested`로 다음 Role에 인계해줘.

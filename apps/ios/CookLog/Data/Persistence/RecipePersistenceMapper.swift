@@ -106,7 +106,7 @@ enum RecipePersistenceMapper {
     }
 
     static func makeRecord(from persistentRecipe: PersistentRecipe) throws -> RecipeRecord {
-        let lifecycleState = RecipeLifecycleState(rawValue: persistentRecipe.lifecycleStateRawValue) ?? .completed
+        let lifecycleState = RecipeLifecycleState.restored(from: persistentRecipe.lifecycleStateRawValue)
         let stepPreviews = try decodeStepPreviews(persistentRecipe.stepPreviewsData)
 
         switch lifecycleState {

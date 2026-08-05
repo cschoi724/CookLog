@@ -51,6 +51,10 @@ enum RecipeLifecycleState: String, Codable, Equatable {
     case draftStepPreview = "draft_step_preview"
     case draftAIReview = "draft_ai_review"
     case completed
+
+    static func restored(from rawValue: String) -> RecipeLifecycleState {
+        RecipeLifecycleState(rawValue: rawValue) ?? .completed
+    }
 }
 
 enum RecipeRecordError: Error, Equatable {

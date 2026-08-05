@@ -28,7 +28,7 @@ struct CreateRecipeRecordUseCase {
         createdAt: Date = Date()
     ) async throws -> RecipeRecord {
         let record = RecipeRecord(id: id, createdAt: createdAt, updatedAt: createdAt)
-        try await repository.saveRecord(record)
+        try await repository.createRecord(record)
         return record
     }
 }
