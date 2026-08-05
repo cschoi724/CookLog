@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-003
 title: Backend 공통 HTTP·인증·제한·idempotency middleware 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 도메인 handler 전에 공통 계약과 abuse 경계를 실행 코드로 강제해야 한다.
@@ -101,6 +101,9 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
   기존 15개·T-003 24개와 공용 계약 validator를 재확인했다. Node 24 실환경과 production
   분산 adapter·datastore transaction은 T-007 필수 통합 게이트로 이관하는 조건으로
   `verification_passed -> completion_review`로 전환했다.
+- 2026-08-05: Product Owner가 완료 리뷰와 T-007 잔여 위험 이관을 수용하고 PR #76
+  `develop` 병합을 승인했다. Development Lead Agent가 `completion_review -> done`으로
+  최종 확정하고 공용 상태 반영을 위한 병합 절차를 시작했다.
 
 ## 완료 리뷰 결과
 
@@ -136,18 +139,18 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
 다음 Agent에게 전달할 말:
 
 너는 Development Lead Agent / Completion Role이야.
-Task T-20260804-003은 완료 리뷰를 통과하고 Product Owner 최종 승인을 기다리는 Task야.
+Task T-20260804-003은 Product Owner 최종 승인을 받은 완료 Task야.
 
-- 현재 상태: `completion_review`
+- 현재 상태: `done`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
-- 다음에 해야 할 일: Product Owner의 잔여 위험 수용과 PR #76 병합 승인을 확인해줘.
+- 다음에 해야 할 일: PR #76의 `develop` 병합 SHA와 공용 `done` 상태를 확인하고,
+  후속 T-004의 별도 실행 승인 가능 여부를 검토해줘.
 - 기준 문서: `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md`
 - 변경/검토 대상: `apps/backend/src/http/`, `apps/backend/tests/http/`, 상태·보고 문서
 - 남은 리스크: Host Node 26의 목표 Node 24 engine 경고와 production 분산 adapter·datastore
   transaction은 기존 후속 범위로 유지한다.
-- 차단/결정 필요: PR #76 `develop` 병합 전에는 T-004~007 의존성을 해제하지 않는다.
-- 완료 시: PR #76을 `develop`에 병합하고 병합 SHA를 확인한 뒤 `done`과 후속 Task 상태를
-  공용 기준에 반영해줘.
+- 차단/결정 필요: T-004는 자동 착수하지 않고 별도 Product Owner 실행 승인을 받는다.
+- 완료 시: T-007에서 Node 24와 production adapter·transaction 잔여 위험을 필수 검증한다.

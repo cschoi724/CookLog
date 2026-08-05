@@ -5,6 +5,9 @@
 - 2026-08-05: Development Lead가 성공 기준·허용 경로·PR #76 CLEAN과 필수 check를
   재확인하고 Node 24·production adapter 위험을 T-007에 이관하는 조건으로 완료 리뷰를
   통과시켜 Product Owner 최종 승인 단계로 전환했다.
+- 2026-08-05: Product Owner가 `PASS_WITH_RISK`와 T-007 잔여 위험 이관을 수용하고
+  PR #76 `develop` 병합을 승인해 T-003을 `done`으로 확정했다. T-004는 별도 실행
+  승인 후 착수한다.
 - 2026-08-05: `T-20260804-003` 재작업에서 violation을 exact own descriptor로 검증한 뒤
   새 공개 객체로 투영해 extra property·getter·custom prototype·symbol·20개 초과 입력을
   `INTERNAL_ERROR`로 fail closed했다.
