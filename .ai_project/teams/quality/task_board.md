@@ -29,6 +29,7 @@
 | `T-20260729-025` | `done` | iOS·Backend 공용 fixture와 계약 테스트 기준 | header 계약·negative 9종 실제 mutation·기존 추적성 무회귀 | PR #63 squash merge `8eea645`·완료 확정 |
 | `T-20260728-005` | `done` | Backend AI gateway·기본 비활성 원격 STT 계약 정의 | T-020~025 독립 QA·상위 성공 기준·잔여 위험 집계 | PR #65 squash merge `4e0bca4`·완료 확정 |
 | `T-20260729-014` | `done` | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | DQA-HIGH-014-001·DQA-MEDIUM-014-001 해소, 82개 상태·접근성·핸드오프 무회귀 | PR #68 squash merge `3d9a9a4`·완료 확정 |
+| `T-20260805-001` | `done` | iOS MVP 디자인 적용 기준과 Visual QA 계약 | DQA-MEDIUM-007~008 해소, Core Loop 23개 상태·대비·접근성 무회귀 | Design QA `PASS`, 구현 후 실제 화면 QA는 T-003 인계 |
 | `T-20260729-002` | `done` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | T-008~014 독립 QA·상위 성공 기준·통합 Source of Truth | 하위 전체 병합·Design Lead 완료 확정 |
 | `T-20260804-001` | `done` | 수익화 Source of Truth와 후보 Task 복구 | Lead Role·schema HIGH 2건, 상태 동결·Task graph·최신 develop 비회귀 | Product QA `PASS`·Product Lead 완료 리뷰·Product Owner 최종 승인 |
 

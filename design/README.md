@@ -10,6 +10,8 @@
 
 공식 UI Source of Truth는 `prototype/`과 `figma-build/manifest.json`입니다. Figma는 로컬 원본을 반영하는 버전 미러로 유지합니다.
 
+iOS 구현·Visual QA에서는 `IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`를 함께 사용합니다. 이 문서는 통합 핸드오프의 82개 상태를 유지하면서 첫 구현 Core Loop 23개 상태의 세부 합격선을 정의합니다.
+
 ## Figma 미러
 
 - [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn)
