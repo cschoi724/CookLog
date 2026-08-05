@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-003
 title: Backend 공통 HTTP·인증·제한·idempotency middleware 구현
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 도메인 handler 전에 공통 계약과 abuse 경계를 실행 코드로 강제해야 한다.
@@ -11,7 +11,7 @@ team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
 target_agent: Development Lead Agent
-target_role: Lead Role
+target_role: Completion Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -97,6 +97,25 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
   계약 무회귀를 확인했다. Node 24 실환경과 production 분산 adapter를 잔여 위험으로
   기록하고 `verification_in_progress -> verification_passed`, `PASS_WITH_RISK`로
   Development Lead Agent에 완료 검토를 인계했다.
+- 2026-08-05: Development Lead Agent가 성공 기준, 허용 경로, PR #76 CLEAN·필수 check,
+  기존 15개·T-003 24개와 공용 계약 validator를 재확인했다. Node 24 실환경과 production
+  분산 adapter·datastore transaction은 T-007 필수 통합 게이트로 이관하는 조건으로
+  `verification_passed -> completion_review`로 전환했다.
+
+## 완료 리뷰 결과
+
+- 판정: `PASS_WITH_RISK`
+- `QA-HIGH-003-001~002`, `QA-MEDIUM-003-003` 해소와 신규 HIGH·MEDIUM 결함 부재를
+  수용한다.
+- `npm run check` 기존 15/15, T-003 HTTP/auth 24/24와 common·STT·AI·security·shared
+  fixture validator 통과를 Lead가 재확인했다.
+- 변경 23개 경로는 Task `allowed_paths` 안이며 실제 provider·원격 STT·cloud resource·
+  production secret과 T-004 이후 구현은 포함하지 않았다.
+- Host Node 26의 목표 Node 24 engine 경고, production 분산 limiter·idempotency datastore
+  transaction·실제 attestation/token은 T-007 필수 통합 검증에서 해소한다.
+- PR #76은 Draft·mergeable/CLEAN, 미해결 review thread 0, 필수 check 4개 통과 상태다.
+- Product Owner가 잔여 위험 이관과 완료를 승인하면 PR #76을 `develop`에 병합하고,
+  병합 SHA 확인 후 `done` 확정과 후속 T-004 실행 승인 검토를 진행한다.
 
 ## 재작업 승인 범위
 
@@ -116,19 +135,19 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Lead Role이야.
-Task T-20260804-003은 Backend QA 독립 재검증을 통과한 완료 검토 Task야.
+너는 Development Lead Agent / Completion Role이야.
+Task T-20260804-003은 완료 리뷰를 통과하고 Product Owner 최종 승인을 기다리는 Task야.
 
-- 현재 상태: `verification_passed`
+- 현재 상태: `completion_review`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
-- 다음에 해야 할 일: QA `PASS_WITH_RISK`와 잔여 위험을 검토하고 `completion_review`
-  전환 또는 추가 재작업 필요 여부를 결정해줘.
+- 다음에 해야 할 일: Product Owner의 잔여 위험 수용과 PR #76 병합 승인을 확인해줘.
 - 기준 문서: `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md`
 - 변경/검토 대상: `apps/backend/src/http/`, `apps/backend/tests/http/`, 상태·보고 문서
 - 남은 리스크: Host Node 26의 목표 Node 24 engine 경고와 production 분산 adapter·datastore
   transaction은 기존 후속 범위로 유지한다.
-- 차단/결정 필요: T-004~007은 Backend QA 독립 재검증 통과 전 열지 않는다.
-- 완료 시: Product Owner 최종 승인과 PR 병합이 필요한 완료 절차로 인계해줘.
+- 차단/결정 필요: PR #76 `develop` 병합 전에는 T-004~007 의존성을 해제하지 않는다.
+- 완료 시: PR #76을 `develop`에 병합하고 병합 SHA를 확인한 뒤 `done`과 후속 Task 상태를
+  공용 기준에 반영해줘.
