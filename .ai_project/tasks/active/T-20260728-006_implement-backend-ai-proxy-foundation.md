@@ -34,6 +34,7 @@ allowed_paths:
   - .ai_project/tasks/
   - .ai_project/reports/
   - .ai_project/qa/
+  - .ai_project/source_of_truth.md
   - .ai_project/task_board.md
   - .ai_project/teams/development/task_board.md
   - .ai_project/teams/quality/task_board.md
