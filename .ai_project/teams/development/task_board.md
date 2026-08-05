@@ -31,9 +31,9 @@
 | `T-20260728-016` | `proposed` | Cross-platform | 수익화 이벤트와 AI 비용 관측성 | Development Lead Agent | `T-20260728-014`, `015` | 구현 완료 후 scope |
 | `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` | 외부 설정 별도 승인 필요 |
 | `T-20260804-002` | `done` | Backend | runtime scaffold·환경 설정·health | - | `T-20260728-005` 완료 | Product Owner 최종 승인·PR #70 병합, T-003 별도 실행 승인 검토 |
-| `T-20260804-003` | `done` | Backend | 공통 HTTP·인증·제한·idempotency middleware | - | `T-20260804-002` 완료 | Product Owner 잔여 위험 수용·PR #76 병합 승인, T-004 별도 승인 검토 |
-| `T-20260804-004` | `completion_review` | Backend | Mock AI recipe job·status·ACK·복구 | Development Lead Agent | `T-20260804-002`, `003` 완료 | Lead PASS_WITH_RISK 수용·Product Owner 최종 완료와 PR #79 병합 승인 대기 |
-| `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
+| `T-20260804-003` | `done` | Backend | 공통 HTTP·인증·제한·idempotency middleware | - | `T-20260804-002` 완료 | Product Owner 잔여 위험 수용·PR #76 병합, T-004 완료 |
+| `T-20260804-004` | `done` | Backend | Mock AI recipe job·status·ACK·복구 | - | `T-20260804-002`, `003` 완료 | Product Owner 최종 승인·PR #79 squash merge `a73a028` |
+| `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` 완료 | 선행 해소·별도 실행 승인 대기 |
 | `T-20260804-006` | `proposed` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` | 도메인 경계 완료 대기 |
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
@@ -52,11 +52,10 @@ Backend QA 독립 재검증과 완료 검토를 통과하고 PR #63으로 `devel
 
 Product Owner가 T-006 진행을 승인했습니다. Development Lead는 runtime scaffold,
 공통 middleware, Mock AI, STT 비활성 경계, 보안·cleanup, 통합 검증의 6개 패키지로
-분해했습니다. T-002는 `done`이고 Product Owner가 T-003 실행을 별도 승인해 Backend
-Agent가 QA 재작업과 자체 검증을 완료해 독립 재검증 대기 중입니다. T-004는 독립 QA
-실패 HIGH 2건·MEDIUM 1건의 제한된 재작업이 승인됐고, T-005~007은 선행 완료 전
-`proposed`로 유지합니다. 실제
-provider·cloud 배포·원격 STT endpoint는 범위 밖입니다.
+분해했습니다. T-002~004는 독립 QA·완료 리뷰·Product Owner 최종 승인을 통과해
+`done`입니다. T-004는 PR #79 squash merge `a73a028`로 공용 완료를 확정했습니다.
+T-005는 선행이 해소됐지만 별도 실행 승인 전 착수하지 않고 T-006~007은 나머지 선행
+완료를 기다립니다. 실제 provider·cloud 배포·원격 STT endpoint는 범위 밖입니다.
 
 Backend QA는 T-002의 shutdown deadline 뒤 listener·process 생존을
 `QA-HIGH-002-001`로 확인해 `FAIL`로 인계했습니다. Product Owner가 deadline 강제 종료,

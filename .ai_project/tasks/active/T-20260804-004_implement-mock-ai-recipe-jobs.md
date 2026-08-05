@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-004
 title: Mock AI recipe job·status·ACK·복구 저장 경계 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 실제 provider 없이 iOS 연동과 비동기 AI 계약을 실행 검증해야 한다.
@@ -121,6 +121,9 @@ qa_to: .ai_project/qa/T-20260804-004_implement-mock-ai-recipe-jobs-qa.md
   성공 기준, 전체 55/55와 공용 계약 validator, PR #79 `CLEAN`·필수 check 성공을
   재확인했다. 잔여 production 위험을 T-006~007로 유지하는 조건으로 `PASS_WITH_RISK`를
   수용하고 `verification_passed -> completion_review`로 전환했다.
+- 2026-08-05: Product Owner가 QA·Lead `PASS_WITH_RISK`와 T-006~007 잔여 위험 이관을
+  수용하고 최종 완료·PR #79 병합을 승인했다. PR #79를 squash merge SHA `a73a028`로
+  `develop`에 반영해 `completion_review -> done`을 공용 확정했다.
 
 ## 완료 리뷰 결과
 
@@ -138,21 +141,21 @@ qa_to: .ai_project/qa/T-20260804-004_implement-mock-ai-recipe-jobs-qa.md
 - in-memory process 재시작 비내구성, production encryption·datastore transaction·
   queue·sweeper adapter는 T-006~007 필수 통합 게이트에서 검증한다. 현재 Task 완료를
   차단하지 않는다.
-- 다음 단계: Product Owner가 잔여 위험을 수용하고 최종 완료·PR #79 병합을 승인하면
-  `develop` squash merge 후 `done`으로 확정한다.
+- 완료 확정: Product Owner 최종 승인 후 PR #79를 `develop`에 squash merge했고 merge
+  SHA `a73a028`을 확인해 `done`으로 확정했다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Product Owner야.
-Task T-20260804-004는 Backend QA와 Development Lead 완료 리뷰를 통과한 최종 승인 Task야.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260804-004는 최종 승인과 PR 병합까지 완료된 Task야.
 
-- 현재 상태: `completion_review`
+- 현재 상태: `done`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `865f508ae505e3b1a80d9f3cda1c5bf6f8d5c0a7`
-- 다음에 해야 할 일: QA·Lead `PASS_WITH_RISK`와 T-006~007 잔여 위험 이관을 수용할지
-  판단하고 최종 완료·PR #79 squash merge를 승인해줘.
+- 기준 상태 SHA: `a73a028720606612a05b3b2901237336466687be`
+- 다음에 해야 할 일: T-004의 `done`을 유지하고 선행이 해소된 T-005의 별도 실행 승인
+  여부를 검토해줘. T-006~007은 각 나머지 선행 완료 전 착수하지 마.
 - 기준 문서: `apps/backend/docs/AI_RECIPE_CONTRACT.md`, `apps/backend/contracts/ai/`,
   `apps/backend/contracts/fixtures/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
@@ -164,5 +167,5 @@ Task T-20260804-004는 Backend QA와 Development Lead 완료 리뷰를 통과한
 - 남은 리스크: in-memory 저장의 process 재시작 비내구성은 명시하고 production adapter는
   후속 승인 범위로 유지한다.
 - 차단/결정 필요: 실제 provider·cloud·production secret과 T-005~007 범위 확장 금지
-- 완료 시: PR #79를 `develop`에 squash merge하고 merge SHA 기준으로 Task를 `done`으로
-  확정해줘.
+- 완료 상태를 유지하고 production adapter·재시작 내구성 위험을 T-006~007에서 반드시
+  검증해줘.

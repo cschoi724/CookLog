@@ -14,7 +14,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 24 |
+| `proposed` | 23 |
 | `scoped` | 3 |
 | `approved` | 1 |
 | `in_progress` | 0 |
@@ -24,14 +24,14 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 39 |
+| `done` | 40 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation 하위 T-20260804-002~003도 `done`이며 T-20260804-004는 `approved`, 상위 T-006은 `scoped`입니다. iOS T-003은 7개 하위 패키지로 `scoped`, 첫 T-20260805-002는 `done`이며 T-20260805-003은 별도 실행 승인 대기입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation 하위 T-20260804-002~004도 `done`이며 T-20260804-005는 별도 실행 승인 대기, 상위 T-006은 `scoped`입니다. iOS T-003은 7개 하위 패키지로 `scoped`, T-20260805-002는 `done`, T-20260805-003은 `approved`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -55,7 +55,7 @@ Team별 요약:
 | `T-20260805-001` | P1 | iOS MVP 디자인 적용 기준과 Visual QA 계약 확정 | - | `done`, 통합 82개 상태 아래 Core Loop 23개 인수 계약 |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #65 squash merge `4e0bca4` |
-| `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `scoped`; T-20260804-002 승인·003~007 제안 |
+| `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `scoped`; T-20260804-002~004 완료·005 실행 승인 대기 |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
 | `T-20260731-002` | P0 | 프로젝트 공용 상태 일관성 및 Git 안전 guardrail | - | `done`, 독립 AI Ops PASS·PR #48 squash merge |
@@ -95,8 +95,8 @@ Backend `T-20260728-005` 하위 실행 후보:
 | `T-20260729-025` | P0 | iOS·Backend 공용 fixture와 계약 테스트 기준 정의 | - | `done`, PR #63·#64 squash merge |
 | `T-20260804-002` | P0 | Backend runtime scaffold·환경 설정·health | - | `done`, Product Owner 최종 승인·PR #70 병합 |
 | `T-20260804-003` | P0 | Backend 공통 HTTP·인증·제한·idempotency middleware | - | `done`, PR #76 squash merge |
-| `T-20260804-004` | P0 | Mock AI recipe job·status·ACK·복구 저장 경계 | Backend Agent | `approved`, 실행 인계 완료 |
-| `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `proposed`, T-002·003 선행 |
+| `T-20260804-004` | P0 | Mock AI recipe job·status·ACK·복구 저장 경계 | - | `done`, PR #79 squash merge `a73a028` |
+| `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `proposed`, 선행 해소·별도 실행 승인 대기 |
 | `T-20260804-006` | P0 | Backend redacted logging·비용 원장·TTL cleanup | Backend Agent | `proposed`, T-003~005 선행 |
 | `T-20260804-007` | P0 | Backend Foundation 통합 계약·보안 검증·handoff | Backend Agent | `proposed`, T-002~006 선행 |
 
@@ -105,7 +105,7 @@ iOS `T-20260728-003` 하위 실행 후보:
 | Task ID | Priority | 제목 | 담당 Agent | 의존성 |
 |---|---|---|---|---|
 | `T-20260805-002` | P0 | 로컬 도메인·SwiftData migration·draft 생명주기 | - | `done`, PR #77 squash merge `3d1d012` |
-| `T-20260805-003` | P0 | Home·전체 보기·검색·상태별 routing | iOS Agent | `proposed`, 선행 해소·별도 실행 승인 대기 |
+| `T-20260805-003` | P0 | Home·전체 보기·검색·상태별 routing | iOS Agent | `approved`, 실행 인계 완료 |
 | `T-20260805-004` | P0 | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `proposed`, T-003 선행 |
 | `T-20260805-005` | P0 | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `proposed`, T-004 선행 |
 | `T-20260805-006` | P0 | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `proposed`, T-005 선행 |
@@ -318,3 +318,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-05 | Product Owner가 T-20260804-002 완료와 PR #70 병합을 승인해 `done` 확정, 후속 T-003 실행 승인 검토로 인계 |
 | 2026-08-05 | Product Owner가 iOS T-20260728-003 진행을 승인하고 7개 하위 패키지로 scope, 첫 T-20260805-002를 iOS Agent 실행 승인 인계 |
 | 2026-08-05 | T-20260805-002 HIGH 2건 재작업·독립 QA·CI fixture 보강·required checks를 통과하고 PR #77 squash merge `3d1d012`로 `done` 확정, T-003 별도 실행 승인 대기 |
+| 2026-08-05 | T-20260804-004 HIGH 2건·MEDIUM 1건 재작업과 독립 QA·Lead 완료 리뷰를 통과하고 PR #79 squash merge `a73a028`로 `done` 확정, T-005 별도 실행 승인 검토로 인계 |
