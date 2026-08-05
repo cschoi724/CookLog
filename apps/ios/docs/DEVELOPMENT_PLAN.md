@@ -36,8 +36,8 @@
 ## 현재 첫 공개 출시 실행 순서
 
 1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `done`, PR #77 merge `3d1d012`
-2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `verification_ready`
-3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `proposed`
+2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `done`, PR #86 merge `9457133`
+3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `approved`
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `proposed`
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `proposed`
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `proposed`

@@ -4,20 +4,20 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-003 완료 리뷰 통과·병합 승인, T-20260805-004 선행 해소
+- 상태: T-20260805-003 done, T-20260805-004 Cooking Log 구현 승인
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~003 done, T-20260805-004 proposed
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~003 done, T-20260805-004 approved
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. Product Owner 별도 실행 승인 후 `T-20260805-004` Cooking Log·STEP Preview 구현
+1. iOS Agent가 `T-20260805-004` Cooking Log·STEP Preview 구현과 자체 검증
 2. `T-20260805-005~007` 화면·상태 패키지 순차 구현
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
@@ -25,6 +25,10 @@
 
 ## 최근 작업
 
+- Product Owner가 `T-20260805-004`의 별도 실행을 승인했습니다. Mock Service 기반
+  Cooking Log 5개 상태, 반복 기록, STEP Preview 자동 저장·삭제·되돌리기와 오류 시 기존
+  STEP·동일 record draft 보존을 iOS Agent에 인계했습니다.
+- 실제 마이크 녹음·Apple STT와 T-005~008 범위는 이번 Task에서 선행하지 않습니다.
 - T-20260805-003 독립 재검증에서 `WP-R1~R4`, Home 13개와 전체 XCTest 54/54를
   통과했습니다. Development Lead가 최신 develop 기준 전체 54/54를 다시 실행해 완료
   리뷰를 `PASS_WITH_RISK`로 확정했고 Product Owner의 완료·병합 승인 조건을 충족했습니다.
