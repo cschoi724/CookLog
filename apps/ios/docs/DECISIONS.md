@@ -3,7 +3,7 @@
 이 문서는 iOS 개발 중 내려진 기술적, 제품적 결정을 기록합니다. 결정이 바뀌면 기존 내용을 삭제하기보다 새 항목을 추가해 변경 이유를 남깁니다.
 
 작성일: 2026-06-19
-최종 업데이트: 2026-07-31
+최종 업데이트: 2026-08-05
 
 ## 기록 방식
 
@@ -18,6 +18,14 @@
 - 영향:
 - 후속 작업:
 ```
+
+## 2026-08-05 - 진행 기록과 완료 Recipe는 단일 UUID lifecycle record로 저장
+
+- 상태: 확정
+- 결정: `RecipeRecord`가 `draft_step_preview -> draft_ai_review -> completed` 전이를 소유하고, 기존 `PersistentRecipe` schema를 lifecycle 필드로 확장합니다.
+- 이유: STEP 자동 저장, AI Review 수동 임시 저장, 최종 완료 재시도에서 별도 객체를 만들면 중복 Recipe와 상태 유실 위험이 있습니다.
+- 영향: 기존 완료 Recipe는 기본 `completed`로 읽고, 진행 기록 조회는 새 `RecipeRecordRepository`를 사용합니다. 기존 `RecipeRepository`는 완료 Recipe 전용 호환 경계로 유지합니다.
+- 후속 작업: T-20260805-003~005가 Home routing, STEP 자동 저장, AI Review 임시 저장·완료 전환을 새 계약에 연결합니다.
 
 ## 2026-07-31 - 과거 Core MVP 범위와 첫 공개 출시 범위를 분리
 

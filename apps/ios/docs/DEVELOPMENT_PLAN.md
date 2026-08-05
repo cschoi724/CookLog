@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-003 로컬 제품 적용 scoped·첫 패키지 approved
+- 상태: Mock Core MVP 조건부 통과, T-003 첫 패키지 구현 완료·독립 iOS QA 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -35,7 +35,7 @@
 
 ## 현재 첫 공개 출시 실행 순서
 
-1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `approved`
+1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `verification_ready`
 2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `proposed`
 3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `proposed`
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `proposed`
@@ -46,6 +46,18 @@
 각 패키지는 iOS Agent 구현과 iOS QA 독립 검증을 분리하고, 선행 Task가 공용
 `develop`에서 `done`이 된 뒤 다음 패키지를 승인합니다. 실제 Apple STT, Backend AI,
 로컬 TTS·음성 인식 엔진은 각각 T-20260729-004~006의 후속 범위입니다.
+
+### T-20260805-002 구현 결과
+
+- [x] `draft_step_preview -> draft_ai_review -> completed` 도메인 전이 작성
+- [x] STEP snapshot 잠금과 요청 식별자 보존
+- [x] 단일 record UUID로 draft·완료 Recipe 전환
+- [x] `RecipeRecordRepository`·DataSource·자동/수동 저장 UseCase 경계 작성
+- [x] 기존 `PersistentRecipe`를 유지한 lifecycle schema 확장
+- [x] SwiftData 실패 rollback과 완료 Recipe 조회 호환성 유지
+- [x] 여러 draft 재실행 복구·legacy completed·저장 실패 원본 보존 테스트
+- [x] iPhone 15 iOS 17.2 전체 XCTest 통과
+- [x] 기존 Simulator store 위 schema 자동 migration 후 앱 실행 확인
 
 ## 현재 개발 원칙
 

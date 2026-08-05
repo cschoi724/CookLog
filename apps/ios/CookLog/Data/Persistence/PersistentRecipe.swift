@@ -14,6 +14,11 @@ final class PersistentRecipe {
     var ownerId: String?
     var createdAt: Date
     var updatedAt: Date
+    var lifecycleStateRawValue: String = "completed"
+    var stepPreviewsData: Data?
+    var hasReviewDraft: Bool = false
+    var aiRequestID: UUID?
+    var isAISnapshotLocked: Bool = false
 
     init(
         id: UUID,
@@ -26,7 +31,12 @@ final class PersistentRecipe {
         syncStatusRawValue: String,
         ownerId: String?,
         createdAt: Date,
-        updatedAt: Date
+        updatedAt: Date,
+        lifecycleStateRawValue: String = "completed",
+        stepPreviewsData: Data? = nil,
+        hasReviewDraft: Bool = false,
+        aiRequestID: UUID? = nil,
+        isAISnapshotLocked: Bool = false
     ) {
         self.id = id
         self.title = title
@@ -39,5 +49,10 @@ final class PersistentRecipe {
         self.ownerId = ownerId
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.lifecycleStateRawValue = lifecycleStateRawValue
+        self.stepPreviewsData = stepPreviewsData
+        self.hasReviewDraft = hasReviewDraft
+        self.aiRequestID = aiRequestID
+        self.isAISnapshotLocked = isAISnapshotLocked
     }
 }
