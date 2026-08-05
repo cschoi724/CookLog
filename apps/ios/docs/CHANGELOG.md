@@ -7,6 +7,29 @@
 - Product Owner가 `T-20260728-003` iOS 로컬 제품 적용 진행을 승인했습니다.
 - Development Lead가 T-003을 `T-20260805-002~008` 7개 구현·독립 QA 패키지로 분해했습니다.
 - 첫 `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기를 iOS Agent에 실행 승인 인계했습니다.
+- `RecipeRecord`와 `draft_step_preview -> draft_ai_review -> completed` 상태 전이를 추가했습니다.
+- STEP snapshot 잠금, AI 요청 ID, Review draft snapshot과 완료 Recipe의 단일 UUID 전환을 구현했습니다.
+- `RecipeRecordRepository`, SwiftData/InMemory DataSource와 자동 STEP·수동 Review·완료 저장 UseCase를 추가했습니다.
+- 기존 `PersistentRecipe`를 lifecycle 필드로 확장하고 완료 Recipe 조회 호환성과 저장 실패 rollback을 유지했습니다.
+- 여러 draft 복구, legacy completed 기본값, 완료 목록 분리와 저장 실패 원본 보존 테스트를 추가했습니다.
+- iPhone 15 iOS 17.2에서 build, build-for-testing, 전체 XCTest와 기존 store 위 앱 설치·실행을 확인했습니다.
+- iOS QA가 알 수 없는 legacy lifecycle 완료 행의 기존 Recipe 조회 누락과 완료 UUID의
+  draft 덮어쓰기 `QA-HIGH-805002-001~002`를 재현해 `FAIL`로 판정했습니다.
+- Product Owner가 legacy 완료 조회 fallback 통일, UUID 충돌 거부와 QA 회귀 테스트
+  통과를 데이터 무손실 재작업 범위로 승인해 iOS Agent에 다시 인계했습니다.
+- 알 수 없는 lifecycle raw value를 `completed`로 복원하는 단일 규칙을 Mapper와 완료
+  Recipe 단건·목록 조회에 적용해 구버전 레시피가 숨겨지지 않게 수정했습니다.
+- `createRecord(_:)` 저장 계약과 `recordAlreadyExists` 오류를 추가해 InMemory·SwiftData에서
+  기존 UUID의 새 draft 생성을 원자적으로 거부하고 completed 내용을 보존했습니다.
+- QA 회귀 2건과 SwiftData UUID 충돌 보존 테스트를 통과했으며, 실제 non-empty legacy
+  migration을 포함한 전체 XCTest 43개를 iPhone 15 iOS 17.2에서 재통과했습니다.
+- iOS QA 독립 재검증에서 집중 4/4·전체 43/43 XCTest와 실제 non-empty migration을
+  통과했으며 신규 결함과 잔여 위험이 없음을 확인했습니다.
+- Development Lead 완료 리뷰와 Product Owner 완료·PR #77 병합 승인을 거쳐
+  T-20260805-002를 로컬 `done` 후보로 확정했습니다.
+- PR #77 `ios-xctest`에서 확인된 로컬 Simulator legacy store 의존성을 제거하고,
+  과거 schema non-empty store fixture를 테스트 resource에서 고유 임시 경로로 복원해
+  migration을 검증하도록 보강했습니다. 전체 XCTest 43/43을 재통과했습니다.
 
 ## 2026-07-31
 

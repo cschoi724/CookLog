@@ -76,6 +76,7 @@
 		10B202052C29200100000001 /* SwiftDataRecipeLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202242C29200100000001 /* SwiftDataRecipeLocalDataSource.swift */; };
 		10B202062C29200100000001 /* RecipePersistenceMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202252C29200100000001 /* RecipePersistenceMapperTests.swift */; };
 		10B202072C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B202262C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift */; };
+		10B204012C29400100000001 /* T-20260805-002-legacy.store.b64 in Resources */ = {isa = PBXBuildFile; fileRef = 10B204202C29400100000001 /* T-20260805-002-legacy.store.b64 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,6 +162,7 @@
 		10B202242C29200100000001 /* SwiftDataRecipeLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRecipeLocalDataSource.swift; sourceTree = "<group>"; };
 		10B202252C29200100000001 /* RecipePersistenceMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipePersistenceMapperTests.swift; sourceTree = "<group>"; };
 		10B202262C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRecipeLocalDataSourceTests.swift; sourceTree = "<group>"; };
+		10B204202C29400100000001 /* T-20260805-002-legacy.store.b64 */ = {isa = PBXFileReference; lastKnownFileType = text; path = "T-20260805-002-legacy.store.b64"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +304,7 @@
 				10B201232C29100100000001 /* AudioPlayerViewModelTests.swift */,
 				10B202252C29200100000001 /* RecipePersistenceMapperTests.swift */,
 				10B202262C29200100000001 /* SwiftDataRecipeLocalDataSourceTests.swift */,
+				10B204202C29400100000001 /* T-20260805-002-legacy.store.b64 */,
 			);
 			path = CookLogTests;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10B204012C29400100000001 /* T-20260805-002-legacy.store.b64 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

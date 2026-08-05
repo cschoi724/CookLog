@@ -23,3 +23,31 @@ struct DefaultRecipeRepository: RecipeRepository {
         try await localDataSource.deleteRecipe(id: id)
     }
 }
+
+struct DefaultRecipeRecordRepository: RecipeRecordRepository {
+    private let localDataSource: RecipeRecordLocalDataSource
+
+    init(localDataSource: RecipeRecordLocalDataSource) {
+        self.localDataSource = localDataSource
+    }
+
+    func fetchRecords() async throws -> [RecipeRecord] {
+        try await localDataSource.fetchRecords()
+    }
+
+    func fetchRecord(id: UUID) async throws -> RecipeRecord? {
+        try await localDataSource.fetchRecord(id: id)
+    }
+
+    func createRecord(_ record: RecipeRecord) async throws {
+        try await localDataSource.createRecord(record)
+    }
+
+    func saveRecord(_ record: RecipeRecord) async throws {
+        try await localDataSource.saveRecord(record)
+    }
+
+    func deleteRecord(id: UUID) async throws {
+        try await localDataSource.deleteRecord(id: id)
+    }
+}

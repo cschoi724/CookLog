@@ -2,7 +2,7 @@
 
 이 문서는 CookLog iOS 앱의 도메인 모델 기준을 관리합니다.
 
-최종 업데이트: 2026-06-22
+최종 업데이트: 2026-08-05
 상태: 확정
 
 ## 1. 모델 원칙
@@ -109,7 +109,28 @@ struct RecipeDraft: Equatable {
 StepPreview[] -> RecipeGenerationRepository -> RecipeDraft -> 사용자 수정 -> Recipe 저장
 ```
 
-## 8. RecipeGenerationInput
+## 8. RecipeRecord와 생명주기
+
+첫 공개 출시에서는 진행 기록과 완료 레시피를 `RecipeRecord` 단일 식별자로 관리합니다.
+
+```text
+draft_step_preview -> draft_ai_review -> completed
+```
+
+- `draft_step_preview`: 순서가 정규화된 `StepPreview` 배열과 선택적 AI 요청 식별자를 가집니다.
+- `draft_ai_review`: 마지막으로 성공한 수동 임시 저장 `RecipeDraft` snapshot을 가집니다.
+- `completed`: 같은 UUID를 가진 `Recipe`를 가집니다.
+- AI 처리 중에는 STEP snapshot을 잠그고 성공 또는 실패 시 잠금을 해제합니다.
+- 허용되지 않은 역방향 전이와 다른 UUID로 완료 전환하는 동작은 오류로 거부합니다.
+- 완료 전환 시 진행 중 STEP과 Review draft를 제거해 같은 기록의 중복 Recipe 생성을 막습니다.
+
+`RecipeRecordRepository`는 여러 진행 기록과 완료 레시피를 최근 활동 시간순으로 조회하고,
+자동 STEP 저장·수동 Review 임시 저장·완료 전환을 같은 record 단위로 영속화합니다.
+새 기록 생성은 기존 record 갱신과 분리된 `createRecord(_:)` 계약을 사용합니다. 같은 UUID가
+이미 있으면 `RecipeRecordRepositoryError.recordAlreadyExists`로 거부해 완료 Recipe가 빈
+draft로 역전되거나 덮어써지지 않게 합니다.
+
+## 9. RecipeGenerationInput
 
 ```swift
 enum RecipeGenerationInput: Equatable {
@@ -121,7 +142,7 @@ enum RecipeGenerationInput: Equatable {
 
 MVP에서는 `.stepPreviews`만 사용합니다. 향후 블로그 Import, 유튜브 Import, OCR 입력을 같은 AI 정리 경계로 연결하기 위한 확장 지점입니다.
 
-## 9. RecipeSource
+## 10. RecipeSource
 
 ```swift
 enum RecipeSource: String, Codable {
@@ -136,7 +157,7 @@ enum RecipeSource: String, Codable {
 
 MVP에서는 `.voiceLog`만 사용합니다.
 
-## 10. SyncStatus
+## 11. SyncStatus
 
 ```swift
 enum SyncStatus: String, Codable {
