@@ -30,7 +30,7 @@
 | `T-20260728-015` | `proposed` | Backend | 구독 검증과 AI quota 구현 | Development Lead Agent | `T-20260728-006`, `012`, `013` | 수익화 선행 Task 대기 |
 | `T-20260728-016` | `proposed` | Cross-platform | 수익화 이벤트와 AI 비용 관측성 | Development Lead Agent | `T-20260728-014`, `015` | 구현 완료 후 scope |
 | `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` | 외부 설정 별도 승인 필요 |
-| `T-20260804-002` | `completion_review` | Backend | runtime scaffold·환경 설정·health | Development Lead Agent | `T-20260728-005` 완료 | Lead 완료 리뷰 수용, Product Owner 최종 완료·PR 병합 승인 대기 |
+| `T-20260804-002` | `done` | Backend | runtime scaffold·환경 설정·health | - | `T-20260728-005` 완료 | Product Owner 최종 승인·PR #70 병합, T-003 별도 실행 승인 검토 |
 | `T-20260804-003` | `proposed` | Backend | 공통 HTTP·인증·제한·idempotency middleware | Backend Agent | `T-20260804-002` | T-002 `done` 후 실행 승인 |
 | `T-20260804-004` | `proposed` | Backend | Mock AI recipe job·status·ACK·복구 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 대기 |
 | `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
@@ -58,6 +58,10 @@ Backend QA 재검증은 `QA-HIGH-002-001` 해소와 전체 15/15·기존 계약 
 `PASS_WITH_RISK`로 확인했습니다. Development Lead는 Docker·Node 24·non-root
 container 실실행을 T-007 필수 통합 게이트로 이관하는 조건으로 잔여 위험을 수용하고
 T-002를 `completion_review`로 전환했습니다.
+
+Product Owner가 완료 리뷰와 Docker 잔여 위험의 T-007 이관을 승인해 T-002를
+`done`으로 확정하고 PR #70 병합을 승인했습니다. T-003은 공용 `develop` 병합 후
+선행 조건 해제를 확인하고 별도 실행 승인으로 착수합니다.
 
 Development Lead는 T-020~025의 `done`, 하위 Backend QA 최종 판정, Source of Truth
 연결과 공용 계약 validator를 집계해 T-005 완료 리뷰를 `PASS_WITH_RISK`로 수용했습니다.

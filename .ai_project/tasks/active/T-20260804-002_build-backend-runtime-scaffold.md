@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-002
 title: Backend runtime scaffold·환경 설정·health 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 모든 foundation 패키지가 공유할 실행·빌드·테스트 기준을 먼저 고정해야 한다.
@@ -139,6 +139,8 @@ qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
   15/15와 공용 계약 validator 무회귀를 재확인했다. Docker·Node 24·non-root container
   실실행은 `T-20260804-007`의 필수 통합 게이트로 이관하는 조건으로 잔여 위험을 수용하고
   `verification_passed -> completion_review`로 전환했다.
+- 2026-08-05: Product Owner가 완료 리뷰와 잔여 위험 이관을 승인해
+  `completion_review -> done`으로 최종 확정하고 PR #70의 `develop` 병합을 승인했다.
 
 ## 완료 리뷰 결과
 
@@ -149,4 +151,4 @@ qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
 - Docker CLI 부재로 확인하지 못한 Node 24 image build/run, non-root UID, container
   health·SIGTERM 전달은 `T-20260804-007`에서 반드시 검증하며 상위 T-006 완료·배포 전
   해소한다. 현재 하위 Task 완료 후보를 차단하지 않는다.
-- 다음 단계: Product Owner 최종 완료·PR 병합 승인.
+- 다음 단계: PR #70 `develop` 병합 후 `T-20260804-003` 별도 실행 승인 검토.
