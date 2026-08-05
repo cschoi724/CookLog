@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-002
 title: Backend runtime scaffold·환경 설정·health 구현
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P0
 priority_reason: 모든 foundation 패키지가 공유할 실행·빌드·테스트 기준을 먼저 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_architecture
 - backend_implementation
@@ -129,3 +129,9 @@ qa_to: .ai_project/qa/T-20260804-002_build-backend-runtime-scaffold-qa.md
   구현하고 정상·keep-alive·hanging close·연속 signal child process 테스트를 추가했다.
   전체 15/15와 기존 계약 무회귀 자체 검증 후 `approved -> in_progress ->
   verification_ready`로 Backend QA Agent에 재인계했다.
+- 2026-08-05: Backend QA Agent가 재작업 커밋과 최신 `origin/develop` 정렬을 확인하고
+  `verification_ready -> verification_in_progress`로 전환해 독립 재검증을 시작했다.
+- 2026-08-05: Backend QA Agent가 `QA-HIGH-002-001` 해소, 실제 process 종료와 기존
+  config·health·계약 무회귀를 확인했다. Docker·Node 24 container 실행 미검증을 잔여
+  위험으로 기록하고 `verification_in_progress -> verification_passed`,
+  `PASS_WITH_RISK`로 Development Lead Agent에 완료 검토를 인계했다.

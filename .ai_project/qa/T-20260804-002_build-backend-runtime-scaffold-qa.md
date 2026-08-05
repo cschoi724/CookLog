@@ -1,13 +1,24 @@
 # T-20260804-002 Backend QA 독립 검증 보고서
 
-검증일: 2026-08-04
+검증일: 2026-08-04, 재검증 2026-08-05
 검증자: Backend QA Agent / Verification Role
-검증 기준: `task/T-20260804-002-build-backend-runtime-scaffold` `2f7357e`
-기준 develop: `origin/develop` `a1fa8d0`
-현재 판정: `FAIL`
-현재 상태 인계: `verification_in_progress -> rework_requested`
+검증 기준: `task/T-20260804-002-build-backend-runtime-scaffold` `db190c9`
+기준 develop: `origin/develop` `77e3001`
+현재 판정: `PASS_WITH_RISK`
+현재 상태 인계: `verification_in_progress -> verification_passed`
 
-## 1. 검증 범위
+## 0. 재검증 결론
+
+`QA-HIGH-002-001`은 해소됐다. 실제 child process에서 정상 SIGTERM·SIGINT와 idle
+keep-alive는 exit 0, hanging `app.close()`와 두 번째 signal은 exit 1로 종료됐으며 모든
+시나리오가 9초 상한을 충족했다. 별도 QA harness에서도 hanging close는 약 1.00초,
+연속 signal은 약 0.10초에 signal 종료가 아닌 명시적 exit 1로 끝났다.
+
+기존 config·health·금지 route·secret 비노출과 common·STT·AI·security·shared fixture
+계약도 무회귀다. Docker CLI와 Node 24 실행 환경이 없어 container build/run·non-root UID는
+미검증 위험으로 유지한다. 제품 결함은 없으며 최종 판정은 `PASS_WITH_RISK`다.
+
+## 1. 최초 검증 범위
 
 - Node.js·TypeScript·Fastify·npm lockfile 재현성
 - typed runtime config와 production fail-closed
@@ -19,7 +30,7 @@
 - 기존 common·STT·AI·security·공용 fixture 계약 무회귀
 - Task allowed paths와 최신 `origin/develop` 정렬
 
-## 2. 요약
+## 2. 최초 검증 요약
 
 | 검증 항목 | 결과 | 근거 |
 |---|---|---|
@@ -39,7 +50,7 @@
 동일 명령을 승인된 실행 환경에서 재실행해 10/10 및 audit 0건을 확인했으므로 제품 결함으로
 분류하지 않는다.
 
-## 3. 차단 결함
+## 3. 최초 차단 결함
 
 ### QA-HIGH-002-001 — shutdown deadline이 프로세스 종료를 강제하지 못함
 
@@ -79,7 +90,7 @@ after_deadline_listening=true,exitCode=1
    테스트를 추가한다.
 5. 테스트가 실제 process 종료 시각과 9초 상한을 검증하도록 한다.
 
-## 4. 통과 상세
+## 4. 최초 통과 상세
 
 ### 실행·health·route
 
@@ -104,7 +115,7 @@ after_deadline_listening=true,exitCode=1
 - runtime은 `USER node`를 사용하며 cloud 배포·registry push는 포함하지 않는다.
 - Docker CLI가 없어 image build·health·SIGTERM·non-root 확인은 후속 검증 위험으로 남긴다.
 
-## 5. 수행 검증
+## 5. 최초 수행 검증
 
 ```text
 origin/develop...HEAD: 0 behind / 2 ahead (QA 기록 전)
@@ -125,13 +136,51 @@ git diff --check: PASS
 Docker build/run: NOT_RUN, Docker CLI 없음
 ```
 
-## 6. 잔여 위험과 최종 판정
+## 6. 최초 잔여 위험과 판정
 
 - 목표 Node 24·npm 11의 실제 container build/run은 Docker 가능한 환경에서 확인해야 한다.
 - Docker image non-root UID, health 응답과 SIGTERM 전달은 container 검증이 필요하다.
 - 공통 middleware·Mock AI·STT resolver·safe logging·cleanup은 T-003~006 범위다.
 
-설치·빌드·정상 실행·config·health·route 부재·secret 비노출은 통과했다. 그러나 shutdown
+최초 검증에서 설치·빌드·정상 실행·config·health·route 부재·secret 비노출은 통과했다. 그러나 shutdown
 deadline이 실제 종료 상한을 보장하지 못해 Cloud Run lifecycle 핵심 성공 기준을 충족하지
 못한다. 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 Development Lead
 Agent / Lead Role에 재작업 범위 조율을 인계한다.
+
+## 7. 재검증 수행 결과
+
+| 검증 항목 | 결과 | 근거 |
+|---|---|---|
+| lockfile 설치·audit | PASS_WITH_RISK | `npm ci --ignore-scripts`, audit 0건. Host Node 26으로 Node 24 engine 경고가 있다. |
+| typecheck·build·test | PASS | `npm run check`, 15/15 통과. |
+| 정상 signal | PASS | 실제 SIGTERM·SIGINT가 exit 0, signal `null`, 약 70ms 이내 종료됐다. |
+| keep-alive | PASS | idle keep-alive 연결 상태에서 exit 0, 약 75ms에 종료됐다. |
+| hanging close | PASS | deadline 약 1.00~1.07초 뒤 exit 1, signal `null`로 실제 종료됐다. |
+| 연속 signal | PASS | 두 번째 signal 뒤 약 0.10~0.17초에 exit 1로 실제 종료됐다. |
+| 실제 entrypoint | PASS | 고정 health, STT route 404·콘텐츠 비반사, 정상 SIGTERM exit 0을 확인했다. |
+| production config | PASS | 필수 설정 누락·금지 key는 listener 전에 exit 1, 합성 secret 값은 비노출이다. |
+| 공용 계약 | PASS | common·STT·AI·security·shared fixture validator가 모두 통과했다. |
+| Docker build/run | NOT_RUN | Docker CLI가 없어 Node 24·non-root container 실행은 확인하지 못했다. |
+
+추가 검증:
+
+```text
+npm ci --ignore-scripts: PASS, audit 0건, Node 26 host engine warning
+npm run check: PASS, 15/15
+독립 actual entrypoint QA: PASS
+  health=PASS, forbiddenRoute=PASS, normal SIGTERM exit=0
+  production missing/forbidden config exit=1, secret value 비노출
+  hanging close exit=1 약 1003ms, repeated signal exit=1 약 103ms
+common·STT·AI·security validator: PASS
+iOS·Backend shared fixture validator: PASS
+aiops validate task --strict: PASS
+git diff --check: PASS
+Docker build/run: NOT_RUN
+```
+
+## 8. 최종 인계
+
+차단 결함은 해소됐고 신규 HIGH·MEDIUM 결함은 없다. Task를 `verification_passed`로
+전환해 Development Lead Agent / Lead Role에 완료 검토를 인계한다. Lead는 Docker 가능한
+Node 24 환경에서 image build/run, non-root UID, health와 SIGTERM 전달 확인을 잔여 위험으로
+수용하거나 후속 검증할지 결정해야 한다.
