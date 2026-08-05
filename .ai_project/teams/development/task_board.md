@@ -32,7 +32,7 @@
 | `T-20260728-017` | `proposed` | QA/Release | 구독 Sandbox·TestFlight 통합 검증 | Development Lead Agent | `T-20260728-008`, `014~016` | 외부 설정 별도 승인 필요 |
 | `T-20260804-002` | `done` | Backend | runtime scaffold·환경 설정·health | - | `T-20260728-005` 완료 | Product Owner 최종 승인·PR #70 병합, T-003 별도 실행 승인 검토 |
 | `T-20260804-003` | `done` | Backend | 공통 HTTP·인증·제한·idempotency middleware | - | `T-20260804-002` 완료 | Product Owner 잔여 위험 수용·PR #76 병합 승인, T-004 별도 승인 검토 |
-| `T-20260804-004` | `verification_ready` | Backend | Mock AI recipe job·status·ACK·복구 | Backend QA Agent | `T-20260804-002`, `003` 완료 | 52개 runtime·공용 계약 PASS, 독립 QA 대기 |
+| `T-20260804-004` | `rework_requested` | Backend | Mock AI recipe job·status·ACK·복구 | Development Lead Agent | `T-20260804-002`, `003` 완료 | HIGH 2·MEDIUM 1 재작업 범위 조율 |
 | `T-20260804-005` | `proposed` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `T-20260804-002`, `003` | 공통 middleware 완료 후 T-004와 병렬 가능 |
 | `T-20260804-006` | `proposed` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` | 도메인 경계 완료 대기 |
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |

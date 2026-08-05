@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-004
 title: Mock AI recipe job·status·ACK·복구 저장 경계 구현
-status: verification_ready
+status: rework_requested
 type: feature
 priority: P0
 priority_reason: 실제 provider 없이 iOS 연동과 비동기 AI 계약을 실행 검증해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -88,6 +88,13 @@ qa_to: .ai_project/qa/T-20260804-004_implement-mock-ai-recipe-jobs-qa.md
 - 2026-08-05: deterministic Mock provider, 원자 in-memory repository, worker 상태 머신과
   create·GET·ACK route를 구현했다. T-004 13개, T-003 포함 37개, 기존 15개와 공용 계약
   validator를 통과해 `in_progress -> verification_ready`로 Backend QA에 인계했다.
+- 2026-08-05: Backend QA Agent가 최신 `origin/develop`, clean worktree와 구현 보고서를
+  확인하고 담당 메타데이터를 바로잡아 `verification_ready -> verification_in_progress`로
+  독립 검증을 시작했다.
+- 2026-08-05: Backend QA Agent가 승인 fixture snapshot hash 불일치와 +24시간 delete
+  실패 거짓 완료 HIGH 2건, invalid calendar date 허용 MEDIUM 1건을 확인했다. 최종
+  `FAIL`, `verification_in_progress -> rework_requested`로 Development Lead Agent에
+  재작업 범위 조율을 인계했다.
 
 ## Next Agent Handoff
 
