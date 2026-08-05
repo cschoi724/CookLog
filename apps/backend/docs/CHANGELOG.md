@@ -1,5 +1,8 @@
 # Backend 변경 기록
 
+- 2026-08-05: Product Owner가 `T-20260804-003` 공통 HTTP·인증·제한·idempotency
+  middleware 실행을 승인해 Backend Agent에 인계했다.
+
 - 2026-08-05: `T-20260804-002` shutdown 재작업 독립 QA 15/15와 Lead 완료 리뷰를
   Product Owner가 승인해 `done`으로 확정했다. Docker·Node 24 container 실검증은
   `T-20260804-007` 필수 통합 게이트로 이관했다.
