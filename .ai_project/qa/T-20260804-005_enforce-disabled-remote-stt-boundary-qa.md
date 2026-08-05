@@ -87,3 +87,11 @@ iOS·Backend shared fixture validator: PASS
 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 Development Lead Agent /
 Lead Role에 재작업 범위 조율을 인계한다. Quality Team은 구현을 수정하거나 Task를 `done`
 처리하지 않는다. `T-20260804-006~007`은 T-005 재검증 통과 전 선행 완료로 간주하지 않는다.
+
+## 6. 재작업 승인
+
+2026-08-05 Development Lead Agent가 `QA-HIGH-005-001`을 실제 `loadRuntimeConfig()`
+startup 연결과 local·test·production 설정 반례 검증으로 범위화했습니다. Product Owner가
+재작업을 승인했으며, 허용 경로에 `apps/backend/src/config/runtime-config.ts`를 추가해
+Backend Agent에 재인계합니다. 기존 `FAIL` 판정은 독립 재검증 전까지 이력으로 유지하고
+`T-20260804-006~007` 차단도 유지합니다.
