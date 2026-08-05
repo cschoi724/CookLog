@@ -1,11 +1,11 @@
 # T-20260804-005 Backend QA 독립 검증 보고서
 
-검증일: 2026-08-05
+검증일: 2026-08-05, 재검증 2026-08-05
 검증자: Backend QA Agent / Verification Role
-검증 기준: `task/T-20260804-005-enforce-disabled-remote-stt-boundary` `4fc49a3`
+검증 기준: 최초 `4fc49a3`, 재작업 `ba1cda8`
 기준 develop: `origin/develop` `97f434d`
-최종 판정: `FAIL`
-상태 인계: `verification_ready -> verification_in_progress -> rework_requested`
+최종 판정: `PASS_WITH_RISK`
+최종 상태 인계: `verification_ready -> verification_in_progress -> verification_passed`
 
 ## 1. 결론
 
@@ -95,3 +95,50 @@ startup 연결과 local·test·production 설정 반례 검증으로 범위화�
 재작업을 승인했으며, 허용 경로에 `apps/backend/src/config/runtime-config.ts`를 추가해
 Backend Agent에 재인계합니다. 기존 `FAIL` 판정은 독립 재검증 전까지 이력으로 유지하고
 `T-20260804-006~007` 차단도 유지합니다.
+
+## 7. 독립 재검증 결론
+
+`QA-HIGH-005-001`은 해소됐다. `loadRuntimeConfig()`가 모든 runtime 환경에서
+`validateRemoteSTTEnvironment()`를 실행하며, 최초 QA의 9개 mutation과 기존 enabled
+flag를 local·test·production에 각각 주입한 30개 반례가 모두 listener 생성 전에
+fail closed한다. 최초 독립 스크립트도 이제 통과하고, 실제 server child process는 mode,
+endpoint, unknown 설정에서 exit 1로 종료한다.
+
+T-005 11/11, Backend 전체 66/66과 common·STT·AI·security·shared fixture validator가
+모두 통과했다. 재작업에는 실제 STT endpoint·upload parser·provider SDK·audio storage·
+queue·network 호출이 추가되지 않았다. 신규 HIGH·MEDIUM 결함은 없다.
+
+## 8. 재검증 결과
+
+| 검증 항목 | 결과 | 근거 |
+|---|---|---|
+| `QA-HIGH-005-001` | PASS | 실제 `loadRuntimeConfig()`에서 활성화·연결·unknown 설정을 거부한다. |
+| 환경별 startup mutation | PASS | 10종 × local·test·production = 30/30 거부. |
+| 최초 독립 반례 | PASS | `/private/tmp/t005-adversarial-startup.mjs` exit 0. |
+| 실제 server process | PASS | mode·endpoint·unknown 설정 3종 모두 listener 전 exit 1. |
+| T-005 전용·전체 runtime | PASS | 11/11, 66/66 통과. |
+| 공용 계약 validator | PASS | common·STT·AI·security·shared fixture 전부 통과. |
+| 금지 실행 경로 정적 감사 | PASS | provider·upload·storage·queue·network 신규 경로 0개. |
+| 목표 Node 24·전체 composition | DEFERRED | Host는 Node 26이며 Node 24/container와 HTTP plugin wiring은 T-007 범위다. |
+
+## 9. 재검증 수행 증거
+
+```text
+npm ci --ignore-scripts: PASS, audit 0건, Node 26 engine warning
+npm run build: PASS
+node --test 전체 runtime: PASS, 66/66
+node --test T-005: PASS, 11/11
+startup mutation: PASS, 30/30 fail closed
+최초 adversarial startup script: PASS
+실제 server process mode·endpoint·unknown: PASS, 모두 exit 1
+common·STT·AI·security·shared fixture validator: PASS
+금지 provider·upload·network 정적 scan: PASS
+aiops strict·git diff check: PASS
+```
+
+## 10. 최종 인계
+
+최종 판정은 `PASS_WITH_RISK`다. Task를 `verification_passed`로 전환하고 Development
+Lead Agent / Lead Role에 완료 검토를 인계한다. Quality Team은 직접 `done` 처리하거나
+병합하지 않는다. 목표 Node 24/container와 독립 HTTP boundary의 공유 app composition은
+승인된 T-007 필수 통합 검증에서 확인해야 한다.
