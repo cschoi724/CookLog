@@ -1,5 +1,14 @@
 # Backend 변경 기록
 
+- 2026-08-05: `T-20260804-006`에서 event별 exact allowlist·고정 enum을 새 객체로
+  투영하는 `SafeLogger`와 secret/content pattern을 fail closed하는 redaction scanner,
+  고정 reason drop counter를 구현했다.
+- 2026-08-05: provider·runtime·Tasks·Firestore·TTL·logging·egress·build를 합산하는
+  월 KRW 50,000 원장을 구현했다. operation 전액 승인/거절, KRW 5,000 delayed reserve
+  정산, CAS·가격·FX·SKU·billing 지연 차단과 되돌릴 수 없는 100% kill switch를 검증했다.
+- 2026-08-05: raw metadata의 +28일 explicit cleanup, 15분 독립 sweeper, 필수 sink 6개
+  receipt와 +30일 read·export·aggregate 선차단을 구현했다. 기존 AI ACK 즉시·+22시간·
+  +24시간 수명 회귀를 포함한 T-006 20/20, Backend 전체 86/86을 통과해 QA에 인계했다.
 - 2026-08-05: Product Owner가 `T-20260804-006` redacted logging·전체 외부비 원장·
   콘텐츠와 raw metadata TTL cleanup 경계 구현을 별도 승인했다. 실제 cloud sink·billing·
   datastore·queue·KMS·provider와 공유 app wiring은 제외하고 local/mock deterministic

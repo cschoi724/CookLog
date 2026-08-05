@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-006
 title: Backend redacted logging·비용 원장·TTL cleanup 경계 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: Mock 실행에서도 콘텐츠 비노출·비용 hard cutoff·삭제 불변식을 강제해야 한다.
@@ -70,6 +70,12 @@ qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
 
 ## 승인 및 실행 경계
 
+- 2026-08-05: Backend Agent가 최신 `origin/develop@3641dd4` 기반 clean 전용
+  worktree에서 lock을 획득하고 `approved -> in_progress`로 전환했다.
+- 2026-08-05: allowlist logger·redaction scanner, 전체 외부비 원장과 raw metadata
+  cleanup 경계를 구현했다. T-006 20/20, Backend 전체 86/86과 공용 validator를 통과해
+  lock을 해제하고 `in_progress -> verification_ready`로 Backend QA에 인계했다.
+
 - 2026-08-05: 공용 `develop@2092e1d`에서 선행 `T-20260804-003~005`의 `done`과
   PR #84 병합을 확인했다.
 - 2026-08-05: Product Owner가 redacted logging·비용 원장·TTL cleanup 경계 구현을
@@ -99,15 +105,14 @@ qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Backend Agent / Execution Role이야.
-Task T-20260804-006은 Product Owner가 별도 승인한 Backend 안전 runtime Task야.
+너는 Backend QA Agent / Verification Role이야.
+Task T-20260804-006의 구현과 자체 검증이 완료됐어.
 
-- 현재 상태: `approved`
-- 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `2092e1d9e077e656bea050815a196ffed5d0720c`
-- 다음에 해야 할 일: 최신 `origin/develop` 기반 clean 전용 worktree에서 lock을 획득하고
-  allowlist logger, 전체 외부비 원장, 콘텐츠·raw metadata cleanup을 `allowed_paths` 안에서
-  구현해줘.
+- 현재 상태: `verification_ready`
+- 구현 기준 ref: `task/T-20260804-006-implement-backend-safety-runtime`
+- 구현 기준 SHA: commit 후 report와 Draft PR에 기록
+- 다음에 해야 할 일: 구현 Agent와 분리된 clean worktree에서 telemetry, cost ledger,
+  콘텐츠·raw metadata cleanup 반례를 독립 재현해줘.
 - 기준 문서: `apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md`,
   `apps/backend/contracts/security/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
@@ -118,5 +123,5 @@ Task T-20260804-006은 Product Owner가 별도 승인한 Backend 안전 runtime 
 - 남은 리스크: 실제 cloud sink·billing·datastore·queue·KMS·Node 24/container·공유 app
   composition은 T-007에서 통합 검증
 - 차단/결정 필요: 실제 provider·cloud resource·secret·배포와 원격 STT 활성화 금지
-- 완료 시: 실행 보고서를 작성하고 자체 검증 후 lock을 해제해 `verification_ready`로
-  Backend QA Agent / Verification Role에 독립 검증을 요청해줘.
+- 완료 시: QA report에 판정과 직접 반례를 기록하고 Development Lead Agent에 완료
+  검토를 인계해줘.
