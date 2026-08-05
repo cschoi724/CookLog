@@ -7,6 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
+| `T-20260805-003` | `verification_ready` | iOS Home·전체 보기·검색·상태별 routing | Home 4개 상태·검색·동일 ID route·refresh·back swipe·전체 XCTest | iOS Agent 구현 완료, iOS QA 독립 검증 |
 | `T-20260805-002` | `done` | iOS 로컬 도메인·SwiftData migration·draft 생명주기 | HIGH 2건 해소·단일 UUID·legacy completed·non-empty migration·전체 XCTest | PASS·PR #77 squash merge `3d1d012` |
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |
 | `T-20260730-007` | `done` | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | iOS 26.5·17.2 전체 33/33, QA-HIGH-007-001 해소 | PR #18 squash merge·완료 확정 |
@@ -43,7 +44,6 @@
 
 | Task ID | 도메인 | 예정 Verification Agent | 검증 초점 |
 |---|---|---|---|
-| `T-20260805-003` | iOS | iOS QA Agent | Home 4개 Core Loop·검색·동일 ID·상태별 route·back swipe·복구 |
 | `T-20260728-003`, `T-20260805-004~008` | iOS/Design | iOS QA Agent | 패키지별 기능·데이터 보존과 최종 82/23 상태·접근성·Visual QA |
 | `T-20260804-005` | Backend | Backend QA Agent | 원격 STT route·body read·egress 0·활성화 차단 |
 | `T-20260804-006` | Backend | Backend QA Agent | redaction·비용 hard cutoff·TTL cleanup |

@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-003 첫 패키지 완료·Home routing 패키지 실행 승인
+- 상태: Mock Core MVP 조건부 통과, Home routing 패키지 구현 완료·독립 iOS QA 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -36,7 +36,7 @@
 ## 현재 첫 공개 출시 실행 순서
 
 1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `done`, PR #77 merge `3d1d012`
-2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `approved`
+2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `verification_ready`
 3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `proposed`
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `proposed`
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `proposed`
@@ -63,6 +63,16 @@
 - [x] QA 회귀·실제 non-empty migration 포함 전체 XCTest 43개 재통과
 - [x] iOS QA 집중 4/4·전체 43/43 독립 재검증과 Development Lead 완료 리뷰 통과
 - [x] legacy store fixture를 테스트 resource로 고정해 깨끗한 CI runner 독립성 확보
+
+### T-20260805-003 구현 결과
+
+- [x] `RecipeRecord` 최근 활동순 단일 목록과 Home 최근 3개 구현
+- [x] 전체 보기와 제목 우선·재료명 로컬 검색, STEP Preview 초안 제외
+- [x] Home loading·empty·error·retry와 refresh 중 기존 목록 보존
+- [x] 새 record 영속 생성 후 Cooking Log 진입
+- [x] lifecycle별 Cooking Log·AI Review·Recipe Detail 동일 record ID route
+- [x] Home 선별 XCTest와 build, 전체 XCTest 48개 통과
+- [x] iPhone 15 iOS 17.2 Simulator 설치·실행과 Home 빈 상태 렌더링 확인
 
 ## 현재 개발 원칙
 

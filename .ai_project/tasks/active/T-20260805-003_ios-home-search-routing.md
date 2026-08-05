@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-003
 title: iOS Home·전체 보기·검색·상태별 routing 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 저장·진행 Recipe를 다시 찾고 기록 흐름으로 진입하는 첫 화면을 제품 상태 모델과 일치시켜야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS Agent
-target_role: Execution Role
+target_agent: iOS QA Agent
+target_role: Verification Role
 required_capabilities: [ios_implementation, swiftui, navigation]
 depends_on: [T-20260805-002]
 blocks: [T-20260805-004, T-20260728-003]
@@ -66,6 +66,11 @@ qa_to: .ai_project/qa/T-20260805-003_ios-home-search-routing-qa.md
   `3d1d012`와 완료 동기화 merge `ba9bb38`을 확인했다.
 - 2026-08-05: Product Owner가 Home·전체 보기·검색·상태별 routing 구현을 별도 승인했다.
   Development Lead Agent가 `proposed -> approved`로 전환하고 iOS Agent에 인계한다.
+- 2026-08-05: iOS Agent가 최신 `origin/develop@865f508` 기반 전용 worktree에서 lock을
+  획득하고 `approved -> in_progress`로 전환했다.
+- 2026-08-05: Home·전체 보기·검색·동일 ID lifecycle routing 구현과 Home 선별 테스트,
+  build·전체 XCTest 48개·Simulator 렌더링을 통과해 `in_progress ->
+  verification_ready`로 iOS QA Agent에 독립 검증을 인계했다.
 - 구현은 Home의 최근·진행·완료 단일 목록과 전체 보기, 제목·재료 로컬 검색, 빈 상태·
   loading·error·retry, lifecycle별 route 연결로 제한한다.
 - `draft_step_preview`는 Cooking Log, `draft_ai_review`는 AI Review, `completed`는 Recipe
@@ -80,21 +85,25 @@ qa_to: .ai_project/qa/T-20260805-003_ios-home-search-routing-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 iOS Agent / Execution Role이야.
-Task T-20260805-003은 승인된 실행 Task야.
+너는 iOS QA Agent / Verification Role이야.
+Task T-20260805-003은 구현을 마친 독립 검증 Task야.
 
-- 현재 상태: `approved`
-- 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `ba9bb381cf6d8841d90ab7d35b78527feb9c25d0`
-- 다음에 해야 할 일: 최신 `origin/develop` 기반 clean 전용 worktree에서 lock을 획득하고
-  Home·전체 보기·로컬 검색·상태별 routing을 `allowed_paths` 안에서 구현해줘.
+- 현재 상태: `verification_ready`
+- 기준 상태 ref: `origin/develop@865f508`
+- 구현 ref: `task/T-20260805-003-implement-ios-home-search-routing`
+- 다음에 해야 할 일: 별도 QA worktree에서 lock을 획득하고 Home 4개 Core Loop 상태,
+  전체 보기·검색·동일 record ID routing과 복구 동작을 독립 검증해줘.
 - 기준 문서: `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`,
   `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`, `apps/ios/docs/NAVIGATION.md`
 - 허용 경로: Task frontmatter의 `allowed_paths`
-- 참고 산출물: `.ai_project/tasks/active/T-20260805-003_ios-home-search-routing.md`
+- 참고 산출물: `.ai_project/reports/T-20260805-003_ios-home-search-routing-report.md`,
+  `.ai_project/tasks/active/T-20260805-003_ios-home-search-routing.md`
 - 필수 검증: Home Core Loop 4개 상태, 전체 보기와 제목·재료 검색, empty·loading·error·retry,
   lifecycle별 route와 동일 record ID, 앱 재실행·refresh, back swipe·복구 무회귀
-- 남은 리스크: 실제 음성·AI·TTS와 후속 화면 내부 동작은 이번 Task에서 구현하지 않는다.
+- 자체 검증: Home 선별 XCTest 7개, build, 전체 XCTest 48개, Simulator 설치·실행과
+  Home 빈 상태 렌더링 통과
+- 남은 리스크: AI Review의 기존 review draft 직접 복원·동일 ID 완료 저장은 T-005,
+  실제 음성·AI·TTS와 후속 화면 내부 동작은 T-004~007 범위다.
 - 차단/결정 필요: T-004~008 범위 선행 구현과 실제 외부 서비스 연결 금지
-- 완료 시: report를 작성하고 자체 build·XCTest를 통과한 뒤 `verification_ready`로 전환해
-  iOS QA Agent / Verification Role에 독립 검증을 인계해줘.
+- 완료 시: QA 보고서를 작성하고 판정에 따라 `verification_passed` 또는
+  `rework_requested`로 다음 Role에 인계해줘.

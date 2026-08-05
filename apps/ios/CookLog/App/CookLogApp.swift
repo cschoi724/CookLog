@@ -27,28 +27,36 @@ struct CookLogApp: App {
         WindowGroup {
             NavigationStack(path: $path) {
                 HomeView(
-                    viewModel: HomeViewModel(fetchRecipesUseCase: environment.fetchRecipesUseCase),
+                    viewModel: makeHomeViewModel(),
                     refreshToken: homeRefreshToken,
-                    onStartCooking: {
-                        path.append(.cookingLog)
+                    onShowAllRecipes: {
+                        path.append(.recipeLibrary)
                     },
-                    onSelectRecipe: { recipe in
-                        path.append(.recipeDetail(recipe.id))
+                    onOpenRecord: { destination in
+                        path.append(AppRoute(destination))
                     }
                 )
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
-                    case .cookingLog:
+                    case .recipeLibrary:
+                        RecipeLibraryView(
+                            viewModel: makeHomeViewModel(),
+                            onOpenRecord: { destination in
+                                path.append(AppRoute(destination))
+                            }
+                        )
+                    case .cookingLog(let recordID, let stepPreviews):
                         CookingLogView(
                             viewModel: CookingLogViewModel(
                                 speechRecognitionService: environment.speechRecognitionService,
-                                addStepPreviewUseCase: environment.addStepPreviewUseCase
+                                addStepPreviewUseCase: environment.addStepPreviewUseCase,
+                                session: CookingLogSession(id: recordID, stepPreviews: stepPreviews)
                             ),
                             onGenerateRecipeDraft: { stepPreviews in
-                                path.append(.aiReview(stepPreviews))
+                                path.append(.aiReview(recordID: recordID, stepPreviews: stepPreviews))
                             }
                         )
-                    case .aiReview(let stepPreviews):
+                    case .aiReview(_, let stepPreviews):
                         AIReviewView(
                             viewModel: AIReviewViewModel(
                                 stepPreviews: stepPreviews,
@@ -84,5 +92,12 @@ struct CookLogApp: App {
             }
             .modelContainer(modelContainer)
         }
+    }
+
+    private func makeHomeViewModel() -> HomeViewModel {
+        HomeViewModel(
+            fetchRecordsUseCase: environment.fetchRecipeRecordsUseCase,
+            createRecordUseCase: environment.createRecipeRecordUseCase
+        )
     }
 }

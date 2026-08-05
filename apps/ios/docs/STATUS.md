@@ -4,20 +4,20 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-002 완료·PR #77 병합, T-20260805-003 실행 승인
+- 상태: T-20260805-003 Home·검색·상태별 routing 구현 완료, iOS QA 독립 검증 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002 done, T-20260805-003 approved
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002 done, T-20260805-003 verification_ready
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. `T-20260805-003` Home·전체 보기·검색·상태별 routing 구현과 독립 QA
+1. iOS QA Agent가 `T-20260805-003` Home 4개 상태·검색·동일 ID routing·복구를 독립 검증
 2. `T-20260805-004~007` 화면·상태 패키지 순차 구현
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
@@ -29,6 +29,14 @@
   `T-20260805-003` Home·전체 보기·검색·상태별 routing을 별도 실행 승인했습니다.
 - Home Core Loop 4개 상태, 제목·재료 검색, 동일 record ID와 lifecycle별 route,
   back swipe·복구를 필수 검증 범위로 확정해 iOS Agent에 인계했습니다.
+- Home을 `RecipeRecord` 단일 목록으로 전환하고 최근 활동순 최대 3개, 전체 보기,
+  loading·empty·error·retry와 기존 목록을 유지하는 refresh를 구현했습니다.
+- 전체 보기에서 AI Review·완료 record의 제목 우선·재료명 로컬 검색을 구현하고
+  STEP Preview 초안·조리 순서·메모를 검색에서 제외했습니다.
+- 새 기록은 저장된 record를 먼저 생성하며 lifecycle별 `AppRoute`가 동일 record ID와
+  STEP snapshot을 유지하도록 연결했습니다.
+- Home 선별 테스트와 build, 전체 XCTest 48개를 iPhone 15 iOS 17.2에서 통과하고
+  Simulator에서 Home 빈 상태의 디자인 토큰·CTA 렌더링과 앱 실행을 확인했습니다.
 - T-20260805-002에서 `RecipeRecord` 단일 UUID와 draft STEP·AI Review·완료 전이를 구현했습니다.
 - SwiftData lifecycle schema 확장, draft 복구, 완료 Recipe 호환 조회와 실패 rollback을 추가했습니다.
 - 전체 XCTest와 iPhone 15 iOS 17.2 기존 store 위 설치·실행을 통과했습니다.

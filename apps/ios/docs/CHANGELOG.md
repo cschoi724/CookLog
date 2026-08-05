@@ -8,6 +8,14 @@
   `T-20260805-003` Home·전체 보기·검색·상태별 routing 구현을 별도 승인했습니다.
 - Home Core Loop 4개 상태, 제목·재료 로컬 검색, lifecycle별 동일 record ID routing,
   앱 재실행·refresh와 back swipe·복구 무회귀를 구현·검증 경계로 확정했습니다.
+- Home 데이터 원본을 완료 Recipe 목록에서 진행·완료 `RecipeRecord` 단일 목록으로 전환하고
+  최근 활동순 3개 카드, 전체 보기, loading·empty·error·retry를 구현했습니다.
+- AI Review·완료 record의 제목 우선·재료명 로컬 검색을 추가하고 STEP Preview 초안·
+  조리 순서·메모는 검색하지 않도록 범위를 고정했습니다.
+- 새 기록을 먼저 로컬에 생성하고 lifecycle별 Cooking Log·AI Review·Recipe Detail route에
+  동일 record ID와 STEP snapshot을 전달하도록 `AppRoute`를 확장했습니다.
+- Home 선별 테스트와 build, 전체 XCTest 48개를 통과하고 iPhone 15 iOS 17.2
+  Simulator에서 디자인 토큰·핵심 메시지·기록 CTA의 빈 상태 렌더링을 확인했습니다.
 - Product Owner가 `T-20260728-003` iOS 로컬 제품 적용 진행을 승인했습니다.
 - Development Lead가 T-003을 `T-20260805-002~008` 7개 구현·독립 QA 패키지로 분해했습니다.
 - 첫 `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기를 iOS Agent에 실행 승인 인계했습니다.
