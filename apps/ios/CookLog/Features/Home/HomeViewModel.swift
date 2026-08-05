@@ -32,37 +32,48 @@ final class HomeViewModel: ObservableObject {
     @Published private(set) var records: [RecipeRecord] = []
     @Published private(set) var isLoading = false
     @Published private(set) var isCreatingRecord = false
-    @Published private(set) var errorMessage: String?
+    @Published private(set) var isDeletingRecord = false
+    @Published private(set) var loadErrorMessage: String?
+    @Published private(set) var creationErrorMessage: String?
+    @Published private(set) var deletionErrorMessage: String?
 
     var recentRecords: [RecipeRecord] {
         Array(records.prefix(3))
     }
 
     var isEmpty: Bool {
-        !isLoading && errorMessage == nil && records.isEmpty
+        !isLoading && loadErrorMessage == nil && records.isEmpty
+    }
+
+    var reviewReadyRecord: RecipeRecord? {
+        records.first { $0.lifecycleState == .draftAIReview }
     }
 
     private let fetchRecordsUseCase: FetchRecipeRecordsUseCase
     private let createRecordUseCase: CreateRecipeRecordUseCase
+    private let deleteRecordUseCase: DeleteRecipeRecordUseCase
+    private var failedDeletionRecordID: UUID?
 
     init(
         fetchRecordsUseCase: FetchRecipeRecordsUseCase,
-        createRecordUseCase: CreateRecipeRecordUseCase
+        createRecordUseCase: CreateRecipeRecordUseCase,
+        deleteRecordUseCase: DeleteRecipeRecordUseCase
     ) {
         self.fetchRecordsUseCase = fetchRecordsUseCase
         self.createRecordUseCase = createRecordUseCase
+        self.deleteRecordUseCase = deleteRecordUseCase
     }
 
     func loadRecords() async {
         guard !isLoading else { return }
 
         isLoading = true
-        errorMessage = nil
+        loadErrorMessage = nil
 
         do {
             records = try await fetchRecordsUseCase.execute()
         } catch {
-            errorMessage = "요리 기록을 불러오지 못했습니다."
+            loadErrorMessage = "요리 기록을 불러오지 못했습니다."
         }
 
         isLoading = false
@@ -77,12 +88,49 @@ final class HomeViewModel: ObservableObject {
         do {
             let record = try await createRecordUseCase.execute()
             records.insert(record, at: 0)
-            errorMessage = nil
+            creationErrorMessage = nil
             return destination(for: record)
         } catch {
-            errorMessage = "새 요리 기록을 시작하지 못했습니다. 다시 시도해주세요."
+            creationErrorMessage = "새 요리 기록을 시작하지 못했습니다. 기존 기록은 그대로 보존됩니다."
             return nil
         }
+    }
+
+    func deleteRecord(_ record: RecipeRecord) async -> Bool {
+        guard record.lifecycleState != .completed, !isDeletingRecord else { return false }
+
+        isDeletingRecord = true
+        deletionErrorMessage = nil
+
+        do {
+            try await deleteRecordUseCase.execute(id: record.id)
+            records.removeAll { $0.id == record.id }
+            failedDeletionRecordID = nil
+            isDeletingRecord = false
+            return true
+        } catch {
+            failedDeletionRecordID = record.id
+            deletionErrorMessage = "진행 기록을 삭제하지 못했습니다. 기록은 그대로 보존됩니다."
+            isDeletingRecord = false
+            return false
+        }
+    }
+
+    func retryFailedDeletion() async -> Bool {
+        guard let recordID = failedDeletionRecordID,
+              let record = records.first(where: { $0.id == recordID }) else {
+            return false
+        }
+        return await deleteRecord(record)
+    }
+
+    func dismissDeletionError() {
+        deletionErrorMessage = nil
+        failedDeletionRecordID = nil
+    }
+
+    func hideDeletionError() {
+        deletionErrorMessage = nil
     }
 
     func destination(for record: RecipeRecord) -> HomeRecordDestination {

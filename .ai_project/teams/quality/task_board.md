@@ -7,7 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
-| `T-20260805-003` | `approved` | iOS Home·전체 보기·검색·상태별 routing | Home 4개 상태·검색·동일 ID route·refresh·back swipe·전체 XCTest | Product Owner 재작업 승인, WP-R1~R4 수정 후 독립 재검증 |
+| `T-20260805-003` | `verification_ready` | iOS Home·전체 보기·검색·상태별 routing | WP-R1~R4·Home 4개 상태·검색·동일 ID route·refresh·전체 XCTest | 재작업 완료·54/54, iOS QA 독립 재검증 |
 | `T-20260805-002` | `done` | iOS 로컬 도메인·SwiftData migration·draft 생명주기 | HIGH 2건 해소·단일 UUID·legacy completed·non-empty migration·전체 XCTest | PASS·PR #77 squash merge `3d1d012` |
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |
 | `T-20260730-007` | `done` | iOS 26.5 SwiftData XCTest crash 진단과 최소 수정 | iOS 26.5·17.2 전체 33/33, QA-HIGH-007-001 해소 | PR #18 squash merge·완료 확정 |
@@ -79,6 +79,10 @@ Development Lead는 네 결함을 진행 record 삭제, AI Review 준비 상태,
 생성 실패 전용 복구의 `WP-R1~R4`로 범위화했습니다. Product Owner가 재작업을 승인해
 Task를 `approved`로 iOS Agent에 재인계했으며, 수정본은 기존 통과 항목과 결함별 신규
 테스트를 포함해 iOS QA Agent가 독립 재검증합니다.
+
+iOS Agent가 `WP-R1~R4` 구현과 신규 회귀를 포함한 전체 XCTest 54/54를 완료해
+`verification_ready`로 재인계했습니다. iOS QA Agent는 네 결함과 기존 통과 범위를
+독립 재검증합니다.
 
 PR #77 최종 CI에서 migration 테스트의 로컬 Simulator fixture 의존성이 확인됐습니다.
 production 코드 변경 없이 과거 schema non-empty store를 테스트 resource로 고정하고

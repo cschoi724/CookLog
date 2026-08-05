@@ -32,8 +32,27 @@ Home의 데이터 원본을 `RecipeRecord`로 통일하고 최근 활동순 혼�
 - Home 빈 상태에서 핵심 메시지·기록 CTA·보존 안내·CookLog 색상 렌더링 확인
 - `git diff --check`: 성공
 
+## QA 재작업 결과
+
+- `WP-R1`: 진행 record 전용 `⋯` 메뉴와 복구 불가 확인을 추가했습니다. 삭제 성공 시
+  같은 UUID를 제거하고 최근 3개를 backfill하며, 실패 시 record를 보존하고 실패한
+  UUID 삭제만 재시도합니다.
+- `WP-R2`: 최신 `draft_ai_review` record를 성공 배너와 `레시피 검토하기` CTA에
+  연결했습니다. refresh 전후 동일 UUID를 유지하며 새 record를 만들지 않습니다.
+- `WP-R3`: 완료 badge를 제거하고 lifecycle별 카드에 최근 활동, 주요 재료 최대 3개,
+  예상 시간과 단계 수를 표시합니다.
+- `WP-R4`: 조회 오류와 생성 오류를 분리했습니다. 생성 실패 CTA는 기존 record를
+  변경하지 않고 생성 동작만 다시 수행합니다.
+- HomeViewModel 회귀 6개를 추가해 Home 테스트 13개, 전체 XCTest 54/54를 iPhone 15
+  iOS 17.2에서 통과했습니다.
+- Simulator 설치·실행과 Home 빈 상태의 핵심 메시지·기록 CTA 렌더링을 재확인하고,
+  CTA를 실제로 눌러 새 record 생성 후 Cooking Log로 전환되는 것을 확인했습니다.
+- 재작업 후 `git diff --check`: 성공
+
 ## 독립 QA 요청
 
+- `WP-R1~R4`의 진행 record 삭제·backfill·실패 재시도, Review 준비 배너 동일 UUID,
+  lifecycle별 metadata, 조회·생성 오류 분리를 우선 재검증
 - Home Content·Empty·Loading·Error와 retry 후 회복
 - 최근 3개·전체 보기·제목 우선·재료 검색·결과 없음
 - STEP Preview 초안 검색 제외와 검색어 비전송 문구

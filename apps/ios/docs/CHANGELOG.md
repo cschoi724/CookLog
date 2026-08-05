@@ -4,6 +4,18 @@
 
 ## 2026-08-05
 
+- `T-20260805-003` 독립 QA의 진행 기록 삭제 HIGH 1건과 AI Review 준비 배너·카드
+  metadata·생성 실패 재시도 MEDIUM 3건에 대해 승인된 `WP-R1~R4`를 반영했습니다.
+- 진행 record에만 `⋯` 메뉴와 복구 불가 삭제 확인을 제공하고, 같은 UUID 삭제·최근 3개
+  backfill·실패 record 보존·실패한 삭제만 재시도하는 흐름을 추가했습니다.
+- AI Review 준비 완료 성공 배너와 같은 UUID의 `레시피 검토하기` CTA를 추가했습니다.
+- 완료 badge를 제거하고 카드에 lifecycle별 최근 활동, 주요 재료 최대 3개, 예상 시간과
+  단계 수를 표시했습니다.
+- 조회 오류와 새 기록 생성 오류를 분리하고 생성 실패 재시도가 생성만 다시 수행하도록
+  수정했습니다.
+- 결함별 회귀 테스트를 추가해 iPhone 15 iOS 17.2 전체 XCTest 54/54를 통과하고
+  Simulator 설치·실행, Home 빈 상태 렌더링과 기록 CTA의 Cooking Log 실제 전환을
+  재확인했습니다.
 - 공용 `develop`에서 T-20260805-002의 `done`과 PR #77 병합을 확인하고 Product Owner가
   `T-20260805-003` Home·전체 보기·검색·상태별 routing 구현을 별도 승인했습니다.
 - Home Core Loop 4개 상태, 제목·재료 로컬 검색, lifecycle별 동일 record ID routing,

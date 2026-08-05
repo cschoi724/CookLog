@@ -21,17 +21,20 @@ enum HomeTheme {
 struct RecipeRecordRowView: View {
     let record: RecipeRecord
     var searchMatch: HomeSearchMatch?
+    var reservesProgressMenuSpace = false
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 8) {
-                    Text(stateLabel)
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(stateColor)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(stateColor.opacity(0.12), in: Capsule())
+                    if let stateLabel {
+                        Text(stateLabel)
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(stateColor)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(stateColor.opacity(0.12), in: Capsule())
+                    }
 
                     if let searchMatch {
                         Text(searchMatch.label)
@@ -45,18 +48,26 @@ struct RecipeRecordRowView: View {
                     .foregroundStyle(.primary)
                     .lineLimit(2)
 
-                Text(summaryText)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
+                ForEach(metadataLines, id: \.self) { metadata in
+                    Text(metadata)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                }
             }
 
             Spacer(minLength: 12)
 
-            Image(systemName: "chevron.right")
-                .font(.footnote.weight(.semibold))
-                .foregroundStyle(.tertiary)
-                .accessibilityHidden(true)
+            if !reservesProgressMenuSpace {
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+                    .accessibilityHidden(true)
+            } else {
+                Color.clear
+                    .frame(width: 32, height: 1)
+                    .accessibilityHidden(true)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, minHeight: 88, alignment: .leading)
@@ -70,14 +81,14 @@ struct RecipeRecordRowView: View {
         .accessibilityElement(children: .combine)
     }
 
-    private var stateLabel: String {
+    var stateLabel: String? {
         switch record.lifecycleState {
         case .draftStepPreview:
             return "기록 중"
         case .draftAIReview:
             return "검토 준비됨"
         case .completed:
-            return "완료"
+            return nil
         }
     }
 
@@ -92,23 +103,39 @@ struct RecipeRecordRowView: View {
         }
     }
 
-    private var summaryText: String {
+    var metadataLines: [String] {
         switch record.lifecycleState {
         case .draftStepPreview:
-            return "STEP \(record.stepPreviews.count)개 · 마지막 기록 \(record.updatedAt.formatted(date: .abbreviated, time: .shortened))"
+            return [
+                "STEP \(record.stepPreviews.count)개",
+                recentActivityText
+            ]
         case .draftAIReview:
             let ingredients = record.homeIngredients.prefix(3).map(\.name).joined(separator: " · ")
-            return ingredients.isEmpty ? "레시피 검토가 필요합니다." : ingredients
+            return [
+                ingredients.isEmpty ? "레시피 검토가 필요합니다." : ingredients,
+                recentActivityText
+            ]
         case .completed:
             guard let recipe = record.completedRecipe else {
-                return "저장된 레시피"
+                return ["저장된 레시피", recentActivityText]
             }
-            var parts = ["\(recipe.ingredients.count)개 재료", "\(recipe.steps.count)단계"]
+            let ingredients = recipe.ingredients.prefix(3).map(\.name).joined(separator: " · ")
+            var details: [String] = []
             if let estimatedTime = recipe.estimatedTime {
-                parts.append("\(Int(estimatedTime / 60))분")
+                details.append("약 \(Int(estimatedTime / 60))분")
             }
-            return parts.joined(separator: " · ")
+            details.append("\(recipe.steps.count)단계")
+            details.append(recentActivityText)
+            return [
+                ingredients.isEmpty ? "재료 정보 없음" : ingredients,
+                details.joined(separator: " · ")
+            ]
         }
+    }
+
+    private var recentActivityText: String {
+        "최근 활동 \(record.updatedAt.formatted(date: .abbreviated, time: .shortened))"
     }
 }
 

@@ -97,7 +97,8 @@ struct CookLogApp: App {
     private func makeHomeViewModel() -> HomeViewModel {
         HomeViewModel(
             fetchRecordsUseCase: environment.fetchRecipeRecordsUseCase,
-            createRecordUseCase: environment.createRecipeRecordUseCase
+            createRecordUseCase: environment.createRecipeRecordUseCase,
+            deleteRecordUseCase: environment.deleteRecipeRecordUseCase
         )
     }
 }

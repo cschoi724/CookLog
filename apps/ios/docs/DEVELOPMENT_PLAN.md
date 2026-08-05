@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, Home routing 패키지 구현 완료·독립 iOS QA 대기
+- 상태: Mock Core MVP 조건부 통과, Home 상태·행동 재작업 완료·독립 iOS QA 재검증 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -71,8 +71,14 @@
 - [x] Home loading·empty·error·retry와 refresh 중 기존 목록 보존
 - [x] 새 record 영속 생성 후 Cooking Log 진입
 - [x] lifecycle별 Cooking Log·AI Review·Recipe Detail 동일 record ID route
-- [x] Home 선별 XCTest와 build, 전체 XCTest 48개 통과
+- [x] 최초 구현 Home 선별 XCTest와 build, 전체 XCTest 48개 통과
 - [x] iPhone 15 iOS 17.2 Simulator 설치·실행과 Home 빈 상태 렌더링 확인
+- [x] 진행 record 전용 `⋯` 메뉴·복구 불가 확인·동일 UUID 삭제·최근 3개 backfill
+- [x] 삭제 실패 시 record 보존과 실패한 삭제만 재시도
+- [x] AI Review 준비 완료 배너·같은 UUID CTA와 refresh 중복 생성 방지
+- [x] 완료 badge 제거와 lifecycle별 최근 활동·주요 재료·예상 시간·단계 수 표시
+- [x] 조회 오류·생성 오류 분리와 생성 동작 전용 재시도
+- [x] 재작업 회귀를 포함한 전체 XCTest 54/54 통과
 
 ## 현재 개발 원칙
 

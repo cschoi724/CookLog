@@ -13,7 +13,7 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.records.map(\.id), records.sorted { $0.updatedAt > $1.updatedAt }.map(\.id))
         XCTAssertEqual(viewModel.recentRecords.count, 3)
         XCTAssertFalse(viewModel.isEmpty)
-        XCTAssertNil(viewModel.errorMessage)
+        XCTAssertNil(viewModel.loadErrorMessage)
     }
 
     func testLoadRecordsExposesLoadingAndEmptyStates() async {
@@ -42,13 +42,13 @@ final class HomeViewModelTests: XCTestCase {
         await viewModel.loadRecords()
 
         XCTAssertEqual(viewModel.records, records.sorted { $0.updatedAt > $1.updatedAt })
-        XCTAssertEqual(viewModel.errorMessage, "요리 기록을 불러오지 못했습니다.")
+        XCTAssertEqual(viewModel.loadErrorMessage, "요리 기록을 불러오지 못했습니다.")
 
         await repository.setFetchErrorEnabled(false)
         await viewModel.loadRecords()
 
         XCTAssertEqual(viewModel.records, records.sorted { $0.updatedAt > $1.updatedAt })
-        XCTAssertNil(viewModel.errorMessage)
+        XCTAssertNil(viewModel.loadErrorMessage)
     }
 
     func testSearchPrioritizesTitleThenIngredientAndExcludesStepPreviewDraft() async throws {
@@ -129,10 +129,156 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertTrue(stepPreviews.isEmpty)
     }
 
+    func testDeletingProgressRecordRemovesSameIdentifierAndBackfillsRecentRecords() async throws {
+        let records = try makeMixedRecords()
+        let repository = HomeTestRecipeRecordRepository(records: records)
+        let viewModel = makeViewModel(repository: repository)
+        await viewModel.loadRecords()
+        let recordToDelete = try XCTUnwrap(viewModel.recentRecords.first)
+
+        let didDelete = await viewModel.deleteRecord(recordToDelete)
+        let storedRecord = try await repository.fetchRecord(id: recordToDelete.id)
+
+        XCTAssertTrue(didDelete)
+        XCTAssertNil(storedRecord)
+        XCTAssertFalse(viewModel.records.contains { $0.id == recordToDelete.id })
+        XCTAssertEqual(viewModel.recentRecords.count, 3)
+        XCTAssertEqual(viewModel.recentRecords.map(\.id), Array(viewModel.records.prefix(3)).map(\.id))
+    }
+
+    func testDeletionFailurePreservesRecordAndRetriesOnlyFailedIdentifier() async throws {
+        let records = try makeMixedRecords()
+        let repository = HomeTestRecipeRecordRepository(records: records)
+        let viewModel = makeViewModel(repository: repository)
+        await viewModel.loadRecords()
+        let recordToDelete = try XCTUnwrap(records.first { $0.lifecycleState == .draftAIReview })
+        await repository.setDeleteFailureEnabled(true, for: recordToDelete.id)
+
+        let firstAttempt = await viewModel.deleteRecord(recordToDelete)
+
+        XCTAssertFalse(firstAttempt)
+        XCTAssertTrue(viewModel.records.contains { $0.id == recordToDelete.id })
+        XCTAssertNotNil(viewModel.deletionErrorMessage)
+        let firstDeleteAttempts = await repository.deletedIdentifiers()
+        XCTAssertEqual(firstDeleteAttempts, [recordToDelete.id])
+
+        await repository.setDeleteFailureEnabled(false, for: recordToDelete.id)
+        let retry = await viewModel.retryFailedDeletion()
+
+        XCTAssertTrue(retry)
+        XCTAssertFalse(viewModel.records.contains { $0.id == recordToDelete.id })
+        let retriedDeleteAttempts = await repository.deletedIdentifiers()
+        XCTAssertEqual(retriedDeleteAttempts, [recordToDelete.id, recordToDelete.id])
+    }
+
+    func testCompletedRecordCannotUseProgressDeletionPath() async throws {
+        let completedRecord = RecipeRecord(completedRecipe: makeRecipe(
+            title: "완료 레시피",
+            ingredients: [Ingredient(name: "감자")],
+            updatedAt: Date(timeIntervalSince1970: 100)
+        ))
+        let repository = HomeTestRecipeRecordRepository(records: [completedRecord])
+        let viewModel = makeViewModel(repository: repository)
+        await viewModel.loadRecords()
+
+        let didDelete = await viewModel.deleteRecord(completedRecord)
+        let deleteAttempts = await repository.deletedIdentifiers()
+
+        XCTAssertFalse(didDelete)
+        XCTAssertEqual(viewModel.records, [completedRecord])
+        XCTAssertTrue(deleteAttempts.isEmpty)
+    }
+
+    func testReviewReadyBannerRecordKeepsIdentifierAcrossRefresh() async throws {
+        let records = try makeMixedRecords()
+        let repository = HomeTestRecipeRecordRepository(records: records)
+        let viewModel = makeViewModel(repository: repository)
+        await viewModel.loadRecords()
+        let firstReadyRecord = try XCTUnwrap(viewModel.reviewReadyRecord)
+
+        await viewModel.loadRecords()
+        let refreshedReadyRecord = try XCTUnwrap(viewModel.reviewReadyRecord)
+
+        XCTAssertEqual(refreshedReadyRecord.id, firstReadyRecord.id)
+        XCTAssertEqual(
+            viewModel.destination(for: refreshedReadyRecord),
+            .aiReview(recordID: firstReadyRecord.id, stepPreviews: firstReadyRecord.stepPreviews)
+        )
+        let refreshCreateAttempts = await repository.createAttemptCount()
+        XCTAssertEqual(refreshCreateAttempts, 0)
+    }
+
+    func testCardMetadataUsesIngredientsActivityTimeAndStepsWithoutCompletedBadge() throws {
+        let recipe = Recipe(
+            title: "재료가 많은 레시피",
+            ingredients: ["감자", "양파", "당근", "대파"].map { Ingredient(name: $0) },
+            steps: [
+                RecipeStep(order: 1, text: "썰기"),
+                RecipeStep(order: 2, text: "끓이기")
+            ],
+            estimatedTime: 20 * 60,
+            createdAt: Date(timeIntervalSince1970: 50),
+            updatedAt: Date(timeIntervalSince1970: 100)
+        )
+        let row = RecipeRecordRowView(record: RecipeRecord(completedRecipe: recipe))
+
+        XCTAssertNil(row.stateLabel)
+        XCTAssertEqual(row.metadataLines.first, "감자 · 양파 · 당근")
+        XCTAssertTrue(row.metadataLines.last?.contains("약 20분") == true)
+        XCTAssertTrue(row.metadataLines.last?.contains("2단계") == true)
+        XCTAssertTrue(row.metadataLines.last?.contains("최근 활동") == true)
+
+        var reviewRecord = RecipeRecord(
+            stepPreviews: [StepPreview(order: 1, transcript: "재료를 준비했어")],
+            createdAt: Date(timeIntervalSince1970: 50),
+            updatedAt: Date(timeIntervalSince1970: 50)
+        )
+        try reviewRecord.beginAIProcessing(requestID: UUID(), updatedAt: Date(timeIntervalSince1970: 75))
+        try reviewRecord.finishAIProcessing(
+            with: RecipeDraft(
+                title: "검토 레시피",
+                ingredients: ["두부", "대파", "간장", "참기름"].map { Ingredient(name: $0) },
+                steps: [RecipeStep(order: 1, text: "조리")]
+            ),
+            updatedAt: Date(timeIntervalSince1970: 100)
+        )
+        let reviewRow = RecipeRecordRowView(record: reviewRecord)
+
+        XCTAssertEqual(reviewRow.stateLabel, "검토 준비됨")
+        XCTAssertEqual(reviewRow.metadataLines.first, "두부 · 대파 · 간장")
+        XCTAssertTrue(reviewRow.metadataLines.last?.contains("최근 활동") == true)
+    }
+
+    func testCreationFailureUsesDedicatedErrorAndRetriesOnlyCreation() async {
+        let repository = HomeTestRecipeRecordRepository(records: [])
+        let viewModel = makeViewModel(repository: repository)
+        await repository.failNextCreate()
+
+        let failedDestination = await viewModel.startNewRecord()
+
+        XCTAssertNil(failedDestination)
+        XCTAssertNil(viewModel.loadErrorMessage)
+        XCTAssertNotNil(viewModel.creationErrorMessage)
+        XCTAssertTrue(viewModel.records.isEmpty)
+        let failedCreateAttempts = await repository.createAttemptCount()
+        XCTAssertEqual(failedCreateAttempts, 1)
+
+        let retriedDestination = await viewModel.startNewRecord()
+
+        guard case .cookingLog(let recordID, _) = retriedDestination else {
+            return XCTFail("생성 재시도는 새 Cooking Log record로 이동해야 합니다.")
+        }
+        XCTAssertNil(viewModel.creationErrorMessage)
+        XCTAssertEqual(viewModel.records.map(\.id), [recordID])
+        let retriedCreateAttempts = await repository.createAttemptCount()
+        XCTAssertEqual(retriedCreateAttempts, 2)
+    }
+
     private func makeViewModel(repository: HomeTestRecipeRecordRepository) -> HomeViewModel {
         HomeViewModel(
             fetchRecordsUseCase: FetchRecipeRecordsUseCase(repository: repository),
-            createRecordUseCase: CreateRecipeRecordUseCase(repository: repository)
+            createRecordUseCase: CreateRecipeRecordUseCase(repository: repository),
+            deleteRecordUseCase: DeleteRecipeRecordUseCase(repository: repository)
         )
     }
 
@@ -188,11 +334,17 @@ final class HomeViewModelTests: XCTestCase {
 
 private enum HomeTestRepositoryError: Error {
     case fetchFailed
+    case createFailed
+    case deleteFailed
 }
 
 private actor HomeTestRecipeRecordRepository: RecipeRecordRepository {
     private var recordsByID: [UUID: RecipeRecord]
     private var fetchErrorEnabled = false
+    private var shouldFailNextCreate = false
+    private var deleteFailureIDs: Set<UUID> = []
+    private var createAttempts = 0
+    private var deleteAttempts: [UUID] = []
     private let fetchDelayNanoseconds: UInt64
 
     init(records: [RecipeRecord], fetchDelayNanoseconds: UInt64 = 0) {
@@ -202,6 +354,26 @@ private actor HomeTestRecipeRecordRepository: RecipeRecordRepository {
 
     func setFetchErrorEnabled(_ isEnabled: Bool) {
         fetchErrorEnabled = isEnabled
+    }
+
+    func failNextCreate() {
+        shouldFailNextCreate = true
+    }
+
+    func setDeleteFailureEnabled(_ isEnabled: Bool, for id: UUID) {
+        if isEnabled {
+            deleteFailureIDs.insert(id)
+        } else {
+            deleteFailureIDs.remove(id)
+        }
+    }
+
+    func createAttemptCount() -> Int {
+        createAttempts
+    }
+
+    func deletedIdentifiers() -> [UUID] {
+        deleteAttempts
     }
 
     func fetchRecords() async throws -> [RecipeRecord] {
@@ -219,6 +391,11 @@ private actor HomeTestRecipeRecordRepository: RecipeRecordRepository {
     }
 
     func createRecord(_ record: RecipeRecord) async throws {
+        createAttempts += 1
+        if shouldFailNextCreate {
+            shouldFailNextCreate = false
+            throw HomeTestRepositoryError.createFailed
+        }
         guard recordsByID[record.id] == nil else {
             throw RecipeRecordRepositoryError.recordAlreadyExists(record.id)
         }
@@ -230,6 +407,10 @@ private actor HomeTestRecipeRecordRepository: RecipeRecordRepository {
     }
 
     func deleteRecord(id: UUID) async throws {
+        deleteAttempts.append(id)
+        guard !deleteFailureIDs.contains(id) else {
+            throw HomeTestRepositoryError.deleteFailed
+        }
         recordsByID[id] = nil
     }
 }

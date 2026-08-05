@@ -4,7 +4,7 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-003 Home·검색·상태별 routing 구현 완료, iOS QA 독립 검증 대기
+- 상태: T-20260805-003 Home 상태·행동 재작업 완료, iOS QA 독립 재검증 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
@@ -17,7 +17,7 @@
 
 ## 다음 작업
 
-1. iOS QA Agent가 `T-20260805-003` Home 4개 상태·검색·동일 ID routing·복구를 독립 검증
+1. iOS QA Agent가 `T-20260805-003` `WP-R1~R4`와 기존 Home 회귀를 독립 재검증
 2. `T-20260805-004~007` 화면·상태 패키지 순차 구현
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
@@ -25,6 +25,20 @@
 
 ## 최근 작업
 
+- 독립 QA의 `QA-HIGH-805003-001`과 MEDIUM 3건에 대해 Product Owner가 승인한
+  `WP-R1~R4` 재작업을 완료했습니다.
+- 진행 record 전용 `⋯` 메뉴·복구 불가 확인·동일 UUID 삭제를 추가하고, 삭제 실패 시
+  목록을 보존한 채 실패한 삭제만 재시도하도록 분리했습니다. 삭제 성공 후 최근 3개는
+  최근 활동순으로 다시 채웁니다.
+- Home에 AI Review 준비 완료 배너와 같은 UUID의 `레시피 검토하기` CTA를 추가하고,
+  refresh가 record를 중복 생성하거나 ID를 변경하지 않도록 유지했습니다.
+- 완료 badge를 제거하고 lifecycle별 카드에 최근 활동, 주요 재료 최대 3개, 예상 시간과
+  단계 수를 표시했습니다.
+- 조회 오류와 새 기록 생성 오류를 분리해 생성 실패 재시도가 생성 동작만 다시 수행하도록
+  수정했습니다.
+- 결함별 HomeViewModel 회귀를 추가해 전체 XCTest 54/54를 iPhone 15 iOS 17.2에서
+  통과했고, Simulator 설치·실행과 Home 빈 상태 렌더링, 기록 CTA의 Cooking Log
+  실제 전환을 재확인했습니다.
 - 공용 `develop`에서 T-20260805-002 완료와 PR #77 병합을 확인하고 Product Owner가
   `T-20260805-003` Home·전체 보기·검색·상태별 routing을 별도 실행 승인했습니다.
 - Home Core Loop 4개 상태, 제목·재료 검색, 동일 record ID와 lifecycle별 route,
@@ -35,7 +49,7 @@
   STEP Preview 초안·조리 순서·메모를 검색에서 제외했습니다.
 - 새 기록은 저장된 record를 먼저 생성하며 lifecycle별 `AppRoute`가 동일 record ID와
   STEP snapshot을 유지하도록 연결했습니다.
-- Home 선별 테스트와 build, 전체 XCTest 48개를 iPhone 15 iOS 17.2에서 통과하고
+- 최초 구현의 Home 선별 테스트와 build, 전체 XCTest 48개를 iPhone 15 iOS 17.2에서 통과하고
   Simulator에서 Home 빈 상태의 디자인 토큰·CTA 렌더링과 앱 실행을 확인했습니다.
 - T-20260805-002에서 `RecipeRecord` 단일 UUID와 draft STEP·AI Review·완료 전이를 구현했습니다.
 - SwiftData lifecycle schema 확장, draft 복구, 완료 Recipe 호환 조회와 실패 rollback을 추가했습니다.

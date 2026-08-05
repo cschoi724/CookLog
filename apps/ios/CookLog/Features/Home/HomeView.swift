@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel: HomeViewModel
+    @State private var deletionCandidate: RecipeRecord?
+    @State private var isDeleteConfirmationPresented = false
     private let refreshToken: Int
     private let onShowAllRecipes: () -> Void
     private let onOpenRecord: (HomeRecordDestination) -> Void
@@ -23,7 +25,9 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 24) {
                 hero
                 startButton
+                creationError
                 preservationNote
+                reviewReadyBanner
                 recentSection
             }
             .padding(.horizontal, 20)
@@ -37,6 +41,35 @@ struct HomeView: View {
         }
         .refreshable {
             await viewModel.loadRecords()
+        }
+        .confirmationDialog(
+            "진행 기록을 영구 삭제할까요?",
+            isPresented: $isDeleteConfirmationPresented,
+            titleVisibility: .visible
+        ) {
+            Button("영구 삭제", role: .destructive) {
+                guard let record = deletionCandidate else { return }
+                deletionCandidate = nil
+                Task { _ = await viewModel.deleteRecord(record) }
+            }
+            Button("취소", role: .cancel) {
+                deletionCandidate = nil
+            }
+        } message: {
+            Text("STEP Preview와 임시 저장 내용을 삭제합니다. 삭제한 기록은 복구할 수 없어요.")
+        }
+        .alert(
+            "진행 기록을 삭제하지 못했어요",
+            isPresented: deleteErrorBinding
+        ) {
+            Button("다시 시도") {
+                Task { _ = await viewModel.retryFailedDeletion() }
+            }
+            Button("취소", role: .cancel) {
+                viewModel.dismissDeletionError()
+            }
+        } message: {
+            Text(viewModel.deletionErrorMessage ?? "기록은 그대로 보존됩니다.")
         }
     }
 
@@ -60,11 +93,7 @@ struct HomeView: View {
 
     private var startButton: some View {
         Button {
-            Task {
-                if let destination = await viewModel.startNewRecord() {
-                    onOpenRecord(destination)
-                }
-            }
+            startNewRecord()
         } label: {
             HStack(spacing: 10) {
                 if viewModel.isCreatingRecord {
@@ -83,6 +112,26 @@ struct HomeView: View {
         .tint(HomeTheme.accent)
         .disabled(viewModel.isCreatingRecord)
         .accessibilityHint("새 진행 기록을 만들고 요리 기록 화면을 엽니다.")
+    }
+
+    @ViewBuilder
+    private var creationError: some View {
+        if let creationErrorMessage = viewModel.creationErrorMessage {
+            HomeInlineError(
+                message: creationErrorMessage,
+                retryTitle: "기록 시작 다시 시도",
+                retry: startNewRecord
+            )
+        }
+    }
+
+    @ViewBuilder
+    private var reviewReadyBanner: some View {
+        if let record = viewModel.reviewReadyRecord {
+            HomeReviewReadyBanner(title: record.homeTitle) {
+                onOpenRecord(viewModel.destination(for: record))
+            }
+        }
     }
 
     private var preservationNote: some View {
@@ -117,7 +166,7 @@ struct HomeView: View {
                     title: "레시피를 불러오는 중",
                     message: "나의 요리 기록을 정리하고 있어요."
                 )
-            } else if let errorMessage = viewModel.errorMessage, viewModel.records.isEmpty {
+            } else if let errorMessage = viewModel.loadErrorMessage, viewModel.records.isEmpty {
                 HomeFeedbackCard(
                     kind: .error,
                     title: "레시피를 불러오지 못했어요",
@@ -131,7 +180,7 @@ struct HomeView: View {
                     Label("최근 기록을 새로고침하는 중", systemImage: "arrow.clockwise")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                } else if let errorMessage = viewModel.errorMessage {
+                } else if let errorMessage = viewModel.loadErrorMessage {
                     HomeInlineError(message: errorMessage) {
                         Task { await viewModel.loadRecords() }
                     }
@@ -139,21 +188,33 @@ struct HomeView: View {
 
                 LazyVStack(spacing: 12) {
                     ForEach(viewModel.recentRecords) { record in
-                        recordButton(record)
+                        HomeRecordCard(
+                            record: record,
+                            onOpen: { onOpenRecord(viewModel.destination(for: record)) },
+                            onRequestDeletion: {
+                                deletionCandidate = record
+                                isDeleteConfirmationPresented = true
+                            }
+                        )
                     }
                 }
             }
         }
     }
 
-    private func recordButton(_ record: RecipeRecord) -> some View {
-        Button {
-            onOpenRecord(viewModel.destination(for: record))
-        } label: {
-            RecipeRecordRowView(record: record)
+    private func startNewRecord() {
+        Task {
+            if let destination = await viewModel.startNewRecord() {
+                onOpenRecord(destination)
+            }
         }
-        .buttonStyle(.plain)
-        .accessibilityHint("기록 상태에 맞는 화면을 엽니다.")
+    }
+
+    private var deleteErrorBinding: Binding<Bool> {
+        Binding(
+            get: { viewModel.deletionErrorMessage != nil },
+            set: { if !$0 { viewModel.hideDeletionError() } }
+        )
     }
 
     private var emptyState: some View {
@@ -168,6 +229,8 @@ struct HomeView: View {
 struct RecipeLibraryView: View {
     @StateObject private var viewModel: HomeViewModel
     @State private var searchText = ""
+    @State private var deletionCandidate: RecipeRecord?
+    @State private var isDeleteConfirmationPresented = false
     private let onOpenRecord: (HomeRecordDestination) -> Void
 
     init(
@@ -199,6 +262,32 @@ struct RecipeLibraryView: View {
         }
         .refreshable {
             await viewModel.loadRecords()
+        }
+        .confirmationDialog(
+            "진행 기록을 영구 삭제할까요?",
+            isPresented: $isDeleteConfirmationPresented,
+            titleVisibility: .visible
+        ) {
+            Button("영구 삭제", role: .destructive) {
+                guard let record = deletionCandidate else { return }
+                deletionCandidate = nil
+                Task { _ = await viewModel.deleteRecord(record) }
+            }
+            Button("취소", role: .cancel) {
+                deletionCandidate = nil
+            }
+        } message: {
+            Text("STEP Preview와 임시 저장 내용을 삭제합니다. 삭제한 기록은 복구할 수 없어요.")
+        }
+        .alert("진행 기록을 삭제하지 못했어요", isPresented: deleteErrorBinding) {
+            Button("다시 시도") {
+                Task { _ = await viewModel.retryFailedDeletion() }
+            }
+            Button("취소", role: .cancel) {
+                viewModel.dismissDeletionError()
+            }
+        } message: {
+            Text(viewModel.deletionErrorMessage ?? "기록은 그대로 보존됩니다.")
         }
     }
 
@@ -250,7 +339,7 @@ struct RecipeLibraryView: View {
                 title: "요리 기록을 불러오는 중",
                 message: "기기에 저장된 기록을 확인하고 있어요."
             )
-        } else if let errorMessage = viewModel.errorMessage, viewModel.records.isEmpty {
+        } else if let errorMessage = viewModel.loadErrorMessage, viewModel.records.isEmpty {
             HomeFeedbackCard(
                 kind: .error,
                 title: "요리 기록을 불러오지 못했어요",
@@ -271,7 +360,7 @@ struct RecipeLibraryView: View {
             if viewModel.isLoading {
                 ProgressView("새로고침 중")
                     .font(.footnote)
-            } else if let errorMessage = viewModel.errorMessage {
+            } else if let errorMessage = viewModel.loadErrorMessage {
                 HomeInlineError(message: errorMessage) {
                     Task { await viewModel.loadRecords() }
                 }
@@ -279,21 +368,93 @@ struct RecipeLibraryView: View {
 
             LazyVStack(spacing: 12) {
                 ForEach(results) { result in
-                    Button {
-                        onOpenRecord(viewModel.destination(for: result.record))
-                    } label: {
-                        RecipeRecordRowView(record: result.record, searchMatch: result.match)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityHint("기록 상태에 맞는 화면을 엽니다.")
+                    HomeRecordCard(
+                        record: result.record,
+                        searchMatch: result.match,
+                        onOpen: { onOpenRecord(viewModel.destination(for: result.record)) },
+                        onRequestDeletion: {
+                            deletionCandidate = result.record
+                            isDeleteConfirmationPresented = true
+                        }
+                    )
                 }
             }
         }
+    }
+
+    private var deleteErrorBinding: Binding<Bool> {
+        Binding(
+            get: { viewModel.deletionErrorMessage != nil },
+            set: { if !$0 { viewModel.hideDeletionError() } }
+        )
+    }
+}
+
+private struct HomeRecordCard: View {
+    let record: RecipeRecord
+    var searchMatch: HomeSearchMatch?
+    let onOpen: () -> Void
+    let onRequestDeletion: () -> Void
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            Button(action: onOpen) {
+                RecipeRecordRowView(
+                    record: record,
+                    searchMatch: searchMatch,
+                    reservesProgressMenuSpace: isProgressRecord
+                )
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("기록 상태에 맞는 화면을 엽니다.")
+
+            if isProgressRecord {
+                Menu {
+                    Button("진행 기록 삭제", role: .destructive, action: onRequestDeletion)
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.body.weight(.semibold))
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .foregroundStyle(.secondary)
+                .accessibilityLabel("\(record.homeTitle) 메뉴")
+                .padding(4)
+            }
+        }
+    }
+
+    private var isProgressRecord: Bool {
+        record.lifecycleState != .completed
+    }
+}
+
+private struct HomeReviewReadyBanner: View {
+    let title: String
+    let onReview: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("AI 정리가 끝났어요", systemImage: "checkmark.circle.fill")
+                .font(.headline)
+                .foregroundStyle(HomeTheme.success)
+            Text("\(title) 검토본이 준비됐습니다.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            Button("레시피 검토하기", action: onReview)
+                .font(.callout.weight(.semibold))
+                .frame(minHeight: 44)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(HomeTheme.success.opacity(0.1), in: RoundedRectangle(cornerRadius: 16))
+        .accessibilityElement(children: .contain)
     }
 }
 
 private struct HomeInlineError: View {
     let message: String
+    var retryTitle = "다시 시도"
     let retry: () -> Void
 
     var body: some View {
@@ -303,7 +464,7 @@ private struct HomeInlineError: View {
             Text(message)
                 .font(.footnote)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Button("다시 시도", action: retry)
+            Button(retryTitle, action: retry)
                 .font(.footnote.weight(.semibold))
         }
         .padding(12)
@@ -364,7 +525,8 @@ private struct HomeFeedbackCard: View {
         HomeView(
             viewModel: HomeViewModel(
                 fetchRecordsUseCase: environment.fetchRecipeRecordsUseCase,
-                createRecordUseCase: environment.createRecipeRecordUseCase
+                createRecordUseCase: environment.createRecipeRecordUseCase,
+                deleteRecordUseCase: environment.deleteRecipeRecordUseCase
             ),
             onShowAllRecipes: {},
             onOpenRecord: { _ in }

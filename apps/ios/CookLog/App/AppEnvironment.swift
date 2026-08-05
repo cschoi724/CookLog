@@ -6,6 +6,7 @@ struct AppEnvironment {
     let fetchRecipeUseCase: FetchRecipeUseCase
     let fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase
     let createRecipeRecordUseCase: CreateRecipeRecordUseCase
+    let deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase
     let saveRecipeUseCase: SaveRecipeUseCase
     let deleteRecipeUseCase: DeleteRecipeUseCase
     let addStepPreviewUseCase: AddStepPreviewUseCase
@@ -29,6 +30,7 @@ struct AppEnvironment {
             fetchRecipeUseCase: FetchRecipeUseCase(recipeRepository: recipeRepository),
             fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase(repository: recipeRecordRepository),
             createRecipeRecordUseCase: CreateRecipeRecordUseCase(repository: recipeRecordRepository),
+            deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase(repository: recipeRecordRepository),
             saveRecipeUseCase: SaveRecipeUseCase(recipeRepository: recipeRepository),
             deleteRecipeUseCase: DeleteRecipeUseCase(recipeRepository: recipeRepository),
             addStepPreviewUseCase: AddStepPreviewUseCase(),
@@ -56,6 +58,7 @@ struct AppEnvironment {
             fetchRecipeUseCase: FetchRecipeUseCase(recipeRepository: recipeRepository),
             fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase(repository: recipeRecordRepository),
             createRecipeRecordUseCase: CreateRecipeRecordUseCase(repository: recipeRecordRepository),
+            deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase(repository: recipeRecordRepository),
             saveRecipeUseCase: SaveRecipeUseCase(recipeRepository: recipeRepository),
             deleteRecipeUseCase: DeleteRecipeUseCase(recipeRepository: recipeRepository),
             addStepPreviewUseCase: AddStepPreviewUseCase(),
@@ -64,5 +67,17 @@ struct AppEnvironment {
             speechRecognitionService: speechRecognitionService,
             audioGuideService: audioGuideService
         )
+    }
+}
+
+struct DeleteRecipeRecordUseCase {
+    private let repository: RecipeRecordRepository
+
+    init(repository: RecipeRecordRepository) {
+        self.repository = repository
+    }
+
+    func execute(id: UUID) async throws {
+        try await repository.deleteRecord(id: id)
     }
 }
