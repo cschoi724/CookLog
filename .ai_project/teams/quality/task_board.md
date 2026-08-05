@@ -67,6 +67,11 @@ Development Lead는 성공 기준과 독립 QA 결과를 수용해 완료 리뷰
 확정했습니다. Product Owner가 완료 확정과 PR #77 병합까지 승인했으며, 공용 `done`은
 `develop` 병합 후 효력이 발생합니다.
 
+PR #77 최종 CI에서 migration 테스트의 로컬 Simulator fixture 의존성이 확인됐습니다.
+production 코드 변경 없이 과거 schema non-empty store를 테스트 resource로 고정하고
+고유 임시 경로에서 실행하도록 보강했으며, 단독 migration과 전체 XCTest 43/43을
+재통과했습니다. 최신 required checks 통과를 병합 게이트로 유지합니다.
+
 iOS Agent 재작업에서 legacy lifecycle fallback을 Mapper와 완료 Recipe 조회에 통일하고,
 원자적 `createRecord(_:)`와 명시적 UUID 충돌 오류로 InMemory·SwiftData의 기존 completed
 내용을 보존했습니다. QA 회귀 2건과 추가 SwiftData 보존 테스트, 실제 non-empty migration을

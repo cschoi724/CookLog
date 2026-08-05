@@ -174,9 +174,7 @@ final class SwiftDataRecipeLocalDataSourceTests: XCTestCase {
     }
 
     func testMigratesNonEmptyLegacyStoreAndPreservesCompletedRecipe() async throws {
-        let storeURL = FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("T-20260805-002-legacy.store")
+        let storeURL = try makeLegacyStoreFixtureCopy()
         let configuration = ModelConfiguration(url: storeURL)
         let modelContainer = try ModelContainer(
             for: PersistentRecipe.self,
@@ -195,6 +193,29 @@ final class SwiftDataRecipeLocalDataSourceTests: XCTestCase {
         XCTAssertEqual(recipe?.title, "실제 legacy migration 레시피")
         XCTAssertEqual(recipe?.ingredients.first?.name, "양파")
         XCTAssertEqual(recipe?.steps.first?.text, "실제 legacy migration 레시피 조리")
+    }
+
+    private func makeLegacyStoreFixtureCopy() throws -> URL {
+        let fixtureURL = try XCTUnwrap(
+            Bundle(for: Self.self).url(
+                forResource: "T-20260805-002-legacy.store",
+                withExtension: "b64"
+            )
+        )
+        let encodedFixture = try Data(contentsOf: fixtureURL)
+        let fixture = try XCTUnwrap(
+            Data(base64Encoded: encodedFixture, options: .ignoreUnknownCharacters)
+        )
+        let fixtureDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("T-20260805-002-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: fixtureDirectory,
+            withIntermediateDirectories: true
+        )
+
+        let storeURL = fixtureDirectory.appendingPathComponent("legacy.store")
+        try fixture.write(to: storeURL, options: .atomic)
+        return storeURL
     }
 
     func testCompletedRecipeQueriesExcludeInProgressRecords() async throws {

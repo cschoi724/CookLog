@@ -41,6 +41,9 @@
 - iOS QA 독립 재검증에서 집중 4/4·전체 43/43 XCTest와 실제 non-empty migration을
   통과했고, Development Lead 완료 리뷰와 Product Owner 완료·PR #77 병합 승인을
   받았습니다.
+- PR #77의 깨끗한 runner에서 드러난 legacy store 사전 생성 의존성을 제거하고, 과거
+  schema non-empty store를 테스트 resource로 복원하는 독립 실행형 migration 테스트로
+  보강해 전체 XCTest 43/43을 재통과했습니다.
 - T-20260730-001에서 `macos-26`, Xcode 26.6, iPhone 17·iOS 26.5 CI 계약을 확정했습니다.
 - T-20260730-002와 T-20260730-003에서 `ios-build`, `ios-xctest` workflow를 구현하고 GitHub-hosted check·33/33·artifact를 검증했습니다.
 - T-20260730-004에서 concurrency 격리, 공통 진단 action과 artifact 요약을 통합하고 독립 QA·PR #34를 거쳐 `done`으로 확정했습니다.

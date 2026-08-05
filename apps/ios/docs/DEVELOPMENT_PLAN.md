@@ -62,6 +62,7 @@
 - [x] 원자적 record 생성과 InMemory·SwiftData UUID 충돌 시 기존 completed 보존
 - [x] QA 회귀·실제 non-empty migration 포함 전체 XCTest 43개 재통과
 - [x] iOS QA 집중 4/4·전체 43/43 독립 재검증과 Development Lead 완료 리뷰 통과
+- [x] legacy store fixture를 테스트 resource로 고정해 깨끗한 CI runner 독립성 확보
 
 ## 현재 개발 원칙
 

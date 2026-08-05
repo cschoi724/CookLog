@@ -2,7 +2,7 @@
 
 작성일: 2026-08-05
 작성 Role: iOS Agent / Execution Role
-상태: `verification_ready`
+상태: `done` 후보 — PR #77 required checks 재실행
 
 ## 결과
 
@@ -59,6 +59,17 @@ non-empty legacy store fixture를 추가했습니다. 재작업 전체 XCTest에
   `platform=iOS Simulator,name=iPhone 15,OS=17.2`에서 통과했습니다.
 - `QA-HIGH-805002-001~002`의 독립 해소 확인과 기존 회귀 검증은 iOS QA Agent에
   재인계합니다.
+
+## 완료 리뷰 이후 CI 보강
+
+- PR #77 run `30976987320`의 `ios-xctest`는 깨끗한 runner에 사전 생성 legacy store가
+  없어 migration 테스트 assertion 5건이 실패했습니다.
+- production 코드 결함이 아니라 QA Simulator 문서 디렉터리에 남은 fixture에 의존한
+  테스트 격리 결함으로 확인했습니다.
+- 과거 schema에서 생성한 non-empty store를 WAL checkpoint한 뒤 base64 테스트 resource로
+  고정하고, 매 실행마다 고유 임시 store로 복원하도록 수정했습니다.
+- CI 실패 migration 단독 테스트와 표준 직렬 runner 전체 XCTest 43/43을 통과했습니다.
+- fixture SHA-256 round-trip, `plutil -lint`, `git diff --check`를 통과했습니다.
 
 ## 제외 범위
 

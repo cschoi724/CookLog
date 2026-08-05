@@ -104,6 +104,11 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 - 2026-08-05: Product Owner가 완료 확정과 PR #77의 `develop` 병합까지 승인해
   `completion_review -> done`으로 전환했다. 공용 완료 효력은 PR 병합 후 발생하며,
   후속 `T-20260805-003`은 별도 실행 승인 전까지 `proposed`를 유지한다.
+- 2026-08-05: PR #77 최종 run `30976987320`에서 migration 테스트가 로컬 Simulator에
+  미리 생성된 legacy store에 의존해 깨끗한 runner에서 실패하는 격리 결함을 확인했다.
+  Product Owner 승인 후 과거 schema non-empty store를 테스트 resource로 고정하고 매
+  실행마다 고유 임시 경로로 복원하도록 보강했다. migration 단독 테스트와 전체 XCTest
+  43/43을 재통과했으며 production 코드는 변경하지 않았다.
 
 ## 재작업 승인 범위
 
@@ -123,7 +128,9 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 - 독립 검증: `QA-HIGH-805002-001~002` 해소, 집중 4/4·전체 43/43 XCTest와 실제
   non-empty migration 통과를 확인했다.
 - 잔여 위험: 없음.
-- 다음 단계: PR #77의 required checks 통과와 `develop` 병합을 확인한 뒤
+- CI 보강: legacy migration fixture의 runner 독립성을 확보했고 전체 XCTest 43/43을
+  다시 통과했다.
+- 다음 단계: PR #77 최신 헤드의 required checks 통과와 `develop` 병합을 확인한 뒤
   `T-20260805-003`의 별도 실행 승인을 검토한다.
 
 ## Next Agent Handoff
@@ -133,11 +140,10 @@ qa_to: .ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md
 너는 Development Lead Agent / Completion Role이야.
 Task `T-20260805-002`의 완료 확정 여부를 검토해줘.
 
-- 현재 상태: `verification_passed`
+- 현재 상태: `done` 후보, PR #77 required checks 재실행
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
-- 다음에 해야 할 일: QA 결과와 잔여 위험을 검토하고 `completion_review`를 거쳐 Task를
-  `done`으로 확정할지 판단해줘.
+- 다음에 해야 할 일: PR #77 최신 required checks 통과와 `develop` 병합을 확인해줘.
 - 기준 문서: `docs/product/CookLog_PRD_v2.md`, `apps/ios/docs/DATA_MODEL.md`, `apps/ios/docs/PERSISTENCE.md`, `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`
 - 허용 경로: 현재 Task의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260805-002_ios-local-domain-draft-lifecycle-report.md`, `.ai_project/qa/T-20260805-002_ios-local-domain-draft-lifecycle-qa.md`
@@ -147,4 +153,4 @@ Task `T-20260805-002`의 완료 확정 여부를 검토해줘.
 - 남은 리스크: 없음
 - 차단/결정 필요: 완료 확정 후 `T-20260805-003` 의존성 해제 판단이 필요하다.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
-- 완료 가능 시: `completion_review`를 거쳐 `done`으로 전환하고 관련 board를 갱신해줘.
+- 완료 가능 시: PR #77을 squash merge하고 후속 T-003의 선행 해소를 확인해줘.
