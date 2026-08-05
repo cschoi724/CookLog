@@ -33,7 +33,7 @@
 | `T-20260729-002` | `done` | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | T-008~014 독립 QA·상위 성공 기준·통합 Source of Truth | 하위 전체 병합·Design Lead 완료 확정 |
 | `T-20260804-001` | `done` | 수익화 Source of Truth와 후보 Task 복구 | Lead Role·schema HIGH 2건, 상태 동결·Task graph·최신 develop 비회귀 | Product QA `PASS`·Product Lead 완료 리뷰·Product Owner 최종 승인 |
 | `T-20260804-002` | `done` | Backend runtime scaffold·환경 설정·health | QA-HIGH-002-001 해소·15/15·실제 process 종료·기존 계약 무회귀 | PASS_WITH_RISK 수용·최종 승인, container는 T-007 인계 |
-| `T-20260804-003` | `verification_ready` | Backend 공통 HTTP·인증·제한·idempotency middleware | 공통 envelope·인증 선차단·IP/project 제한·동시 단일 승자·replay·비노출 | Backend QA 독립 검증 |
+| `T-20260804-003` | `rework_requested` | Backend 공통 HTTP·인증·제한·idempotency middleware | HIGH 2: violation secret 누출·strict schema prototype-key 우회, MEDIUM 1: `/v2?query` 오분류 | Development Lead 재작업 범위 조율 |
 
 향후 검증 예정 Task:
 
