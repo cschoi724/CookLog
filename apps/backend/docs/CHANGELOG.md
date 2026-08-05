@@ -1,5 +1,10 @@
 # Backend 변경 기록
 
+- 2026-08-05: Backend QA가 `T-20260804-003`에서 violation 추가 필드 secret 누출과
+  strict schema prototype-key 우회 HIGH 2건, query 포함 unsupported version 오분류
+  MEDIUM 1건을 확인해 `FAIL`로 판정했다.
+- 2026-08-05: Product Owner가 세 결함 수정과 직접 반례 회귀 테스트 추가를 재작업으로
+  승인해 Backend Agent에 다시 인계했다. T-004~007 차단은 재검증 통과 전까지 유지한다.
 - 2026-08-05: `T-20260804-003`에서 canonical request ID, 성공 envelope와 catalog 기반
   RFC 9457 problem renderer, fail-closed schema validation을 구현했다.
 - 2026-08-05: non-production attestation verifier와 hash 저장 opaque installation token,

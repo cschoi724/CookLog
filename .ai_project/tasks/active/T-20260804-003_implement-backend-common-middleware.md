@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-003
 title: Backend 공통 HTTP·인증·제한·idempotency middleware 구현
-status: rework_requested
+status: approved
 type: feature
 priority: P0
 priority_reason: 도메인 handler 전에 공통 계약과 abuse 경계를 실행 코드로 강제해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Lead Role
+target_agent: Backend Agent
+target_role: Execution Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -83,3 +83,42 @@ qa_to: .ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md
   schema prototype-key 우회 HIGH 2건, query 포함 unsupported version 오분류 MEDIUM 1건을
   확인했다. 최종 `FAIL`, `verification_in_progress -> rework_requested`로 Development
   Lead Agent에 인계했다.
+- 2026-08-05: Product Owner가 `QA-HIGH-003-001~002`, `QA-MEDIUM-003-003` 해소와
+  직접 반례 회귀 테스트 추가를 재작업 범위로 승인했다. Development Lead Agent가
+  `rework_requested -> approved`로 전환하고 Backend Agent에 재인계했다.
+
+## 재작업 승인 범위
+
+- violation은 `field`, `reason` 두 own property만 허용하고 안전한 새 객체로 투영한다.
+- extra property·getter·prototype·symbol·20개 초과 입력은 고정 `INTERNAL_ERROR`로
+  fail closed하며 합성 secret이 body·header에 노출되지 않음을 테스트한다.
+- strict schema의 required·unknown property·child lookup을 own property 기준으로
+  통일하고 prototype 이름과 nested object·array 반례를 추가한다.
+- unsupported API version은 query를 제외한 pathname으로 판정하고 query 유무 반례를
+  추가한다.
+- 기존 인증·rate limit·idempotency 계약과 36개 테스트의 무회귀를 확인하고 Backend QA에
+  독립 재검증을 요청한다.
+- 실제 provider·원격 STT·cloud resource·production secret 및 후속 T-004~007 구현은
+  이번 재작업 범위에 포함하지 않는다.
+
+## Next Agent Handoff
+
+다음 Agent에게 전달할 말:
+
+너는 Backend Agent / Execution Role이야.
+Task T-20260804-003은 승인된 재작업 Task야.
+
+- 현재 상태: `approved`
+- 기준 상태 ref: `origin/develop`
+- 기준 상태 SHA: `39468f455b20234b4cc237cf84c718a170376419`
+- 다음에 해야 할 일: 기존 전용 worktree에서 lock을 획득하고 HIGH 2건·MEDIUM 1건을
+  승인 범위 안에서 수정한 뒤 직접 반례와 전체 회귀 검증을 수행해줘.
+- 기준 문서: `apps/backend/docs/API_CONTRACT.md`, `apps/backend/contracts/common/`
+- 허용 경로: Task frontmatter의 `allowed_paths`
+- 참고 산출물: `.ai_project/qa/T-20260804-003_implement-backend-common-middleware-qa.md`
+- 변경/검토 대상: `apps/backend/src/http/`, `apps/backend/tests/http/`, 상태·보고 문서
+- 남은 리스크: Host Node 26의 목표 Node 24 engine 경고와 production 분산 adapter·datastore
+  transaction은 기존 후속 범위로 유지한다.
+- 차단/결정 필요: T-004~007은 Backend QA 독립 재검증 통과 전 열지 않는다.
+- 완료 시: `verification_ready`로 전환하고 Backend QA Agent / Verification Role에
+  독립 재검증을 인계해줘.
