@@ -4,7 +4,8 @@
 작성 Role: iOS QA Agent / Verification Role
 검증 대상: `d8af7875e3116cb46b3d4d35d3f52bba44f9df6d`
 기준 상태: `origin/develop@69cbf81df0d215b08b6feaf657ba3a4b0e8ce4b5`
-판정: `FAIL — rework_requested`
+최초 판정: `FAIL — rework_requested`
+최종 판정: `PASS_WITH_RISK — verification_passed`
 
 ## 1. 검증 범위
 
@@ -94,3 +95,56 @@
 `rework_requested`로 iOS Agent / Execution Role에 반환한다. 재작업은 색상 토큰 적용과
 Light/Dark 증빙에 한정하며 통과한 상태·저장 로직을 변경하지 않는다. 수정 후 전체 XCTest와
 `LOG-STEP-ADDED`, `LOG-ERROR` 화면을 포함해 독립 재검증을 다시 요청해야 한다.
+
+## 7. 재작업 독립 재검증
+
+재검증일: 2026-08-06
+재검증 대상: `786fae56e72b8e66ea7212554461c9773fd3568b`
+재검증 기준: `origin/develop@6a1678c808fa43f9d62289e3a6bb00b2915b23ea`
+최종 판정: `PASS_WITH_RISK — verification_passed`
+
+### QA-MEDIUM-805004-001
+
+- [x] 최상위 `List`의 시스템 배경을 숨기고 `HomeTheme.backgroundBase`를 지정했다.
+- [x] 빈 보조 영역은 `backgroundSubtle`, 기록 패널과 완료·pending STEP 카드는
+  `backgroundElevated`를 사용한다.
+- [x] 주요 CTA·STEP 번호는 `accent`, 성공 배너는 `success`, 오류 배너·삭제 동작은
+  `error` 토큰에 연결됐다.
+- [x] 토큰 Light/Dark 값은 Manifest의 `#FFFDF8/#18171B`, `#FAF3E7/#222027`,
+  `#FFFFFF/#302C35`, `#C93610/#FF9A7A`, `#176B4A/#7EE0B4`,
+  `#B42318/#FF8C84`와 일치한다.
+- [x] Cooking Log 소스에서 `systemBackground`, `systemGroupedBackground`,
+  `secondarySystemGroupedBackground`, `Color.accentColor`, `.green`, `.red` 금지 사용이
+  0건이다. 네이티브 back 버튼 등 시스템 컨트롤 내부 렌더링만 시스템 tint로 남는다.
+- [x] Light/Dark `LOG-STEP-ADDED`, `LOG-ERROR` 네 장에서 화면·카드·accent·status의
+  appearance 전환과 텍스트·CTA 도달을 확인했다.
+
+판정: 해소.
+
+### 독립 테스트와 무회귀
+
+- 전체 XCTest `62/62`, 실패·skip 0: 통과
+  - `/private/tmp/cooklog-derived-t004-reverification/Logs/Test/Test-CookLog-2026.08.06_13-37-13-+0900.xcresult`
+- 재작업 커밋은 화면·문서 9개 파일만 변경했으며 상태·저장 ViewModel과 UseCase 로직은
+  변경하지 않았다.
+- 기존 첫·반복 기록, pending 번호, 같은 UUID 자동 저장, 인식·저장 실패 보존,
+  삭제·order 정규화·Undo와 AI Review snapshot 테스트가 모두 통과했다.
+- 재작업 전체 변경 경로가 Task `allowed_paths` 안에 있고 `git diff --check`가 통과한다.
+
+### 화면 증빙
+
+- Light `LOG-STEP-ADDED`: `/private/tmp/cooklog-t004-light-log-step-added.png`
+- Dark `LOG-STEP-ADDED`: `/private/tmp/cooklog-t004-dark-log-step-added.png`
+- Light `LOG-ERROR`: `/private/tmp/cooklog-t004-light-log-error.png`
+- Dark `LOG-ERROR`: `/private/tmp/cooklog-t004-dark-log-error.png`
+
+### 잔여 위험과 최종 인계
+
+- 375×667 Simulator의 기존 launch configuration 레터박스와 전체 Accessibility 3·
+  VoiceOver 화면 행렬은 계획대로 `T-20260805-008`에서 통합 검증한다.
+- 실제 Apple 기기 내 STT, AI Review 내부 처리와 앱 전역 권한·오프라인 상태는 각각
+  후속 Task 범위를 유지한다.
+
+기존 Medium 결함이 해소됐고 기능·데이터 보존 회귀가 없다. 따라서
+`PASS_WITH_RISK`, `verification_passed`로 Development Lead Agent / Completion Role에
+인계한다. Task `done`, commit, push와 merge는 수행하지 않는다.

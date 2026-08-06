@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-004
 title: iOS Cooking Log·STEP Preview 자동 저장·오류 상태 구현
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P0
 priority_reason: 10초 기록 반복과 STEP Preview 보존이 CookLog 핵심 기록 경험이다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS Agent
-target_role: Execution Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities: [ios_implementation, swiftui, state_management]
 depends_on: [T-20260805-003]
 blocks: [T-20260805-005, T-20260728-003]
@@ -87,6 +87,12 @@ qa_to: .ai_project/qa/T-20260805-004_ios-cooking-log-step-preview-qa.md
   교체했다. 전체 XCTest 62/62·build·`git diff --check`와 iPhone 15 Light/Dark
   `LOG-STEP-ADDED`·`LOG-ERROR`를 확인해 `in_progress -> verification_ready`로
   전환하고 lock을 해제했다.
+- 2026-08-06: iOS QA Agent가 재작업 커밋 `786fae5`를 고정한 별도 QA worktree에서
+  lock을 획득하고 `verification_ready -> verification_in_progress`로 전환했다.
+- 2026-08-06: iOS QA Agent가 CookLog Light/Dark 토큰 값·금지 색상 0건과 네 장의 상태
+  증빙, 전체 XCTest 62/62를 독립 확인했다. `QA-MEDIUM-805004-001` 해소와 기능·저장
+  무회귀를 `PASS_WITH_RISK`로 판정해 `verification_in_progress -> verification_passed`로
+  전환하고 Development Lead Agent / Completion Role에 인계했다.
 - 구현은 기존 Mock Service를 이용한 `idle -> recording -> processing -> idle|error`,
   반복 기록과 STEP Preview 자동 저장·삭제·되돌리기·순서 보존으로 제한한다.
 - 첫 처리와 반복 처리 모두 pending STEP 번호를 정확히 표시하고, 실패 시 실패한 pending만
@@ -102,16 +108,17 @@ qa_to: .ai_project/qa/T-20260805-004_ios-cooking-log-step-preview-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 iOS QA Agent / Verification Role이야.
-Task T-20260805-004는 색상 토큰 차단 결함 1건의 재작업이 완료된 독립 재검증 Task야.
+너는 Development Lead Agent / Completion Role이야.
+Task T-20260805-004는 색상 토큰 재작업 독립 재검증을 통과한 완료 검토 Task야.
 
-- 현재 상태: `verification_ready`
+- 현재 상태: `verification_passed`
 - public source: `origin/develop@6a1678c`
 - 선행 상태: `T-20260805-003 done`, PR #86 squash merge 완료
 - 구현 ref: `task/T-20260805-004-implement-ios-cooking-log-step-preview`
 - 재작업 승인: Product Owner 승인 완료
-- 시작 절차: 구현 ref의 최신 커밋을 별도 QA worktree에서 고정하고 Task lock을 획득해
-  `verification_ready -> verification_in_progress`
+- QA 결과: `PASS_WITH_RISK`, `QA-MEDIUM-805004-001` 해소
+- 독립 증빙: 전체 XCTest 62/62, 금지 시스템 색상 0건, Light/Dark
+  `LOG-STEP-ADDED`·`LOG-ERROR` 네 장 확인
 - 필수 상태: `LOG-EMPTY`, `LOG-RECORDING`, `LOG-PROCESSING`, `LOG-STEP-ADDED`,
   `LOG-ERROR`
 - 데이터 계약: 같은 `RecipeRecord.id`, 완료 STEP 순서·원문 보존, 실패한 pending만 제거,
@@ -126,5 +133,7 @@ Task T-20260805-004는 색상 토큰 차단 결함 1건의 재작업이 완료�
 - 기준 문서: `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`,
   `apps/ios/docs/SERVICES.md`, `apps/ios/docs/NAVIGATION.md`
 - 허용 경로: Task frontmatter의 `allowed_paths`
-- 완료 조건: 통과한 기능·저장 로직의 무회귀와 색상 결함 수용 기준을 독립 확인하고
-  `verification_passed` 또는 `rework_requested`로 판정해 Development Lead Agent에 인계해.
+- 잔여 위험: launch configuration·Accessibility 3·VoiceOver 행렬은 T-008, 실제 Apple
+  STT와 AI·전역 실패 상태는 승인된 후속 Task 범위
+- 완료 조건: 구현·QA 보고서와 잔여 위험 이관을 검토하고 Product Owner의 완료·병합
+  승인 절차로 진행해. iOS QA는 `done`, commit, push와 merge를 수행하지 않았어.
