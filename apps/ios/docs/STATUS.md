@@ -4,32 +4,34 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-004 독립 재검증·Development Lead 완료 리뷰 통과, Product Owner 승인 대기
+- 상태: T-20260805-004 완료·PR #90 squash merge 승인, T-20260805-005 별도 실행 승인 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~003 done, T-20260805-004 completion_review
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~004 done, T-20260805-005 proposed
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. Product Owner가 `T-20260805-004` 완료 리뷰와 PR #90 병합을 승인
-2. T-004가 공용 `develop`에서 `done`이 되면 `T-20260805-005~007` 화면·상태 패키지 순차 구현
+1. Product Owner 별도 승인 후 `T-20260805-005` AI Review·완료 Recipe 편집·삭제 구현
+2. `T-20260805-006~007` 화면·상태 패키지 순차 구현
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- Product Owner가 T-004 잔여 위험을 수용하고 완료 확정과 PR #90 squash merge를
+  승인했습니다. T-005 선행은 병합으로 해소되며 별도 실행 승인 전 `proposed`로 유지합니다.
 - iOS QA가 색상 결함 해소, 금지 시스템 색상 0건, Light/Dark 상태 네 장과 전체 XCTest
   62/62를 독립 재검증해 `PASS_WITH_RISK`로 판정했습니다.
 - Development Lead가 최신 `develop@04aa1bc` 통합, 허용 경로와 잔여 위험, PR #90의
   iOS build·XCTest checks 통과를 검토해 완료 리뷰를 `PASS_WITH_RISK`로 확정했습니다.
-  Product Owner 승인 전 PR은 Draft로 유지하고 T-005는 차단합니다.
+  완료 리뷰를 통과했습니다.
 - Cooking Log 화면 배경은 `bg/base`, 빈 보조 영역은 `bg/subtle`, 기록 패널과 STEP
   카드는 `bg/elevated`로 연결하고 CTA·STEP·성공·오류를 기존 확정 프로젝트 토큰으로
   교체했습니다. 시스템 색상은 레이블·separator·네이티브 컨트롤 내부로 제한했습니다.

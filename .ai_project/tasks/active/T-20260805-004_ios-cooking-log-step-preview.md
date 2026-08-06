@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-004
 title: iOS Cooking Log·STEP Preview 자동 저장·오류 상태 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 10초 기록 반복과 STEP Preview 보존이 CookLog 핵심 기록 경험이다.
@@ -97,6 +97,9 @@ qa_to: .ai_project/qa/T-20260805-004_ios-cooking-log-step-preview-qa.md
   통합하고 PR #90의 iOS build·XCTest checks 통과, 독립 QA 결과와 허용 경로·잔여 위험을
   검토했다. 완료 리뷰를 `PASS_WITH_RISK`로 확정해 `verification_passed ->
   completion_review`로 전환하고 Product Owner의 완료·병합 승인을 요청한다.
+- 2026-08-06: Product Owner가 잔여 위험을 수용하고 완료 확정과 PR #90 squash merge를
+  승인했다. `completion_review -> done`으로 전환하며 T-20260805-005의 선행 조건은
+  공용 `develop` 병합 후 해소된다. 후속 Task 실행은 별도 승인이 필요하다.
 - 구현은 기존 Mock Service를 이용한 `idle -> recording -> processing -> idle|error`,
   반복 기록과 STEP Preview 자동 저장·삭제·되돌리기·순서 보존으로 제한한다.
 - 첫 처리와 반복 처리 모두 pending STEP 번호를 정확히 표시하고, 실패 시 실패한 pending만
@@ -112,35 +115,13 @@ qa_to: .ai_project/qa/T-20260805-004_ios-cooking-log-step-preview-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Product Owner / Approval Role이야.
-Task T-20260805-004는 독립 QA와 Development Lead 완료 리뷰를 통과한 승인 대기 Task야.
+너는 Development Lead Agent야. T-20260805-004는 Product Owner 완료·병합 승인을 받아
+`done`이며 PR #90 squash merge 후 공용 효력이 발생해.
 
-- 현재 상태: `completion_review`
-- public source: `origin/develop@04aa1bc`
-- 선행 상태: `T-20260805-003 done`, PR #86 squash merge 완료
-- 구현 ref: `task/T-20260805-004-implement-ios-cooking-log-step-preview`
-- PR: #90, 구현·QA 검토 head `665ea3c`, Draft·mergeable
-- 재작업 승인: Product Owner 승인 완료
-- QA 결과: `PASS_WITH_RISK`, `QA-MEDIUM-805004-001` 해소
-- 독립 증빙: 전체 XCTest 62/62, 금지 시스템 색상 0건, Light/Dark
-  `LOG-STEP-ADDED`·`LOG-ERROR` 네 장 확인
-- Development Lead 완료 리뷰: `PASS_WITH_RISK`, 최신 develop 통합과 PR #90
-  `ios-build`·`ios-xctest` checks 통과 확인
-- 필수 상태: `LOG-EMPTY`, `LOG-RECORDING`, `LOG-PROCESSING`, `LOG-STEP-ADDED`,
-  `LOG-ERROR`
-- 데이터 계약: 같은 `RecipeRecord.id`, 완료 STEP 순서·원문 보존, 실패한 pending만 제거,
-  반복 성공 때 order 증가, 누적 `[StepPreview]` snapshot 전달
-- 통과 유지: Mock 기록 상태, pending STEP, 자동 저장, swipe·44pt 삭제, 제한 시간 Undo,
-  오류별 복구와 저장 실패 원본 보존, 전체 XCTest 62/62
-- 재작업 결과: `QA-MEDIUM-805004-001` — 기록 패널·STEP 카드의 system grouped
-  배경과 accent/green/red를 확정 CookLog Light/Dark `bg/base|subtle|elevated`,
-  accent, success, error 토큰으로 교체 완료
-- 필수 증빙: 전체 XCTest, `git diff --check`, Light/Dark `LOG-STEP-ADDED`·`LOG-ERROR`
-- 구현 경계: 실제 녹음·Apple STT, AI Review 내부 구현, T-005~008 범위는 검증 대상 아님
-- 기준 문서: `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`,
-  `apps/ios/docs/SERVICES.md`, `apps/ios/docs/NAVIGATION.md`
-- 허용 경로: Task frontmatter의 `allowed_paths`
-- 잔여 위험: launch configuration·Accessibility 3·VoiceOver 행렬은 T-008, 실제 Apple
-  STT와 AI·전역 실패 상태는 승인된 후속 Task 범위
-- 승인 조건: 후속 Task로 이관된 위험을 수용하면 완료·병합을 승인해. 승인 전 PR #90은
-  Draft로 유지하고 병합하지 않으며, T-005도 차단 상태를 유지해.
+- QA·완료 리뷰: `PASS_WITH_RISK`, 전체 XCTest 62/62, PR checks PASS
+- 해소 결함: `QA-MEDIUM-805004-001`, 금지 시스템 색상 0건
+- 잔여 위험: launch configuration·Accessibility 3·VoiceOver는 T-008, 실제 Apple STT·
+  AI·전역 실패 상태는 승인된 후속 Task
+- 다음 후보: `T-20260805-005` AI Review·완료 Recipe 편집·삭제
+- 실행 경계: T-005 선행은 PR #90의 `develop` 병합 후 해소되지만 별도 실행 승인 전에는
+  `proposed`로 유지해.

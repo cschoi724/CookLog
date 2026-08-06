@@ -4,6 +4,9 @@
 
 ## 2026-08-06
 
+- Product Owner가 `T-20260805-004` 잔여 위험을 수용하고 완료 확정과 PR #90 squash
+  merge를 승인했습니다. T-005 선행은 공용 `develop` 병합 후 해소되며 별도 실행 승인
+  전에는 `proposed`로 유지합니다.
 - `T-20260805-004` 독립 재검증에서 `QA-MEDIUM-805004-001` 해소, 금지 시스템 색상
   0건, Light/Dark 상태 네 장과 전체 XCTest 62/62를 확인해 `PASS_WITH_RISK`로 판정했습니다.
 - Development Lead가 최신 `develop@04aa1bc` 통합, 허용 경로·잔여 위험과 PR #90의

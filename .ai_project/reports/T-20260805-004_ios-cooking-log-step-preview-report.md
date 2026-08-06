@@ -2,7 +2,7 @@
 
 작성일: 2026-08-06
 작성 Role: iOS Agent / Execution Role
-상태: `completion_review`
+상태: `done` — Product Owner 완료·PR #90 squash merge 승인
 
 ## 결과
 
@@ -99,7 +99,8 @@ Mock Speech Service 기반 10초 기록을 `idle -> recording -> processing -> i
 - PR #90 구현·QA 검토 head `665ea3c`, 허용 경로 밖 구현 변경 없음 확인
 - PR #90 `ios-build`, `ios-xctest`와 변경 감지 checks 전체 통과 확인
 - 실제 Apple STT, AI Review 내부 구현, 전역 장애와 통합 접근성은 승인된 후속 Task로 이관
-- Product Owner의 완료·병합 승인 전까지 PR #90은 Draft, T-005는 차단 상태로 유지
+- Product Owner가 잔여 위험을 수용하고 완료·PR #90 squash merge를 승인
+- T-005 선행은 공용 `develop` 병합 후 해소되며 별도 실행 승인 전 `proposed` 유지
 
 ## 제외 범위와 후속 위험
 
