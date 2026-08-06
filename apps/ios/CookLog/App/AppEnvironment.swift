@@ -7,6 +7,7 @@ struct AppEnvironment {
     let fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase
     let createRecipeRecordUseCase: CreateRecipeRecordUseCase
     let deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase
+    let saveStepPreviewDraftUseCase: SaveStepPreviewDraftUseCase
     let saveRecipeUseCase: SaveRecipeUseCase
     let deleteRecipeUseCase: DeleteRecipeUseCase
     let addStepPreviewUseCase: AddStepPreviewUseCase
@@ -31,6 +32,7 @@ struct AppEnvironment {
             fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase(repository: recipeRecordRepository),
             createRecipeRecordUseCase: CreateRecipeRecordUseCase(repository: recipeRecordRepository),
             deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase(repository: recipeRecordRepository),
+            saveStepPreviewDraftUseCase: SaveStepPreviewDraftUseCase(repository: recipeRecordRepository),
             saveRecipeUseCase: SaveRecipeUseCase(recipeRepository: recipeRepository),
             deleteRecipeUseCase: DeleteRecipeUseCase(recipeRepository: recipeRepository),
             addStepPreviewUseCase: AddStepPreviewUseCase(),
@@ -59,6 +61,7 @@ struct AppEnvironment {
             fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase(repository: recipeRecordRepository),
             createRecipeRecordUseCase: CreateRecipeRecordUseCase(repository: recipeRecordRepository),
             deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase(repository: recipeRecordRepository),
+            saveStepPreviewDraftUseCase: SaveStepPreviewDraftUseCase(repository: recipeRecordRepository),
             saveRecipeUseCase: SaveRecipeUseCase(recipeRepository: recipeRepository),
             deleteRecipeUseCase: DeleteRecipeUseCase(recipeRepository: recipeRepository),
             addStepPreviewUseCase: AddStepPreviewUseCase(),
