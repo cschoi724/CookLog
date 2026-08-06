@@ -5,3 +5,9 @@ enum RecordingState: Equatable {
     case recording
     case processing
 }
+
+enum CookingLogRecoveryAction: Equatable {
+    case recordAgain
+    case undoDeletion
+    case none
+}

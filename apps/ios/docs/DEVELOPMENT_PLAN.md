@@ -3,12 +3,12 @@
 이 문서는 CookLog iOS의 초기 Mock Core MVP 이정표와 구현 이력을 보존하고, 현재 첫 공개 출시 Task의 진입점을 안내합니다. 현재 실행 범위는 이 문서의 과거 M0~M8 체크리스트가 아니라 배정된 `.ai_project/tasks/`와 최신 제품 Source of Truth를 따릅니다.
 
 작성일: 2026-06-19
-최종 업데이트: 2026-08-05
+최종 업데이트: 2026-08-06
 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, Home 상태·행동 재작업 완료·독립 iOS QA 재검증 대기
+- 상태: Mock Core MVP 조건부 통과, Cooking Log 완료·AI Review 패키지 별도 실행 승인 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -37,8 +37,8 @@
 
 1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `done`, PR #77 merge `3d1d012`
 2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `done`, PR #86 merge `9457133`
-3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `approved`
-4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `proposed`
+3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `done`, Product Owner 완료·PR #90 squash merge 승인
+4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `proposed`, 선행 해소·별도 실행 승인 대기
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `proposed`
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `proposed`
 7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `proposed`
@@ -79,6 +79,21 @@
 - [x] 완료 badge 제거와 lifecycle별 최근 활동·주요 재료·예상 시간·단계 수 표시
 - [x] 조회 오류·생성 오류 분리와 생성 동작 전용 재시도
 - [x] 재작업 회귀를 포함한 전체 XCTest 54/54 통과
+
+### T-20260805-004 구현 결과
+
+- [x] `LOG-EMPTY`, `LOG-RECORDING`, `LOG-PROCESSING`, `LOG-STEP-ADDED`, `LOG-ERROR`
+- [x] 첫·반복 기록의 정확한 pending STEP 번호와 중복 기록 비활성
+- [x] 같은 `RecipeRecord.id`의 STEP 추가 자동 저장과 저장 성공 전 상태 보존
+- [x] 왼쪽 swipe·44pt 삭제 버튼·짧은 되돌리기와 연속 order 정규화
+- [x] 권한·음성 처리·저장 실패 시 pending만 제거하고 기존 완료 STEP 보존
+- [x] 누적 `[StepPreview]` 동일 snapshot을 AI Review route callback에 전달
+- [x] Cooking Log 집중 10개·STEP use case 4개, 전체 XCTest 62/62와 build 통과
+- [x] iPhone SE iOS 17.2 다크 모드에서 첫·반복 기록과 STEP 1·2 자동 저장 실제 확인
+- [x] `bg/base|subtle|elevated`, accent, success, error 확정 Light/Dark 토큰 적용
+- [x] iPhone 15 Light/Dark `LOG-STEP-ADDED`·`LOG-ERROR`와 전체 XCTest 62/62 재확인
+- [x] iOS QA 독립 재검증 `PASS_WITH_RISK`, 금지 시스템 색상 0건 확인
+- [x] 최신 develop 통합·PR #90 iOS build/XCTest checks와 Development Lead 완료 리뷰 통과
 
 ## 현재 개발 원칙
 

@@ -2,6 +2,39 @@
 
 이 문서는 iOS 앱 개발 변경 기록을 관리합니다.
 
+## 2026-08-06
+
+- Product Owner가 `T-20260805-004` 잔여 위험을 수용하고 완료 확정과 PR #90 squash
+  merge를 승인했습니다. T-005 선행은 공용 `develop` 병합 후 해소되며 별도 실행 승인
+  전에는 `proposed`로 유지합니다.
+- `T-20260805-004` 독립 재검증에서 `QA-MEDIUM-805004-001` 해소, 금지 시스템 색상
+  0건, Light/Dark 상태 네 장과 전체 XCTest 62/62를 확인해 `PASS_WITH_RISK`로 판정했습니다.
+- Development Lead가 최신 `develop@04aa1bc` 통합, 허용 경로·잔여 위험과 PR #90의
+  iOS build·XCTest checks 통과를 확인해 완료 리뷰를 `PASS_WITH_RISK`로 확정했습니다.
+  Product Owner 완료·병합 승인 전 PR은 Draft로 유지합니다.
+- `T-20260805-004` 독립 QA에서 기능·저장·전체 XCTest 62/62는 통과했지만 시스템 배경과
+  accent·green·red 사용을 `QA-MEDIUM-805004-001` 색상 토큰 위반으로 판정했습니다.
+- Product Owner가 통과한 로직을 보존하는 색상 토큰 한정 재작업과 Light/Dark
+  `LOG-STEP-ADDED`·`LOG-ERROR` 재검증을 승인했습니다.
+- Cooking Log의 화면·빈 보조 영역·기록 패널·STEP 카드를 확정 `bg/base`, `bg/subtle`,
+  `bg/elevated`에 연결하고 CTA·STEP·성공·오류의 system accent/green/red를 기존 CookLog
+  accent·success·error Light/Dark 프로젝트 토큰으로 교체했습니다.
+- iPhone 15 iOS 17.2에서 Light/Dark `LOG-STEP-ADDED`와 권한 거부 `LOG-ERROR`를
+  캡처하고 전체 XCTest 62/62·build·`git diff --check`를 재통과해 독립 재검증을
+  요청했습니다.
+- `T-20260805-004`의 Cooking Log 5개 상태와 첫·반복 10초 Mock 기록을 구현했습니다.
+- Processing 동안 기존 완료 STEP과 정확한 다음 pending 번호를 함께 표시하고, 성공 시
+  같은 `RecipeRecord.id`에 자동 저장된 뒤에만 화면 세션을 갱신합니다.
+- STEP row에 왼쪽 swipe와 접근 가능한 44pt 삭제 버튼을 추가하고, 삭제 자동 저장과
+  제한 시간 내 원래 위치 되돌리기·연속 order 정규화를 구현했습니다.
+- 권한·음성 처리·자동 저장 오류를 분리해 실패한 pending만 제거하고 기존 STEP과 AI 정리
+  snapshot을 보존하도록 했습니다.
+- Product Owner 승인으로 `AppEnvironment.swift`·`CookLogApp.swift` 최소 범위를 확장해
+  `SaveStepPreviewDraftUseCase`를 실제 앱 경로에 생성자 주입했습니다.
+- Cooking Log 집중 10개·STEP use case 4개를 포함한 전체 XCTest 62/62와 build를
+  통과하고, iPhone SE iOS 17.2 다크 모드에서 첫·반복 기록과 STEP 1·2 자동 저장을
+  실제 확인했습니다.
+
 ## 2026-08-05
 
 - Product Owner가 `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 구현을
