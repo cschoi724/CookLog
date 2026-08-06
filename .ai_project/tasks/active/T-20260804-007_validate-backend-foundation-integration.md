@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-007
 title: Backend foundation 통합 계약·보안 검증과 로컬 실행 handoff
-status: rework_requested
+status: in_progress
 type: test
 priority: P0
 priority_reason: 후속 provider·iOS 연동 전에 전체 runtime과 계약 원본의 동등성을 고정해야 한다.
@@ -44,9 +44,9 @@ created_at: 2026-08-04
 updated_at: '2026-08-06'
 report_to: ".ai_project/reports/T-20260804-007_validate-backend-foundation-integration-report.md"
 qa_to: ".ai_project/qa/T-20260804-007_validate-backend-foundation-integration-qa.md"
-locked_by:
-locked_at:
-lock_session:
+locked_by: Backend Agent
+locked_at: '2026-08-06'
+lock_session: codex-20260806-t007-rework
 status_ref: origin/develop
 status_ref_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 base_ref: origin/develop
@@ -149,3 +149,5 @@ Foundation 최종 통합 Task야.
 | 2026-08-06 | Backend QA Agent | transition: verification_ready -> verification_in_progress | local/mock composition·전체 계약·보안·비용·cleanup·Node 24 container 증빙 독립 검증 시작 |
 | 2026-08-06 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-007-001: worker 종료 telemetry sink 장애를 무시해 미감사 성공 결과가 available로 공개됨 |
 | 2026-08-06 | Product Owner | rework approved | terminal telemetry와 성공 결과 공개 fail-closed, Provider at-most-once 회귀 범위 승인 |
+| 2026-08-06 | Backend Agent | transition: rework_requested -> in_progress | QA-HIGH-007-001 terminal telemetry fail-closed 재작업 착수 |
+| 2026-08-06 | Backend Agent | lock | task lock |

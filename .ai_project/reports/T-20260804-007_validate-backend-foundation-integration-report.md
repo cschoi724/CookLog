@@ -78,3 +78,30 @@ terminal telemetry sink 장애가 발생해도 `completed`를 반환하고 statu
 최종 판정은 `FAIL`, 상태는 `rework_requested`다. Development Lead가 terminal telemetry와
 성공 결과 commit의 fail-closed 재작업 범위를 확정한 뒤 Backend Agent 자체 검증과 Backend
 QA 독립 재검증이 필요하다. QA는 구현 수정·병합·`done` 처리를 수행하지 않았다.
+
+## QA-HIGH-007-001 재작업
+
+- provider 성공·실패 terminal을 즉시 공개하지 않고 repository의 `processing/none` 상태에
+  비공개 staging한다.
+- terminal telemetry의 allowlist shape 검증, 비용 reservation과 sink write가 성공한
+  경우에만 staged terminal을 최종 상태로 전환한다.
+- terminal audit 실패는 `telemetry_unavailable`을 반환하고 status API에는 result를
+  `null`로 유지한다.
+- 재실행은 staged terminal audit만 다시 수행해 provider를 재호출하지 않는다.
+- timeout failure는 staged provider terminal을 덮어쓰지 못하므로 기존 결과의 감사 전
+  비노출과 provider-at-most-once가 함께 유지된다.
+
+### 재작업 자체 검증
+
+| 검증 | 결과 |
+|---|---|
+| QA 원본 `/private/tmp/t007-observability-adversarial.mjs` | PASS, `processing/none`, provider 1회 |
+| terminal sink 두 번째 write 실패 | PASS, 비노출 후 재실행 복구 |
+| terminal reservation 거절 | PASS, 비노출 후 재실행 복구 |
+| terminal event invalid shape | PASS, 비노출 후 재실행 복구 |
+| 각 장애 전후 provider-at-most-once | PASS, 모두 1회 |
+| `npm run verify` | PASS, Backend 100/100·계약 5종·경계 감사 |
+| Node 24.18.0 non-root container | PR #91 최신 HEAD CI 재검증 대기 |
+
+상태는 재작업 `in_progress`다. PR CI까지 통과한 뒤 `verification_ready`로 Backend QA에
+독립 재검증을 인계한다.

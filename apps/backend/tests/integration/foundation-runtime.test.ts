@@ -13,6 +13,7 @@ import {
 import type { VerifiedAttestation } from "../../src/auth/attestation.js";
 import { loadRuntimeConfig } from "../../src/config/runtime-config.js";
 import { InMemoryCostLedger } from "../../src/cost/cost-ledger.js";
+import type { TelemetrySink } from "../../src/observability/safe-logger.js";
 
 const installationId = "97882b04-fbb9-4c4b-8b71-a1c71a76a593";
 const validNow = Date.parse("2026-07-31T09:01:00Z");
@@ -237,4 +238,90 @@ test("production cannot instantiate local token, provider, or storage adapters",
     K_CONFIGURATION: "cooklog-local",
   });
   await assert.rejects(createLocalFoundationRuntime(production), /cannot run in production/);
+});
+
+test("terminal audit failures hide staged results and recover without another provider call", async (context) => {
+  const { request, draft } = await fixtures();
+  const cases = ["sink", "reservation", "shape"] as const;
+
+  for (const failure of cases) {
+    await context.test(failure, async () => {
+      const provider = new DeterministicMockRecipeAIProvider({ kind: "success", draft });
+      let sinkWrites = 0;
+      let reservations = 0;
+      let rejectShape = true;
+      const sink: TelemetrySink = {
+        write(): void {
+          sinkWrites += 1;
+          if (failure === "sink" && sinkWrites === 2) throw new Error("terminal sink unavailable");
+        },
+      };
+      const runtime = await createLocalFoundationRuntime(config(), {
+        now: () => validNow,
+        nowSeconds: () => Math.floor(validNow / 1_000),
+        provider,
+        telemetrySink: sink,
+        telemetryReserve: () => {
+          reservations += 1;
+          return failure !== "reservation" || reservations !== 2;
+        },
+        terminalTelemetryEvent: (facts) => {
+          if (failure === "shape" && rejectShape) {
+            rejectShape = false;
+            return { next_state: facts.nextState };
+          }
+          return {
+            previous_state: facts.previousState,
+            next_state: facts.nextState,
+            provider_attempt_count: facts.providerAttemptCount,
+            deployment_version: "local-foundation-build-v1",
+          };
+        },
+      });
+      const headers = authHeaders(runtime.issueInstallationToken(attestation).accessToken);
+      const created = await runtime.app.inject({
+        method: "POST",
+        url: "/v1/ai/recipe-jobs",
+        headers: { ...headers, "idempotency-key": randomUUID() },
+        payload: request,
+      });
+      const jobId = created.json().data.job_id as string;
+
+      assert.equal(await runtime.execute(jobId), "telemetry_unavailable");
+      assert.equal(provider.callCount, 1);
+      assert.deepEqual(runtime.repository.getPendingTerminalFacts(jobId), {
+        previousState: "processing",
+        nextState: "succeeded",
+        providerAttemptCount: 1,
+      });
+      const hidden = await runtime.app.inject({
+        method: "GET",
+        url: `/v1/ai/recipe-jobs/${jobId}`,
+        headers,
+      });
+      assert.equal(hidden.statusCode, 200);
+      assert.equal(hidden.json().data.state, "processing");
+      assert.equal(hidden.json().data.result_state, "none");
+      assert.equal(hidden.json().data.result, null);
+
+      const expectedDrop = failure === "sink"
+        ? "SINK_UNAVAILABLE"
+        : failure === "reservation" ? "RESERVATION_DENIED" : "INVALID_SHAPE";
+      assert.equal(runtime.logger.dropCounts()[expectedDrop], 1);
+      assert.equal(await runtime.execute(jobId), "completed");
+      assert.equal(provider.callCount, 1);
+      assert.equal(runtime.repository.getPendingTerminalFacts(jobId), undefined);
+      const recovered = await runtime.app.inject({
+        method: "GET",
+        url: `/v1/ai/recipe-jobs/${jobId}`,
+        headers,
+      });
+      assert.equal(recovered.statusCode, 200);
+      assert.equal(recovered.json().data.state, "succeeded");
+      assert.equal(recovered.json().data.result_state, "available");
+      assert.deepEqual(recovered.json().data.result, draft);
+
+      await runtime.app.close();
+    });
+  }
 });

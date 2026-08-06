@@ -25,10 +25,14 @@ import { InMemoryRateLimiter } from "../limits/rate-limiter.js";
 import {
   InMemoryTelemetrySink,
   SafeLogger,
+  type TelemetryEventName,
   type TelemetrySink,
 } from "../observability/safe-logger.js";
 import { installRecipeJobRoutes } from "../routes/ai/recipe-job-routes.js";
-import { InMemoryRecipeJobRepository } from "../storage/recipe-job-repository.js";
+import {
+  InMemoryRecipeJobRepository,
+  type PendingTerminalFacts,
+} from "../storage/recipe-job-repository.js";
 import { installDisabledRemoteSTTHttpBoundary } from "../stt/disabled-http-boundary.js";
 import { buildApp } from "./build-app.js";
 
@@ -84,6 +88,8 @@ export async function createLocalFoundationRuntime(
     readonly lastReconciledAt?: () => number;
     readonly ledger?: InMemoryCostLedger;
     readonly telemetrySink?: TelemetrySink;
+    readonly telemetryReserve?: (eventName: TelemetryEventName) => boolean;
+    readonly terminalTelemetryEvent?: (facts: PendingTerminalFacts) => unknown;
     readonly projectRequestsPerMinute?: number;
   } = {},
 ): Promise<LocalFoundationRuntime> {
@@ -107,11 +113,11 @@ export async function createLocalFoundationRuntime(
   const logger = new SafeLogger({
     sink: telemetrySink,
     now,
-    reserve: () => ledger.reserve({
+    reserve: options.telemetryReserve ?? (() => ledger.reserve({
       operationId: randomUUID(),
       requestedReservationKrw: 1,
       kind: "logging",
-    }).decision === "accepted",
+    }).decision === "accepted"),
     approvedDeploymentVersions: [LOCAL_DEPLOYMENT_VERSION],
     approvedManifestVersions: [LOCAL_MANIFEST_VERSION],
   });
@@ -122,6 +128,15 @@ export async function createLocalFoundationRuntime(
   const service = new RecipeJobService({
     repository,
     provider,
+    auditTerminal: (facts) => logger.emit(
+      "ai_job_state_changed",
+      options.terminalTelemetryEvent?.(facts) ?? {
+        previous_state: facts.previousState,
+        next_state: facts.nextState,
+        provider_attempt_count: facts.providerAttemptCount,
+        deployment_version: LOCAL_DEPLOYMENT_VERSION,
+      },
+    ),
     admission: new RecipeJobCostAdmission({
       ledger,
       manifest,
@@ -175,25 +190,15 @@ export async function createLocalFoundationRuntime(
       if (before === undefined || (before.state !== "queued" && before.state !== "processing")) {
         return "ignored";
       }
-      if (!logger.emit("ai_job_state_changed", {
-        previous_state: before.state,
-        next_state: "processing",
-        provider_attempt_count: 0,
-        deployment_version: LOCAL_DEPLOYMENT_VERSION,
-      })) return "telemetry_unavailable";
-      const result = await service.execute(jobId);
-      if (result === "completed") {
-        const after = repository.getExecutionFacts(jobId);
-        if (after !== undefined) {
-          logger.emit("ai_job_state_changed", {
-            previous_state: "processing",
-            next_state: after.state,
-            provider_attempt_count: after.providerStarted ? 1 : 0,
-            deployment_version: LOCAL_DEPLOYMENT_VERSION,
-          });
-        }
+      if (repository.getPendingTerminalFacts(jobId) === undefined) {
+        if (!logger.emit("ai_job_state_changed", {
+          previous_state: before.state,
+          next_state: "processing",
+          provider_attempt_count: 0,
+          deployment_version: LOCAL_DEPLOYMENT_VERSION,
+        })) return "telemetry_unavailable";
       }
-      return result;
+      return service.execute(jobId);
     },
     runMaintenance(): { readonly recipeContentDeleted: number; readonly rawMetadataDeleted: number } {
       return Object.freeze({

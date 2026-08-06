@@ -1,5 +1,11 @@
 # Backend 변경 기록
 
+- 2026-08-06: `QA-HIGH-007-001` 재작업으로 provider 결과를 `processing/none`에 비공개
+  staging하고 terminal audit 성공 뒤에만 `succeeded/available` 또는 `failed`로 전환한다.
+  audit 실패 재실행은 staged terminal만 재감사해 provider 호출을 1회로 유지한다.
+- 2026-08-06: terminal sink 두 번째 write 장애, reservation 거절, invalid event shape의
+  직접 통합 회귀를 추가했다. 세 경우 모두 첫 실행 `telemetry_unavailable`·결과 비노출,
+  재실행 복구·provider 1회를 확인했고 QA 원본 반례와 전체 100/100·계약 5종을 통과했다.
 - 2026-08-06: `T-20260804-007` 독립 QA에서 전체 96/96·계약 validator 5종·Node 24
   non-root container는 통과했으나 terminal telemetry sink 장애 뒤 미감사 성공 결과가
   공개되는 `QA-HIGH-007-001`을 확인했다.
