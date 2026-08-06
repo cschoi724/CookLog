@@ -4,27 +4,33 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-004 Cooking Log 구현 완료, iOS QA 독립 검증 대기
+- 상태: T-20260805-004 독립 QA 색상 토큰 실패, 재작업 승인 완료
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~003 done, T-20260805-004 verification_ready
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~003 done, T-20260805-004 rework_requested
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS QA Agent가 `T-20260805-004` 5개 상태·자동 저장·삭제·되돌리기·오류 보존을 독립 검증
-2. `T-20260805-005~007` 화면·상태 패키지 순차 구현
-3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
-4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
-5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
+1. iOS Agent가 `T-20260805-004` Cooking Log 배경·accent·status를 확정 토큰으로 재작업
+2. iOS QA Agent가 전체 XCTest와 Light/Dark `LOG-STEP-ADDED`·`LOG-ERROR` 독립 재검증
+3. `T-20260805-005~007` 화면·상태 패키지 순차 구현
+4. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
+5. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
+6. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- 독립 QA에서 기능·저장 계약과 전체 XCTest 62/62는 통과했지만 Cooking Log의 시스템
+  배경·accent·green·red 사용이 확정 색상 계약을 위반해 `QA-MEDIUM-805004-001`,
+  `rework_requested`로 판정됐습니다.
+- Product Owner가 색상 토큰 한정 재작업을 승인했습니다. 통과한 상태·저장 로직을
+  보존하고 Light/Dark 상태 증빙 후 독립 재검증합니다.
 - `T-20260805-004`에서 `idle -> recording -> processing -> idle|error`와 정확한 pending
   STEP 번호, 반복 기록을 구현했습니다.
 - STEP 추가·삭제·되돌리기는 `SaveStepPreviewDraftUseCase`로 같은 `RecipeRecord.id`에
