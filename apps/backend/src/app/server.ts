@@ -1,6 +1,7 @@
 import type { FastifyInstance } from "fastify";
 
 import { buildApp } from "./build-app.js";
+import { createLocalFoundationRuntime } from "./foundation-runtime.js";
 import { loadRuntimeConfig, type RuntimeConfig } from "../config/runtime-config.js";
 
 export async function closeWithDeadline(
@@ -42,7 +43,9 @@ function terminateSuccessfully(): never {
 }
 
 export async function startServer(config: RuntimeConfig = loadRuntimeConfig()): Promise<FastifyInstance> {
-  const app = await buildApp(config);
+  const app = config.environment === "production"
+    ? await buildApp(config)
+    : (await createLocalFoundationRuntime(config)).app;
   let shutdownStarted = false;
 
   const shutdown = (): void => {

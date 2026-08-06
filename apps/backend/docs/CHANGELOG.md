@@ -1,5 +1,14 @@
 # Backend 변경 기록
 
+- 2026-08-06: `T-20260804-007`에서 T-002~006의 공통 HTTP·installation 인증·rate limit·
+  idempotency·Mock AI job·비용 admission·allowlist telemetry·cleanup을 하나의 local/test
+  app과 programmatic worker로 연결했다. production은 local adapter 구성을 거부한다.
+- 2026-08-06: 공용 fixture 기반 실제 HTTP create·status·ACK와 exact replay, 인증·rate·비용
+  선차단, 콘텐츠 telemetry canary, 비정상 clock과 원격 STT parser 전 차단 통합 테스트를
+  추가했다. 호스트 전체 96/96과 계약 validator 5종·경계 감사를 통과했다.
+- 2026-08-06: Node.js 24.18.0 `.nvmrc`, 단일 `npm run verify`, non-root container 검증
+  스크립트와 Backend 전용 GitHub Actions를 추가했다. 로컬 host에는 Docker가 없어 실제
+  container 결과는 PR CI 필수 게이트에서 확인한 뒤 Backend QA에 인계한다.
 - 2026-08-06: Product Owner가 `T-20260804-007` Backend Foundation 최종 통합·보안
   검증과 로컬 실행 handoff를 별도 승인했다. T-002~006 local/mock composition, 새 clone,
   Node 24.18.0 non-root container와 전체 계약 회귀로 범위를 제한하고 실제 provider·cloud

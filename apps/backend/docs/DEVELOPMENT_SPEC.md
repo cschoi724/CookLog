@@ -1,7 +1,7 @@
 # Backend Foundation 개발 스펙
 
-최종 업데이트: 2026-08-05
-단계: T-002 Runtime Foundation 재작업 검증 대기
+최종 업데이트: 2026-08-06
+단계: T-007 Foundation 통합 검증
 
 ## 런타임 경계
 
@@ -30,6 +30,10 @@
 - `SafeLogger`, 비용·quota 원장
 - `RemoteSTTAdapter` 비활성 resolver
 
+local/test composition은 위 경계를 하나의 app과 programmatic worker에 연결한다. production
+entry point는 in-memory token·provider·repository를 생성하지 않으며 health 외 endpoint를
+등록하지 않는다.
+
 ## 저장과 시간
 
 - 첫 foundation은 in-memory 또는 명시적 test adapter를 사용할 수 있다.
@@ -42,4 +46,7 @@
 - `apps/backend/tests/contracts/validate-shared-fixtures.sh`
 - runtime unit·integration·contract·security test
 - secret·사용자 콘텐츠 로그 scanner
-- `npm ci`, `npm run typecheck`, `npm test`, `npm run check`
+- 새 clone에서 Node.js `24.18.0`, npm 11과 lockfile 기준 `npm ci`
+- 단일 호스트 명령 `npm run verify`
+- 단일 container 명령 `npm run verify:container`
+- Backend CI의 동일 Node/container 검증

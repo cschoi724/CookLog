@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-007
 title: Backend foundation 통합 계약·보안 검증과 로컬 실행 handoff
-status: approved
+status: in_progress
 type: test
 priority: P0
 priority_reason: 후속 provider·iOS 연동 전에 전체 runtime과 계약 원본의 동등성을 고정해야 한다.
@@ -27,13 +27,13 @@ blocks:
 parallel_group:
 allowed_paths:
 - apps/backend/
-- .github/workflows/backend-*.yml
-- .ai_project/tasks/backlog/T-20260804-007_validate-backend-foundation-integration.md
-- .ai_project/tasks/active/T-20260804-007_validate-backend-foundation-integration.md
-- .ai_project/reports/T-20260804-007_validate-backend-foundation-integration-report.md
-- .ai_project/qa/T-20260804-007_validate-backend-foundation-integration-qa.md
-- .ai_project/teams/development/task_board.md
-- .ai_project/teams/quality/task_board.md
+- ".github/workflows/backend-*.yml"
+- ".ai_project/tasks/backlog/T-20260804-007_validate-backend-foundation-integration.md"
+- ".ai_project/tasks/active/T-20260804-007_validate-backend-foundation-integration.md"
+- ".ai_project/reports/T-20260804-007_validate-backend-foundation-integration-report.md"
+- ".ai_project/qa/T-20260804-007_validate-backend-foundation-integration-qa.md"
+- ".ai_project/teams/development/task_board.md"
+- ".ai_project/teams/quality/task_board.md"
 source_of_truth:
 - apps/backend/AGENTS.md
 - apps/backend/docs/
@@ -41,9 +41,16 @@ source_of_truth:
 created_by: Development Lead Agent
 approved_by: Product Owner
 created_at: 2026-08-04
-updated_at: 2026-08-06
-report_to: .ai_project/reports/T-20260804-007_validate-backend-foundation-integration-report.md
-qa_to: .ai_project/qa/T-20260804-007_validate-backend-foundation-integration-qa.md
+updated_at: '2026-08-06'
+report_to: ".ai_project/reports/T-20260804-007_validate-backend-foundation-integration-report.md"
+qa_to: ".ai_project/qa/T-20260804-007_validate-backend-foundation-integration-qa.md"
+locked_by: Backend Agent
+locked_at: '2026-08-06'
+lock_session: codex-20260806-t007-integration
+status_ref: origin/develop
+status_ref_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
+base_ref: origin/develop
+base_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 ---
 
 # Backend foundation 통합 검증
@@ -114,3 +121,10 @@ Task T-20260804-007은 Product Owner가 별도 승인한 Foundation 최종 통�
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 완료 조건: 단일 재현 명령과 결과를 report에 기록하고 lock을 해제한 뒤
   `verification_ready`로 Backend QA Agent에 독립 검증을 인계해.
+
+## AI Ops CLI 기록
+
+| 날짜 | Actor | Event | Reason |
+|---|---|---|---|
+| 2026-08-06 | Backend Agent | lock | task lock |
+| 2026-08-06 | Backend Agent | transition: approved -> in_progress | T-002~006 최종 통합·Node 24 container·단일 회귀 구현 착수 |

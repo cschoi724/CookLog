@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-06
-상태: T-20260804-004~006 done·T-20260804-007 최종 통합 실행 승인
+상태: T-20260804-004~006 done·T-20260804-007 통합 구현·호스트 검증 완료, Node 24 CI 검증 대기
 
 ## 현재 단계
 
@@ -12,18 +12,20 @@
 - Mock AI job `T-20260804-004`: `done`, PR #79 squash merge `a73a028`
 - 원격 STT 비활성 경계 `T-20260804-005`: `done`, HIGH 해소·독립 재검증·완료 리뷰·PR #84 병합 승인 완료
 - 안전 runtime `T-20260804-006`: `done`, Lead `PASS_WITH_RISK`·Product Owner PR #87 병합 승인
-- 최종 통합 `T-20260804-007`: `approved`, Backend Agent 구현·자체 검증 대기
+- 최종 통합 `T-20260804-007`: `in_progress`, local/mock composition과 단일 검증 명령 구현,
+  호스트 96/96·계약 validator·경계 감사 통과, Node 24.18.0 container CI 검증 대기
 
-Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock server scaffold, typed 환경
-설정, `GET /healthz`와 독립 조립 가능한 Mock AI job route를 구현했다. 실제 provider·
-network·production datastore·원격 STT route는 없다.
+Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock composition에 공통 HTTP, installation
+인증, rate limit, HTTP/domain idempotency, Mock AI job, 비용 admission, allowlist telemetry와
+cleanup을 연결했다. production은 local adapter를 거부하고 고정 `GET /healthz`만 제공한다.
+실제 provider·network·production datastore·원격 STT route는 없다.
 
 ## 다음 조치
 
-Backend Agent가 T-002~006 local/mock composition, 새 clone 단일 실행 절차와 Node
-24.18.0 non-root container, 공용 fixture 기반 실제 HTTP 통합 회귀를 구현·자체 검증한다.
-완료 후 Backend QA Agent가 계약·보안·비용·cleanup과 원격 STT 비활성 경계를 독립
-검증한다.
+Backend 전용 CI에서 Node 24.18.0 lockfile 설치와 `npm run verify`, non-root container의
+Cloud Run `PORT`·health·SIGTERM 종료 및 lifecycle·통합 테스트를 확인한다. 통과 후 Task를
+`verification_ready`로 전환해 Backend QA Agent가 새 clone에서 계약·보안·비용·cleanup과
+원격 STT 비활성 경계를 독립 검증한다.
 
 ## 차단 경계
 
