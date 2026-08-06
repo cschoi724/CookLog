@@ -1,7 +1,7 @@
 # Backend Runtime Foundation 결정
 
 결정일: 2026-08-04
-상태: T-20260804-002 구현 기준
+상태: T-20260804-007 local/mock 통합 기준
 
 ## 결정
 
@@ -70,7 +70,9 @@ Node.js 공식 정책은 production에 Active 또는 Maintenance LTS 사용을 �
 ```
 
 시간, hostname, revision, 환경변수, provider, secret, 사용자 콘텐츠와 상세 dependency
-상태를 반환하지 않습니다. 인증·AI·STT route는 T-002에서 만들지 않습니다.
+상태를 반환하지 않습니다. production은 이 route만 등록하며 local/test composition만
+인증된 Mock AI create·status·ACK를 추가합니다. 원격 STT route는 등록하지 않고 local/test
+HTTP 경계가 parser 전에 고정 `SERVICE_DISABLED`로 차단합니다.
 
 ## 종료 검증 경계
 
@@ -85,5 +87,5 @@ assertion하고 9초 안에 끝나야 합니다.
 - Mock AI job과 저장: `T-20260804-004`
 - 원격 STT 비활성 resolver: `T-20260804-005`
 - safe logging·비용·cleanup: `T-20260804-006`
-- 전체 wiring·container·계약 보안 검증: `T-20260804-007`
+- 전체 wiring·container·계약 보안 검증: `T-20260804-007` 구현·독립 QA·완료 리뷰 통과
 - 실제 provider·cloud 배포: `T-20260729-003` 별도 승인

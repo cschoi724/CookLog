@@ -13,8 +13,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "start": "node dist/src/app/server.js",
     "dev": "npm run build && npm start",
-    "test": "npm run build && node --test dist/tests/health/*.test.js",
-    "check": "npm run typecheck && npm test"
+    "test:runtime": "node --test dist/tests/health/*.test.js dist/tests/auth/*.test.js dist/tests/http/*.test.js dist/tests/ai/*.test.js dist/tests/jobs/*.test.js dist/tests/stt/*.test.js dist/tests/security/*.test.js dist/tests/cleanup/*.test.js dist/tests/integration/*.test.js",
+    "test": "npm run build && npm run test:runtime",
+    "validate:contracts": "sh tests/contracts/validate-shared-fixtures.sh",
+    "audit:boundaries": "sh scripts/audit-foundation-boundaries.sh",
+    "verify": "npm run typecheck && npm test && npm run validate:contracts && npm run audit:boundaries",
+    "verify:container": "sh scripts/verify-container.sh",
+    "check": "npm run verify"
   },
   "dependencies": {
     "fastify": "5.11.2"

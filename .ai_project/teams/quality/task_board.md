@@ -7,6 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
+| `T-20260804-007` | `done` | Backend Foundation 통합 계약·보안 검증·handoff | HIGH 원본 반례·terminal sink/reservation/shape·Provider at-most-once·전체 회귀 | PASS_WITH_RISK·Product Owner 완료/PR #91 병합 승인 |
 | `T-20260805-004` | `rework_requested` | iOS Cooking Log·STEP Preview 자동 저장·오류 상태 | 기능·저장·전체 XCTest 62/62 통과, `QA-MEDIUM-805004-001` 색상 토큰 위반 | Product Owner 재작업 승인, 수정 후 독립 재검증 |
 | `T-20260805-003` | `done` | iOS Home·전체 보기·검색·상태별 routing | WP-R1~R4 해소·Home 13개·전체 XCTest 54개 | 완료 리뷰 PASS_WITH_RISK·Product Owner 완료/병합 승인 |
 | `T-20260805-002` | `done` | iOS 로컬 도메인·SwiftData migration·draft 생명주기 | HIGH 2건 해소·단일 UUID·legacy completed·non-empty migration·전체 XCTest | PASS·PR #77 squash merge `3d1d012` |
@@ -39,7 +40,7 @@
 | `T-20260804-003` | `done` | Backend 공통 HTTP·인증·제한·idempotency middleware | HIGH 2·MEDIUM 1 해소·기존 15/15·T-003 24/24·공용 계약 무회귀 | Product Owner PASS_WITH_RISK 수용·PR #76 병합 승인 |
 | `T-20260804-004` | `done` | Backend Mock AI recipe job·status·ACK·복구 | HIGH 2·MEDIUM 1 해소·전체 55/55·공용 계약 무회귀 | Product Owner 최종 승인·PR #79 squash merge `a73a028` |
 | `T-20260804-005` | `done` | Backend 원격 STT 비활성 확장 경계·활성화 차단 | disabled profile·startup 30개 반례·route/body read/queue/egress 0 | Product Owner 완료·PR #84 squash merge 승인, T-007 잔여 위험 이관 |
-| `T-20260804-006` | `approved` | Backend redacted logging·비용 원장·TTL cleanup | telemetry 0건·비용 hard cutoff·콘텐츠/raw metadata 삭제 | Backend Agent 구현·자체 검증 후 독립 QA |
+| `T-20260804-006` | `done` | Backend redacted logging·비용 원장·TTL cleanup | HIGH 2건 해소·원본 반례·T-006 26/26·전체 92/92 | Product Owner 완료·PR #87 squash merge 승인 |
 
 향후 검증 예정 Task:
 
