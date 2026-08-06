@@ -1,5 +1,8 @@
 # Backend 변경 기록
 
+- 2026-08-06: Product Owner가 `T-20260804-006` 완료 리뷰와 T-007 잔여 위험 이관을
+  수용하고 최종 완료·PR #87 squash merge를 승인했다. T-007 선행은 해소하되 별도 실행
+  승인 전 `proposed`로 유지한다.
 - 2026-08-06: Development Lead가 `T-20260804-006` HIGH 2건 해소, 허용 경로와 원본
   공격 반례·T-006 26/26·Backend 전체 92/92를 직접 재확인해 완료 리뷰를
   `PASS_WITH_RISK`로 수용했다. 실제 cloud adapter·Node 24 container·전체 composition은

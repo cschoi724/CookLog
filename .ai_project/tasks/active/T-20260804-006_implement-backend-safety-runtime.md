@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-006
 title: Backend redacted logging·비용 원장·TTL cleanup 경계 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: Mock 실행에서도 콘텐츠 비노출·비용 hard cutoff·삭제 불변식을 강제해야 한다.
@@ -11,7 +11,7 @@ team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
 target_agent: Development Lead Agent
-target_role: Completion Role
+target_role: Lead Role
 required_capabilities:
 - backend_implementation
 - security_review
@@ -102,6 +102,9 @@ next_decision:
   계약을 직접 재확인했다. 실제 cloud·Node 24 container·전체 composition 위험을
   T-007 필수 통합 게이트로 유지하는 조건으로 `PASS_WITH_RISK`를 수용하고
   `verification_passed -> completion_review`로 전환한다.
+- 2026-08-06: Product Owner가 완료 리뷰와 T-007 잔여 위험 이관을 수용하고 최종 완료와
+  PR #87 squash merge를 승인했다. `completion_review -> done`으로 확정하며 공용
+  `done`과 T-007 선행 해제는 PR #87의 `develop` 병합 후 효력이 발생한다.
 
 - 2026-08-05: 공용 `develop@2092e1d`에서 선행 `T-20260804-003~005`의 `done`과
   PR #84 병합을 확인했다.
@@ -167,17 +170,19 @@ next_decision:
   Task 완료를 차단하지 않지만 T-007은 T-006 병합 전 착수할 수 없다.
 - PR #87의 최종 checks와 Product Owner 완료·병합 승인을 받은 뒤 squash merge하고,
   merge SHA 확인 후에만 `completion_review -> done`과 T-007 선행 해제를 확정한다.
+- 완료 확정: Product Owner가 최종 완료와 PR #87 squash merge를 승인했다. 필수 checks
+  통과 후 `develop`에 병합해 공용 `done`을 확정한다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Completion Role이야.
-Task T-20260804-006은 완료 리뷰를 통과하고 Product Owner 승인을 기다리는 Task야.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260804-006은 완료 리뷰와 Product Owner 병합 승인을 받은 완료 Task야.
 
-- 현재 상태: `completion_review`
+- 현재 상태: `done` (`develop` 병합 후 공용 효력)
 - 구현 기준 ref: `task/T-20260804-006-implement-backend-safety-runtime`
-- 다음에 해야 할 일: PR #87 최종 checks와 Product Owner 완료·병합 승인을 확인해줘.
+- 다음에 해야 할 일: PR #87 최종 checks 후 squash merge하고 공용 `develop`을 동기화해줘.
 - 기준 문서: `apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md`,
   `apps/backend/contracts/security/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
@@ -186,8 +191,7 @@ Task T-20260804-006은 완료 리뷰를 통과하고 Product Owner 승인을 기
   composition은 T-007에서 통합 검증
 - 차단/결정 필요: 실제 provider·cloud resource·secret·배포와 원격 STT 활성화 금지
 - 참고: `.ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md`
-- 완료 시: Product Owner 승인 후 PR #87을 squash merge하고 merge SHA를 확인한 뒤
-  `done`과 T-007 선행 해제를 공용 `develop`에서 확정해줘.
+- 완료 시: merge SHA와 공용 `done`, T-007의 `proposed`·선행 해소 상태를 확인해줘.
 
 ## AI Ops CLI 기록
 
@@ -200,3 +204,4 @@ Task T-20260804-006은 완료 리뷰를 통과하고 Product Owner 승인을 기
 | 2026-08-06 | Backend QA Agent | transition: verification_ready -> verification_in_progress | HIGH 2건 원본·확장 반례와 전체 회귀 독립 재검증 |
 | 2026-08-06 | Backend QA Agent | transition: verification_in_progress -> verification_passed | HIGH 2건 해소, T-006 26/26·전체 92/92·공용 계약 PASS_WITH_RISK |
 | 2026-08-06 | Development Lead Agent | transition: verification_passed -> completion_review | HIGH 2건 해소, 허용 경로, 원본 반례·26/26·92/92와 T-007 잔여 위험 이관을 확인해 완료 리뷰 수용 |
+| 2026-08-06 | Product Owner | transition: completion_review -> done | 완료 리뷰와 T-007 잔여 위험 이관 수용, PR #87 squash merge 승인 |
