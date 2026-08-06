@@ -1,5 +1,9 @@
 # Backend 변경 기록
 
+- 2026-08-06: Product Owner가 `T-20260804-007` Backend Foundation 최종 통합·보안
+  검증과 로컬 실행 handoff를 별도 승인했다. T-002~006 local/mock composition, 새 clone,
+  Node 24.18.0 non-root container와 전체 계약 회귀로 범위를 제한하고 실제 provider·cloud
+  resource·secret·배포·원격 STT는 제외해 Backend Agent에 인계했다.
 - 2026-08-06: Product Owner가 `T-20260804-006` 완료 리뷰와 T-007 잔여 위험 이관을
   수용하고 최종 완료·PR #87 squash merge를 승인했다. T-007 선행은 해소하되 별도 실행
   승인 전 `proposed`로 유지한다.

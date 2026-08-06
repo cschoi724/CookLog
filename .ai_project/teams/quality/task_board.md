@@ -7,6 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
+| `T-20260804-007` | `approved` | Backend Foundation 통합 계약·보안 검증·handoff | Node 24 container·composition·HTTP/fixture 동등성·보안/비용/cleanup 전체 회귀 | Backend Agent 구현·자체 검증 후 Backend QA 독립 검증 |
 | `T-20260805-003` | `done` | iOS Home·전체 보기·검색·상태별 routing | WP-R1~R4 해소·Home 13개·전체 XCTest 54개 | 완료 리뷰 PASS_WITH_RISK·Product Owner 완료/병합 승인 |
 | `T-20260805-002` | `done` | iOS 로컬 도메인·SwiftData migration·draft 생명주기 | HIGH 2건 해소·단일 UUID·legacy completed·non-empty migration·전체 XCTest | PASS·PR #77 squash merge `3d1d012` |
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |

@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-06
-상태: T-20260804-004~006 done·T-20260804-007 선행 해소
+상태: T-20260804-004~006 done·T-20260804-007 최종 통합 실행 승인
 
 ## 현재 단계
 
@@ -12,7 +12,7 @@
 - Mock AI job `T-20260804-004`: `done`, PR #79 squash merge `a73a028`
 - 원격 STT 비활성 경계 `T-20260804-005`: `done`, HIGH 해소·독립 재검증·완료 리뷰·PR #84 병합 승인 완료
 - 안전 runtime `T-20260804-006`: `done`, Lead `PASS_WITH_RISK`·Product Owner PR #87 병합 승인
-- 최종 통합 `T-20260804-007`: `proposed`, 선행 해소·Product Owner 별도 실행 승인 대기
+- 최종 통합 `T-20260804-007`: `approved`, Backend Agent 구현·자체 검증 대기
 
 Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock server scaffold, typed 환경
 설정, `GET /healthz`와 독립 조립 가능한 Mock AI job route를 구현했다. 실제 provider·
@@ -20,10 +20,10 @@ network·production datastore·원격 STT route는 없다.
 
 ## 다음 조치
 
-Backend QA Agent가 승인 version exact allowlist와 `NaN`·Infinity·음수·unsafe·표현 범위
-밖 clock의 비용 admission·raw metadata create/read/export/aggregate 차단을 독립
-재검증한다. 실제 cloud sink·billing·datastore·queue·KMS·provider와 공유 app
-composition은 T-007 소유다.
+Backend Agent가 T-002~006 local/mock composition, 새 clone 단일 실행 절차와 Node
+24.18.0 non-root container, 공용 fixture 기반 실제 HTTP 통합 회귀를 구현·자체 검증한다.
+완료 후 Backend QA Agent가 계약·보안·비용·cleanup과 원격 STT 비활성 경계를 독립
+검증한다.
 
 ## 차단 경계
 
