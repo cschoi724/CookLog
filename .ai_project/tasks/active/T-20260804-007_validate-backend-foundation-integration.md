@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Lead Role
+target_agent: Backend Agent
+target_role: Execution Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -52,7 +52,7 @@ status_ref_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 base_ref: origin/develop
 base_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 blocker: QA-HIGH-007-001 worker 종료 telemetry sink 장애 뒤 미감사 성공 결과가 외부 공개됨
-next_decision: Development Lead가 terminal telemetry와 성공 상태 commit의 원자적 fail-closed 재작업 범위를 확정한다.
+next_decision: Product Owner 승인 범위대로 terminal telemetry와 성공 결과 공개를 fail-closed로 재작업한다.
 ---
 
 # Backend foundation 통합 검증
@@ -79,6 +79,11 @@ next_decision: Development Lead가 terminal telemetry와 성공 상태 commit의
 - 2026-08-06: Product Owner가 Backend Foundation 최종 통합·보안 검증과 로컬 실행
   handoff를 별도 승인했다. Development Lead Agent가 `proposed -> approved`로 전환하고
   Backend Agent에 인계한다.
+- 2026-08-06: Backend QA가 terminal telemetry sink 장애 뒤 미감사 성공 결과가
+  `succeeded`·`available`로 공개되는 `QA-HIGH-007-001`을 확인해 Task를
+  `rework_requested`로 반환했다.
+- 2026-08-06: Product Owner가 terminal 감사와 성공 결과 공개의 fail-closed 재작업을
+  승인했다. Provider at-most-once와 기존 정상 계약은 보존하고 장애 회귀를 추가한다.
 - T-002 runtime·T-003 HTTP/auth/idempotency·T-004 Mock AI job·T-005 원격 STT 비활성
   경계·T-006 logging/비용/cleanup을 하나의 local/mock app·worker composition으로
   연결한다.
@@ -107,13 +112,22 @@ next_decision: Development Lead가 terminal telemetry와 성공 상태 commit의
 다음 Agent에게 전달할 말:
 
 너는 Backend Agent / Execution Role이야.
-Task T-20260804-007은 Product Owner가 별도 승인한 Foundation 최종 통합 Task야.
+Task T-20260804-007은 독립 QA에서 HIGH 1건이 확인되고 Product Owner가 재작업을 승인한
+Foundation 최종 통합 Task야.
 
-- 현재 상태: `approved`
-- public source: `origin/develop@3a0a1f4`
+- 현재 상태: `rework_requested`
+- public source: `origin/develop@6a1678c`
 - 선행 상태: `T-20260804-002~006 done`
-- 시작 절차: 최신 `origin/develop` 기반 전용 worktree 생성, Task lock 획득,
-  `approved -> in_progress`
+- 구현 ref: `task/T-20260804-007-integrate-backend-foundation`
+- 재작업 승인: Product Owner 승인 완료
+- 시작 절차: 기존 구현 worktree에서 Task lock 획득, `rework_requested -> in_progress`
+- 차단 결함: `QA-HIGH-007-001` — terminal telemetry sink 장애 뒤에도 성공 결과가
+  `completed`·`succeeded`·`available`로 공개됨
+- 필수 수정: terminal 감사 성공 전에는 결과를 외부 공개하지 않고, sink 장애·terminal
+  reservation 거절·event shape 거절을 fail closed 처리
+- 필수 회귀: 위 3개 장애와 재시도에서 Provider at-most-once, 기존 결과 비노출·복구 보장
+- 통과 유지: 전체 96/96, 계약 validator 5종, auth·rate·idempotency·비용·cleanup,
+  Node 24.18.0 non-root container
 - 필수 구현: T-002~006 local/mock composition과 공용 fixture 기반 실제 HTTP 통합 경로
 - 필수 검증: 새 clone, Node 24.18.0/npm 11, non-root container, 전체 계약·보안·비용·
   cleanup 회귀, 원격 STT route/side effect 0건
@@ -134,3 +148,4 @@ Task T-20260804-007은 Product Owner가 별도 승인한 Foundation 최종 통�
 | 2026-08-06 | Backend Agent | unlock | task unlock |
 | 2026-08-06 | Backend QA Agent | transition: verification_ready -> verification_in_progress | local/mock composition·전체 계약·보안·비용·cleanup·Node 24 container 증빙 독립 검증 시작 |
 | 2026-08-06 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-007-001: worker 종료 telemetry sink 장애를 무시해 미감사 성공 결과가 available로 공개됨 |
+| 2026-08-06 | Product Owner | rework approved | terminal telemetry와 성공 결과 공개 fail-closed, Provider at-most-once 회귀 범위 승인 |

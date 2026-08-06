@@ -1,5 +1,10 @@
 # Backend 변경 기록
 
+- 2026-08-06: `T-20260804-007` 독립 QA에서 전체 96/96·계약 validator 5종·Node 24
+  non-root container는 통과했으나 terminal telemetry sink 장애 뒤 미감사 성공 결과가
+  공개되는 `QA-HIGH-007-001`을 확인했다.
+- 2026-08-06: Product Owner가 terminal 감사와 성공 결과 공개의 fail-closed 재작업,
+  sink·reservation·event shape 장애 및 Provider at-most-once 회귀를 승인했다.
 - 2026-08-06: PR #91에서 `backend-verify`와 `backend-container`가 통과했다. 새 clone
   `npm ci`·96/96·계약 5종과 Node 24.18.0 build/runtime, non-root, lifecycle·production
   health·SIGTERM exit 0을 확인해 T-007을 `verification_ready`로 Backend QA에 인계했다.
