@@ -1,5 +1,8 @@
 # Backend 변경 기록
 
+- 2026-08-06: PR #91에서 `backend-verify`와 `backend-container`가 통과했다. 새 clone
+  `npm ci`·96/96·계약 5종과 Node 24.18.0 build/runtime, non-root, lifecycle·production
+  health·SIGTERM exit 0을 확인해 T-007을 `verification_ready`로 Backend QA에 인계했다.
 - 2026-08-06: `T-20260804-007`에서 T-002~006의 공통 HTTP·installation 인증·rate limit·
   idempotency·Mock AI job·비용 admission·allowlist telemetry·cleanup을 하나의 local/test
   app과 programmatic worker로 연결했다. production은 local adapter 구성을 거부한다.

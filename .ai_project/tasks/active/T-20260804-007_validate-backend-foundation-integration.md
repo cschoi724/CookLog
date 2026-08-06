@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-007
 title: Backend foundation 통합 계약·보안 검증과 로컬 실행 handoff
-status: in_progress
+status: verification_ready
 type: test
 priority: P0
 priority_reason: 후속 provider·iOS 연동 전에 전체 runtime과 계약 원본의 동등성을 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Backend QA Agent
+target_role: Verification Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -44,13 +44,15 @@ created_at: 2026-08-04
 updated_at: '2026-08-06'
 report_to: ".ai_project/reports/T-20260804-007_validate-backend-foundation-integration-report.md"
 qa_to: ".ai_project/qa/T-20260804-007_validate-backend-foundation-integration-qa.md"
-locked_by: Backend Agent
-locked_at: '2026-08-06'
-lock_session: codex-20260806-t007-integration
+locked_by:
+locked_at:
+lock_session:
 status_ref: origin/develop
 status_ref_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 base_ref: origin/develop
 base_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
+blocker:
+next_decision:
 ---
 
 # Backend foundation 통합 검증
@@ -128,3 +130,5 @@ Task T-20260804-007은 Product Owner가 별도 승인한 Foundation 최종 통�
 |---|---|---|---|
 | 2026-08-06 | Backend Agent | lock | task lock |
 | 2026-08-06 | Backend Agent | transition: approved -> in_progress | T-002~006 최종 통합·Node 24 container·단일 회귀 구현 착수 |
+| 2026-08-06 | Backend Agent | transition: in_progress -> verification_ready | local/mock 통합·새 clone 96/96·계약 5종·Node 24.18 non-root container PR CI 통과 |
+| 2026-08-06 | Backend Agent | unlock | task unlock |

@@ -2,7 +2,7 @@
 
 ## 결과
 
-상태: `in_progress` — 구현·호스트 자체 검증 완료, Node 24.18.0 container CI 검증 대기
+상태: `verification_ready` — 구현·새 clone·Node 24.18.0 container 자체 검증 완료
 
 T-002~006에서 독립 구현한 runtime, 공통 HTTP·인증·제한·idempotency, Mock AI job,
 원격 STT 비활성 경계, 비용·logging·cleanup을 하나의 local/test composition으로 연결했다.
@@ -36,7 +36,9 @@ T-002~006에서 독립 구현한 runtime, 공통 HTTP·인증·제한·idempoten
 | 인증·rate·KRW 50,000 비용 선차단 | PASS |
 | 콘텐츠·secret telemetry canary | sink 0건 |
 | 비정상 clock·production local adapter·remote STT | side effect 전 차단 PASS |
-| `npm run verify:container` | 로컬 Docker 부재, PR CI 검증 대기 |
+| 새 clone `npm ci && npm run verify` | PASS, 96/96·audit 0건 |
+| PR #91 `backend-verify` | PASS |
+| PR #91 `backend-container` | PASS, Node 24.18.0·non-root·lifecycle·health·SIGTERM |
 
 검증 host는 Node.js 26.4.0/npm 11.17.0이다. 목표 Node.js 24.18.0은 `.nvmrc`, pinned
 container와 GitHub Actions에서 별도로 강제한다.
@@ -60,8 +62,8 @@ npm run verify:container
 
 ## 남은 절차와 QA 인계
 
-Pull Request CI에서 Node 24.18.0 lockfile·container 검증을 통과하면 결과를 이 보고서에
-고정하고 Task lock을 해제해 `verification_ready`로 전환한다. Backend QA Agent는 새 clone에서
-위 재현 명령, 실제 HTTP fixture 동등성, provider-at-most-once, exact idempotency replay,
-shutdown deadline, 비용 hard cutoff, telemetry canary, 콘텐츠/raw metadata cleanup과 원격
-STT side effect 0건을 독립 검증한다.
+PR #91에서 Node 24.18.0 lockfile·container 검증을 통과했고 Task lock을 해제해
+`verification_ready`로 전환했다. Backend QA Agent는 새 clone에서 위 재현 명령, 실제 HTTP
+fixture 동등성, provider-at-most-once, exact idempotency replay, shutdown deadline, 비용
+hard cutoff, telemetry canary, 콘텐츠/raw metadata cleanup과 원격 STT side effect 0건을
+독립 검증한다. QA 통과 전에는 PR을 병합하거나 Task를 `done` 처리하지 않는다.

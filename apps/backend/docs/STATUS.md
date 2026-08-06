@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-06
-상태: T-20260804-004~006 done·T-20260804-007 통합 구현·호스트 검증 완료, Node 24 CI 검증 대기
+상태: T-20260804-004~006 done·T-20260804-007 `verification_ready`
 
 ## 현재 단계
 
@@ -12,8 +12,9 @@
 - Mock AI job `T-20260804-004`: `done`, PR #79 squash merge `a73a028`
 - 원격 STT 비활성 경계 `T-20260804-005`: `done`, HIGH 해소·독립 재검증·완료 리뷰·PR #84 병합 승인 완료
 - 안전 runtime `T-20260804-006`: `done`, Lead `PASS_WITH_RISK`·Product Owner PR #87 병합 승인
-- 최종 통합 `T-20260804-007`: `in_progress`, local/mock composition과 단일 검증 명령 구현,
-  호스트 96/96·계약 validator·경계 감사 통과, Node 24.18.0 container CI 검증 대기
+- 최종 통합 `T-20260804-007`: `verification_ready`, local/mock composition과 단일 검증
+  명령 구현, 새 clone 96/96·계약 validator·경계 감사와 PR #91 Node 24.18.0
+  non-root container CI 통과
 
 Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock composition에 공통 HTTP, installation
 인증, rate limit, HTTP/domain idempotency, Mock AI job, 비용 admission, allowlist telemetry와
@@ -22,10 +23,9 @@ cleanup을 연결했다. production은 local adapter를 거부하고 고정 `GET
 
 ## 다음 조치
 
-Backend 전용 CI에서 Node 24.18.0 lockfile 설치와 `npm run verify`, non-root container의
-Cloud Run `PORT`·health·SIGTERM 종료 및 lifecycle·통합 테스트를 확인한다. 통과 후 Task를
-`verification_ready`로 전환해 Backend QA Agent가 새 clone에서 계약·보안·비용·cleanup과
-원격 STT 비활성 경계를 독립 검증한다.
+Backend QA Agent가 PR #91의 최신 commit을 새 clone에서 설치하고 계약·보안·비용·cleanup,
+원격 STT 비활성 경계와 Node 24.18.0 container 결과를 독립 검증한다. QA 통과 전에는
+Task를 `done` 처리하거나 PR을 병합하지 않는다.
 
 ## 차단 경계
 

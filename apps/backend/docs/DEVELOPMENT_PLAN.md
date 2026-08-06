@@ -14,8 +14,8 @@ STT 활성화를 포함하지 않는다.
 3. `T-20260804-004`: Mock AI 비동기 job·status·ACK·복구 — `done`
 4. `T-20260804-005`: 원격 STT 비활성 확장 경계·활성화 차단 — `done`
 5. `T-20260804-006`: redacted logging·비용 원장·TTL cleanup — `done`
-6. `T-20260804-007`: 통합 계약·보안 테스트·로컬 실행 handoff — `in_progress`,
-   호스트 검증 완료·Node 24 container CI 대기
+6. `T-20260804-007`: 통합 계약·보안 테스트·로컬 실행 handoff — `verification_ready`,
+   새 clone·Node 24 container CI 통과, Backend QA 독립 검증 대기
 
 공유 app wiring과 전체 회귀는 T-007이 소유한다. 실제 provider·cloud adapter와 배포는
 T-007 및 Foundation 완료로 자동 승인되지 않는다.
