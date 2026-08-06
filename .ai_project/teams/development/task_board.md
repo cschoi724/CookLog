@@ -38,7 +38,7 @@
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
-| `T-20260805-004` | `approved` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `T-20260805-003` 완료 | Product Owner 별도 실행 승인, clean worktree lock 후 구현 |
+| `T-20260805-004` | `verification_ready` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS QA Agent | `T-20260805-003` 완료 | 5개 상태·전체 XCTest 62/62·Simulator 반복 기록, 독립 검증 대기 |
 | `T-20260805-005` | `proposed` | iOS | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `T-20260805-004` | Cooking Log 완료 대기 |
 | `T-20260805-006` | `proposed` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` | Review·Recipe 완료 대기 |
 | `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
@@ -119,6 +119,11 @@ Product Owner가 `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오�
 별도 승인했습니다. iOS Agent는 최신 develop 기반 전용 worktree와 lock으로 착수하며,
 Mock Service 기반 5개 상태와 동일 record draft·완료 STEP 보존만 구현합니다. 실제 Apple
 STT와 T-005~008 범위는 선행하지 않습니다.
+
+iOS Agent가 Cooking Log 5개 상태, 같은 record STEP 자동 저장, 삭제·되돌리기와 오류 시
+기존 STEP 보존을 구현했습니다. Product Owner가 자동 저장 DI용 App 파일 2개의 최소 경로
+확장을 승인했으며 전체 XCTest 62/62·build와 iPhone SE 실제 반복 기록을 통과해 iOS QA
+Agent에 `verification_ready`로 인계했습니다.
 
 수익화 개발 `T-20260728-012`, `014~017`은 Core v1과 분리된 `proposed` 후보입니다. T-010 정책과 각 activation gate가 완료돼도 Product Owner의 별도 실행 승인 전에는 scope·구현하지 않습니다.
 

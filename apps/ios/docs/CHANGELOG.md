@@ -2,6 +2,21 @@
 
 이 문서는 iOS 앱 개발 변경 기록을 관리합니다.
 
+## 2026-08-06
+
+- `T-20260805-004`의 Cooking Log 5개 상태와 첫·반복 10초 Mock 기록을 구현했습니다.
+- Processing 동안 기존 완료 STEP과 정확한 다음 pending 번호를 함께 표시하고, 성공 시
+  같은 `RecipeRecord.id`에 자동 저장된 뒤에만 화면 세션을 갱신합니다.
+- STEP row에 왼쪽 swipe와 접근 가능한 44pt 삭제 버튼을 추가하고, 삭제 자동 저장과
+  제한 시간 내 원래 위치 되돌리기·연속 order 정규화를 구현했습니다.
+- 권한·음성 처리·자동 저장 오류를 분리해 실패한 pending만 제거하고 기존 STEP과 AI 정리
+  snapshot을 보존하도록 했습니다.
+- Product Owner 승인으로 `AppEnvironment.swift`·`CookLogApp.swift` 최소 범위를 확장해
+  `SaveStepPreviewDraftUseCase`를 실제 앱 경로에 생성자 주입했습니다.
+- Cooking Log 집중 10개·STEP use case 4개를 포함한 전체 XCTest 62/62와 build를
+  통과하고, iPhone SE iOS 17.2 다크 모드에서 첫·반복 기록과 STEP 1·2 자동 저장을
+  실제 확인했습니다.
+
 ## 2026-08-05
 
 - Product Owner가 `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 구현을

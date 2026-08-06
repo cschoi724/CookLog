@@ -50,6 +50,7 @@ struct CookLogApp: App {
                             viewModel: CookingLogViewModel(
                                 speechRecognitionService: environment.speechRecognitionService,
                                 addStepPreviewUseCase: environment.addStepPreviewUseCase,
+                                saveStepPreviewDraftUseCase: environment.saveStepPreviewDraftUseCase,
                                 session: CookingLogSession(id: recordID, stepPreviews: stepPreviews)
                             ),
                             onGenerateRecipeDraft: { stepPreviews in
