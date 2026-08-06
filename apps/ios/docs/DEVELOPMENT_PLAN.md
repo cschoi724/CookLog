@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, Cooking Log 색상 토큰 재작업 독립 재검증 대기
+- 상태: Mock Core MVP 조건부 통과, Cooking Log 완료 리뷰 통과·Product Owner 승인 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -37,7 +37,7 @@
 
 1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `done`, PR #77 merge `3d1d012`
 2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `done`, PR #86 merge `9457133`
-3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `verification_ready`, 색상 토큰 재검증 대기
+3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `completion_review`, Lead PASS_WITH_RISK·PR #90 병합 승인 대기
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `proposed`
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `proposed`
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `proposed`
@@ -92,6 +92,8 @@
 - [x] iPhone SE iOS 17.2 다크 모드에서 첫·반복 기록과 STEP 1·2 자동 저장 실제 확인
 - [x] `bg/base|subtle|elevated`, accent, success, error 확정 Light/Dark 토큰 적용
 - [x] iPhone 15 Light/Dark `LOG-STEP-ADDED`·`LOG-ERROR`와 전체 XCTest 62/62 재확인
+- [x] iOS QA 독립 재검증 `PASS_WITH_RISK`, 금지 시스템 색상 0건 확인
+- [x] 최신 develop 통합·PR #90 iOS build/XCTest checks와 Development Lead 완료 리뷰 통과
 
 ## 현재 개발 원칙
 

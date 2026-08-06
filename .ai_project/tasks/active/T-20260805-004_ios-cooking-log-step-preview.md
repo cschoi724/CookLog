@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-004
 title: iOS Cooking Log·STEP Preview 자동 저장·오류 상태 구현
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 10초 기록 반복과 STEP Preview 보존이 CookLog 핵심 기록 경험이다.
@@ -93,6 +93,10 @@ qa_to: .ai_project/qa/T-20260805-004_ios-cooking-log-step-preview-qa.md
   증빙, 전체 XCTest 62/62를 독립 확인했다. `QA-MEDIUM-805004-001` 해소와 기능·저장
   무회귀를 `PASS_WITH_RISK`로 판정해 `verification_in_progress -> verification_passed`로
   전환하고 Development Lead Agent / Completion Role에 인계했다.
+- 2026-08-06: Development Lead Agent가 최신 `origin/develop@04aa1bc`를 구현 브랜치에
+  통합하고 PR #90의 iOS build·XCTest checks 통과, 독립 QA 결과와 허용 경로·잔여 위험을
+  검토했다. 완료 리뷰를 `PASS_WITH_RISK`로 확정해 `verification_passed ->
+  completion_review`로 전환하고 Product Owner의 완료·병합 승인을 요청한다.
 - 구현은 기존 Mock Service를 이용한 `idle -> recording -> processing -> idle|error`,
   반복 기록과 STEP Preview 자동 저장·삭제·되돌리기·순서 보존으로 제한한다.
 - 첫 처리와 반복 처리 모두 pending STEP 번호를 정확히 표시하고, 실패 시 실패한 pending만
@@ -108,17 +112,20 @@ qa_to: .ai_project/qa/T-20260805-004_ios-cooking-log-step-preview-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Completion Role이야.
-Task T-20260805-004는 색상 토큰 재작업 독립 재검증을 통과한 완료 검토 Task야.
+너는 Product Owner / Approval Role이야.
+Task T-20260805-004는 독립 QA와 Development Lead 완료 리뷰를 통과한 승인 대기 Task야.
 
-- 현재 상태: `verification_passed`
-- public source: `origin/develop@6a1678c`
+- 현재 상태: `completion_review`
+- public source: `origin/develop@04aa1bc`
 - 선행 상태: `T-20260805-003 done`, PR #86 squash merge 완료
 - 구현 ref: `task/T-20260805-004-implement-ios-cooking-log-step-preview`
+- PR: #90, 구현·QA 검토 head `665ea3c`, Draft·mergeable
 - 재작업 승인: Product Owner 승인 완료
 - QA 결과: `PASS_WITH_RISK`, `QA-MEDIUM-805004-001` 해소
 - 독립 증빙: 전체 XCTest 62/62, 금지 시스템 색상 0건, Light/Dark
   `LOG-STEP-ADDED`·`LOG-ERROR` 네 장 확인
+- Development Lead 완료 리뷰: `PASS_WITH_RISK`, 최신 develop 통합과 PR #90
+  `ios-build`·`ios-xctest` checks 통과 확인
 - 필수 상태: `LOG-EMPTY`, `LOG-RECORDING`, `LOG-PROCESSING`, `LOG-STEP-ADDED`,
   `LOG-ERROR`
 - 데이터 계약: 같은 `RecipeRecord.id`, 완료 STEP 순서·원문 보존, 실패한 pending만 제거,
@@ -135,5 +142,5 @@ Task T-20260805-004는 색상 토큰 재작업 독립 재검증을 통과한 완
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 잔여 위험: launch configuration·Accessibility 3·VoiceOver 행렬은 T-008, 실제 Apple
   STT와 AI·전역 실패 상태는 승인된 후속 Task 범위
-- 완료 조건: 구현·QA 보고서와 잔여 위험 이관을 검토하고 Product Owner의 완료·병합
-  승인 절차로 진행해. iOS QA는 `done`, commit, push와 merge를 수행하지 않았어.
+- 승인 조건: 후속 Task로 이관된 위험을 수용하면 완료·병합을 승인해. 승인 전 PR #90은
+  Draft로 유지하고 병합하지 않으며, T-005도 차단 상태를 유지해.

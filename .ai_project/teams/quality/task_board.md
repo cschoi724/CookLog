@@ -8,7 +8,7 @@
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
 | `T-20260804-007` | `done` | Backend Foundation 통합 계약·보안 검증·handoff | HIGH 원본 반례·terminal sink/reservation/shape·Provider at-most-once·전체 회귀 | PASS_WITH_RISK·Product Owner 완료/PR #91 병합 승인 |
-| `T-20260805-004` | `verification_passed` | iOS Cooking Log·STEP Preview 자동 저장·오류 상태 | `QA-MEDIUM-805004-001` 해소·독립 전체 XCTest 62/62·Light/Dark 증빙 | Development Lead 완료 검토 |
+| `T-20260805-004` | `completion_review` | iOS Cooking Log·STEP Preview 자동 저장·오류 상태 | `QA-MEDIUM-805004-001` 해소·독립 전체 XCTest 62/62·Light/Dark 증빙 | Lead PASS_WITH_RISK·Product Owner 완료/병합 승인 대기 |
 | `T-20260805-003` | `done` | iOS Home·전체 보기·검색·상태별 routing | WP-R1~R4 해소·Home 13개·전체 XCTest 54개 | 완료 리뷰 PASS_WITH_RISK·Product Owner 완료/병합 승인 |
 | `T-20260805-002` | `done` | iOS 로컬 도메인·SwiftData migration·draft 생명주기 | HIGH 2건 해소·단일 UUID·legacy completed·non-empty migration·전체 XCTest | PASS·PR #77 squash merge `3d1d012` |
 | `T-20260729-026` | `done` | 첫 공개 출시 STT 기본 경로를 Apple 기기 내 처리로 변경 | FAIL 3건 해소, strict task metadata·Task graph·기존 개발 산출물 보존 | Product QA `PASS`, Product Owner 최종 승인 완료 |

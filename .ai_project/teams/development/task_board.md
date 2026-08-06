@@ -38,7 +38,7 @@
 | `T-20260804-007` | `done` | Backend | Foundation 통합 계약·보안 검증·handoff | - | `T-20260804-002~006` 완료 | 완료 리뷰 PASS_WITH_RISK·Product Owner PR #91 squash merge 승인 |
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
-| `T-20260805-004` | `verification_passed` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | Development Lead Agent | `T-20260805-003` 완료 | QA PASS_WITH_RISK·완료 검토 및 Product Owner 승인 |
+| `T-20260805-004` | `completion_review` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | Product Owner | `T-20260805-003` 완료 | Lead PASS_WITH_RISK·PR #90 checks PASS, 완료·병합 승인 대기 |
 | `T-20260805-005` | `proposed` | iOS | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `T-20260805-004` | Cooking Log 완료 대기 |
 | `T-20260805-006` | `proposed` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` | Review·Recipe 완료 대기 |
 | `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
@@ -175,6 +175,11 @@ iOS QA 독립 재검증에서 `QA-MEDIUM-805004-001`의 확정 Light/Dark 배경
 전체 XCTest 62/62와 기존 동일 UUID 저장·실패 보존·삭제·Undo에도 회귀가 없어
 `PASS_WITH_RISK`, `verification_passed`로 Development Lead 완료 검토에 인계합니다.
 launch configuration과 전체 접근성 행렬은 계획된 T-008 위험으로 유지합니다.
+
+Development Lead가 최신 `origin/develop@04aa1bc` 통합 상태에서 허용 경로, 독립 QA
+62/62, 색상 토큰 증빙과 PR #90의 iOS build·XCTest checks 통과를 확인했습니다. 완료
+리뷰는 `PASS_WITH_RISK`, 상태는 `completion_review`이며 Product Owner의 완료·병합
+승인 전에는 Draft PR을 병합하지 않고 T-005 차단을 유지합니다.
 
 Product Owner가 `QA-MEDIUM-805004-001`의 재작업을 승인했습니다. iOS Agent는 통과한
 상태 전이·자동 저장·삭제·Undo 로직을 변경하지 않고 Cooking Log의 `bg/base|subtle|elevated`,
