@@ -10,9 +10,9 @@ struct StepPreviewRowView: View {
             Text("\(stepPreview.order)")
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundStyle(.white)
+                .foregroundStyle(HomeTheme.textOnAccent)
                 .frame(width: 28, height: 28)
-                .background(Color.accentColor)
+                .background(HomeTheme.accent)
                 .clipShape(Circle())
 
             Text(stepPreview.transcript)
@@ -28,7 +28,7 @@ struct StepPreviewRowView: View {
                         .frame(width: 44, height: 44)
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(.red)
+                .foregroundStyle(HomeTheme.error)
                 .disabled(isDeletionDisabled)
                 .accessibilityLabel("STEP \(stepPreview.order) 삭제")
                 .accessibilityHint("삭제 후 잠시 동안 되돌릴 수 있습니다.")
@@ -36,7 +36,7 @@ struct StepPreviewRowView: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.secondarySystemGroupedBackground))
+        .background(HomeTheme.backgroundElevated)
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 }
@@ -48,9 +48,9 @@ struct PendingStepPreviewRowView: View {
         HStack(alignment: .center, spacing: 12) {
             Text("\(order)")
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.white)
+                .foregroundStyle(HomeTheme.textOnAccent)
                 .frame(width: 28, height: 28)
-                .background(Color.accentColor.opacity(0.7))
+                .background(HomeTheme.accent)
                 .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 4) {
@@ -67,7 +67,7 @@ struct PendingStepPreviewRowView: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.secondarySystemGroupedBackground))
+        .background(HomeTheme.backgroundElevated)
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("STEP \(order) 처리 중")
@@ -77,5 +77,5 @@ struct PendingStepPreviewRowView: View {
 #Preview {
     StepPreviewRowView(stepPreview: SampleStepPreviews.basic[0])
         .padding()
-        .background(Color(.systemGroupedBackground))
+        .background(HomeTheme.backgroundBase)
 }
