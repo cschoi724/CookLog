@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-06
-상태: T-20260804-004~005 done·T-20260804-006 HIGH 2건 재작업 QA 재검증 대기
+상태: T-20260804-004~005 done·T-20260804-006 완료 리뷰 통과·병합 승인 대기
 
 ## 현재 단계
 
@@ -11,7 +11,7 @@
 - 공통 middleware `T-20260804-003`: `done`, Backend QA `PASS_WITH_RISK` 수용
 - Mock AI job `T-20260804-004`: `done`, PR #79 squash merge `a73a028`
 - 원격 STT 비활성 경계 `T-20260804-005`: `done`, HIGH 해소·독립 재검증·완료 리뷰·PR #84 병합 승인 완료
-- 안전 runtime `T-20260804-006`: `verification_ready`, HIGH 2건 수정·전체 92/92 통과
+- 안전 runtime `T-20260804-006`: `completion_review`, Lead `PASS_WITH_RISK`·Product Owner 승인 대기
 - 최종 통합 `T-20260804-007`: `proposed`, T-006 완료 대기
 
 Node.js 24 LTS·TypeScript 7·Fastify 5 기반 local/mock server scaffold, typed 환경

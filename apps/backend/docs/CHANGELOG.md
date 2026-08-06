@@ -1,5 +1,9 @@
 # Backend 변경 기록
 
+- 2026-08-06: Development Lead가 `T-20260804-006` HIGH 2건 해소, 허용 경로와 원본
+  공격 반례·T-006 26/26·Backend 전체 92/92를 직접 재확인해 완료 리뷰를
+  `PASS_WITH_RISK`로 수용했다. 실제 cloud adapter·Node 24 container·전체 composition은
+  T-007 필수 통합 게이트에 유지하고 Product Owner 완료·병합 승인을 기다린다.
 - 2026-08-06: `QA-HIGH-006-001` 재작업으로 `deployment_version`과
   `manifest_version`을 서버가 주입한 exact allowlist에 포함된 ID만 허용하도록 제한했다.
   미설정·미승인 version과 recipe·STEP·prompt canary는 event 전체를 폐기하고 고정

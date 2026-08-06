@@ -34,7 +34,7 @@
 | `T-20260804-003` | `done` | Backend | 공통 HTTP·인증·제한·idempotency middleware | - | `T-20260804-002` 완료 | Product Owner 잔여 위험 수용·PR #76 병합, T-004 완료 |
 | `T-20260804-004` | `done` | Backend | Mock AI recipe job·status·ACK·복구 | - | `T-20260804-002`, `003` 완료 | Product Owner 최종 승인·PR #79 squash merge `a73a028` |
 | `T-20260804-005` | `done` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | - | `T-20260804-002`, `003` 완료 | Product Owner 완료·PR #84 squash merge 승인, develop 병합 확인 |
-| `T-20260804-006` | `verification_passed` | Backend | redacted logging·비용 원장·TTL cleanup | Development Lead Agent | `T-20260804-003~005` 완료 | HIGH 2건 해소·T-006 26/26·전체 92/92·공용 계약 통과, 완료 검토 대기 |
+| `T-20260804-006` | `completion_review` | Backend | redacted logging·비용 원장·TTL cleanup | Development Lead Agent | `T-20260804-003~005` 완료 | 완료 리뷰 PASS_WITH_RISK, Product Owner 완료·병합 승인 대기 |
 | `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
@@ -70,6 +70,12 @@ fail-open HIGH 2건이 확인됐습니다. Development Lead는 이를 서버 소
 비정상 epoch의 비용 admission·raw metadata 생성/접근 fail-closed `WP-R1~R2`로 제한했고,
 Product Owner가 재작업을 승인해 Backend Agent에 재인계했습니다. T-007은 재검증 통과
 전까지 계속 차단합니다.
+
+Backend QA 재검증에서 HIGH 2건 해소와 원본 공격 반례, T-006 26/26·전체 92/92·공용
+계약 무회귀를 확인했습니다. Development Lead가 허용 경로와 성공 기준을 직접 재검토해
+`PASS_WITH_RISK`, `completion_review`로 수용했습니다. 실제 cloud adapter·Node 24
+container·composition은 T-007 필수 통합 게이트에 유지하며 Product Owner 완료·병합
+승인을 기다립니다.
 
 Backend QA 재검증은 `QA-HIGH-002-001` 해소와 전체 15/15·기존 계약 무회귀를
 `PASS_WITH_RISK`로 확인했습니다. Development Lead는 Docker·Node 24·non-root

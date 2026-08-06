@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-006
 title: Backend redacted logging·비용 원장·TTL cleanup 경계 구현
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: Mock 실행에서도 콘텐츠 비노출·비용 hard cutoff·삭제 불변식을 강제해야 한다.
@@ -11,7 +11,7 @@ team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
 target_agent: Development Lead Agent
-target_role: Lead Role
+target_role: Completion Role
 required_capabilities:
 - backend_implementation
 - security_review
@@ -97,6 +97,11 @@ next_decision:
   부재를 확인해 `PASS_WITH_RISK`,
   `verification_ready -> verification_in_progress -> verification_passed`로 Development
   Lead Agent에 완료 검토를 인계했다.
+- 2026-08-06: Development Lead Agent가 최신 `origin/develop@69cbf81`, 성공 기준,
+  변경 16개 허용 경로, 두 HIGH의 원본 반례, T-006 26/26·Backend 전체 92/92와 공용
+  계약을 직접 재확인했다. 실제 cloud·Node 24 container·전체 composition 위험을
+  T-007 필수 통합 게이트로 유지하는 조건으로 `PASS_WITH_RISK`를 수용하고
+  `verification_passed -> completion_review`로 전환한다.
 
 - 2026-08-05: 공용 `develop@2092e1d`에서 선행 `T-20260804-003~005`의 `done`과
   PR #84 병합을 확인했다.
@@ -145,17 +150,34 @@ next_decision:
 - 재작업 완료 후 두 직접 반례, T-006 전용, Backend 전체 runtime과 common·STT·AI·
   security·shared fixture validator를 통과시키고 Backend QA Agent에 독립 재검증을 요청한다.
 
+## 완료 리뷰 결과
+
+- 판정: `PASS_WITH_RISK`
+- `QA-HIGH-006-001~002` 해소와 신규 HIGH·MEDIUM 결함 부재를 수용한다.
+- 미승인 version·allowlist 미설정·비literal canary는 event 전체가 폐기되고 sink 0건,
+  고정 drop counter만 증가함을 원본 공격 스크립트와 집중 회귀에서 확인했다.
+- `NaN`, 무한대, 음수, 소수, unsafe·표현 범위 밖 epoch와 throwing clock은 비용 operation
+  ID·ledger mutation 및 raw metadata 생성·접근·cleanup mutation 전에 차단된다.
+- Development Lead 환경에서 build·typecheck, T-006 security·cleanup 26/26과 Backend
+  전체 92/92, `git diff --check`와 strict Task validation을 재통과했다.
+- 변경 16개 경로는 모두 Task `allowed_paths` 안이며 실제 cloud·provider·network·
+  credential·secret·배포·원격 STT와 T-007 composition을 추가하지 않았다.
+- in-memory 재시작 비내구성, 실제 sink·billing·datastore·queue·KMS adapter, Node 24
+  container와 공유 app/worker composition은 T-007 필수 통합 검증으로 이관한다. 현재
+  Task 완료를 차단하지 않지만 T-007은 T-006 병합 전 착수할 수 없다.
+- PR #87의 최종 checks와 Product Owner 완료·병합 승인을 받은 뒤 squash merge하고,
+  merge SHA 확인 후에만 `completion_review -> done`과 T-007 선행 해제를 확정한다.
+
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Lead Role이야.
-Task T-20260804-006의 독립 재검증이 완료됐어.
+너는 Development Lead Agent / Completion Role이야.
+Task T-20260804-006은 완료 리뷰를 통과하고 Product Owner 승인을 기다리는 Task야.
 
-- 현재 상태: `verification_passed`
+- 현재 상태: `completion_review`
 - 구현 기준 ref: `task/T-20260804-006-implement-backend-safety-runtime`
-- 다음에 해야 할 일: QA `PASS_WITH_RISK`와 성공 기준·허용 경로를 검토하고 완료 여부를
-  결정해줘.
+- 다음에 해야 할 일: PR #87 최종 checks와 Product Owner 완료·병합 승인을 확인해줘.
 - 기준 문서: `apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md`,
   `apps/backend/contracts/security/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
@@ -164,8 +186,8 @@ Task T-20260804-006의 독립 재검증이 완료됐어.
   composition은 T-007에서 통합 검증
 - 차단/결정 필요: 실제 provider·cloud resource·secret·배포와 원격 STT 활성화 금지
 - 참고: `.ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md`
-- 완료 시: Product Owner 승인 전 `done`이나 병합으로 전환하지 말고 T-007 잔여 위험
-  이관을 명시해줘.
+- 완료 시: Product Owner 승인 후 PR #87을 squash merge하고 merge SHA를 확인한 뒤
+  `done`과 T-007 선행 해제를 공용 `develop`에서 확정해줘.
 
 ## AI Ops CLI 기록
 
@@ -177,3 +199,4 @@ Task T-20260804-006의 독립 재검증이 완료됐어.
 | 2026-08-06 | Backend Agent | unlock | task unlock |
 | 2026-08-06 | Backend QA Agent | transition: verification_ready -> verification_in_progress | HIGH 2건 원본·확장 반례와 전체 회귀 독립 재검증 |
 | 2026-08-06 | Backend QA Agent | transition: verification_in_progress -> verification_passed | HIGH 2건 해소, T-006 26/26·전체 92/92·공용 계약 PASS_WITH_RISK |
+| 2026-08-06 | Development Lead Agent | transition: verification_passed -> completion_review | HIGH 2건 해소, 허용 경로, 원본 반례·26/26·92/92와 T-007 잔여 위험 이관을 확인해 완료 리뷰 수용 |
