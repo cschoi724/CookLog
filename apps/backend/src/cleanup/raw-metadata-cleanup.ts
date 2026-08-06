@@ -8,6 +8,7 @@ export const RAW_METADATA_INCIDENT_AT_MS = 29 * DAY_MS + 18 * 60 * 60 * 1_000;
 export const RAW_METADATA_RETRY_STOPS_AT_MS = 29 * DAY_MS + 23 * 60 * 60 * 1_000 + 45 * 60 * 1_000;
 export const RAW_METADATA_EXPIRES_AT_MS = 30 * DAY_MS;
 export const RAW_METADATA_SWEEPER_INTERVAL_MS = 15 * 60 * 1_000;
+const MAX_SERVER_EPOCH_MS = 8_640_000_000_000_000;
 
 export const REQUIRED_RAW_METADATA_SINKS = Object.freeze([
   "source",
@@ -65,8 +66,10 @@ export class InMemoryRawMetadataRepository {
   }
 
   create(aggregateCount = 1): string | undefined {
-    if (!Number.isSafeInteger(aggregateCount) || aggregateCount < 0 || this.newRawEventsBlocked()) return undefined;
-    const createdAt = this.#now();
+    if (!Number.isSafeInteger(aggregateCount) || aggregateCount < 0) return undefined;
+    const createdAt = this.#safeNow();
+    if (createdAt === undefined || createdAt > MAX_SERVER_EPOCH_MS - RAW_METADATA_EXPIRES_AT_MS ||
+      this.#newRawEventsBlockedAt(createdAt)) return undefined;
     const recordId = randomUUID();
     this.#records.set(recordId, {
       recordId,
@@ -88,19 +91,23 @@ export class InMemoryRawMetadataRepository {
 
   runDueCleanup(maxSinksPerRecord = Number.POSITIVE_INFINITY): number {
     if (!this.#queueAvailable) return 0;
+    const now = this.#safeNow();
+    if (now === undefined) return 0;
     let completed = 0;
     for (const record of this.#records.values()) {
-      if (!record.deleted && record.outboxAvailable && record.deleteAfter <= this.#now() &&
-        this.#deleteSinks(record, maxSinksPerRecord)) completed += 1;
+      if (!record.deleted && record.outboxAvailable && record.deleteAfter <= now &&
+        this.#deleteSinks(record, maxSinksPerRecord, now)) completed += 1;
     }
     return completed;
   }
 
   runIndependentSweeper(maxSinksPerRecord = Number.POSITIVE_INFINITY): number {
+    const now = this.#safeNow();
+    if (now === undefined) return 0;
     let completed = 0;
     for (const record of this.#records.values()) {
-      if (!record.deleted && record.deleteAfter <= this.#now() &&
-        this.#deleteSinks(record, maxSinksPerRecord)) completed += 1;
+      if (!record.deleted && record.deleteAfter <= now &&
+        this.#deleteSinks(record, maxSinksPerRecord, now)) completed += 1;
     }
     return completed;
   }
@@ -108,9 +115,11 @@ export class InMemoryRawMetadataRepository {
   access(recordId: string, purpose: RawMetadataAccessPurpose): number | undefined {
     const record = this.#records.get(recordId);
     if (record === undefined) return undefined;
-    if (this.#now() >= record.expiresAt) {
+    const now = this.#safeNow();
+    if (now === undefined) return undefined;
+    if (now >= record.expiresAt) {
       record.syncDeleteAttempts += 1;
-      if (!record.deleted) this.#deleteSinks(record, Number.POSITIVE_INFINITY);
+      if (!record.deleted) this.#deleteSinks(record, Number.POSITIVE_INFINITY, now);
       return undefined;
     }
     if (record.deleted) return undefined;
@@ -133,8 +142,8 @@ export class InMemoryRawMetadataRepository {
   }
 
   newRawEventsBlocked(): boolean {
-    const now = this.#now();
-    return [...this.#records.values()].some((record) => !record.deleted && now >= record.criticalAt);
+    const now = this.#safeNow();
+    return now === undefined || this.#newRawEventsBlockedAt(now);
   }
 
   snapshot(recordId: string): RawMetadataSnapshot | undefined {
@@ -165,7 +174,7 @@ export class InMemoryRawMetadataRepository {
     });
   }
 
-  #deleteSinks(record: RawMetadataRecord, maxSinks: number): boolean {
+  #deleteSinks(record: RawMetadataRecord, maxSinks: number, deletedAt: number): boolean {
     let attempted = 0;
     for (const sinkId of REQUIRED_RAW_METADATA_SINKS) {
       if (record.receipts.has(sinkId) || attempted >= maxSinks) continue;
@@ -175,14 +184,15 @@ export class InMemoryRawMetadataRepository {
         this.#remainingSinkFailures.set(sinkId, remainingFailures - 1);
         continue;
       }
-      record.receipts.set(sinkId, this.#now());
+      record.receipts.set(sinkId, deletedAt);
     }
     if (record.receipts.size === REQUIRED_RAW_METADATA_SINKS.length) record.deleted = true;
     return record.deleted;
   }
 
   #state(record: RawMetadataRecord): RawMetadataSafetyState {
-    const now = this.#now();
+    const now = this.#safeNow();
+    if (now === undefined) return "incident";
     if (now >= record.expiresAt) return "expired";
     if (now >= record.cleanupRetryStopsAt) return "final_cleanup";
     if (now >= record.incidentAt) return "incident";
@@ -190,5 +200,18 @@ export class InMemoryRawMetadataRepository {
     if (now >= record.warningAt) return "warning";
     if (now >= record.deleteAfter) return "cleanup_due";
     return "active";
+  }
+
+  #newRawEventsBlockedAt(now: number): boolean {
+    return [...this.#records.values()].some((record) => !record.deleted && now >= record.criticalAt);
+  }
+
+  #safeNow(): number | undefined {
+    try {
+      const now = this.#now();
+      return Number.isSafeInteger(now) && now >= 0 && now <= MAX_SERVER_EPOCH_MS ? now : undefined;
+    } catch {
+      return undefined;
+    }
   }
 }

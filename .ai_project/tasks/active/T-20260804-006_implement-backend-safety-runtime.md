@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-006
 title: Backend redacted logging·비용 원장·TTL cleanup 경계 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: Mock 실행에서도 콘텐츠 비노출·비용 hard cutoff·삭제 불변식을 강제해야 한다.
@@ -11,7 +11,7 @@ team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
 target_agent: Backend Agent
-target_role: Execution Role
+target_role: Verification Role
 required_capabilities:
 - backend_implementation
 - security_review
@@ -32,12 +32,12 @@ allowed_paths:
 - apps/backend/tests/cleanup/
 - apps/backend/docs/STATUS.md
 - apps/backend/docs/CHANGELOG.md
-- .ai_project/tasks/backlog/T-20260804-006_implement-backend-safety-runtime.md
-- .ai_project/tasks/active/T-20260804-006_implement-backend-safety-runtime.md
-- .ai_project/reports/T-20260804-006_implement-backend-safety-runtime-report.md
-- .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
-- .ai_project/teams/development/task_board.md
-- .ai_project/teams/quality/task_board.md
+- ".ai_project/tasks/backlog/T-20260804-006_implement-backend-safety-runtime.md"
+- ".ai_project/tasks/active/T-20260804-006_implement-backend-safety-runtime.md"
+- ".ai_project/reports/T-20260804-006_implement-backend-safety-runtime-report.md"
+- ".ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md"
+- ".ai_project/teams/development/task_board.md"
+- ".ai_project/teams/quality/task_board.md"
 source_of_truth:
 - apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md
 - apps/backend/contracts/security/
@@ -48,9 +48,15 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-04
-updated_at: 2026-08-06
-report_to: .ai_project/reports/T-20260804-006_implement-backend-safety-runtime-report.md
-qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
+updated_at: '2026-08-06'
+report_to: ".ai_project/reports/T-20260804-006_implement-backend-safety-runtime-report.md"
+qa_to: ".ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md"
+status_ref: origin/develop
+status_ref_sha: 69cbf81df0d215b08b6feaf657ba3a4b0e8ce4b5
+base_ref: origin/develop
+base_sha: 69cbf81df0d215b08b6feaf657ba3a4b0e8ce4b5
+blocker:
+next_decision:
 ---
 
 # Backend 안전 runtime 경계 구현
@@ -83,6 +89,9 @@ qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
 - 2026-08-06: Development Lead Agent가 두 HIGH를 telemetry 승인 ID와 비정상 clock의
   fail-closed 경계로 제한해 `rework_requested -> scoped`로 전환했다. Product Owner가
   해당 재작업을 승인해 `scoped -> approved`로 전환하고 Backend Agent에 재인계한다.
+- 2026-08-06: Backend Agent가 exact version allowlist와 비정상 epoch fail-closed를
+  구현했다. QA 원본 반례, T-006 26/26, Backend 전체 92/92와 공용 validator를 통과해
+  `in_progress -> verification_ready`로 Backend QA 독립 재검증에 인계한다.
 
 - 2026-08-05: 공용 `develop@2092e1d`에서 선행 `T-20260804-003~005`의 `done`과
   PR #84 병합을 확인했다.
@@ -135,22 +144,31 @@ qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Backend Agent / Execution Role이야.
-Task T-20260804-006의 HIGH 결함 2건 재작업이 승인됐어.
+너는 Backend QA Agent / Verification Role이야.
+Task T-20260804-006의 HIGH 결함 2건 재작업이 완료됐어.
 
-- 현재 상태: `approved`
+- 현재 상태: `verification_ready`
 - 구현 기준 ref: `task/T-20260804-006-implement-backend-safety-runtime`
-- 다음에 해야 할 일: 최신 `origin/develop`을 포함한 현재 clean worktree에서 lock을
-  획득하고 `approved -> in_progress`로 전환한 뒤 `WP-R1~R2`만 구현해줘.
+- 다음에 해야 할 일: 구현 Agent와 분리된 clean worktree에서 QA 원본 반례와 확장된
+  version·clock 반례를 독립 재현해줘.
 - 기준 문서: `apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md`,
   `apps/backend/contracts/security/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
-- 필수 재작업: build·manifest version을 서버 소유 승인 ID로 제한하고, 비정상 clock·
-  billing reconciliation에서 비용 요청과 raw metadata 생성·접근을 fail closed한다.
-- 기존 회귀: T-003~005 전체 runtime과 common·STT·AI·security·shared fixture validator
+- 재검증 핵심: 미승인 build·manifest version의 sink 0건, 잘못된 clock의 비용 operation
+  ID·ledger mutation 0건, raw metadata 생성·접근·cleanup mutation 0건
+- 자체 검증: QA 원본 반례 PASS, T-006 26/26, Backend 전체 92/92와 모든 validator PASS
 - 남은 리스크: 실제 cloud sink·billing·datastore·queue·KMS·Node 24/container·공유 app
   composition은 T-007에서 통합 검증
 - 차단/결정 필요: 실제 provider·cloud resource·secret·배포와 원격 STT 활성화 금지
 - 참고: `.ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md`
-- 완료 시: 직접 반례와 전체 회귀 결과를 report에 기록하고 lock을 해제한 뒤
-  `verification_ready`로 Backend QA 독립 재검증에 인계해줘.
+- 완료 시: QA 보고서에 재검증 판정과 직접 증거를 기록하고 Development Lead Agent에
+  완료 검토 또는 추가 재작업을 인계해줘.
+
+## AI Ops CLI 기록
+
+| 날짜 | Actor | Event | Reason |
+|---|---|---|---|
+| 2026-08-06 | Backend Agent | lock | task lock |
+| 2026-08-06 | Backend Agent | transition: approved -> in_progress | QA-HIGH-006-001~002 승인 재작업 착수 |
+| 2026-08-06 | Backend Agent | transition: in_progress -> verification_ready | HIGH 2건 수정, QA 원본 반례와 T-006 26/26·전체 92/92 통과 |
+| 2026-08-06 | Backend Agent | unlock | task unlock |

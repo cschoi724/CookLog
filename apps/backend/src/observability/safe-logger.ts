@@ -50,7 +50,6 @@ const integerFields = new Set([
 ]);
 const booleanFields = new Set(["enabled"]);
 const uuidFields = new Set(["request_id"]);
-const fixedValuePattern = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,95}$/u;
 const routeTemplatePattern = /^\/v1\/[a-z0-9_/{}/-]{1,120}$/u;
 const forbiddenKeyPattern = /(?:body|header|query|cookie|authorization|token|secret|transcript|prompt|recipe|provider_raw|exception|stack|audio|url)/iu;
 const forbiddenValuePattern = /(?:bearer\s|sk-[A-Za-z0-9]|private[_-]?key|synthetic-secret|raw-recipe|raw-transcript)/iu;
@@ -98,7 +97,12 @@ function ownPlainRecord(value: unknown): value is Record<string, unknown> {
     Object.hasOwn(Object.getOwnPropertyDescriptor(value, key) ?? {}, "value"));
 }
 
-function validValue(field: string, value: unknown): value is string | number | boolean {
+function validValue(
+  field: string,
+  value: unknown,
+  approvedDeploymentVersions: ReadonlySet<string>,
+  approvedManifestVersions: ReadonlySet<string>,
+): value is string | number | boolean {
   if (integerFields.has(field)) return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 && value <= 1_000_000_000;
   if (booleanFields.has(field)) return typeof value === "boolean";
   if (uuidFields.has(field)) return typeof value === "string" && isUuidV4(value);
@@ -107,7 +111,13 @@ function validValue(field: string, value: unknown): value is string | number | b
   const allowedValues = fixedEnums[field];
   if (allowedValues !== undefined) return typeof value === "string" && allowedValues.has(value);
   if (field === "approval_change_id") return typeof value === "string" && /^CHG-[0-9]{1,12}$/u.test(value);
-  return typeof value === "string" && fixedValuePattern.test(value);
+  if (field === "deployment_version") {
+    return typeof value === "string" && approvedDeploymentVersions.has(value);
+  }
+  if (field === "manifest_version") {
+    return typeof value === "string" && approvedManifestVersions.has(value);
+  }
+  return false;
 }
 
 function containsForbiddenTelemetry(event: Record<string, string | number | boolean>): boolean {
@@ -130,6 +140,8 @@ export class SafeLogger {
   readonly #now: () => number;
   readonly #reserve: (eventName: TelemetryEventName) => boolean;
   readonly #scanner: TelemetryRedactionScanner;
+  readonly #approvedDeploymentVersions: ReadonlySet<string>;
+  readonly #approvedManifestVersions: ReadonlySet<string>;
   readonly #drops = new Map<TelemetryDropReason, number>();
 
   constructor(options: {
@@ -137,11 +149,15 @@ export class SafeLogger {
     readonly now?: () => number;
     readonly reserve?: (eventName: TelemetryEventName) => boolean;
     readonly scanner?: TelemetryRedactionScanner;
+    readonly approvedDeploymentVersions?: readonly string[];
+    readonly approvedManifestVersions?: readonly string[];
   }) {
     this.#sink = options.sink;
     this.#now = options.now ?? Date.now;
     this.#reserve = options.reserve ?? (() => true);
     this.#scanner = options.scanner ?? new TelemetryRedactionScanner();
+    this.#approvedDeploymentVersions = new Set(options.approvedDeploymentVersions ?? []);
+    this.#approvedManifestVersions = new Set(options.approvedManifestVersions ?? []);
   }
 
   emit(eventName: TelemetryEventName, input: unknown): boolean {
@@ -158,7 +174,12 @@ export class SafeLogger {
       const projected: Record<string, string | number | boolean> = {};
       for (const key of keys) {
         const descriptor = Object.getOwnPropertyDescriptor(input, key);
-        if (descriptor === undefined || !("value" in descriptor) || !validValue(key, descriptor.value)) {
+        if (descriptor === undefined || !("value" in descriptor) || !validValue(
+          key,
+          descriptor.value,
+          this.#approvedDeploymentVersions,
+          this.#approvedManifestVersions,
+        )) {
           return this.#drop("INVALID_VALUE");
         }
         projected[key] = descriptor.value;

@@ -216,6 +216,66 @@ test("price, FX, SKU, and reconciliation drift fail closed and reservation inclu
   assert.equal(calculateReservationKrw(fixture.price_manifest, { unknown_service: 1 }), undefined);
 });
 
+test("non-finite, negative, unsafe, and unrepresentable cost epochs fail closed", async () => {
+  const fixture = await costFixture();
+  const validNow = Date.parse("2026-07-15T00:00:00Z");
+  const invalidEpochs = [
+    Number.NaN,
+    Number.POSITIVE_INFINITY,
+    Number.NEGATIVE_INFINITY,
+    -1,
+    1.5,
+    8_640_000_000_000_001,
+    Number.MAX_SAFE_INTEGER,
+  ];
+
+  for (const now of invalidEpochs) {
+    assert.deepEqual(validatePriceManifest({
+      manifest: fixture.price_manifest,
+      now,
+      lastReconciledAt: validNow - 1_000,
+    }), { allowed: false, reason: "MANIFEST_INVALID" });
+  }
+  for (const lastReconciledAt of invalidEpochs) {
+    assert.deepEqual(validatePriceManifest({
+      manifest: fixture.price_manifest,
+      now: validNow,
+      lastReconciledAt,
+    }), { allowed: false, reason: "BILLING_RECONCILIATION_STALE" });
+  }
+});
+
+test("invalid cost clocks reject admission before operation IDs or ledger mutation", async () => {
+  const fixture = await costFixture();
+  const validNow = Date.parse("2026-07-15T00:00:00Z");
+  const invalidCases: readonly [number, number][] = [
+    [Number.NaN, validNow - 1_000],
+    [Number.POSITIVE_INFINITY, validNow - 1_000],
+    [validNow, Number.NaN],
+    [validNow, Number.NEGATIVE_INFINITY],
+    [validNow, Number.MAX_SAFE_INTEGER],
+  ];
+
+  for (const [now, lastReconciledAt] of invalidCases) {
+    const ledger = new InMemoryCostLedger();
+    let operationIds = 0;
+    const admission = new RecipeJobCostAdmission({
+      ledger,
+      manifest: fixture.price_manifest,
+      quantities: { ai_provider_input: 1 },
+      now: () => now,
+      lastReconciledAt: () => lastReconciledAt,
+      nextOperationId: () => {
+        operationIds += 1;
+        return randomUUID();
+      },
+    });
+    assert.equal(admission.reserve(), "service_disabled");
+    assert.equal(operationIds, 0);
+    assert.equal(ledger.snapshot().activeReservationsKrw, 0);
+  }
+});
+
 test("recipe job admission rejects the whole operation before content, queue, or provider work", async () => {
   const cost = await costFixture();
   const request = JSON.parse(await readFile(

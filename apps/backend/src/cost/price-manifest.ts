@@ -40,6 +40,12 @@ export type PriceManifestDecision =
   | { readonly allowed: true }
   | { readonly allowed: false; readonly reason: "PRICE_SNAPSHOT_EXPIRED" | "CATALOG_SKU_MISSING" | "FX_SNAPSHOT_INVALID" | "BILLING_RECONCILIATION_STALE" | "MANIFEST_INVALID" };
 
+const MAX_SERVER_EPOCH_MS = 8_640_000_000_000_000;
+
+function isValidServerEpoch(value: number): boolean {
+  return Number.isSafeInteger(value) && value >= 0 && value <= MAX_SERVER_EPOCH_MS;
+}
+
 function timestamp(value: string): number | undefined {
   const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z$/u.exec(value);
   if (match === null) return undefined;
@@ -59,6 +65,12 @@ export function validatePriceManifest(options: {
   readonly now: number;
   readonly lastReconciledAt: number;
 }): PriceManifestDecision {
+  if (!isValidServerEpoch(options.now)) {
+    return { allowed: false, reason: "MANIFEST_INVALID" };
+  }
+  if (!isValidServerEpoch(options.lastReconciledAt)) {
+    return { allowed: false, reason: "BILLING_RECONCILIATION_STALE" };
+  }
   const effectiveAt = timestamp(options.manifest.effective_at);
   const expiresAt = timestamp(options.manifest.expires_at);
   if (effectiveAt === undefined || expiresAt === undefined || effectiveAt >= expiresAt ||

@@ -139,3 +139,58 @@ test("warning, critical, incident, and final cleanup states use injected server 
   }
   assert.equal(repository.create(), undefined);
 });
+
+test("invalid clocks block raw metadata create and every access without mutating records", async () => {
+  const fixture = await retentionFixture();
+  let now = Date.parse(fixture.created_at);
+  const repository = new InMemoryRawMetadataRepository({ now: () => now });
+  const recordId = repository.create(7);
+  assert.ok(recordId);
+  if (recordId === undefined) return;
+
+  const invalidEpochs = [
+    Number.NaN,
+    Number.POSITIVE_INFINITY,
+    Number.NEGATIVE_INFINITY,
+    -1,
+    1.5,
+    8_640_000_000_000_001,
+    Number.MAX_SAFE_INTEGER,
+  ];
+  for (const invalidNow of invalidEpochs) {
+    now = invalidNow;
+    assert.equal(repository.newRawEventsBlocked(), true);
+    assert.equal(repository.create(), undefined);
+    assert.equal(repository.access(recordId, "read"), undefined);
+    assert.equal(repository.access(recordId, "export"), undefined);
+    assert.equal(repository.access(recordId, "aggregate"), undefined);
+    assert.equal(repository.runDueCleanup(), 0);
+    assert.equal(repository.runIndependentSweeper(), 0);
+    assert.equal(repository.snapshot(recordId)?.state, "incident");
+    assert.equal(repository.snapshot(recordId)?.syncDeleteAttempts, 0);
+    assert.deepEqual(repository.receipts(recordId), []);
+  }
+});
+
+test("throwing cleanup clock is contained as a fixed incident without record mutation", async () => {
+  const fixture = await retentionFixture();
+  let shouldThrow = false;
+  const repository = new InMemoryRawMetadataRepository({
+    now: () => {
+      if (shouldThrow) throw new Error("raw-recipe synthetic-secret");
+      return Date.parse(fixture.created_at);
+    },
+  });
+  const recordId = repository.create(3);
+  assert.ok(recordId);
+  if (recordId === undefined) return;
+
+  shouldThrow = true;
+  assert.doesNotThrow(() => repository.newRawEventsBlocked());
+  assert.equal(repository.newRawEventsBlocked(), true);
+  assert.equal(repository.create(), undefined);
+  assert.equal(repository.access(recordId, "read"), undefined);
+  assert.equal(repository.snapshot(recordId)?.state, "incident");
+  assert.equal(repository.snapshot(recordId)?.syncDeleteAttempts, 0);
+  assert.deepEqual(repository.receipts(recordId), []);
+});

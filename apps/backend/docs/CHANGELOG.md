@@ -1,5 +1,13 @@
 # Backend 변경 기록
 
+- 2026-08-06: `QA-HIGH-006-001` 재작업으로 `deployment_version`과
+  `manifest_version`을 서버가 주입한 exact allowlist에 포함된 ID만 허용하도록 제한했다.
+  미설정·미승인 version과 recipe·STEP·prompt canary는 event 전체를 폐기하고 고정
+  `INVALID_VALUE` counter만 증가시킨다.
+- 2026-08-06: `QA-HIGH-006-002` 재작업으로 비용의 `now`·`lastReconciledAt`과 raw
+  metadata clock을 non-negative safe integer·표현 가능 epoch로 먼저 검증한다. 잘못된
+  clock은 비용 admission 이전 차단, raw create·read·export·aggregate 차단과 기존 record
+  무변조 `incident`로 fail closed한다. 직접 반례, T-006 26/26, 전체 92/92를 통과했다.
 - 2026-08-06: Product Owner가 `T-20260804-006` 독립 QA의 자유 문자열 telemetry sink
   기록과 비정상 clock 비용·보존 fail-open HIGH 2건 재작업을 승인했다. 서버 소유 version
   allowlist와 잘못된 epoch의 비용 admission·raw metadata 생성/접근 fail-closed, 직접

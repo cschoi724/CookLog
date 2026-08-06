@@ -8,6 +8,20 @@ Mock Backend에서도 콘텐츠·secret 비노출, 월 외부비 hard cutoff와 
 삭제 상한을 실행 가능한 deterministic in-memory 경계로 구현했다. 실제 cloud sink,
 billing API, datastore, queue, KMS, credential, provider와 배포 설정은 추가하지 않았다.
 
+## 재작업 결과
+
+- `QA-HIGH-006-001`: `deployment_version`과 `manifest_version`의 일반 문자열 fallback을
+  제거했다. 서버가 생성 시 복사한 exact allowlist에 없는 값은 event 전체를 폐기하며,
+  allowlist 미설정도 fail closed한다.
+- `QA-HIGH-006-002`: 비용 validator의 `now`와 `lastReconciledAt`을 비교 전에 유한한
+  non-negative safe integer·표현 가능 epoch로 검증한다. 잘못된 값은 operation ID 생성과
+  ledger mutation 전에 차단한다.
+- raw metadata clock도 같은 경계로 검증한다. 잘못된 clock에서는 신규 record,
+  read·export·aggregate와 cleanup mutation을 차단하고 기존 record를 고정 `incident`
+  상태로만 투영한다.
+- QA 보고서에 기록된 원본 반례 스크립트의 네 반례를 수정 후 그대로 재실행해 모두
+  차단됨을 확인했다.
+
 ## 구현 내용
 
 ### Allowlist telemetry
@@ -43,8 +57,8 @@ billing API, datastore, queue, KMS, credential, provider와 배포 설정은 추
 
 | 검증 | 결과 |
 |---|---|
-| T-006 security·cleanup | 20/20 PASS |
-| Backend 전체 runtime | 86/86 PASS |
+| T-006 security·cleanup | 26/26 PASS |
+| Backend 전체 runtime | 92/92 PASS |
 | content·secret telemetry canary | sink 출력 0건, drop counter만 증가 |
 | 비용 fixture concurrency·settlement·fail closed | PASS |
 | 월 KRW 50,000 및 delayed reserve 불변식 | PASS |

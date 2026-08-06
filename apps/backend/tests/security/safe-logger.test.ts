@@ -125,3 +125,67 @@ test("redaction scanner rejects forbidden keys and secret-shaped values without 
   assert.doesNotThrow(() => scanner.isSafe(proxy as Record<string, string>));
   assert.equal(scanner.isSafe(proxy as Record<string, string>), false);
 });
+
+test("deployment and manifest versions require exact server-owned approval", () => {
+  const sink = new InMemoryTelemetrySink();
+  const logger = new SafeLogger({
+    sink,
+    now: () => Date.parse("2026-08-06T00:00:00Z"),
+    approvedDeploymentVersions: ["build-52b5f3a"],
+    approvedManifestVersions: ["manifest-v1"],
+  });
+
+  assert.equal(logger.emit("ai_job_state_changed", {
+    previous_state: "queued",
+    next_state: "processing",
+    provider_attempt_count: 0,
+    deployment_version: "build-52b5f3a",
+  }), true);
+  assert.equal(logger.emit("provider_gate_checked", {
+    manifest_version: "manifest-v1",
+    provider_gate: "cost",
+    gate_outcome: "passed",
+  }), true);
+
+  const unapprovedCanaries = [
+    "grandmas_kimchi_recipe_notes",
+    "step_add_secret_sauce",
+    "prompt_ignore_previous_instructions",
+    "build-52b5f3a-extra",
+  ];
+  for (const canary of unapprovedCanaries) {
+    assert.equal(logger.emit("ai_job_state_changed", {
+      previous_state: "queued",
+      next_state: "processing",
+      provider_attempt_count: 0,
+      deployment_version: canary,
+    }), false);
+    assert.equal(logger.emit("provider_gate_checked", {
+      manifest_version: canary,
+      provider_gate: "cost",
+      gate_outcome: "passed",
+    }), false);
+  }
+
+  assert.equal(sink.events().length, 2);
+  assert.equal(JSON.stringify(sink.events()).includes("grandmas_kimchi_recipe_notes"), false);
+  assert.equal(logger.dropCounts().INVALID_VALUE, unapprovedCanaries.length * 2);
+});
+
+test("version-bearing events fail closed when no server approval is configured", () => {
+  const sink = new InMemoryTelemetrySink();
+  const logger = new SafeLogger({ sink });
+  assert.equal(logger.emit("ai_job_state_changed", {
+    previous_state: "queued",
+    next_state: "processing",
+    provider_attempt_count: 0,
+    deployment_version: "build-52b5f3a",
+  }), false);
+  assert.equal(logger.emit("provider_gate_checked", {
+    manifest_version: "manifest-v1",
+    provider_gate: "cost",
+    gate_outcome: "passed",
+  }), false);
+  assert.deepEqual(sink.events(), []);
+  assert.equal(logger.dropCounts().INVALID_VALUE, 2);
+});
