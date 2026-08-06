@@ -38,7 +38,7 @@
 | `T-20260804-003` | `done` | Backend 공통 HTTP·인증·제한·idempotency middleware | HIGH 2·MEDIUM 1 해소·기존 15/15·T-003 24/24·공용 계약 무회귀 | Product Owner PASS_WITH_RISK 수용·PR #76 병합 승인 |
 | `T-20260804-004` | `done` | Backend Mock AI recipe job·status·ACK·복구 | HIGH 2·MEDIUM 1 해소·전체 55/55·공용 계약 무회귀 | Product Owner 최종 승인·PR #79 squash merge `a73a028` |
 | `T-20260804-005` | `done` | Backend 원격 STT 비활성 확장 경계·활성화 차단 | disabled profile·startup 30개 반례·route/body read/queue/egress 0 | Product Owner 완료·PR #84 squash merge 승인, T-007 잔여 위험 이관 |
-| `T-20260804-006` | `rework_requested` | Backend redacted logging·비용 원장·TTL cleanup | telemetry 0건·비용 hard cutoff·콘텐츠/raw metadata 삭제 | FAIL: HIGH 2건, 자유 문자열 sink 기록·NaN clock fail-open |
+| `T-20260804-006` | `approved` | Backend redacted logging·비용 원장·TTL cleanup | telemetry 승인 ID·비정상 clock fail-closed·기존 전체 회귀 | HIGH 2건 제한 재작업 승인, 구현 후 Backend QA 독립 재검증 |
 
 향후 검증 예정 Task:
 

@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-006
 title: Backend redacted logging·비용 원장·TTL cleanup 경계 구현
-status: rework_requested
+status: approved
 type: feature
 priority: P0
 priority_reason: Mock 실행에서도 콘텐츠 비노출·비용 hard cutoff·삭제 불변식을 강제해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Lead Role
+target_agent: Backend Agent
+target_role: Execution Role
 required_capabilities:
 - backend_implementation
 - security_review
@@ -48,7 +48,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-04
-updated_at: 2026-08-05
+updated_at: 2026-08-06
 report_to: .ai_project/reports/T-20260804-006_implement-backend-safety-runtime-report.md
 qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
 ---
@@ -80,6 +80,9 @@ qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
   admission과 raw metadata 30일 접근 차단을 우회하는 `QA-HIGH-006-002`를 재현했다.
   최종 `FAIL`, `verification_ready -> verification_in_progress -> rework_requested`로
   Development Lead Agent에 재작업 범위 조율을 인계했다.
+- 2026-08-06: Development Lead Agent가 두 HIGH를 telemetry 승인 ID와 비정상 clock의
+  fail-closed 경계로 제한해 `rework_requested -> scoped`로 전환했다. Product Owner가
+  해당 재작업을 승인해 `scoped -> approved`로 전환하고 Backend Agent에 재인계한다.
 
 - 2026-08-05: 공용 `develop@2092e1d`에서 선행 `T-20260804-003~005`의 `done`과
   PR #84 병합을 확인했다.
@@ -106,27 +109,48 @@ qa_to: .ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md
 - 기존 T-003~005 테스트, common·STT·AI·security·shared fixture validator를 회귀
   검증하고 완료 후 Backend QA Agent에 독립 검증을 인계한다.
 
+## 승인된 재작업 범위
+
+- `WP-R1 / QA-HIGH-006-001`: `deployment_version`, `manifest_version`을 호출자 자유
+  문자열이 아닌 서버 소유의 검증된 불변 ID·명시적 allowlist로 제한한다. 승인되지 않은
+  값은 event 전체를 폐기하고 고정 drop counter만 증가시키며 입력 문자열을 보존하거나
+  다른 telemetry로 출력하지 않는다.
+- `WP-R1` 회귀는 version 필드와 그 밖의 자유 문자열 후보에 recipe·STEP·prompt 형태의
+  비literal canary를 넣어 emit `false`, sink 0건, 고정 counter만 증가함을 확인한다.
+- `WP-R2 / QA-HIGH-006-002`: 비용 admission의 `now`, `lastReconciledAt`을 비교 전에
+  유한한 non-negative safe integer epoch이자 표현 가능한 서버 시각으로 검증한다. 유효하지
+  않으면 비용 동작을 `MANIFEST_INVALID` 또는 `BILLING_RECONCILIATION_STALE`로 차단한다.
+- `WP-R2` cleanup clock이 유효하지 않으면 신규 raw metadata 생성과 read·export·aggregate를
+  모두 차단하고 콘텐츠 없는 고정 incident 상태만 남긴다. 기존 record와 receipt를 임의로
+  삭제·변조하지 않는다.
+- `WP-R2` 회귀는 `NaN`, `Infinity`, `-Infinity`, 음수, unsafe integer와 표현 범위 밖
+  시각을 비용 manifest·reconciliation 및 raw metadata lifecycle에 직접 주입한다.
+- 수정은 `apps/backend/src/observability/`, `src/cost/`, `src/cleanup/`과 대응 security·
+  cleanup 테스트·승인 문서로 제한한다. 실제 cloud sink·billing·datastore·queue·KMS,
+  provider, secret, 배포, T-007 composition과 원격 STT를 변경하지 않는다.
+- 재작업 완료 후 두 직접 반례, T-006 전용, Backend 전체 runtime과 common·STT·AI·
+  security·shared fixture validator를 통과시키고 Backend QA Agent에 독립 재검증을 요청한다.
+
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Lead Role이야.
-Task T-20260804-006의 독립 QA에서 HIGH 결함 2건이 확인됐어.
+너는 Backend Agent / Execution Role이야.
+Task T-20260804-006의 HIGH 결함 2건 재작업이 승인됐어.
 
-- 현재 상태: `rework_requested`
+- 현재 상태: `approved`
 - 구현 기준 ref: `task/T-20260804-006-implement-backend-safety-runtime`
-- 구현 기준 SHA: commit 후 report와 Draft PR에 기록
-- 다음에 해야 할 일: `QA-HIGH-006-001~002`의 제한된 재작업 범위와 필요한 경로를
-  승인하고 Backend Agent에 인계해줘.
+- 다음에 해야 할 일: 최신 `origin/develop`을 포함한 현재 clean worktree에서 lock을
+  획득하고 `approved -> in_progress`로 전환한 뒤 `WP-R1~R2`만 구현해줘.
 - 기준 문서: `apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md`,
   `apps/backend/contracts/security/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
-- 필수 재작업: build·manifest version을 승인 ID로 제한하고, 비정상 clock·billing
-  reconciliation에서 비용 요청과 raw metadata 생성·접근을 fail closed한다.
+- 필수 재작업: build·manifest version을 서버 소유 승인 ID로 제한하고, 비정상 clock·
+  billing reconciliation에서 비용 요청과 raw metadata 생성·접근을 fail closed한다.
 - 기존 회귀: T-003~005 전체 runtime과 common·STT·AI·security·shared fixture validator
 - 남은 리스크: 실제 cloud sink·billing·datastore·queue·KMS·Node 24/container·공유 app
   composition은 T-007에서 통합 검증
 - 차단/결정 필요: 실제 provider·cloud resource·secret·배포와 원격 STT 활성화 금지
 - 참고: `.ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md`
-- 완료 시: 직접 반례와 전체 회귀를 추가해 `verification_ready`로 Backend QA 재검증에
-  인계해줘.
+- 완료 시: 직접 반례와 전체 회귀 결과를 report에 기록하고 lock을 해제한 뒤
+  `verification_ready`로 Backend QA 독립 재검증에 인계해줘.

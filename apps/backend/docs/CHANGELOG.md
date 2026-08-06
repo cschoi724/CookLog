@@ -1,5 +1,9 @@
 # Backend 변경 기록
 
+- 2026-08-06: Product Owner가 `T-20260804-006` 독립 QA의 자유 문자열 telemetry sink
+  기록과 비정상 clock 비용·보존 fail-open HIGH 2건 재작업을 승인했다. 서버 소유 version
+  allowlist와 잘못된 epoch의 비용 admission·raw metadata 생성/접근 fail-closed, 직접
+  반례와 전체 회귀로 범위를 제한해 Backend Agent에 재인계했다.
 - 2026-08-05: `T-20260804-006`에서 event별 exact allowlist·고정 enum을 새 객체로
   투영하는 `SafeLogger`와 secret/content pattern을 fail closed하는 redaction scanner,
   고정 reason drop counter를 구현했다.
