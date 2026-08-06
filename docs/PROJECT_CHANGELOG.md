@@ -1,5 +1,10 @@
 # CookLog Project Changelog
 
+- 2026-08-06: Backend Foundation 상위 `T-20260728-006`의 하위 T-002~007 완료·병합과
+  100/100·계약 5종·Node 24 container를 집계해 Development Lead 완료 리뷰를
+  `PASS_WITH_RISK`, `completion_review`로 확정했습니다. 실제 provider·cloud는
+  `T-20260729-003` 별도 승인 범위로 유지합니다.
+
 ## 2026-08-05 - AI Ops Core 0.9.0 동기화
 
 - 루트 `AGENTS.md`를 Core 0.9.0 Codex adapter와 바이트 단위로 일치시키고 플랫폼 지침 파일을 대문자 `AGENTS.md`로 정규화했습니다.

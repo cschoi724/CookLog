@@ -1,10 +1,10 @@
 # CookLog Project Status
 
-최종 업데이트: 2026-07-31
+최종 업데이트: 2026-08-06
 
 ## 현재 상태
 
-- 전체 상태: 제품 정책·첫 공개 출시 Roadmap 확정, Design·Backend·CI Foundation 실행 중
+- 전체 상태: 제품 정책·첫 공개 출시 Roadmap 확정, Design·Backend Foundation 완료 리뷰 통과, iOS 구현 진행
 - 현재 우선 플랫폼: iOS
 - Android 상태: 개발 대기
 - iOS 프로젝트: `apps/ios/CookLog.xcodeproj` 생성 완료
@@ -47,6 +47,8 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - Backend T-20260729-020 런타임·AI provider·비용 추천안 완료, 최종 provider 선택 대기
 - Backend T-20260729-021 공통 API·인증·제한·오류 계약과 독립 QA develop 통합·완료 확정
 - Backend T-20260729-022 기본 비활성 원격 STT adapter 계약 PR #40 squash merge·`done`, T-023·024 실행 승인
+- Backend Foundation T-20260728-006 하위 T-20260804-002~007 전체 `done`, 100/100·계약
+  validator 5종·Node 24 non-root container 통과, 상위 완료 리뷰 `PASS_WITH_RISK`
 - CI T-20260730-001~003 계약·ios-build·ios-xctest workflow와 hosted 검증 완료
 - CI T-20260730-004 concurrency·공통 진단·artifact 통합과 독립 QA·PR #34 완료 확정
 - T-20260731-001 Product QA 최종 `PASS`·Product Lead 완료 검토·Product Owner 최종 승인으로 `done`, develop 통합 진행
@@ -54,8 +56,8 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 ### 첫 공개 출시 실행 순서
 
 1. 완료: `T-20260729-001` 제품 문서와 Task 정합성 검증, `T-20260729-026` 첫 출시 STT 정책 변경
-2. 진행: `T-20260729-002` Design, `T-20260728-005` Backend Contract와 `T-20260728-008` CI 병렬 Foundation
-3. 이후: iOS 로컬 제품 상태, Apple 기기 내 STT, Backend AI foundation·production gateway와 iOS AI·Audio Guide 구현
+2. 완료 리뷰: Design, Backend Contract·Foundation과 CI Foundation
+3. 진행/이후: iOS 로컬 제품 상태, Apple 기기 내 STT, Backend production gateway와 iOS AI·Audio Guide 구현
 4. 최종: `T-20260728-009` TestFlight 통합, 최소 품질 게이트와 App Store 제출 준비
 
 ### iOS

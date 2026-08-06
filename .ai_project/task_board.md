@@ -55,7 +55,7 @@ Team별 요약:
 | `T-20260805-001` | P1 | iOS MVP 디자인 적용 기준과 Visual QA 계약 확정 | - | `done`, 통합 82개 상태 아래 Core Loop 23개 인수 계약 |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #65 squash merge `4e0bca4` |
-| `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `scoped`; T-20260804-002~004 완료·005 실행 승인 대기 |
+| `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `completion_review`; 하위 T-20260804-002~007 완료·Lead PASS_WITH_RISK |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
 | `T-20260731-002` | P0 | 프로젝트 공용 상태 일관성 및 Git 안전 guardrail | - | `done`, 독립 AI Ops PASS·PR #48 squash merge |
@@ -96,9 +96,9 @@ Backend `T-20260728-005` 하위 실행 후보:
 | `T-20260804-002` | P0 | Backend runtime scaffold·환경 설정·health | - | `done`, Product Owner 최종 승인·PR #70 병합 |
 | `T-20260804-003` | P0 | Backend 공통 HTTP·인증·제한·idempotency middleware | - | `done`, PR #76 squash merge |
 | `T-20260804-004` | P0 | Mock AI recipe job·status·ACK·복구 저장 경계 | - | `done`, PR #79 squash merge `a73a028` |
-| `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `proposed`, 선행 해소·별도 실행 승인 대기 |
-| `T-20260804-006` | P0 | Backend redacted logging·비용 원장·TTL cleanup | Backend Agent | `proposed`, T-003~005 선행 |
-| `T-20260804-007` | P0 | Backend Foundation 통합 계약·보안 검증·handoff | Backend Agent | `proposed`, T-002~006 선행 |
+| `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | - | `done`, PR #84 squash merge |
+| `T-20260804-006` | P0 | Backend redacted logging·비용 원장·TTL cleanup | - | `done`, PR #87 squash merge |
+| `T-20260804-007` | P0 | Backend Foundation 통합 계약·보안 검증·handoff | - | `done`, 100/100·PR #91 squash merge |
 
 iOS `T-20260728-003` 하위 실행 후보:
 

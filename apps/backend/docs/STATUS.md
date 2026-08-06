@@ -1,12 +1,12 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-06
-상태: T-20260804-002~007 Backend Foundation `done`
+상태: T-20260728-006 Backend Foundation 상위 완료 리뷰 `PASS_WITH_RISK`
 
 ## 현재 단계
 
 - 계약 정의 `T-20260728-005`: `done`
-- Foundation 구현 `T-20260728-006`: `scoped`
+- Foundation 구현 `T-20260728-006`: `completion_review`, Product Owner 최종 완료 승인 대기
 - Runtime scaffold `T-20260804-002`: `done`, Backend QA `PASS_WITH_RISK`·최종 승인
 - 공통 middleware `T-20260804-003`: `done`, Backend QA `PASS_WITH_RISK` 수용
 - Mock AI job `T-20260804-004`: `done`, PR #79 squash merge `a73a028`
@@ -23,8 +23,10 @@ cleanup을 연결했다. production은 local adapter를 거부하고 고정 `GET
 
 ## 다음 조치
 
-Foundation local/mock 기준은 완료됐다. 실제 AI Provider·Cloud datastore·배포·credential,
-원격 STT 활성화는 각각 별도 Task와 Product Owner 승인 전까지 착수하지 않는다.
+1. Product Owner가 T-20260728-006 상위 완료 리뷰와 정합화 PR 병합을 승인한다.
+2. Foundation local/mock 범위를 `done`으로 확정한다.
+3. 실제 AI Provider·Cloud datastore·배포·credential은 `T-20260729-003` 별도 승인 전까지
+   착수하지 않는다.
 
 ## 차단 경계
 
