@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-007
 title: Backend foundation 통합 계약·보안 검증과 로컬 실행 handoff
-status: in_progress
+status: verification_ready
 type: test
 priority: P0
 priority_reason: 후속 provider·iOS 연동 전에 전체 runtime과 계약 원본의 동등성을 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Execution Role
+target_agent: Backend QA Agent
+target_role: Verification Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -44,15 +44,15 @@ created_at: 2026-08-04
 updated_at: '2026-08-06'
 report_to: ".ai_project/reports/T-20260804-007_validate-backend-foundation-integration-report.md"
 qa_to: ".ai_project/qa/T-20260804-007_validate-backend-foundation-integration-qa.md"
-locked_by: Backend Agent
-locked_at: '2026-08-06'
-lock_session: codex-20260806-t007-rework
+locked_by:
+locked_at:
+lock_session:
 status_ref: origin/develop
 status_ref_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 base_ref: origin/develop
 base_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
-blocker: QA-HIGH-007-001 worker 종료 telemetry sink 장애 뒤 미감사 성공 결과가 외부 공개됨
-next_decision: Product Owner 승인 범위대로 terminal telemetry와 성공 결과 공개를 fail-closed로 재작업한다.
+blocker:
+next_decision: Backend QA Agent가 QA-HIGH-007-001 원본 반례와 terminal 장애 회귀를 독립 재검증한다.
 ---
 
 # Backend foundation 통합 검증
@@ -151,3 +151,5 @@ Foundation 최종 통합 Task야.
 | 2026-08-06 | Product Owner | rework approved | terminal telemetry와 성공 결과 공개 fail-closed, Provider at-most-once 회귀 범위 승인 |
 | 2026-08-06 | Backend Agent | transition: rework_requested -> in_progress | QA-HIGH-007-001 terminal telemetry fail-closed 재작업 착수 |
 | 2026-08-06 | Backend Agent | lock | task lock |
+| 2026-08-06 | Backend Agent | transition: in_progress -> verification_ready | QA-HIGH-007-001 fail-closed·원본 반례·100/100·Node 24 container CI 통과 |
+| 2026-08-06 | Backend Agent | unlock | task unlock |

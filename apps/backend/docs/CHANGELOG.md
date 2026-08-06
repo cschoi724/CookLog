@@ -1,5 +1,8 @@
 # Backend 변경 기록
 
+- 2026-08-06: T-007 재작업 commit `056d193`의 PR #91 `backend-verify`와
+  `backend-container`가 통과했다. lock을 해제하고 `verification_ready`로 Backend QA에
+  독립 재검증을 인계했다.
 - 2026-08-06: `QA-HIGH-007-001` 재작업으로 provider 결과를 `processing/none`에 비공개
   staging하고 terminal audit 성공 뒤에만 `succeeded/available` 또는 `failed`로 전환한다.
   audit 실패 재실행은 staged terminal만 재감사해 provider 호출을 1회로 유지한다.

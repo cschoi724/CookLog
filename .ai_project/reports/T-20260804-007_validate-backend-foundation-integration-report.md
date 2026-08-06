@@ -101,7 +101,9 @@ QA 독립 재검증이 필요하다. QA는 구현 수정·병합·`done` 처리�
 | terminal event invalid shape | PASS, 비노출 후 재실행 복구 |
 | 각 장애 전후 provider-at-most-once | PASS, 모두 1회 |
 | `npm run verify` | PASS, Backend 100/100·계약 5종·경계 감사 |
-| Node 24.18.0 non-root container | PR #91 최신 HEAD CI 재검증 대기 |
+| PR #91 재작업 `backend-verify` | PASS, 100/100·계약 5종·경계 감사 |
+| PR #91 재작업 `backend-container` | PASS, Node 24.18.0·non-root·lifecycle·통합 경로 |
 
-상태는 재작업 `in_progress`다. PR CI까지 통과한 뒤 `verification_ready`로 Backend QA에
-독립 재검증을 인계한다.
+재작업 commit `056d193`의 PR CI까지 통과했다. Task lock을 해제하고
+`verification_ready`로 Backend QA Agent에 원본 반례와 전체 독립 재검증을 인계한다.
+QA 통과 전에는 PR을 병합하거나 Task를 `done` 처리하지 않는다.
