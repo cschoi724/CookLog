@@ -107,3 +107,15 @@ QA 독립 재검증이 필요하다. QA는 구현 수정·병합·`done` 처리�
 재작업 commit `056d193`의 PR CI까지 통과했다. Task lock을 해제하고
 `verification_ready`로 Backend QA Agent에 원본 반례와 전체 독립 재검증을 인계한다.
 QA 통과 전에는 PR을 병합하거나 Task를 `done` 처리하지 않는다.
+
+## Backend QA 재검증 결과
+
+2026-08-06 Backend QA는 재작업 커밋 `056d193`을 독립 재검증했다. 원본 sink 장애 반례는
+`telemetry_unavailable`·`processing`·`result_state=none`으로 fail closed 되었고 provider는
+1회만 호출됐다. sink·reservation·event shape 장애 모두 비공개 staging 후 재실행 복구가
+확인됐다. 전체 runtime 100/100, 계약 validator 5종, 경계 감사 및 PR #91 Node 24.18
+non-root container CI도 통과했다.
+
+`QA-HIGH-007-001` 해소를 확인해 최종 판정 `PASS_WITH_RISK`, 상태
+`verification_passed`로 Development Lead Agent 완료 검토에 인계한다. QA는 병합 및
+`done` 처리를 수행하지 않았다.

@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-007
 title: Backend foundation 통합 계약·보안 검증과 로컬 실행 handoff
-status: verification_ready
+status: verification_passed
 type: test
 priority: P0
 priority_reason: 후속 provider·iOS 연동 전에 전체 runtime과 계약 원본의 동등성을 고정해야 한다.
@@ -153,3 +153,5 @@ Foundation 최종 통합 Task야.
 | 2026-08-06 | Backend Agent | lock | task lock |
 | 2026-08-06 | Backend Agent | transition: in_progress -> verification_ready | QA-HIGH-007-001 fail-closed·원본 반례·100/100·Node 24 container CI 통과 |
 | 2026-08-06 | Backend Agent | unlock | task unlock |
+| 2026-08-06 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-007-001 fail-closed 재작업 및 전체 통합 계약 독립 재검증 시작 |
+| 2026-08-06 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-007-001 해소, 원본 sink·reservation·shape 장애 비공개 staging·복구, provider 1회, 100/100 및 PR CI PASS |

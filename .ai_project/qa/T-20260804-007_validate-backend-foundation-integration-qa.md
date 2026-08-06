@@ -81,3 +81,21 @@ git diff --check: PASS
 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 Development Lead Agent /
 Lead Role에 재작업 범위 조율을 인계한다. Quality Team은 구현 수정, `done` 처리 또는 PR
 병합을 수행하지 않는다.
+
+## 6. 재검증 결과
+
+재작업 커밋 `056d193` 및 handoff `d4635cd`를 기준으로 독립 재검증했다. terminal 결과는
+repository에 먼저 비공개 staging되고, telemetry sink·reservation·event shape가 모두
+성공한 경우에만 최종 상태로 전환된다.
+
+| 검증 항목 | 결과 | 근거 |
+|---|---|---|
+| 원본 sink 장애 반례 | PASS | `telemetry_unavailable`, `processing`, `result_state=none`, provider 1회 |
+| terminal sink/reservation/shape 장애 | PASS | 각 장애에서 결과 비공개 후 재실행 복구 |
+| provider at-most-once | PASS | 모든 terminal 장애 전후 provider 호출 1회 |
+| 전체 Backend runtime | PASS | 100/100 |
+| 계약 validator·경계 감사 | PASS | 5종 validator와 Foundation boundary audit 통과 |
+| Node 24.18/non-root container | PASS | PR #91 `backend-container` 성공 |
+
+QA-HIGH-007-001은 해소됐다. `verification_passed`로 Development Lead Agent / Lead Role에
+완료 검토를 인계한다. QA는 병합 및 `done` 처리를 수행하지 않는다.
