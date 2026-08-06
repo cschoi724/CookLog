@@ -87,5 +87,5 @@ assertion하고 9초 안에 끝나야 합니다.
 - Mock AI job과 저장: `T-20260804-004`
 - 원격 STT 비활성 resolver: `T-20260804-005`
 - safe logging·비용·cleanup: `T-20260804-006`
-- 전체 wiring·container·계약 보안 검증: `T-20260804-007` 구현 완료, 독립 QA 대기
+- 전체 wiring·container·계약 보안 검증: `T-20260804-007` 구현·독립 QA·완료 리뷰 통과
 - 실제 provider·cloud 배포: `T-20260729-003` 별도 승인

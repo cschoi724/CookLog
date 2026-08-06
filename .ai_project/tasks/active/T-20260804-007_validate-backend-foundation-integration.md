@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-007
 title: Backend foundation 통합 계약·보안 검증과 로컬 실행 handoff
-status: verification_passed
+status: done
 type: test
 priority: P0
 priority_reason: 후속 provider·iOS 연동 전에 전체 runtime과 계약 원본의 동등성을 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -52,7 +52,7 @@ status_ref_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 base_ref: origin/develop
 base_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 blocker:
-next_decision: Backend QA Agent가 QA-HIGH-007-001 원본 반례와 terminal 장애 회귀를 독립 재검증한다.
+next_decision:
 ---
 
 # Backend foundation 통합 검증
@@ -84,6 +84,12 @@ next_decision: Backend QA Agent가 QA-HIGH-007-001 원본 반례와 terminal 장
   `rework_requested`로 반환했다.
 - 2026-08-06: Product Owner가 terminal 감사와 성공 결과 공개의 fail-closed 재작업을
   승인했다. Provider at-most-once와 기존 정상 계약은 보존하고 장애 회귀를 추가한다.
+- 2026-08-06: Backend QA 독립 재검증에서 `QA-HIGH-007-001` 해소, 원본 반례와
+  terminal sink·reservation·shape 장애 복구, Provider 1회, 전체 100/100과 PR CI 통과를
+  확인해 `verification_passed`로 인계했다.
+- 2026-08-06: Development Lead가 완료 리뷰를 `PASS_WITH_RISK`로 수용했고 Product
+  Owner가 완료 확정과 PR #91 squash merge를 승인했다. 실제 Provider·Cloud는 별도 승인
+  범위로 유지하며 Task를 `done`으로 확정한다.
 - T-002 runtime·T-003 HTTP/auth/idempotency·T-004 Mock AI job·T-005 원격 STT 비활성
   경계·T-006 logging/비용/cleanup을 하나의 local/mock app·worker composition으로
   연결한다.
@@ -111,32 +117,16 @@ next_decision: Backend QA Agent가 QA-HIGH-007-001 원본 반례와 terminal 장
 
 다음 Agent에게 전달할 말:
 
-너는 Backend Agent / Execution Role이야.
-Task T-20260804-007은 독립 QA에서 HIGH 1건이 확인되고 Product Owner가 재작업을 승인한
-Foundation 최종 통합 Task야.
+Task T-20260804-007은 Backend Foundation local/mock 최종 통합과 독립 재검증을 완료했다.
 
-- 현재 상태: `rework_requested`
-- public source: `origin/develop@6a1678c`
-- 선행 상태: `T-20260804-002~006 done`
-- 구현 ref: `task/T-20260804-007-integrate-backend-foundation`
-- 재작업 승인: Product Owner 승인 완료
-- 시작 절차: 기존 구현 worktree에서 Task lock 획득, `rework_requested -> in_progress`
-- 차단 결함: `QA-HIGH-007-001` — terminal telemetry sink 장애 뒤에도 성공 결과가
-  `completed`·`succeeded`·`available`로 공개됨
-- 필수 수정: terminal 감사 성공 전에는 결과를 외부 공개하지 않고, sink 장애·terminal
-  reservation 거절·event shape 거절을 fail closed 처리
-- 필수 회귀: 위 3개 장애와 재시도에서 Provider at-most-once, 기존 결과 비노출·복구 보장
-- 통과 유지: 전체 96/96, 계약 validator 5종, auth·rate·idempotency·비용·cleanup,
-  Node 24.18.0 non-root container
-- 필수 구현: T-002~006 local/mock composition과 공용 fixture 기반 실제 HTTP 통합 경로
-- 필수 검증: 새 clone, Node 24.18.0/npm 11, non-root container, 전체 계약·보안·비용·
-  cleanup 회귀, 원격 STT route/side effect 0건
-- 구현 경계: 실제 provider·cloud resource·secret·배포·원격 STT, iOS·Android를
-  추가하거나 활성화하지 마.
-- 기준 문서: `apps/backend/AGENTS.md`, `apps/backend/docs/`, `apps/backend/contracts/`
-- 허용 경로: Task frontmatter의 `allowed_paths`
-- 완료 조건: 단일 재현 명령과 결과를 report에 기록하고 lock을 해제한 뒤
-  `verification_ready`로 Backend QA Agent에 독립 검증을 인계해.
+- 최종 상태: `done`
+- PR: `#91`, Product Owner squash merge 승인
+- 최종 검증: Backend 100/100, 계약 validator 5종, Foundation 경계 감사,
+  Node 24.18.0 non-root container PASS
+- 결함 해소: `QA-HIGH-007-001` terminal telemetry fail-closed와 Provider at-most-once
+- 유지 경계: 실제 Provider·Cloud resource·credential·배포·원격 STT는 미구현이며
+  별도 Task와 Product Owner 승인 없이는 활성화하지 않는다.
+- 후속 작업자는 최신 `develop`의 `apps/backend/docs/`와 계약 fixture를 기준으로 한다.
 
 ## AI Ops CLI 기록
 
@@ -155,3 +145,5 @@ Foundation 최종 통합 Task야.
 | 2026-08-06 | Backend Agent | unlock | task unlock |
 | 2026-08-06 | Backend QA Agent | transition: verification_ready -> verification_in_progress | QA-HIGH-007-001 fail-closed 재작업 및 전체 통합 계약 독립 재검증 시작 |
 | 2026-08-06 | Backend QA Agent | transition: verification_in_progress -> verification_passed | QA-HIGH-007-001 해소, 원본 sink·reservation·shape 장애 비공개 staging·복구, provider 1회, 100/100 및 PR CI PASS |
+| 2026-08-06 | Development Lead Agent | transition: verification_passed -> completion_review | 독립 재검증과 전체 회귀를 PASS_WITH_RISK로 수용 |
+| 2026-08-06 | Product Owner | transition: completion_review -> done | 완료 확정 및 PR #91 squash merge 승인 |

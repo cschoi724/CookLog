@@ -1,5 +1,8 @@
 # Backend 변경 기록
 
+- 2026-08-06: `T-20260804-007` 독립 재검증에서 HIGH 해소, 전체 100/100·계약 5종·
+  Node 24 non-root container 통과를 확인했다. Development Lead `PASS_WITH_RISK` 완료
+  리뷰와 Product Owner 완료·PR #91 squash merge 승인으로 Foundation을 `done` 처리했다.
 - 2026-08-06: T-007 재작업 commit `056d193`의 PR #91 `backend-verify`와
   `backend-container`가 통과했다. lock을 해제하고 `verification_ready`로 Backend QA에
   독립 재검증을 인계했다.
