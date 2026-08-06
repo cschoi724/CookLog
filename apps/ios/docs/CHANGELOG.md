@@ -4,6 +4,10 @@
 
 ## 2026-08-06
 
+- `T-20260805-004` 독립 QA에서 기능·저장·전체 XCTest 62/62는 통과했지만 시스템 배경과
+  accent·green·red 사용을 `QA-MEDIUM-805004-001` 색상 토큰 위반으로 판정했습니다.
+- Product Owner가 통과한 로직을 보존하는 색상 토큰 한정 재작업과 Light/Dark
+  `LOG-STEP-ADDED`·`LOG-ERROR` 재검증을 승인했습니다.
 - `T-20260805-004`의 Cooking Log 5개 상태와 첫·반복 10초 Mock 기록을 구현했습니다.
 - Processing 동안 기존 완료 STEP과 정확한 다음 pending 번호를 함께 표시하고, 성공 시
   같은 `RecipeRecord.id`에 자동 저장된 뒤에만 화면 세션을 갱신합니다.

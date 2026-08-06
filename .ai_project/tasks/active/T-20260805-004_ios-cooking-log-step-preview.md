@@ -79,6 +79,8 @@ qa_to: .ai_project/qa/T-20260805-004_ios-cooking-log-step-preview-qa.md
   Cooking Log 신규 카드 배경에 금지된 `secondarySystemGroupedBackground`, accent·성공·
   오류 슬롯에 system accent/green/red를 사용한 `QA-MEDIUM-805004-001`을 확인해
   `verification_in_progress -> rework_requested`로 전환하고 iOS Agent에 반환했다.
+- 2026-08-06: Product Owner가 `QA-MEDIUM-805004-001`의 색상 토큰 한정 재작업을
+  승인했다. 통과한 상태·저장 로직은 보존하고 Light/Dark 증빙을 추가한 뒤 독립 재검증한다.
 - 구현은 기존 Mock Service를 이용한 `idle -> recording -> processing -> idle|error`,
   반복 기록과 STEP Preview 자동 저장·삭제·되돌리기·순서 보존으로 제한한다.
 - 첫 처리와 반복 처리 모두 pending STEP 번호를 정확히 표시하고, 실패 시 실패한 pending만
@@ -98,10 +100,12 @@ qa_to: .ai_project/qa/T-20260805-004_ios-cooking-log-step-preview-qa.md
 Task T-20260805-004는 독립 QA에서 색상 토큰 차단 결함 1건이 확인된 재작업 Task야.
 
 - 현재 상태: `rework_requested`
-- public source: `origin/develop@69cbf81`
+- public source: `origin/develop@6a1678c`
 - 선행 상태: `T-20260805-003 done`, PR #86 squash merge 완료
 - 구현 ref: `task/T-20260805-004-implement-ios-cooking-log-step-preview`
-- 시작 절차: 구현 worktree에서 Task lock을 획득하고 `rework_requested -> in_progress`
+- 재작업 승인: Product Owner 승인 완료
+- 시작 절차: 최신 `origin/develop` 차이를 기존 커밋과 충돌 없이 반영한 뒤 구현
+  worktree에서 Task lock을 획득하고 `rework_requested -> in_progress`
 - 필수 상태: `LOG-EMPTY`, `LOG-RECORDING`, `LOG-PROCESSING`, `LOG-STEP-ADDED`,
   `LOG-ERROR`
 - 데이터 계약: 같은 `RecipeRecord.id`, 완료 STEP 순서·원문 보존, 실패한 pending만 제거,
