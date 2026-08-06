@@ -2,8 +2,8 @@
 
 최종 업데이트: 2026-08-06
 
-상위 상태: `T-20260728-006 completion_review` — 하위 T-002~007 완료, Development Lead
-`PASS_WITH_RISK`, Product Owner 최종 완료 승인 대기
+상위 상태: `T-20260728-006 done` — 하위 T-002~007 완료, Development Lead
+`PASS_WITH_RISK`, Product Owner 최종 완료·PR #93 병합 승인
 
 ## 목표
 

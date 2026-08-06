@@ -4,7 +4,7 @@
 
 ## 현재 상태
 
-- 전체 상태: 제품 정책·첫 공개 출시 Roadmap 확정, Design·Backend Foundation 완료 리뷰 통과, iOS 구현 진행
+- 전체 상태: 제품 정책·첫 공개 출시 Roadmap 확정, Design·Backend Foundation 완료, iOS 구현 진행
 - 현재 우선 플랫폼: iOS
 - Android 상태: 개발 대기
 - iOS 프로젝트: `apps/ios/CookLog.xcodeproj` 생성 완료
@@ -48,7 +48,7 @@ CookLog는 사용자가 요리 중 10초 음성 기록을 반복하면 앱이 ST
 - Backend T-20260729-021 공통 API·인증·제한·오류 계약과 독립 QA develop 통합·완료 확정
 - Backend T-20260729-022 기본 비활성 원격 STT adapter 계약 PR #40 squash merge·`done`, T-023·024 실행 승인
 - Backend Foundation T-20260728-006 하위 T-20260804-002~007 전체 `done`, 100/100·계약
-  validator 5종·Node 24 non-root container 통과, 상위 완료 리뷰 `PASS_WITH_RISK`
+  validator 5종·Node 24 non-root container 통과, 상위 `PASS_WITH_RISK` 수용·`done`
 - CI T-20260730-001~003 계약·ios-build·ios-xctest workflow와 hosted 검증 완료
 - CI T-20260730-004 concurrency·공통 진단·artifact 통합과 독립 QA·PR #34 완료 확정
 - T-20260731-001 Product QA 최종 `PASS`·Product Lead 완료 검토·Product Owner 최종 승인으로 `done`, develop 통합 진행

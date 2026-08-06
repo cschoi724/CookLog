@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260728-006
 title: Backend AI gateway와 비활성 원격 STT adapter foundation 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 승인된 API 계약을 실행 가능한 안전한 Backend 기반으로 전환한다.
@@ -142,6 +142,9 @@ composition root는 T-002가 단일 소유하고, 최종 wiring은 T-007이 담�
   #70·76·79·84·87·91 병합과 상위 성공 기준을 집계하고 Backend 전체 `npm run verify`를
   재실행했다. 차단 결함이 없어 `PASS_WITH_RISK`, `scoped -> completion_review`로
   전환하며 Product Owner의 최종 완료 승인을 요청한다.
+- 2026-08-06: Product Owner가 완료 리뷰의 잔여 위험 이관을 수용하고 T-006 최종 완료와
+  정합화 PR #93 병합을 승인했다. `completion_review -> done`으로 전환하며 후속
+  `T-20260729-003`의 Foundation 선행은 공용 `develop` 병합 후 해소된다.
 
 ## Development Lead 완료 리뷰
 
@@ -161,10 +164,10 @@ composition root는 T-002가 단일 소유하고, 최종 wiring은 T-007이 담�
 
 다음 Agent에게 전달할 말:
 
-너는 Product Owner야. T-20260728-006은 Development Lead 완료 리뷰를 통과한 Backend
-Foundation 상위 Task야.
+너는 Development Lead Agent야. T-20260728-006은 Product Owner 최종 승인을 받은
+Backend Foundation 완료 Task야.
 
-- 현재 상태: `completion_review`
+- 현재 상태: `done`
 - 판정: `PASS_WITH_RISK`
 - public source: `origin/develop@493743e`
 - 하위 상태: `T-20260804-002~007 done`
@@ -172,5 +175,6 @@ Foundation 상위 Task야.
   container, PR #91 backend checks 통과
 - 완료 범위: 실행 가능한 local/mock Backend Foundation과 production fail-closed 경계
 - 제외 범위: 실제 AI provider·datastore·secret·cloud 배포·원격 STT 활성화
-- 승인 조건: 위 제외 범위를 후속 `T-20260729-003`으로 유지하는 잔여 위험을 수용하면
-  T-006 완료와 정합화 PR 병합을 승인해.
+- 다음 후보: `T-20260729-003` 실제 AI provider와 배포 가능한 Backend gateway
+- 실행 경계: T-003의 Foundation 선행은 해소되지만 provider·비용·cloud·secret 외부
+  변경과 실행은 Product Owner 별도 승인 전까지 `proposed`로 유지해.

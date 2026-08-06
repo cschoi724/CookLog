@@ -26,4 +26,4 @@ non-root container를 검증했으므로 상위 성공 기준의 독립 검증�
 ## 판정
 
 차단 결함은 없습니다. 범위 밖 production 구현을 `T-20260729-003`으로 유지하는 조건으로
-`PASS_WITH_RISK`입니다.
+`PASS_WITH_RISK`입니다. Product Owner가 잔여 위험을 수용하고 상위 완료를 승인했습니다.
