@@ -11,11 +11,11 @@
 | `T-20260728-003` | `scoped` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | 하위 `T-20260805-002~008` | Product Owner 진행 승인, T-002 iOS Agent 인계 |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
 | `T-20260728-005` | `done` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | 하위 `T-20260729-020~025` 완료 | PR #65 squash merge `4e0bca4`·완료 확정 |
-| `T-20260728-006` | `scoped` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | 하위 `T-20260804-002~007` | Product Owner 진행 승인, T-002 Backend Agent 인계 |
+| `T-20260728-006` | `done` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | - | 하위 `T-20260804-002~007` 완료 | Product Owner 최종 완료·PR #93 병합 승인 |
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
 | `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~005 완료, T-006 별도 승인 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
-| `T-20260729-003` | `proposed` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005` 완료, `006` 대기 | T-006과 AI provider 승인 후 하위 패키지 |
+| `T-20260729-003` | `proposed` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` 완료 | Foundation 선행 해소·provider/비용/cloud 별도 실행 승인 대기 |
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
 | `T-20260729-005` | `proposed` | iOS | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-005` 완료, `003`, `T-20260729-003` 대기 | 나머지 선행 구현·환경 대기 |
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
@@ -102,6 +102,16 @@ Backend QA 재검증에서 원본 반례와 terminal sink·reservation·shape �
 계약 validator 5종, 경계 감사와 Node 24 non-root container도 통과했습니다. Development
 Lead가 `PASS_WITH_RISK`로 완료 리뷰했고 Product Owner가 완료 확정과 PR #91 squash
 merge를 승인해 T-007을 `done`으로 전환합니다.
+
+Development Lead가 하위 T-002~007의 독립 QA·완료 리뷰와 PR #70·76·79·84·87·91
+`develop` 병합을 상위 성공 기준으로 집계했습니다. 최신 develop에서 Backend 100/100,
+계약 validator 5종과 경계 감사를 재확인해 T-006 상위 완료 리뷰를 `PASS_WITH_RISK`,
+`completion_review`로 확정합니다. 실제 provider·cloud·credential은 T-20260729-003
+별도 승인 범위로 유지하며 Product Owner 최종 완료 승인을 기다립니다.
+
+Product Owner가 잔여 위험 이관을 수용하고 T-006 최종 완료와 PR #93 squash merge를
+승인했습니다. T-006을 `done`으로 확정하며 T-20260729-003의 Foundation 선행은 해소하되,
+provider·비용·cloud·secret 외부 변경은 별도 실행 승인 전까지 금지합니다.
 
 Backend QA 재검증은 `QA-HIGH-002-001` 해소와 전체 15/15·기존 계약 무회귀를
 `PASS_WITH_RISK`로 확인했습니다. Development Lead는 Docker·Node 24·non-root

@@ -14,8 +14,8 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 23 |
-| `scoped` | 3 |
+| `proposed` | 18 |
+| `scoped` | 2 |
 | `approved` | 1 |
 | `in_progress` | 0 |
 | `verification_ready` | 0 |
@@ -24,14 +24,14 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 40 |
+| `done` | 41 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation 하위 T-20260804-002~004도 `done`이며 T-20260804-005는 별도 실행 승인 대기, 상위 T-006은 `scoped`입니다. iOS T-003은 7개 하위 패키지로 `scoped`, T-20260805-002는 `done`, T-20260805-003은 `approved`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation T-20260728-006과 하위 T-20260804-002~007도 모두 `done`입니다. 실제 production Backend T-20260729-003은 별도 실행 승인 전 `proposed`입니다. iOS T-003은 7개 하위 패키지로 `scoped`이며 T-20260805-002~004는 `done`, T-20260805-005는 `approved`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -55,7 +55,7 @@ Team별 요약:
 | `T-20260805-001` | P1 | iOS MVP 디자인 적용 기준과 Visual QA 계약 확정 | - | `done`, 통합 82개 상태 아래 Core Loop 23개 인수 계약 |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #65 squash merge `4e0bca4` |
-| `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | Development Lead Agent | `scoped`; T-20260804-002~004 완료·005 실행 승인 대기 |
+| `T-20260728-006` | P0 | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | - | `done`; PASS_WITH_RISK 수용·PR #93 병합 승인 |
 | `T-20260728-007` | P0 | Git·PR·CI 운영 기준 단일화 | Development Lead Agent | `done` |
 | `T-20260728-019` | P0 | develop 통합 브랜치 기반 Git 운영 전환 | AI Ops Agent | `done` |
 | `T-20260731-002` | P0 | 프로젝트 공용 상태 일관성 및 Git 안전 guardrail | - | `done`, 독립 AI Ops PASS·PR #48 squash merge |
@@ -63,7 +63,7 @@ Team별 요약:
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
 | `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | - | `done`, 하위 T-008~014·통합 Design QA·PR #68 완료 |
-| `T-20260729-003` | P0 | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `T-20260728-006` |
+| `T-20260729-003` | P0 | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | Foundation 선행 완료·provider/비용/cloud 별도 승인 대기 |
 | `T-20260729-004` | P0 | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` |
 | `T-20260729-005` | P0 | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
 | `T-20260729-006` | P0 | iOS 로컬 TTS·오디오 중단·핸즈프리 Audio Guide 구현 | Development Lead Agent | `T-20260728-003` |
@@ -96,9 +96,9 @@ Backend `T-20260728-005` 하위 실행 후보:
 | `T-20260804-002` | P0 | Backend runtime scaffold·환경 설정·health | - | `done`, Product Owner 최종 승인·PR #70 병합 |
 | `T-20260804-003` | P0 | Backend 공통 HTTP·인증·제한·idempotency middleware | - | `done`, PR #76 squash merge |
 | `T-20260804-004` | P0 | Mock AI recipe job·status·ACK·복구 저장 경계 | - | `done`, PR #79 squash merge `a73a028` |
-| `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | Backend Agent | `proposed`, 선행 해소·별도 실행 승인 대기 |
-| `T-20260804-006` | P0 | Backend redacted logging·비용 원장·TTL cleanup | Backend Agent | `proposed`, T-003~005 선행 |
-| `T-20260804-007` | P0 | Backend Foundation 통합 계약·보안 검증·handoff | Backend Agent | `proposed`, T-002~006 선행 |
+| `T-20260804-005` | P0 | 원격 STT 비활성 확장 경계·활성화 차단 | - | `done`, PR #84 squash merge |
+| `T-20260804-006` | P0 | Backend redacted logging·비용 원장·TTL cleanup | - | `done`, PR #87 squash merge |
+| `T-20260804-007` | P0 | Backend Foundation 통합 계약·보안 검증·handoff | - | `done`, 100/100·PR #91 squash merge |
 
 iOS `T-20260728-003` 하위 실행 후보:
 
