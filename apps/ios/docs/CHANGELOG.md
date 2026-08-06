@@ -8,6 +8,12 @@
   accent·green·red 사용을 `QA-MEDIUM-805004-001` 색상 토큰 위반으로 판정했습니다.
 - Product Owner가 통과한 로직을 보존하는 색상 토큰 한정 재작업과 Light/Dark
   `LOG-STEP-ADDED`·`LOG-ERROR` 재검증을 승인했습니다.
+- Cooking Log의 화면·빈 보조 영역·기록 패널·STEP 카드를 확정 `bg/base`, `bg/subtle`,
+  `bg/elevated`에 연결하고 CTA·STEP·성공·오류의 system accent/green/red를 기존 CookLog
+  accent·success·error Light/Dark 프로젝트 토큰으로 교체했습니다.
+- iPhone 15 iOS 17.2에서 Light/Dark `LOG-STEP-ADDED`와 권한 거부 `LOG-ERROR`를
+  캡처하고 전체 XCTest 62/62·build·`git diff --check`를 재통과해 독립 재검증을
+  요청했습니다.
 - `T-20260805-004`의 Cooking Log 5개 상태와 첫·반복 10초 Mock 기록을 구현했습니다.
 - Processing 동안 기존 완료 STEP과 정확한 다음 pending 번호를 함께 표시하고, 성공 시
   같은 `RecipeRecord.id`에 자동 저장된 뒤에만 화면 세션을 갱신합니다.

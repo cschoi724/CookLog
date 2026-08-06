@@ -22,7 +22,23 @@ Mock Speech Service 기반 10초 기록을 `idle -> recording -> processing -> i
 - 권한·음성 처리·자동 저장 오류별 안내와 복구 행동
 - 실패한 pending 제거, 기존 완료 STEP·저장 draft 보존
 - 누적 `[StepPreview]` 동일 snapshot의 AI Review route callback 전달
-- 시스템 `List`, `Button`, `ProgressView`, semantic color와 Dynamic Type 스타일
+- 시스템 `List`, `Button`, `ProgressView`, CookLog 프로젝트 색상 토큰과 Dynamic Type 스타일
+
+## 재작업 결과 — QA-MEDIUM-805004-001
+
+통과한 상태·저장 로직은 변경하지 않고 Cooking Log 색상 슬롯만 수정했습니다.
+
+| 화면 슬롯 | 적용 프로젝트 토큰 | Light / Dark |
+|---|---|---|
+| 화면 배경 | `HomeTheme.backgroundBase` | `#FFFDF8` / `#18171B` |
+| 빈 보조 영역 | `HomeTheme.backgroundSubtle` | `#FAF3E7` / `#222027` |
+| 기록 패널·STEP 카드 | `HomeTheme.backgroundElevated` | `#FFFFFF` / `#302C35` |
+| 주요 CTA·STEP 표시 | `HomeTheme.accent` | `#C93610` / `#FF9A7A` |
+| 성공 상태 | `HomeTheme.success` | `#176B4A` / `#7EE0B4` |
+| 오류·삭제 상태 | `HomeTheme.error` | `#B42318` / `#FF8C84` |
+
+`List`의 시스템 배경을 숨기고 `bg/base`를 지정했으며 `.primary`, `.secondary`, separator,
+네이티브 컨트롤 내부 렌더링만 허용된 system semantic color로 유지했습니다.
 
 ## 승인 범위 보완
 
@@ -45,9 +61,21 @@ Mock Speech Service 기반 10초 기록을 `idle -> recording -> processing -> i
   - 반복 `LOG-RECORDING`에서 기존 STEP 유지 → STEP 2 자동 저장
   - `10초 더 기록`과 `자동 저장됨` 상태 확인
 - `git diff --check`: 성공
+- 재작업 전체 XCTest 62/62, 실패·skip 0: 성공
+  - xcresult: `/private/tmp/cooklog-derived-t004-rework/Logs/Test/Test-CookLog-2026.08.06_11-40-25-+0900.xcresult`
+- 재작업 `xcodebuild ... build -quiet`: 성공
+- iPhone 15 iOS 17.2 재작업 시각 증빙:
+  - Light `LOG-STEP-ADDED`: `/private/tmp/cooklog-t004-light-log-step-added.png`
+  - Dark `LOG-STEP-ADDED`: `/private/tmp/cooklog-t004-dark-log-step-added.png`
+  - Light `LOG-ERROR`: `/private/tmp/cooklog-t004-light-log-error.png`
+  - Dark `LOG-ERROR`: `/private/tmp/cooklog-t004-dark-log-error.png`
+- 소스 토큰 Light/Dark 값과 화면 연결을 위 표대로 대조하고, 네 상태 캡처에서 각 테마의
+  `bg/base`·`bg/elevated`·accent·success·error 전환을 확인했습니다.
 
 ## 독립 QA 요청
 
+- `QA-MEDIUM-805004-001`의 `bg/base|subtle|elevated`, accent, success, error Light/Dark
+  연결과 위 네 장의 상태 증빙 재검증
 - 첫·반복 Recording과 Processing의 기존 완료 STEP·다음 pending 번호
 - 성공 후에만 STEP 노출·동일 record ID SwiftData 저장·재실행 복구
 - 음성 처리·저장 실패 시 pending만 제거하고 기존 STEP·draft 보존

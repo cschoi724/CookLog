@@ -4,21 +4,21 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-004 독립 QA 색상 토큰 실패, 재작업 승인 완료
+- 상태: T-20260805-004 색상 토큰 재작업 완료, 독립 재검증 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~003 done, T-20260805-004 rework_requested
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~003 done, T-20260805-004 verification_ready
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS Agent가 `T-20260805-004` Cooking Log 배경·accent·status를 확정 토큰으로 재작업
-2. iOS QA Agent가 전체 XCTest와 Light/Dark `LOG-STEP-ADDED`·`LOG-ERROR` 독립 재검증
+1. iOS QA Agent가 `T-20260805-004` 전체 XCTest와 Light/Dark
+   `LOG-STEP-ADDED`·`LOG-ERROR`를 독립 재검증
 3. `T-20260805-005~007` 화면·상태 패키지 순차 구현
 4. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 5. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
@@ -26,6 +26,11 @@
 
 ## 최근 작업
 
+- Cooking Log 화면 배경은 `bg/base`, 빈 보조 영역은 `bg/subtle`, 기록 패널과 STEP
+  카드는 `bg/elevated`로 연결하고 CTA·STEP·성공·오류를 기존 확정 프로젝트 토큰으로
+  교체했습니다. 시스템 색상은 레이블·separator·네이티브 컨트롤 내부로 제한했습니다.
+- iPhone 15 iOS 17.2에서 Light/Dark `LOG-STEP-ADDED`와 권한 거부 `LOG-ERROR`를
+  캡처하고 전체 XCTest 62/62·build·`git diff --check`를 통과해 독립 재검증을 요청했습니다.
 - 독립 QA에서 기능·저장 계약과 전체 XCTest 62/62는 통과했지만 Cooking Log의 시스템
   배경·accent·green·red 사용이 확정 색상 계약을 위반해 `QA-MEDIUM-805004-001`,
   `rework_requested`로 판정됐습니다.

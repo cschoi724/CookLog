@@ -33,6 +33,7 @@ struct CookingLogView: View {
             Section {
                 if viewModel.stepPreviews.isEmpty && viewModel.pendingStepOrder == nil {
                     emptyState
+                        .listRowBackground(HomeTheme.backgroundSubtle)
                 } else {
                     ForEach(viewModel.stepPreviews) { stepPreview in
                         StepPreviewRowView(
@@ -49,6 +50,7 @@ struct CookingLogView: View {
                             Button("삭제", role: .destructive) {
                                 Task { _ = await viewModel.deleteStep(stepPreview) }
                             }
+                            .tint(HomeTheme.error)
                             .disabled(viewModel.isRecording || viewModel.isSavingDraft)
                         }
                     }
@@ -74,6 +76,9 @@ struct CookingLogView: View {
             }
         }
         .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .background(HomeTheme.backgroundBase)
+        .tint(HomeTheme.accent)
         .navigationTitle("요리 기록")
     }
 
@@ -131,7 +136,7 @@ struct CookingLogView: View {
             .accessibilityHint("최대 10초 동안 말한 내용을 새 STEP Preview로 기록합니다.")
         }
         .padding(16)
-        .background(Color(.secondarySystemGroupedBackground))
+        .background(HomeTheme.backgroundElevated)
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
@@ -142,7 +147,7 @@ struct CookingLogView: View {
                 systemImage: "exclamationmark.triangle.fill",
                 title: errorTitle,
                 message: errorMessage,
-                color: .red,
+                color: HomeTheme.error,
                 actionTitle: errorActionTitle,
                 action: errorAction
             )
@@ -151,7 +156,7 @@ struct CookingLogView: View {
                 systemImage: "checkmark.circle.fill",
                 title: "자동 저장됨",
                 message: saveFeedbackMessage,
-                color: .green,
+                color: HomeTheme.success,
                 actionTitle: viewModel.canUndoDeletion ? "되돌리기" : nil,
                 action: viewModel.canUndoDeletion
                     ? { Task { _ = await viewModel.undoLastDeletion() } }
