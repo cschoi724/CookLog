@@ -4,20 +4,20 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-004 완료·PR #90 squash merge 승인, T-20260805-005 별도 실행 승인 대기
+- 상태: T-20260805-004 done, T-20260805-005 AI Review·Recipe 구현 승인
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~004 done, T-20260805-005 proposed
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~004 done, T-20260805-005 approved
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. Product Owner 별도 승인 후 `T-20260805-005` AI Review·완료 Recipe 편집·삭제 구현
+1. iOS Agent가 `T-20260805-005` AI Review·완료 Recipe 편집·삭제 구현과 자체 검증
 2. `T-20260805-006~007` 화면·상태 패키지 순차 구현
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
@@ -25,6 +25,9 @@
 
 ## 최근 작업
 
+- Product Owner가 T-005 별도 실행을 승인했습니다. Mock AI 기반 Review 5개 상태,
+  편집·임시 저장·이탈 복원과 완료 Recipe 수정·삭제, 실패 시 입력·원본 보존을 iOS Agent에
+  인계했습니다. 실제 Backend AI와 T-006~008은 후속 범위로 유지합니다.
 - Product Owner가 T-004 잔여 위험을 수용하고 완료 확정과 PR #90 squash merge를
   승인했습니다. T-005 선행은 병합으로 해소되며 별도 실행 승인 전 `proposed`로 유지합니다.
 - iOS QA가 색상 결함 해소, 금지 시스템 색상 0건, Light/Dark 상태 네 장과 전체 XCTest

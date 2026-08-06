@@ -4,6 +4,9 @@
 
 ## 2026-08-06
 
+- Product Owner가 `T-20260805-005` AI Review·완료 Recipe 편집·삭제 구현을 별도
+  승인했습니다. Mock AI 기반 5개 Review 상태와 편집·임시 저장·이탈 복원, 완료 Recipe
+  수정·삭제, 실패 시 입력·원본 보존 범위를 iOS Agent에 인계했습니다.
 - Product Owner가 `T-20260805-004` 잔여 위험을 수용하고 완료 확정과 PR #90 squash
   merge를 승인했습니다. T-005 선행은 공용 `develop` 병합 후 해소되며 별도 실행 승인
   전에는 `proposed`로 유지합니다.
