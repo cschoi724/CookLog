@@ -1,11 +1,11 @@
 # T-20260804-006 Backend QA 독립 검증 보고서
 
-검증일: 2026-08-05
+검증일: 2026-08-05, 재검증 2026-08-06
 검증자: Backend QA Agent / Verification Role
-검증 기준: `task/T-20260804-006-implement-backend-safety-runtime` `52b5f3a`
-기준 develop: `origin/develop` `9457133`
-최종 판정: `FAIL`
-상태 인계: `verification_ready -> verification_in_progress -> rework_requested`
+검증 기준: 최초 `52b5f3a`, 재작업 `e53424f`
+재검증 기준 develop: `origin/develop` `69cbf81`
+최종 판정: `PASS_WITH_RISK`
+최종 상태 인계: `verification_ready -> verification_in_progress -> verification_passed`
 
 ## 1. 결론
 
@@ -106,3 +106,55 @@ common·STT·AI·security·shared fixture validator: PASS
 최종 판정은 `FAIL`이다. Task를 `rework_requested`로 전환하고 Development Lead Agent /
 Lead Role에 재작업 범위 조율을 인계한다. Quality Team은 구현을 수정하거나 `done` 처리·
 병합하지 않는다. T-007은 T-006 재검증 통과 전 선행 완료로 간주할 수 없다.
+
+## 6. 독립 재검증 결론
+
+`QA-HIGH-006-001~002`는 모두 해소됐다. `deployment_version`과 `manifest_version`은
+서버 소유 exact allowlist에 없는 값과 allowlist 미설정 상태에서 event 전체를 폐기하며,
+비literal recipe·STEP·prompt canary가 sink에 남지 않는다. 비용 시각과 reconciliation
+시각은 유한한 non-negative safe integer·표현 가능한 epoch가 아니면 operation ID 생성과
+ledger mutation 전에 차단된다.
+
+raw metadata clock도 동일하게 fail closed한다. `NaN`, 무한대, 음수, 소수, unsafe·표현
+범위 밖 시각과 throwing clock에서 신규 record 및 read·export·aggregate·cleanup mutation이
+0건이고 기존 record는 콘텐츠 없는 `incident` 상태로만 투영된다. 최초 QA 원본
+`/private/tmp/t006-adversarial.mjs`도 exit 0으로 통과했다.
+
+T-006 26/26, Backend 전체 92/92와 모든 공용 계약 validator가 무회귀 통과했다. 신규
+HIGH·MEDIUM 결함은 없다.
+
+## 7. 재검증 결과
+
+| 검증 항목 | 결과 | 근거 |
+|---|---|---|
+| `QA-HIGH-006-001` | PASS | 미승인 version·allowlist 미설정 event는 drop, sink 0건이다. |
+| `QA-HIGH-006-002` 비용 | PASS | 비정상 now·reconciliation이 operation ID와 ledger mutation 전에 차단된다. |
+| `QA-HIGH-006-002` cleanup | PASS | 비정상·throwing clock에서 생성·접근·cleanup mutation 0건, incident 투영만 발생한다. |
+| 최초 독립 반례 | PASS | `/private/tmp/t006-adversarial.mjs` exit 0. |
+| T-006 전용 | PASS | security·cleanup 26/26 통과. |
+| Backend 전체 runtime | PASS | 92/92 통과. |
+| 공용 계약 validator | PASS | common·STT·AI·security·shared fixture 전부 통과. |
+| 금지 실행 경로 | PASS | cloud·provider·network·credential 신규 경로 0개. |
+| production 통합 | DEFERRED | 실제 sink·billing·datastore·queue·KMS, Node 24/container와 composition은 T-007 범위다. |
+
+## 8. 재검증 수행 증거
+
+```text
+npm ci --ignore-scripts: PASS, audit 0건, Node 26 engine warning
+npm run build: PASS
+최초 adversarial script: PASS
+T-006 security·cleanup: PASS, 26/26
+Backend 전체 runtime: PASS, 92/92
+비literal version canary·allowlist 미설정: PASS, sink 0건
+비정상 epoch·throwing clock: PASS, 비용·raw metadata mutation 0건
+common·STT·AI·security·shared fixture validator: PASS
+금지 cloud·provider·network·credential 정적 scan: PASS
+aiops strict·git diff check: PASS
+```
+
+## 9. 최종 인계
+
+최종 판정은 `PASS_WITH_RISK`다. Task를 `verification_passed`로 전환하고 Development
+Lead Agent / Lead Role에 완료 검토를 인계한다. Quality Team은 직접 `done` 처리하거나
+병합하지 않는다. in-memory 상태의 재시작 비내구성과 실제 cloud adapter·Node 24 container·
+전체 composition은 T-007 필수 통합 검증에서 확인해야 한다.

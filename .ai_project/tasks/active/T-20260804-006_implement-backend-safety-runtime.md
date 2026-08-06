@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-006
 title: Backend redacted logging·비용 원장·TTL cleanup 경계 구현
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P0
 priority_reason: Mock 실행에서도 콘텐츠 비노출·비용 hard cutoff·삭제 불변식을 강제해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_implementation
 - security_review
@@ -92,6 +92,11 @@ next_decision:
 - 2026-08-06: Backend Agent가 exact version allowlist와 비정상 epoch fail-closed를
   구현했다. QA 원본 반례, T-006 26/26, Backend 전체 92/92와 공용 validator를 통과해
   `in_progress -> verification_ready`로 Backend QA 독립 재검증에 인계한다.
+- 2026-08-06: Backend QA Agent가 두 HIGH의 원본·확장 반례, T-006 26/26, 전체 92/92와
+  공용 계약을 독립 재검증했다. `QA-HIGH-006-001~002` 해소와 신규 HIGH·MEDIUM 결함
+  부재를 확인해 `PASS_WITH_RISK`,
+  `verification_ready -> verification_in_progress -> verification_passed`로 Development
+  Lead Agent에 완료 검토를 인계했다.
 
 - 2026-08-05: 공용 `develop@2092e1d`에서 선행 `T-20260804-003~005`의 `done`과
   PR #84 병합을 확인했다.
@@ -144,25 +149,23 @@ next_decision:
 
 다음 Agent에게 전달할 말:
 
-너는 Backend QA Agent / Verification Role이야.
-Task T-20260804-006의 HIGH 결함 2건 재작업이 완료됐어.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260804-006의 독립 재검증이 완료됐어.
 
-- 현재 상태: `verification_ready`
+- 현재 상태: `verification_passed`
 - 구현 기준 ref: `task/T-20260804-006-implement-backend-safety-runtime`
-- 다음에 해야 할 일: 구현 Agent와 분리된 clean worktree에서 QA 원본 반례와 확장된
-  version·clock 반례를 독립 재현해줘.
+- 다음에 해야 할 일: QA `PASS_WITH_RISK`와 성공 기준·허용 경로를 검토하고 완료 여부를
+  결정해줘.
 - 기준 문서: `apps/backend/docs/SECURITY_PRIVACY_OBSERVABILITY.md`,
   `apps/backend/contracts/security/`
 - 허용 경로: Task frontmatter의 `allowed_paths`
-- 재검증 핵심: 미승인 build·manifest version의 sink 0건, 잘못된 clock의 비용 operation
-  ID·ledger mutation 0건, raw metadata 생성·접근·cleanup mutation 0건
-- 자체 검증: QA 원본 반례 PASS, T-006 26/26, Backend 전체 92/92와 모든 validator PASS
+- 재검증 결과: HIGH 2건 해소, QA 원본 반례·T-006 26/26·전체 92/92·모든 validator PASS
 - 남은 리스크: 실제 cloud sink·billing·datastore·queue·KMS·Node 24/container·공유 app
   composition은 T-007에서 통합 검증
 - 차단/결정 필요: 실제 provider·cloud resource·secret·배포와 원격 STT 활성화 금지
 - 참고: `.ai_project/qa/T-20260804-006_implement-backend-safety-runtime-qa.md`
-- 완료 시: QA 보고서에 재검증 판정과 직접 증거를 기록하고 Development Lead Agent에
-  완료 검토 또는 추가 재작업을 인계해줘.
+- 완료 시: Product Owner 승인 전 `done`이나 병합으로 전환하지 말고 T-007 잔여 위험
+  이관을 명시해줘.
 
 ## AI Ops CLI 기록
 
@@ -172,3 +175,5 @@ Task T-20260804-006의 HIGH 결함 2건 재작업이 완료됐어.
 | 2026-08-06 | Backend Agent | transition: approved -> in_progress | QA-HIGH-006-001~002 승인 재작업 착수 |
 | 2026-08-06 | Backend Agent | transition: in_progress -> verification_ready | HIGH 2건 수정, QA 원본 반례와 T-006 26/26·전체 92/92 통과 |
 | 2026-08-06 | Backend Agent | unlock | task unlock |
+| 2026-08-06 | Backend QA Agent | transition: verification_ready -> verification_in_progress | HIGH 2건 원본·확장 반례와 전체 회귀 독립 재검증 |
+| 2026-08-06 | Backend QA Agent | transition: verification_in_progress -> verification_passed | HIGH 2건 해소, T-006 26/26·전체 92/92·공용 계약 PASS_WITH_RISK |
