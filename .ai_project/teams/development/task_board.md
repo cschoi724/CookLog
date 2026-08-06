@@ -38,7 +38,7 @@
 | `T-20260804-007` | `approved` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` 완료 | Product Owner 별도 실행 승인, clean worktree lock 후 구현 |
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
-| `T-20260805-004` | `verification_ready` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS QA Agent | `T-20260805-003` 완료 | 5개 상태·전체 XCTest 62/62·Simulator 반복 기록, 독립 검증 대기 |
+| `T-20260805-004` | `rework_requested` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `T-20260805-003` 완료 | `QA-MEDIUM-805004-001` CookLog 배경·accent·status 토큰 재작업 |
 | `T-20260805-005` | `proposed` | iOS | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `T-20260805-004` | Cooking Log 완료 대기 |
 | `T-20260805-006` | `proposed` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` | Review·Recipe 완료 대기 |
 | `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
@@ -145,6 +145,13 @@ iOS Agent가 Cooking Log 5개 상태, 같은 record STEP 자동 저장, 삭제·
 기존 STEP 보존을 구현했습니다. Product Owner가 자동 저장 DI용 App 파일 2개의 최소 경로
 확장을 승인했으며 전체 XCTest 62/62·build와 iPhone SE 실제 반복 기록을 통과해 iOS QA
 Agent에 `verification_ready`로 인계했습니다.
+
+iOS QA 독립 검증에서 5개 상태·동일 UUID 자동 저장·실패 보존·삭제·Undo와 전체 XCTest
+62/62는 통과했습니다. 그러나 신규 Cooking Log 카드 배경의
+`secondarySystemGroupedBackground`와 accent·success·error 슬롯의 system color 대체가
+확정 디자인 계약을 위반하는 `QA-MEDIUM-805004-001`로 확인됐습니다. 승인 예외가 없어
+`FAIL`, `rework_requested`로 iOS Agent에 반환하며 T-005는 독립 재검증 완료 전까지
+계속 차단합니다.
 
 수익화 개발 `T-20260728-012`, `014~017`은 Core v1과 분리된 `proposed` 후보입니다. T-010 정책과 각 activation gate가 완료돼도 Product Owner의 별도 실행 승인 전에는 scope·구현하지 않습니다.
 
