@@ -237,7 +237,7 @@ test("all timeout decision fixtures preserve provider-at-most-once semantics", a
     const service = new RecipeJobService({ repository, provider });
     const created = service.createJob(installationId, randomUUID(), request);
     if (created.kind !== "accepted") return assert.fail("create failed");
-    let execution: Promise<"completed" | "ignored"> | undefined;
+    let execution: ReturnType<RecipeJobService["execute"]> | undefined;
     if (fixtureCase.provider_started) {
       execution = service.execute(created.status.job_id);
       await Promise.resolve();

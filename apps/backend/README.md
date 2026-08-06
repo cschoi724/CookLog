@@ -1,11 +1,13 @@
 # CookLog Backend
 
-CookLog Backend의 local/mock foundation입니다. 현재 공개 route는 `GET /healthz` 하나이며,
-실제 AI provider, 인증, 원격 STT와 cloud resource는 연결하지 않습니다.
+CookLog Backend의 local/mock foundation입니다. production 공개 route는 `GET /healthz`만
+활성화하며, local/test runtime은 인증·제한·idempotency·비용·redaction·cleanup이
+연결된 Mock AI create/status/ACK 경로를 제공합니다. 실제 AI provider, 원격 STT와 cloud
+resource는 연결하지 않습니다.
 
 ## 요구 버전
 
-- Node.js `24.x` LTS
+- Node.js `24.18.0` LTS
 - npm `11.x`
 
 ## 새 clone 실행
@@ -13,7 +15,7 @@ CookLog Backend의 local/mock foundation입니다. 현재 공개 route는 `GET /
 ```sh
 cd apps/backend
 npm ci
-npm run check
+npm run verify
 npm run dev
 ```
 
@@ -36,27 +38,18 @@ curl --fail --silent http://127.0.0.1:8080/healthz
 ## Container 확인
 
 ```sh
-docker build -t cooklog-backend:local .
-docker run --rm -p 8080:8080 \
-  -e PORT=8080 \
-  -e K_SERVICE=cooklog-local \
-  -e K_REVISION=cooklog-local-00001 \
-  -e K_CONFIGURATION=cooklog-local \
-  cooklog-backend:local
+npm run verify:container
 ```
 
+이 명령은 Node.js 24.18.0 build stage에서 lifecycle·통합 테스트를 실행하고 runtime
+image의 non-root user, production `PORT`/`0.0.0.0`, health와 SIGTERM exit 0을 확인합니다.
 Cloud Run 배포나 registry push는 이 Task의 범위가 아닙니다.
 
 ## 검증 명령
 
 ```sh
-npm run typecheck
-npm test
-npm run check
+npm run verify
 ```
 
-기존 JSON 계약 검증은 저장소 루트에서 별도로 실행합니다.
-
-```sh
-sh apps/backend/tests/contracts/validate-shared-fixtures.sh
-```
+`verify`는 typecheck, 전체 runtime test, common·STT·AI·security·iOS shared fixture
+validator와 cloud/provider/credential 경계 감사를 순서대로 실행합니다.

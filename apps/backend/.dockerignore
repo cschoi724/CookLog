@@ -1,9 +1,4 @@
-.env
-.env.*
-!.env.example
-.git
-dist
 node_modules
-npm-debug.log*
-docs
-contracts
+dist
+.env
+npm-debug.log

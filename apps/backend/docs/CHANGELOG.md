@@ -1,5 +1,34 @@
 # Backend 변경 기록
 
+- 2026-08-06: `T-20260804-007` 독립 재검증에서 HIGH 해소, 전체 100/100·계약 5종·
+  Node 24 non-root container 통과를 확인했다. Development Lead `PASS_WITH_RISK` 완료
+  리뷰와 Product Owner 완료·PR #91 squash merge 승인으로 Foundation을 `done` 처리했다.
+- 2026-08-06: T-007 재작업 commit `056d193`의 PR #91 `backend-verify`와
+  `backend-container`가 통과했다. lock을 해제하고 `verification_ready`로 Backend QA에
+  독립 재검증을 인계했다.
+- 2026-08-06: `QA-HIGH-007-001` 재작업으로 provider 결과를 `processing/none`에 비공개
+  staging하고 terminal audit 성공 뒤에만 `succeeded/available` 또는 `failed`로 전환한다.
+  audit 실패 재실행은 staged terminal만 재감사해 provider 호출을 1회로 유지한다.
+- 2026-08-06: terminal sink 두 번째 write 장애, reservation 거절, invalid event shape의
+  직접 통합 회귀를 추가했다. 세 경우 모두 첫 실행 `telemetry_unavailable`·결과 비노출,
+  재실행 복구·provider 1회를 확인했고 QA 원본 반례와 전체 100/100·계약 5종을 통과했다.
+- 2026-08-06: `T-20260804-007` 독립 QA에서 전체 96/96·계약 validator 5종·Node 24
+  non-root container는 통과했으나 terminal telemetry sink 장애 뒤 미감사 성공 결과가
+  공개되는 `QA-HIGH-007-001`을 확인했다.
+- 2026-08-06: Product Owner가 terminal 감사와 성공 결과 공개의 fail-closed 재작업,
+  sink·reservation·event shape 장애 및 Provider at-most-once 회귀를 승인했다.
+- 2026-08-06: PR #91에서 `backend-verify`와 `backend-container`가 통과했다. 새 clone
+  `npm ci`·96/96·계약 5종과 Node 24.18.0 build/runtime, non-root, lifecycle·production
+  health·SIGTERM exit 0을 확인해 T-007을 `verification_ready`로 Backend QA에 인계했다.
+- 2026-08-06: `T-20260804-007`에서 T-002~006의 공통 HTTP·installation 인증·rate limit·
+  idempotency·Mock AI job·비용 admission·allowlist telemetry·cleanup을 하나의 local/test
+  app과 programmatic worker로 연결했다. production은 local adapter 구성을 거부한다.
+- 2026-08-06: 공용 fixture 기반 실제 HTTP create·status·ACK와 exact replay, 인증·rate·비용
+  선차단, 콘텐츠 telemetry canary, 비정상 clock과 원격 STT parser 전 차단 통합 테스트를
+  추가했다. 호스트 전체 96/96과 계약 validator 5종·경계 감사를 통과했다.
+- 2026-08-06: Node.js 24.18.0 `.nvmrc`, 단일 `npm run verify`, non-root container 검증
+  스크립트와 Backend 전용 GitHub Actions를 추가했다. 로컬 host에는 Docker가 없어 실제
+  container 결과는 PR CI 필수 게이트에서 확인한 뒤 Backend QA에 인계한다.
 - 2026-08-06: Product Owner가 `T-20260804-007` Backend Foundation 최종 통합·보안
   검증과 로컬 실행 handoff를 별도 승인했다. T-002~006 local/mock composition, 새 clone,
   Node 24.18.0 non-root container와 전체 계약 회귀로 범위를 제한하고 실제 provider·cloud

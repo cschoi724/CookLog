@@ -31,7 +31,18 @@ interface StoredJob {
   providerAttempt: 0 | 1;
   providerStartedAt: number | null;
   providerIdempotencyKey: string | null;
+  pendingTerminal: PendingTerminal | null;
   cleanupPending: boolean;
+}
+
+type PendingTerminal =
+  | { readonly nextState: "succeeded" }
+  | { readonly nextState: "failed"; readonly failureCode: RecipeJobFailureCode };
+
+export interface PendingTerminalFacts {
+  readonly previousState: "processing";
+  readonly nextState: "succeeded" | "failed";
+  readonly providerAttemptCount: 1;
 }
 
 interface ContentRecord {
@@ -142,6 +153,7 @@ export class InMemoryRecipeJobRepository {
       providerAttempt: 0,
       providerStartedAt: null,
       providerIdempotencyKey: null,
+      pendingTerminal: null,
       cleanupPending: false,
     };
     this.#jobs.set(jobId, job);
@@ -202,15 +214,61 @@ export class InMemoryRecipeJobRepository {
     return providerIdempotencyKey;
   }
 
-  completeSuccess(claim: WorkerClaim, draft: RecipeDraft): boolean {
+  stageSuccess(claim: WorkerClaim, draft: RecipeDraft): boolean {
     const job = this.#activeProviderJob(claim);
     const content = this.#contents.get(claim.jobId);
     if (job === undefined || content === undefined) return false;
     content.draft = structuredClone(draft);
-    job.state = "succeeded";
+    job.pendingTerminal = { nextState: "succeeded" };
+    job.updatedAt = this.#now();
+    job.activeGeneration = null;
+    return true;
+  }
+
+  stageFailure(jobId: string, code: RecipeJobFailureCode): boolean {
+    const job = this.#jobs.get(jobId);
+    if (job === undefined || job.state !== "processing" || job.providerAttempt !== 1 ||
+      job.pendingTerminal !== null) return false;
+    job.pendingTerminal = { nextState: "failed", failureCode: code };
+    job.updatedAt = this.#now();
+    job.activeGeneration = null;
+    return true;
+  }
+
+  getPendingTerminalFacts(jobId: string): PendingTerminalFacts | undefined {
+    const job = this.#jobs.get(jobId);
+    if (job?.state !== "processing" || job.providerAttempt !== 1 || job.pendingTerminal === null) {
+      return undefined;
+    }
+    return Object.freeze({
+      previousState: "processing",
+      nextState: job.pendingTerminal.nextState,
+      providerAttemptCount: 1,
+    });
+  }
+
+  finalizePendingTerminal(jobId: string): boolean {
+    const job = this.#jobs.get(jobId);
+    if (job?.state !== "processing" || job.providerAttempt !== 1 || job.pendingTerminal === null) {
+      return false;
+    }
+    const pending = job.pendingTerminal;
+    if (pending.nextState === "succeeded") {
+      const content = this.#contents.get(jobId);
+      if (content?.draft == null) return false;
+      job.state = "succeeded";
+      job.resultState = "available";
+      job.resultVersion = 1;
+      job.failure = null;
+    } else {
+      job.state = "failed";
+      job.resultState = "none";
+      job.resultVersion = null;
+      job.failure = failureFor(pending.failureCode);
+      this.#deleteContent(jobId);
+    }
+    job.pendingTerminal = null;
     job.stateVersion += 1;
-    job.resultState = "available";
-    job.resultVersion = 1;
     job.updatedAt = this.#now();
     job.activeGeneration = null;
     return true;
@@ -219,11 +277,13 @@ export class InMemoryRecipeJobRepository {
   completeFailure(jobId: string, code: RecipeJobFailureCode): boolean {
     const job = this.#jobs.get(jobId);
     if (job === undefined || (job.state !== "queued" && job.state !== "processing")) return false;
+    if (job.pendingTerminal !== null) return false;
     job.state = "failed";
     job.stateVersion += 1;
     job.resultState = "none";
     job.resultVersion = null;
     job.failure = failureFor(code);
+    job.pendingTerminal = null;
     job.updatedAt = this.#now();
     job.activeGeneration = null;
     this.#deleteContent(jobId);

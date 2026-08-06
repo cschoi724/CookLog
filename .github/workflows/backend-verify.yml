@@ -1,0 +1,62 @@
+name: backend-verify
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+    paths:
+      - apps/backend/**
+      - .github/workflows/backend-*.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend-verify:
+    name: backend-verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: apps/backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 24.18.0
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: apps/backend/.nvmrc
+          cache: npm
+          cache-dependency-path: apps/backend/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run full Backend verification
+        run: npm run verify
+
+  backend-container:
+    name: backend-container
+    needs: backend-verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Verify Node 24 non-root runtime container
+        run: apps/backend/scripts/verify-container.sh

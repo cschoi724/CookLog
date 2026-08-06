@@ -10,6 +10,7 @@ import type { RecipeJobCreateRequest, RecipeJobStatus } from "../ai/types.js";
 import {
   ContentCleanupPendingError,
   InMemoryRecipeJobRepository,
+  type PendingTerminalFacts,
 } from "../storage/recipe-job-repository.js";
 
 export interface RecipeJobAdmission {
@@ -23,6 +24,8 @@ const allowAdmission: RecipeJobAdmission = { reserve: () => "accepted" };
 const providerFailureCodes = new Set([
   "AI_UNAVAILABLE", "AI_TIMEOUT", "OUTCOME_UNKNOWN", "SAFETY_REJECTED", "INTERNAL_ERROR",
 ]);
+
+export type TerminalAudit = (facts: PendingTerminalFacts) => boolean;
 
 export type CreateJobResult =
   | { readonly kind: "accepted"; readonly status: RecipeJobStatus; readonly replayed: boolean }
@@ -53,15 +56,18 @@ export class RecipeJobService {
   readonly #repository: InMemoryRecipeJobRepository;
   readonly #provider: RecipeAIProvider;
   readonly #admission: RecipeJobAdmission;
+  readonly #auditTerminal: TerminalAudit;
 
   constructor(options: {
     readonly repository: InMemoryRecipeJobRepository;
     readonly provider: RecipeAIProvider;
     readonly admission?: RecipeJobAdmission;
+    readonly auditTerminal?: TerminalAudit;
   }) {
     this.#repository = options.repository;
     this.#provider = options.provider;
     this.#admission = options.admission ?? allowAdmission;
+    this.#auditTerminal = options.auditTerminal ?? (() => true);
   }
 
   createJob(
@@ -104,7 +110,13 @@ export class RecipeJobService {
     return this.#repository.getStatus(installationId, jobId);
   }
 
-  async execute(jobId: string, executionGeneration = 1): Promise<"completed" | "ignored"> {
+  async execute(
+    jobId: string,
+    executionGeneration = 1,
+  ): Promise<"completed" | "ignored" | "telemetry_unavailable"> {
+    if (this.#repository.getPendingTerminalFacts(jobId) !== undefined) {
+      return this.#auditAndFinalize(jobId);
+    }
     const claim = this.#repository.claimWorker(jobId, executionGeneration);
     if (claim === undefined) return "ignored";
     const providerIdempotencyKey = this.#repository.beginProvider(claim);
@@ -117,21 +129,28 @@ export class RecipeJobService {
         outputSchemaVersion: "recipe-draft.v1",
       });
     } catch {
-      this.#repository.completeFailure(jobId, "AI_UNAVAILABLE");
-      return "completed";
+      if (!this.#repository.stageFailure(jobId, "AI_UNAVAILABLE")) return "ignored";
+      return this.#auditAndFinalize(jobId);
     }
     if (outcome.kind === "failure") {
       const code = providerFailureCodes.has(outcome.code) ? outcome.code : "INTERNAL_ERROR";
-      this.#repository.completeFailure(jobId, code);
-      return "completed";
+      if (!this.#repository.stageFailure(jobId, code)) return "ignored";
+      return this.#auditAndFinalize(jobId);
     }
     const draft = validateRecipeDraft(outcome.draft, claim.input);
     if (draft === undefined) {
-      this.#repository.completeFailure(jobId, "OUTPUT_INVALID");
-      return "completed";
+      if (!this.#repository.stageFailure(jobId, "OUTPUT_INVALID")) return "ignored";
+      return this.#auditAndFinalize(jobId);
     }
-    this.#repository.completeSuccess(claim, draft);
-    return "completed";
+    if (!this.#repository.stageSuccess(claim, draft)) return "ignored";
+    return this.#auditAndFinalize(jobId);
+  }
+
+  #auditAndFinalize(jobId: string): "completed" | "ignored" | "telemetry_unavailable" {
+    const facts = this.#repository.getPendingTerminalFacts(jobId);
+    if (facts === undefined) return "ignored";
+    if (!this.#auditTerminal(facts)) return "telemetry_unavailable";
+    return this.#repository.finalizePendingTerminal(jobId) ? "completed" : "ignored";
   }
 
   failForTimeout(jobId: string, event: TimeoutEvent): boolean {

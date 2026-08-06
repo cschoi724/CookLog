@@ -174,6 +174,15 @@ export class InMemoryRawMetadataRepository {
     });
   }
 
+  stats(): { readonly records: number; readonly active: number; readonly deleted: number } {
+    const records = [...this.#records.values()];
+    return Object.freeze({
+      records: records.length,
+      active: records.filter((record) => !record.deleted).length,
+      deleted: records.filter((record) => record.deleted).length,
+    });
+  }
+
   #deleteSinks(record: RawMetadataRecord, maxSinks: number, deletedAt: number): boolean {
     let attempted = 0;
     for (const sinkId of REQUIRED_RAW_METADATA_SINKS) {
