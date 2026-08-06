@@ -34,8 +34,8 @@
 | `T-20260804-003` | `done` | Backend | 공통 HTTP·인증·제한·idempotency middleware | - | `T-20260804-002` 완료 | Product Owner 잔여 위험 수용·PR #76 병합, T-004 완료 |
 | `T-20260804-004` | `done` | Backend | Mock AI recipe job·status·ACK·복구 | - | `T-20260804-002`, `003` 완료 | Product Owner 최종 승인·PR #79 squash merge `a73a028` |
 | `T-20260804-005` | `done` | Backend | 원격 STT 비활성 확장 경계·활성화 차단 | - | `T-20260804-002`, `003` 완료 | Product Owner 완료·PR #84 squash merge 승인, develop 병합 확인 |
-| `T-20260804-006` | `approved` | Backend | redacted logging·비용 원장·TTL cleanup | Backend Agent | `T-20260804-003~005` 완료 | Product Owner 별도 실행 승인, clean worktree lock 후 구현 |
-| `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` | 최종 통합 패키지 |
+| `T-20260804-006` | `done` | Backend | redacted logging·비용 원장·TTL cleanup | - | `T-20260804-003~005` 완료 | 완료 리뷰 PASS_WITH_RISK·PR #87 병합 승인, 공용 효력은 develop 병합 후 |
+| `T-20260804-007` | `proposed` | Backend | Foundation 통합 계약·보안 검증·handoff | Backend Agent | `T-20260804-002~006` 완료 | 선행 해소, Product Owner 별도 실행 승인 대기 |
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
 | `T-20260805-004` | `approved` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | iOS Agent | `T-20260805-003` 완료 | Product Owner 별도 실행 승인, clean worktree lock 후 구현 |
@@ -64,6 +64,22 @@ Backend QA는 T-002의 shutdown deadline 뒤 listener·process 생존을
 두 번째 signal, hanging close·keep-alive·실제 process 상한 테스트 재작업을 승인했습니다.
 Backend Agent는 최신 `develop` 충돌을 해소하고 자체 검증 후 Backend QA에 재인계합니다.
 T-003~007은 T-002가 `done`이 될 때까지 차단합니다.
+
+T-20260804-006 독립 QA에서 자유 문자열 telemetry sink 기록과 비정상 clock의 비용·보존
+fail-open HIGH 2건이 확인됐습니다. Development Lead는 이를 서버 소유 version allowlist와
+비정상 epoch의 비용 admission·raw metadata 생성/접근 fail-closed `WP-R1~R2`로 제한했고,
+Product Owner가 재작업을 승인해 Backend Agent에 재인계했습니다. T-007은 재검증 통과
+전까지 계속 차단합니다.
+
+Backend QA 재검증에서 HIGH 2건 해소와 원본 공격 반례, T-006 26/26·전체 92/92·공용
+계약 무회귀를 확인했습니다. Development Lead가 허용 경로와 성공 기준을 직접 재검토해
+`PASS_WITH_RISK`, `completion_review`로 수용했습니다. 실제 cloud adapter·Node 24
+container·composition은 T-007 필수 통합 게이트에 유지하며 Product Owner 완료·병합
+승인을 기다립니다.
+
+Product Owner가 T-006 완료 리뷰와 T-007 잔여 위험 이관을 수용하고 최종 완료·PR #87
+squash merge를 승인했습니다. T-006 공용 `done`과 T-007 선행 해제는 develop 병합 후
+효력이 발생하며, T-007은 별도 실행 승인 전 `proposed`로 유지합니다.
 
 Backend QA 재검증은 `QA-HIGH-002-001` 해소와 전체 15/15·기존 계약 무회귀를
 `PASS_WITH_RISK`로 확인했습니다. Development Lead는 Docker·Node 24·non-root

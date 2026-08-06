@@ -1,5 +1,33 @@
 # Backend 변경 기록
 
+- 2026-08-06: Product Owner가 `T-20260804-006` 완료 리뷰와 T-007 잔여 위험 이관을
+  수용하고 최종 완료·PR #87 squash merge를 승인했다. T-007 선행은 해소하되 별도 실행
+  승인 전 `proposed`로 유지한다.
+- 2026-08-06: Development Lead가 `T-20260804-006` HIGH 2건 해소, 허용 경로와 원본
+  공격 반례·T-006 26/26·Backend 전체 92/92를 직접 재확인해 완료 리뷰를
+  `PASS_WITH_RISK`로 수용했다. 실제 cloud adapter·Node 24 container·전체 composition은
+  T-007 필수 통합 게이트에 유지하고 Product Owner 완료·병합 승인을 기다린다.
+- 2026-08-06: `QA-HIGH-006-001` 재작업으로 `deployment_version`과
+  `manifest_version`을 서버가 주입한 exact allowlist에 포함된 ID만 허용하도록 제한했다.
+  미설정·미승인 version과 recipe·STEP·prompt canary는 event 전체를 폐기하고 고정
+  `INVALID_VALUE` counter만 증가시킨다.
+- 2026-08-06: `QA-HIGH-006-002` 재작업으로 비용의 `now`·`lastReconciledAt`과 raw
+  metadata clock을 non-negative safe integer·표현 가능 epoch로 먼저 검증한다. 잘못된
+  clock은 비용 admission 이전 차단, raw create·read·export·aggregate 차단과 기존 record
+  무변조 `incident`로 fail closed한다. 직접 반례, T-006 26/26, 전체 92/92를 통과했다.
+- 2026-08-06: Product Owner가 `T-20260804-006` 독립 QA의 자유 문자열 telemetry sink
+  기록과 비정상 clock 비용·보존 fail-open HIGH 2건 재작업을 승인했다. 서버 소유 version
+  allowlist와 잘못된 epoch의 비용 admission·raw metadata 생성/접근 fail-closed, 직접
+  반례와 전체 회귀로 범위를 제한해 Backend Agent에 재인계했다.
+- 2026-08-05: `T-20260804-006`에서 event별 exact allowlist·고정 enum을 새 객체로
+  투영하는 `SafeLogger`와 secret/content pattern을 fail closed하는 redaction scanner,
+  고정 reason drop counter를 구현했다.
+- 2026-08-05: provider·runtime·Tasks·Firestore·TTL·logging·egress·build를 합산하는
+  월 KRW 50,000 원장을 구현했다. operation 전액 승인/거절, KRW 5,000 delayed reserve
+  정산, CAS·가격·FX·SKU·billing 지연 차단과 되돌릴 수 없는 100% kill switch를 검증했다.
+- 2026-08-05: raw metadata의 +28일 explicit cleanup, 15분 독립 sweeper, 필수 sink 6개
+  receipt와 +30일 read·export·aggregate 선차단을 구현했다. 기존 AI ACK 즉시·+22시간·
+  +24시간 수명 회귀를 포함한 T-006 20/20, Backend 전체 86/86을 통과해 QA에 인계했다.
 - 2026-08-05: Product Owner가 `T-20260804-006` redacted logging·전체 외부비 원장·
   콘텐츠와 raw metadata TTL cleanup 경계 구현을 별도 승인했다. 실제 cloud sink·billing·
   datastore·queue·KMS·provider와 공유 app wiring은 제외하고 local/mock deterministic
