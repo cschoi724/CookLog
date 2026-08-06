@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260804-007
 title: Backend foundation 통합 계약·보안 검증과 로컬 실행 handoff
-status: verification_ready
+status: rework_requested
 type: test
 priority: P0
 priority_reason: 후속 provider·iOS 연동 전에 전체 runtime과 계약 원본의 동등성을 고정해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Backend QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Lead Role
 required_capabilities:
 - backend_implementation
 - api_contract
@@ -51,8 +51,8 @@ status_ref: origin/develop
 status_ref_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
 base_ref: origin/develop
 base_sha: 6a1678c808fa43f9d62289e3a6bb00b2915b23ea
-blocker:
-next_decision:
+blocker: QA-HIGH-007-001 worker 종료 telemetry sink 장애 뒤 미감사 성공 결과가 외부 공개됨
+next_decision: Development Lead가 terminal telemetry와 성공 상태 commit의 원자적 fail-closed 재작업 범위를 확정한다.
 ---
 
 # Backend foundation 통합 검증
@@ -132,3 +132,5 @@ Task T-20260804-007은 Product Owner가 별도 승인한 Foundation 최종 통�
 | 2026-08-06 | Backend Agent | transition: approved -> in_progress | T-002~006 최종 통합·Node 24 container·단일 회귀 구현 착수 |
 | 2026-08-06 | Backend Agent | transition: in_progress -> verification_ready | local/mock 통합·새 clone 96/96·계약 5종·Node 24.18 non-root container PR CI 통과 |
 | 2026-08-06 | Backend Agent | unlock | task unlock |
+| 2026-08-06 | Backend QA Agent | transition: verification_ready -> verification_in_progress | local/mock composition·전체 계약·보안·비용·cleanup·Node 24 container 증빙 독립 검증 시작 |
+| 2026-08-06 | Backend QA Agent | transition: verification_in_progress -> rework_requested | QA-HIGH-007-001: worker 종료 telemetry sink 장애를 무시해 미감사 성공 결과가 available로 공개됨 |

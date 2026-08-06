@@ -67,3 +67,14 @@ PR #91에서 Node 24.18.0 lockfile·container 검증을 통과했고 Task lock�
 fixture 동등성, provider-at-most-once, exact idempotency replay, shutdown deadline, 비용
 hard cutoff, telemetry canary, 콘텐츠/raw metadata cleanup과 원격 STT side effect 0건을
 독립 검증한다. QA 통과 전에는 PR을 병합하거나 Task를 `done` 처리하지 않는다.
+
+## Backend QA 독립 검증 결과
+
+2026-08-06 Backend QA는 전체 96/96, 공용 계약 validator 5종, 경계 감사와 PR #91의
+Node 24.18/non-root container CI 성공을 독립 확인했다. 다만 provider 성공 commit 뒤
+terminal telemetry sink 장애가 발생해도 `completed`를 반환하고 status API가
+`succeeded`·`available` 결과를 공개하는 `QA-HIGH-007-001`을 확인했다.
+
+최종 판정은 `FAIL`, 상태는 `rework_requested`다. Development Lead가 terminal telemetry와
+성공 결과 commit의 fail-closed 재작업 범위를 확정한 뒤 Backend Agent 자체 검증과 Backend
+QA 독립 재검증이 필요하다. QA는 구현 수정·병합·`done` 처리를 수행하지 않았다.
