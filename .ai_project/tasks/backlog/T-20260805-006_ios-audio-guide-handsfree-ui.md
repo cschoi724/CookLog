@@ -34,7 +34,7 @@ source_of_truth:
 created_by: Development Lead Agent
 approved_by:
 created_at: 2026-08-05
-updated_at: 2026-08-05
+updated_at: 2026-08-07
 report_to: .ai_project/reports/T-20260805-006_ios-audio-guide-handsfree-ui-report.md
 qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 ---
@@ -53,3 +53,11 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 - Audio Player 5개 Core Loop 상태와 통합 핸즈프리 상태를 검증한다.
 - 버튼만으로 모든 핵심 action을 수행할 수 있다.
 - 실제 로컬 TTS와 음성 인식 엔진은 `T-20260729-006` 범위로 남긴다.
+
+## 승인 및 실행 경계
+
+- 2026-08-07: 선행 `T-20260805-005`가 PR #94 squash merge
+  `7c26ebbcd2f98bb883d017dc420399c19aead8cf`로 공용 `develop`에서 `done`이 되어
+  의존성이 해소됐다.
+- Task 상태는 `proposed`이며 Product Owner의 별도 실행 승인 전에는 브랜치·lock·구현을
+  시작하지 않는다.
