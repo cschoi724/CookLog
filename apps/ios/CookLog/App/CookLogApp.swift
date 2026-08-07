@@ -32,6 +32,9 @@ struct CookLogApp: App {
                     onShowAllRecipes: {
                         path.append(.recipeLibrary)
                     },
+                    onShowAppInfo: {
+                        path.append(.appInfo)
+                    },
                     onOpenRecord: { destination in
                         path.append(AppRoute(destination))
                     }
@@ -113,6 +116,8 @@ struct CookLogApp: App {
                                 audioGuideService: environment.audioGuideService
                             )
                         )
+                    case .appInfo:
+                        AppInfoView()
                     }
                 }
             }

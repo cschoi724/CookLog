@@ -6,6 +6,34 @@ final class CookLogTests: XCTestCase {
         XCTAssertTrue(true)
     }
 
+    func testAppInfoPlaceholderDoesNotInventOperationalLinks() {
+        let configuration = AppInfoConfiguration.releasePlaceholder
+
+        XCTAssertNil(configuration.supportEmail)
+        XCTAssertNil(configuration.url(for: .privacy))
+        XCTAssertNil(configuration.url(for: .terms))
+        XCTAssertEqual(configuration.appVersion, "1.0.0")
+    }
+
+    func testAppInfoStateContractContainsElevenDesignStates() {
+        let states: [AppInfoState] = [
+            .overview,
+            .dataRetention,
+            .contactConsent,
+            .contactReady(includeDiagnostics: false),
+            .mailUnavailable,
+            .legalLoading(.privacy),
+            .legalUnconfigured(.privacy),
+            .legalOpenError(.privacy),
+            .legalLoading(.terms),
+            .legalUnconfigured(.terms),
+            .legalOpenError(.terms)
+        ]
+
+        XCTAssertEqual(states.count, 11)
+        XCTAssertEqual(Set(states).count, 11)
+    }
+
     func testRecipeRecordKeepsIdentifierAcrossDraftAndCompletion() throws {
         let recordID = UUID()
         let step = StepPreview(order: 1, transcript: "두부를 구웠어")
