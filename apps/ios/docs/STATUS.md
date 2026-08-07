@@ -4,27 +4,31 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-006 독립 QA 실패·High 1건 재작업 승인
+- 상태: T-20260805-006 High 1건 재작업 완료·독립 재검증 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~005 done, T-20260805-006 rework_requested
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~005 done, T-20260805-006 verification_ready
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS Agent가 T-006의 375×667 CTA/control bar 겹침 한정 재작업 수행
-2. 전체 XCTest·4개 viewport 자체 검증 후 동일 iOS QA Agent에 독립 재검증 요청
+1. iOS QA Agent가 T-006의 375×667 CTA/control bar 겹침 해소를 독립 재검증
+2. T-006 완료 리뷰와 Product Owner 완료·병합 승인
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- T-006의 ScrollView 하단을 `safeAreaInset(edge: .bottom)`으로 구성해 고정 control bar가
+  마지막 `재료 알려줘` CTA와 안내 문구를 가리지 않도록 수정했습니다.
+- 390×844·375×667 Light/Dark 하단 도달 캡처 4/4에서 겹침이 없음을 확인했고, 전체
+  XCTest 77/77과 iOS Simulator Debug build를 재통과해 동일 iOS QA Agent에 인계했습니다.
 - T-006 독립 QA에서 기능 회귀 77/77은 통과했으나 375×667 Light/Dark의 `재료 알려줘`
   CTA가 하단 고정 control bar에 가려지는 `QA-HIGH-806006-001`을 확인했습니다.
 - Product Owner가 하단 safe-area/content inset 한정 재작업을 승인했습니다. 기존 Player

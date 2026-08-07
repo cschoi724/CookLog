@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-006
 title: iOS Audio Guide·핸즈프리 UI·공통 action model 구현
-status: rework_requested
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 저장 Recipe를 다시 요리하는 핵심 경험과 향후 음성·버튼 입력의 동등한 action 경계를 고정해야 한다.
@@ -10,9 +10,9 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS Agent
-target_role: Execution Role
-required_capabilities: [ios_implementation, swiftui, accessibility]
+target_agent: Development Lead Agent
+target_role: Completion Role
+required_capabilities: [development_child_completion]
 depends_on: [T-20260805-005]
 blocks: [T-20260805-007, T-20260728-003]
 parallel_group:
@@ -67,6 +67,25 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 
 ## 승인 및 실행 경계
 
+- 2026-08-07: iOS QA Agent가 고정 commit `64e6d36`을 독립 재검증해 전체 XCTest 77/77,
+  Debug build와 390×844·375×667 Light/Dark 4종을 통과했다. `QA-HIGH-806006-001`은
+  해소됐고, 첫 전체 실행의 Dark 375 attachment 1장 비결정성을 T-008 잔여 위험으로 남겨
+  `PASS_WITH_RISK`, `verification_passed`로 Development Lead Agent에 인계했다.
+- 2026-08-07: Development Lead Agent가 구현 commit `64e6d36`, 허용 경로, 구현·QA
+  보고서, 독립 XCTest 77/77과 4개 viewport 증빙을 직접 검토했다. 차단 제품 결함이 없어
+  완료 리뷰를 `PASS_WITH_RISK`로 수용하고 `verification_passed -> completion_review`로
+  전환했다. Dark 375 attachment의 일시적 비결정성은 T-008 통합 Visual QA에 유지한다.
+  구현 브랜치 PR이 아직 없어 필수 `ios-build`·`ios-xctest`와 merge 가능성은 미확인 상태이며,
+  QA·완료 리뷰 기록 커밋, push, PR 생성과 checks 통과 후 Product Owner 완료·병합 승인을
+  요청한다.
+- 2026-08-07: iOS Agent가 재작업 승인된 공용 `origin/develop@6eab9ec` 위로 구현 patch를
+  재정렬하고 lock을 획득해 `rework_requested -> in_progress`로 전환했다.
+- 2026-08-07: iOS Agent가 `QA-HIGH-806006-001`에 한정해 ScrollView 하단에
+  `safeAreaInset(edge: .bottom)`을 적용했다. 390×844·375×667 Light/Dark 하단 도달
+  캡처 4/4, 전체 XCTest 77/77과 build를 통과하고 lock을 해제해
+  `in_progress -> verification_ready`로 동일 iOS QA Agent에 재검증을 요청했다.
+- 2026-08-07: iOS Agent가 공용 `origin/develop@8d3712d`에서 승인·선행 완료를 재확인하고
+  전용 worktree에서 lock을 획득해 `approved -> in_progress`로 전환했다.
 - 2026-08-07: 선행 `T-20260805-005`가 PR #94 squash merge
   `7c26ebbcd2f98bb883d017dc420399c19aead8cf`로 공용 `develop`에서 `done`이 되어
   의존성이 해소됐다.
@@ -97,26 +116,23 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 iOS Agent / Execution Role이야.
-Task T-20260805-006의 승인된 재작업을 진행해줘.
+너는 Product Owner야.
+Task T-20260805-006은 독립 QA와 Development Lead 완료 리뷰를 통과했지만 PR 준비가 남아 있어.
 
-- 현재 상태: `rework_requested`
-- public source: 재작업 승인 기록 PR이 병합된 최신 `origin/develop`
-- 구현 ref: `8d0321e`, 기존 worktree `/private/tmp/cooklog-t20260805-006-ios-audio-guide`
-- QA ref: `fb74ef4`, QA 보고서 `.ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md`
-- 시작 절차: 기존 구현 patch를 보존한 채 최신 `origin/develop`을 반영하고, lock을 획득한
-  뒤 `rework_requested -> in_progress`로 전환해.
+- 현재 상태: `completion_review`
+- 기준 상태 ref: `origin/develop`
+- 기준 상태 SHA: `6eab9ec`
+- 검증 대상 commit: `64e6d36ff4e15e69a658677468ea27c4f4a01c28`
+- 다음에 해야 할 일: QA·완료 리뷰 기록을 커밋하고 구현 브랜치를 push해 `develop` 대상
+  Draft PR을 만든 뒤 `ios-build`·`ios-xctest`와 merge 가능성을 확인해. 모두 통과하면
+  잔여 위험을 수용하고 완료·squash merge 승인 여부를 결정해.
 - 기준 문서: Task `source_of_truth` 전체
-- 허용 경로: Task frontmatter의 `allowed_paths`만 사용
-- 기존 연결: Recipe Detail CTA, `AppRoute.audioPlayer`, `CookLogApp`, `AppEnvironment`는
-  이미 연결돼 있으며 이번 허용 경로 밖이야.
-- 재작업: `AudioPlayerView.swift`의 ScrollView와 고정 control bar 사이에
-  `safeAreaInset(edge: .bottom)` 또는 동등한 content inset을 적용해 375×667에서도
-  `재료 알려줘` CTA와 안내 문구가 완전히 스크롤 도달 가능하게 해.
-- 보존: Player 5개 상태, 7개 action reducer, 첫/마지막·불확실 입력·중단·이탈 계약,
-  44×44pt 터치 영역과 77/77 통과 기능은 변경하지 마.
-- 제외: 실제 TTS, 실제 음성 인식·권한 요청, 백그라운드 오디오, T-007~008 범위
-- 검증: 전체 XCTest 77개 이상, build, 390×844·375×667 Light/Dark 4종에서 CTA·안내
-  도달과 control bar 비겹침, 44pt 버튼을 확인해.
-- 완료 시: 보고서와 iOS 상태 문서를 갱신하고 lock 해제 후 `verification_ready`로
-  동일 iOS QA Agent / Verification Role에 독립 재검증을 요청해.
+- 허용 경로: Task frontmatter의 `allowed_paths`
+- 참고 산출물: `.ai_project/reports/T-20260805-006_ios-audio-guide-handsfree-ui-report.md`,
+  `.ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md`
+- 변경/검토 대상: Audio Player safe-area inset, Player 기능·action 회귀, 4개 viewport
+- 남은 리스크: 전체 XCTest 첫 실행의 Dark 375 attachment 1장 비결정성. 집중 재실행은
+  4/4 정상이며 제품 UI 결함은 재현되지 않았다. T-008 통합 Visual QA에서 재확인한다.
+- 차단/결정 필요: 현재 PR 없음, QA·완료 리뷰 변경 미커밋, GitHub 필수 checks 미확인.
+  commit·push·PR·merge는 Product Owner 승인 필요
+- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.

@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct AudioPlayerView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var viewModel: AudioPlayerViewModel
 
     init(viewModel: AudioPlayerViewModel) {
@@ -27,41 +29,41 @@ struct AudioPlayerView: View {
                 .padding(.vertical, 24)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-
-            if viewModel.canPlay {
-                AudioPlayerControlBarView(
-                    isPlaying: viewModel.isPlaying,
-                    canMoveToPreviousStep: viewModel.canMoveToPreviousStep,
-                    canMoveToNextStep: viewModel.canMoveToNextStep,
-                    onPrevious: {
-                        viewModel.moveToPreviousStep()
-                    },
-                    onNext: {
-                        viewModel.moveToNextStep()
-                    },
-                    onReplay: {
-                        Task {
-                            await viewModel.replayCurrentStep()
-                        }
-                    },
-                    onPlay: {
-                        Task {
-                            await viewModel.playCurrentStep()
-                        }
-                    },
-                    onStop: {
-                        viewModel.stop()
-                    }
-                )
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if viewModel.canPlay {
+                    AudioPlayerControlBarView(
+                        isPlaying: viewModel.isPlaying,
+                        canMoveToPreviousStep: viewModel.canMoveToPreviousStep,
+                        canMoveToNextStep: viewModel.canMoveToNextStep,
+                        onAction: send
+                    )
+                }
             }
         }
-        .background(Color(.systemGroupedBackground))
-        .navigationTitle("오디오")
+        .background(HomeTheme.backgroundBase)
+        .navigationTitle("오디오 가이드")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if viewModel.canPlay {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("가이드 종료") {
+                        viewModel.stopOnDisappear()
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .tint(HomeTheme.accent)
         .task {
             await viewModel.loadRecipe()
         }
         .onDisappear {
             viewModel.stopOnDisappear()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase != .active, viewModel.canPlay {
+                viewModel.handleBackgroundOrLock()
+            }
         }
     }
 
@@ -79,7 +81,7 @@ struct AudioPlayerView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(message)
                 .font(.body)
-                .foregroundStyle(.red)
+                .foregroundStyle(HomeTheme.error)
 
             Button("다시 시도") {
                 Task {
@@ -94,8 +96,7 @@ struct AudioPlayerView: View {
     private var notFoundState: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("레시피를 찾을 수 없습니다.")
-                .font(.body)
-                .fontWeight(.medium)
+                .font(.body.weight(.medium))
 
             Text("삭제되었거나 아직 저장되지 않은 레시피입니다.")
                 .font(.subheadline)
@@ -107,8 +108,7 @@ struct AudioPlayerView: View {
     private var emptyStepsState: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("재생할 조리 순서가 없습니다.")
-                .font(.body)
-                .fontWeight(.medium)
+                .font(.body.weight(.medium))
 
             Text("조리 순서가 있는 레시피만 오디오 가이드로 들을 수 있습니다.")
                 .font(.subheadline)
@@ -121,8 +121,7 @@ struct AudioPlayerView: View {
         VStack(alignment: .leading, spacing: 22) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(recipe.title)
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                    .font(.title2.weight(.semibold))
                     .fixedSize(horizontal: false, vertical: true)
 
                 Text(viewModel.currentStepNumberText)
@@ -135,10 +134,88 @@ struct AudioPlayerView: View {
                     .font(.headline)
 
                 Text(step.text)
-                    .font(.title3)
-                    .fontWeight(.medium)
+                    .font(.title3.weight(.medium))
                     .fixedSize(horizontal: false, vertical: true)
             }
+            .padding(18)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(HomeTheme.backgroundElevated, in: RoundedRectangle(cornerRadius: 18))
+
+            statusCard
+            handsfreeCard
+
+            Button {
+                send(.readIngredients)
+            } label: {
+                Label("재료 알려줘", systemImage: "list.bullet.clipboard")
+                    .frame(maxWidth: .infinity, minHeight: 44)
+            }
+            .buttonStyle(.bordered)
+            .accessibilityHint("현재 단계를 유지하고 저장된 재료를 안내합니다.")
+
+            Text("기기를 직접 잠그거나 앱을 벗어나면 자동 재생과 핸즈프리는 다시 켜지지 않습니다.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private var statusCard: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let interruptionMessage = viewModel.interruptionMessage {
+                Label(interruptionMessage, systemImage: "pause.circle.fill")
+                    .font(.headline)
+                    .foregroundStyle(HomeTheme.accent)
+            }
+
+            Text(viewModel.feedbackMessage)
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(HomeTheme.backgroundSubtle, in: RoundedRectangle(cornerRadius: 14))
+        .accessibilityElement(children: .combine)
+    }
+
+    private var handsfreeCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label(
+                viewModel.isHandsfreeActive ? "핸즈프리 켜짐" : "핸즈프리 꺼짐",
+                systemImage: viewModel.isHandsfreeActive ? "mic.fill" : "mic.slash.fill"
+            )
+            .font(.headline)
+
+            Text(viewModel.isHandsfreeActive
+                 ? AudioGuideAction.allCases.map(\.rawValue).joined(separator: " · ")
+                 : "사용자가 시작하기 전에는 명령 입력을 사용하지 않습니다.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Button {
+                if viewModel.isHandsfreeActive {
+                    send(.endHandsfree)
+                } else {
+                    viewModel.startHandsfree()
+                }
+            } label: {
+                Label(
+                    viewModel.isHandsfreeActive ? "핸즈프리 종료" : "핸즈프리 시작",
+                    systemImage: viewModel.isHandsfreeActive ? "mic.slash" : "mic"
+                )
+                .frame(maxWidth: .infinity, minHeight: 44)
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding(16)
+        .background(HomeTheme.backgroundElevated, in: RoundedRectangle(cornerRadius: 16))
+    }
+
+    private func send(_ action: AudioGuideAction) {
+        Task {
+            await viewModel.send(action)
         }
     }
 }
