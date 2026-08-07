@@ -4,27 +4,31 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-006 실행 승인·iOS Agent 인계 준비
+- 상태: T-20260805-006 독립 QA 실패·High 1건 재작업 승인
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~005 done, T-20260805-006 approved
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~005 done, T-20260805-006 rework_requested
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS Agent가 최신 develop 기반 전용 worktree에서 T-006 lock·`in_progress` 전환 후 구현
-2. T-006 자체 검증·iOS QA 독립 검증 후 `T-20260805-007` 화면·상태 패키지 진행 판단
+1. iOS Agent가 T-006의 375×667 CTA/control bar 겹침 한정 재작업 수행
+2. 전체 XCTest·4개 viewport 자체 검증 후 동일 iOS QA Agent에 독립 재검증 요청
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- T-006 독립 QA에서 기능 회귀 77/77은 통과했으나 375×667 Light/Dark의 `재료 알려줘`
+  CTA가 하단 고정 control bar에 가려지는 `QA-HIGH-806006-001`을 확인했습니다.
+- Product Owner가 하단 safe-area/content inset 한정 재작업을 승인했습니다. 기존 Player
+  5개 상태·7개 action·중단/이탈 보존과 44pt 버튼은 유지하고 4개 viewport를 재검증합니다.
 - Product Owner가 T-006 Audio Guide·핸즈프리 UI·공통 action model 구현을 승인했습니다.
   기존 Recipe Detail route·App 조립은 유지하고 AudioPlayer·AudioGuide 내부에서 Player
   5개 상태, 버튼 공통 action과 중단·이탈 보존을 구현하도록 iOS Agent에 인계했습니다.

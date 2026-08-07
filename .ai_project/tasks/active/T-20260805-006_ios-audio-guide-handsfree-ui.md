@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-006
 title: iOS Audio Guide·핸즈프리 UI·공통 action model 구현
-status: approved
+status: rework_requested
 type: feature
 priority: P0
 priority_reason: 저장 Recipe를 다시 요리하는 핵심 경험과 향후 음성·버튼 입력의 동등한 action 경계를 고정해야 한다.
@@ -72,6 +72,16 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
   의존성이 해소됐다.
 - 2026-08-07: Product Owner가 T-006의 별도 실행을 승인했다. Development Lead Agent가
   `proposed -> approved`로 전환하고 iOS Agent에 인계한다.
+- 2026-08-07: iOS Agent가 구현 commit `8d0321e`에서 Player 5개 상태, 7개 공통 action,
+  중단·이탈 보존을 구현하고 집중 13/13·전체 XCTest 77/77, build와 4개 viewport 증빙 후
+  `in_progress -> verification_ready`로 iOS QA Agent에 인계했다.
+- 2026-08-07: iOS QA Agent가 고정 commit `8d0321e`를 독립 검증해 전체 XCTest 77/77과
+  기능 계약은 통과했으나 375×667 Light/Dark에서 하단 control bar가 `재료 알려줘` CTA를
+  가리는 `QA-HIGH-806006-001`을 확인했다. QA commit `fb74ef4`로 증빙을 보존하고
+  `verification_ready -> rework_requested`로 판정했다.
+- 2026-08-07: Product Owner가 `QA-HIGH-806006-001` 한정 재작업을 승인했다. 이미 통과한
+  Player 상태·action reducer·보존 로직은 유지하고 하단 safe-area/content inset과 시각 회귀만
+  수정한 뒤 동일 iOS QA Agent에게 독립 재검증을 요청한다.
 - iOS Agent는 승인 기록이 공용 `develop`에 병합된 뒤 최신 `origin/develop` 기반 전용
   worktree에서 lock을 획득하고 `approved -> in_progress`로 전환한다.
 - 기존 Recipe Detail → `audioPlayer(recipe.id)` route와 `AppEnvironment` 조립은 이미
@@ -88,23 +98,25 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 다음 Agent에게 전달할 말:
 
 너는 iOS Agent / Execution Role이야.
-Task T-20260805-006을 구현해줘.
+Task T-20260805-006의 승인된 재작업을 진행해줘.
 
-- 현재 상태: `approved`
-- public source: 승인 기록 PR이 병합된 최신 `origin/develop`
-- 다음 작업: 최신 develop 기반 전용 worktree·브랜치를 만들고 lock을 획득한 뒤
-  `in_progress`로 전환해 Audio Guide·핸즈프리 UI·공통 action model을 구현해.
+- 현재 상태: `rework_requested`
+- public source: 재작업 승인 기록 PR이 병합된 최신 `origin/develop`
+- 구현 ref: `8d0321e`, 기존 worktree `/private/tmp/cooklog-t20260805-006-ios-audio-guide`
+- QA ref: `fb74ef4`, QA 보고서 `.ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md`
+- 시작 절차: 기존 구현 patch를 보존한 채 최신 `origin/develop`을 반영하고, lock을 획득한
+  뒤 `rework_requested -> in_progress`로 전환해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`만 사용
 - 기존 연결: Recipe Detail CTA, `AppRoute.audioPlayer`, `CookLogApp`, `AppEnvironment`는
   이미 연결돼 있으며 이번 허용 경로 밖이야.
-- 필수 상태: `PLAYER-PAUSED`, `PLAYER-PLAYING`, `PLAYER-LOADING`, `PLAYER-ERROR`,
-  `PLAYER-NO-STEPS`와 not-found subtype
-- 필수 action: 이전·다음·재생/정지·다시 듣기·재료 안내·핸즈프리 종료를 포함한
-  7개 명령 경계를 버튼과 같은 action reducer에 연결
-- 보존 계약: 첫/마지막 경계, 불확실 입력, 중단·이탈에서 단계와 상태를 보존하고
-  자동 재생·자동 핸즈프리 재활성화 금지
+- 재작업: `AudioPlayerView.swift`의 ScrollView와 고정 control bar 사이에
+  `safeAreaInset(edge: .bottom)` 또는 동등한 content inset을 적용해 375×667에서도
+  `재료 알려줘` CTA와 안내 문구가 완전히 스크롤 도달 가능하게 해.
+- 보존: Player 5개 상태, 7개 action reducer, 첫/마지막·불확실 입력·중단·이탈 계약,
+  44×44pt 터치 영역과 77/77 통과 기능은 변경하지 마.
 - 제외: 실제 TTS, 실제 음성 인식·권한 요청, 백그라운드 오디오, T-007~008 범위
-- 검증: 집중·전체 XCTest, build, 390×844·375×667 Light/Dark 상태와 44pt 버튼
+- 검증: 전체 XCTest 77개 이상, build, 390×844·375×667 Light/Dark 4종에서 CTA·안내
+  도달과 control bar 비겹침, 44pt 버튼을 확인해.
 - 완료 시: 보고서와 iOS 상태 문서를 갱신하고 lock 해제 후 `verification_ready`로
-  iOS QA Agent / Verification Role에 인계해.
+  동일 iOS QA Agent / Verification Role에 독립 재검증을 요청해.

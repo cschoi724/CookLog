@@ -4,6 +4,10 @@
 
 ## 2026-08-07
 
+- `T-20260805-006` 독립 QA에서 전체 XCTest 77/77과 기능 계약은 통과했으나 375×667
+  Light/Dark에서 `재료 알려줘` CTA가 하단 고정 control bar에 가려지는
+  `QA-HIGH-806006-001`을 확인했습니다. Product Owner가 safe-area/content inset 한정
+  재작업을 승인했으며 기존 상태·action·보존 로직과 44pt 버튼은 유지합니다.
 - Product Owner가 `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model 구현을
   승인했습니다. 기존 route·환경 조립은 유지하고 AudioPlayer·AudioGuide 내부의 5개 Player
   상태, 버튼 공통 action, 중단·이탈 보존을 iOS Agent에 인계했습니다. 실제 TTS·음성 인식·
