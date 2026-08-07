@@ -2,7 +2,7 @@
 schema: aiops.operating_model.v1
 project: CookLog
 bootstrap_mode: guided_full
-core_version: 0.11.1
+core_version: 0.12.0
 core_source: homebrew
 core_update_policy: manual_review
 start_context: custom_start_context
@@ -61,7 +61,7 @@ deferred_roles:
 
 | 항목 | 선택값 |
 |---|---|
-| core_version | 0.11.1 |
+| core_version | 0.12.0 |
 | core_source | homebrew |
 | core_update_policy | migration plan 확인 후 사용자 승인 적용 |
 | bootstrap_mode | `guided_full` |

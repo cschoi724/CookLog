@@ -221,3 +221,13 @@ CookLog/
 | apply_scope | safe_auto_fix |
 | safe_fixes | core_version, tasks directories, handoffs directory, ops records, knowledge context packs |
 | review_scope | schema front matter, adapter drift, source_of_truth, Task metadata |
+
+## Migration Record - 2026-08-07
+
+| 항목 | 값 |
+|---|---|
+| core_version | 0.12.0 |
+| core_source | homebrew |
+| apply_scope | safe_auto_fix |
+| safe_fixes | core_version, tasks directories, handoffs directory, ops records, knowledge context packs, runtime cache ignore |
+| review_scope | schema front matter, adapter drift, source_of_truth, Task metadata |
