@@ -110,3 +110,6 @@ tmp/
 
 # AI Agent Ops template checkout
 .ai/
+
+# AI Agent Ops local runtime cache
+.ai_project/.runtime/
