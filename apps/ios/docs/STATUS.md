@@ -4,26 +4,30 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-006 완료·PR #101 squash merge
+- 상태: T-20260805-006 완료, T-20260805-007 실행 승인
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~006 done
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~006 done, T-20260805-007 approved
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. Product Owner가 `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 실행 여부 결정
-2. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
-3. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
-4. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
+1. iOS Agent가 `T-20260805-007` App Info 11개와 지정 실패 상태를 구현
+2. iOS QA Agent가 T-007 데이터 보존·placeholder·접근성을 독립 검증
+3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
+4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
+5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- Product Owner가 T-007 실행을 승인했습니다. App Info 11개 상태와 Home Network Error,
+  Cooking Log STT Final Failure, AI Review Generation Error·Save Error를 구현하며 실제
+  문의 주소·법적 문안·공개 URL과 실서비스 연결은 범위에서 제외합니다.
 - Product Owner가 T-006의 QA·완료 리뷰 잔여 위험을 수용하고 완료·병합을 승인했습니다.
   PR #101의 필수 iOS build·XCTest 통과 후 squash merge SHA `dcf58d5`를 확인했습니다.
 - iOS QA 재검증에서 `QA-HIGH-806006-001` 해소, 전체 XCTest 77/77과 4개 viewport를
