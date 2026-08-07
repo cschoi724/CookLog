@@ -4,6 +4,12 @@
 
 ## 2026-08-07
 
+- Product Owner가 `T-20260805-006`의 독립 QA·완료 리뷰 잔여 위험을 수용하고 완료·병합을
+  승인했습니다. PR #101의 `ios-build`·`ios-xctest` 통과 후 squash merge SHA
+  `dcf58d5`를 확인해 공용 `done`으로 확정했습니다.
+- 독립 재검증에서 `QA-HIGH-806006-001` 해소, 전체 XCTest 77/77과 390×844·375×667
+  Light/Dark 4종을 확인해 `PASS_WITH_RISK`로 판정했습니다. 일시적 attachment 생성
+  비결정성은 `T-20260805-008` 통합 Visual QA에 이관했습니다.
 - `T-20260805-006`의 Audio Player ScrollView 하단에 `safeAreaInset(edge: .bottom)`을
   적용해 375×667에서 고정 control bar가 `재료 알려줘` CTA와 안내 문구를 가리던
   `QA-HIGH-806006-001`을 수정했습니다.

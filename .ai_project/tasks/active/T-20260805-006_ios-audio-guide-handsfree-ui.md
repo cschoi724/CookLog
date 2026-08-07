@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-006
 title: iOS Audio Guide·핸즈프리 UI·공통 action model 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 저장 Recipe를 다시 요리하는 핵심 경험과 향후 음성·버튼 입력의 동등한 action 경계를 고정해야 한다.
@@ -78,6 +78,12 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
   구현 브랜치 PR이 아직 없어 필수 `ios-build`·`ios-xctest`와 merge 가능성은 미확인 상태이며,
   QA·완료 리뷰 기록 커밋, push, PR 생성과 checks 통과 후 Product Owner 완료·병합 승인을
   요청한다.
+- 2026-08-07: Product Owner가 독립 QA와 Development Lead 완료 리뷰의 잔여 위험을
+  수용하고 완료·병합을 승인했다. PR #101의 `ios-build`·`ios-xctest`와 merge 가능성을
+  확인한 뒤 `develop`에 squash merge했고 merge SHA
+  `dcf58d51a20dcaa529783057b21a3afea3a0a2d2`를 확인해 `completion_review -> done`으로
+  확정했다. T-007 선행은 공용 `develop`에서 해소됐지만 별도 실행 승인 전 `proposed`로
+  유지한다.
 - 2026-08-07: iOS Agent가 재작업 승인된 공용 `origin/develop@6eab9ec` 위로 구현 patch를
   재정렬하고 lock을 획득해 `rework_requested -> in_progress`로 전환했다.
 - 2026-08-07: iOS Agent가 `QA-HIGH-806006-001`에 한정해 ScrollView 하단에
@@ -116,16 +122,16 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Product Owner야.
-Task T-20260805-006은 독립 QA와 Development Lead 완료 리뷰를 통과했지만 PR 준비가 남아 있어.
+너는 Development Lead Agent야.
+Task T-20260805-006은 독립 QA와 완료 리뷰를 통과하고 PR #101로 `develop`에 병합된 `done` Task야.
 
-- 현재 상태: `completion_review`
+- 현재 상태: `done`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `6eab9ec`
+- 기준 상태 SHA: `dcf58d5`
 - 검증 대상 commit: `64e6d36ff4e15e69a658677468ea27c4f4a01c28`
-- 다음에 해야 할 일: QA·완료 리뷰 기록을 커밋하고 구현 브랜치를 push해 `develop` 대상
-  Draft PR을 만든 뒤 `ios-build`·`ios-xctest`와 merge 가능성을 확인해. 모두 통과하면
-  잔여 위험을 수용하고 완료·squash merge 승인 여부를 결정해.
+- PR #101: squash merge 완료
+- merge SHA: `dcf58d51a20dcaa529783057b21a3afea3a0a2d2`
+- 다음에 해야 할 일: 후속 T-20260805-007의 별도 실행 승인 여부를 Product Owner에게 확인해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260805-006_ios-audio-guide-handsfree-ui-report.md`,
@@ -133,6 +139,4 @@ Task T-20260805-006은 독립 QA와 Development Lead 완료 리뷰를 통과했�
 - 변경/검토 대상: Audio Player safe-area inset, Player 기능·action 회귀, 4개 viewport
 - 남은 리스크: 전체 XCTest 첫 실행의 Dark 375 attachment 1장 비결정성. 집중 재실행은
   4/4 정상이며 제품 UI 결함은 재현되지 않았다. T-008 통합 Visual QA에서 재확인한다.
-- 차단/결정 필요: 현재 PR 없음, QA·완료 리뷰 변경 미커밋, GitHub 필수 checks 미확인.
-  commit·push·PR·merge는 Product Owner 승인 필요
-- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
+- 차단/결정 필요: T-007은 별도 실행 승인 전 `proposed` 유지
