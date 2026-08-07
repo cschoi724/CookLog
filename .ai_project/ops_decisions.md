@@ -116,3 +116,12 @@
 | apply_scope | safe_auto_fix only |
 | manual_only | product code, product Docs, source_of_truth, Task metadata/status, Role mapping, branch/PR, commit/push/deploy |
 | review_result | schema front matter·adapter·source of truth 정합화 승인 적용, legacy Task 자동 변환 제외 |
+
+## Migration Decision - 2026-08-07
+
+| 결정 | 값 |
+|---|---|
+| core_version | 0.11.1 |
+| apply_scope | safe_auto_fix only |
+| manual_only | product code, product Docs, source_of_truth, Task metadata/status, Role mapping, branch/PR, commit/push/deploy |
+| review_needed | schema front matter and adapter drift are reported but not rewritten automatically |

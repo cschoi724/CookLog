@@ -211,3 +211,13 @@ CookLog/
 | safe_fixes | core_version, tasks directories, handoffs directory, ops records, knowledge context packs |
 | approved_manual_fixes | operating model·agent registry schema, Core Codex adapter, `AGENTS.md` 경로, source of truth, QA handoff |
 | deferred_scope | 기존 legacy Task 23개 schema·metadata·status 자동 변환 |
+
+## Migration Record - 2026-08-07
+
+| 항목 | 값 |
+|---|---|
+| core_version | 0.11.1 |
+| core_source | homebrew |
+| apply_scope | safe_auto_fix |
+| safe_fixes | core_version, tasks directories, handoffs directory, ops records, knowledge context packs |
+| review_scope | schema front matter, adapter drift, source_of_truth, Task metadata |
