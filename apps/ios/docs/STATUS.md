@@ -4,26 +4,35 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-006 완료, T-20260805-007 실행 승인
+- 상태: T-20260805-007 독립 QA FAIL, `WP-R1~R3` 재작업 승인
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~006 done, T-20260805-007 approved
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~006 done, T-20260805-007 approved rework
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS Agent가 `T-20260805-007` App Info 11개와 지정 실패 상태를 구현
-2. iOS QA Agent가 T-007 데이터 보존·placeholder·접근성을 독립 검증
-3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
-4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
-5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
+1. iOS Agent가 Home Network Error, 문의 초안 경계와 4 viewport 증빙을 재작업
+2. iOS QA Agent가 QA-HIGH-807007-001~002와 QA-MEDIUM-807007-003을 독립 재검증
+3. 실제 문의 주소·법적 문안·공개 URL을 출시 통합 전에 확정
+4. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
+5. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
+6. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
+
+- T-007 독립 QA에서 Home Network Error 누락과 문의 동의 결과의 실제 메일 초안 미반영
+  HIGH 2건, viewport 증거 부재 MEDIUM 1건을 확인했습니다. Product Owner가 Mock Network
+  Error, 문의 초안 모델, 4 viewport 증빙의 `WP-R1~R3` 재작업을 승인했습니다.
+- T-007에서 Home의 앱 정보 진입과 App Info 11개 상태를 구현했습니다. 문의는 사용자
+  콘텐츠를 자동 첨부하지 않고 진단 정보는 명시적 선택 뒤에만 포함합니다.
+- 문의 주소·법적 URL이 없으면 임의 값을 만들지 않고 미설정·열기 실패 상태를 제공합니다.
+  전체 XCTest 79/79와 iPhone 15 iOS 17.2 build를 통과했습니다.
 
 - Product Owner가 T-007 실행을 승인했습니다. App Info 11개 상태와 Home Network Error,
   Cooking Log STT Final Failure, AI Review Generation Error·Save Error를 구현하며 실제

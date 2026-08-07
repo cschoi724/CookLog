@@ -6,17 +6,20 @@ struct HomeView: View {
     @State private var isDeleteConfirmationPresented = false
     private let refreshToken: Int
     private let onShowAllRecipes: () -> Void
+    private let onShowAppInfo: () -> Void
     private let onOpenRecord: (HomeRecordDestination) -> Void
 
     init(
         viewModel: HomeViewModel,
         refreshToken: Int = 0,
         onShowAllRecipes: @escaping () -> Void,
+        onShowAppInfo: @escaping () -> Void = {},
         onOpenRecord: @escaping (HomeRecordDestination) -> Void
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.refreshToken = refreshToken
         self.onShowAllRecipes = onShowAllRecipes
+        self.onShowAppInfo = onShowAppInfo
         self.onOpenRecord = onOpenRecord
     }
 
@@ -36,6 +39,14 @@ struct HomeView: View {
         }
         .background(HomeTheme.backgroundBase)
         .navigationTitle("CookLog")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: onShowAppInfo) {
+                    Label("앱 정보", systemImage: "info.circle")
+                }
+                .frame(minWidth: 44, minHeight: 44)
+            }
+        }
         .task(id: refreshToken) {
             await viewModel.loadRecords()
         }

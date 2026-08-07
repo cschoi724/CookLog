@@ -4,6 +4,14 @@
 
 ## 2026-08-07
 
+- `T-20260805-007` 독립 QA에서 Home Network Error 누락, 문의 진단 opt-in의 실제 초안
+  미반영과 viewport 증거 부재를 확인해 `FAIL`로 판정했습니다. Product Owner가 Mock
+  Network Error·문의 초안 모델·4 viewport 증빙의 `WP-R1~R3` 재작업을 승인했습니다.
+- `T-20260805-007`에서 Home 앱 정보 진입과 Overview·데이터 보관·문의 동의·문의 준비·
+  메일 불가·개인정보/약관 로딩·미설정·열기 실패의 App Info 11개 상태를 구현했습니다.
+- 사용자 콘텐츠는 문의에 자동 첨부하지 않고 진단 정보는 명시적 선택 뒤에만 포함합니다.
+  운영 URL을 임의 생성하지 않는 계약과 전체 XCTest 79/79, iOS 17.2 build를 통과했습니다.
+
 - Product Owner가 `T-20260805-007` 실행을 승인했습니다. Design T-013을 기준으로 App Info
   11개 상태와 Home Network Error, STT Final Failure, AI Generation Error·Save Error를
   iOS Agent에 인계했습니다. 실제 문의 주소·법적 문안·공개 URL은 임의 생성하지 않습니다.
