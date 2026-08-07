@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-005
 title: iOS AI Review·완료 Recipe 편집·삭제 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 기록을 사용자가 검토 가능한 Recipe로 전환하고 수정·저장 실패에서도 입력을 보존해야 한다.
@@ -86,6 +86,11 @@ qa_to: .ai_project/qa/T-20260805-005_ios-ai-review-recipe-editing-qa.md
   경로, 구현·QA 보고서와 PR #94 iOS build·XCTest checks를 검토했다. 차단 결함이 없어
   완료 리뷰를 `PASS_WITH_RISK`로 확정하고 `verification_passed -> completion_review`로
   전환해 Product Owner의 완료·병합 승인을 요청한다.
+- 2026-08-07: Product Owner가 후속 Task로 이관한 잔여 위험을 수용하고 완료·병합을
+  승인했다. PR #94를 `develop`에 squash merge하고 merge SHA
+  `7c26ebbcd2f98bb883d017dc420399c19aead8cf`를 확인해 `completion_review -> done`으로
+  확정했다. T-006 선행은 공용 `develop`에서 해소됐지만 별도 실행 승인 전에는
+  `proposed`로 유지한다.
 - AI 생성은 기존 Mock 경계를 사용하고 실제 Backend provider·네트워크 연동을 선행하지 않는다.
 - Cooking Log에서 전달된 동일 `[StepPreview]`와 `RecipeRecord.id`를 유지하며, 생성·저장·
   삭제 실패가 기존 입력이나 저장 원본을 변경하지 않게 한다.
@@ -100,31 +105,13 @@ qa_to: .ai_project/qa/T-20260805-005_ios-ai-review-recipe-editing-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Product Owner야.
-Task T-20260805-005는 독립 QA와 Development Lead 완료 리뷰를 통과한 승인 대기 Task야.
+너는 Development Lead Agent야.
+Task T-20260805-005는 독립 QA와 완료 리뷰를 통과하고 PR #94로 `develop`에 병합된
+`done` Task야.
 
-- 현재 상태: `completion_review`
-- public source: `origin/develop@02e6d80`
-- 구현 ref: `task/T-20260805-005-implement-ios-ai-review-recipe-editing`
-- PR: #94, Draft·mergeable, iOS build·XCTest checks PASS
-- 자체 검증: 전체 XCTest 72/72, build, iPhone 15 Light/Dark Review
-- QA 결과: `PASS_WITH_RISK`, 차단 결함 없음
-- Development Lead 완료 리뷰: `PASS_WITH_RISK`
-- 독립 증빙: 전체 XCTest 72/72, Light/Dark Review 화면, Detail 수정·삭제 실패 보존
-- 필수 AI Review 상태: `REVIEW-PROCESSING`, `REVIEW-EDITABLE`,
-  `REVIEW-GENERATION-ERROR`, `REVIEW-SAVING`, `REVIEW-SAVE-ERROR`
-- 데이터 계약: 같은 `RecipeRecord.id`와 원본 `[StepPreview]`, 편집 draft 전체 보존,
-  저장 성공 후에만 completed 전이, 실패 시 영속·화면 원본 유지
-- 필수 동작: 필드·재료·STEP 편집, 임시 저장, 이탈 경고·snapshot 복원, 완료 Recipe 수정·
-  영구 삭제 확인, 저장·삭제 실패 복구, 키보드 회피
-- 검증 초점: generation·임시/최종 저장·수정·삭제 실패에서 화면 편집본, 마지막 영속
-  snapshot과 원본 STEP이 변하지 않는지 독립 반례로 확인해.
-- 구현 경계: Mock AI만 사용. 실제 Backend AI, Audio Guide/TTS, 전역 장애와 T-006~008
-  범위를 결함으로 요구하지 마.
-- 기준 문서: `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`,
-  `apps/ios/docs/NAVIGATION.md`
-- 허용 경로: Task frontmatter의 `allowed_paths`
-- 잔여 위험: 실제 Backend AI·네트워크, Audio/전역 장애, Accessibility 3·VoiceOver·
-  작은 화면 통합은 승인된 후속 Task 범위
-- 승인 조건: 후속 Task로 이관한 잔여 위험을 수용하면 완료·PR #94 squash merge를
-  승인해. 승인 전 PR은 Draft로 유지하고 T-006은 `proposed`로 유지해.
+- public source: `origin/develop@7c26ebb`
+- PR #94: squash merge 완료
+- merge SHA: `7c26ebbcd2f98bb883d017dc420399c19aead8cf`
+- 후속 `T-20260805-006`: 선행 해소, 별도 Product Owner 실행 승인 대기
+- 실제 Backend AI·네트워크는 `T-20260729-005`, 로컬 TTS·음성 인식 엔진은
+  `T-20260729-006` 범위로 유지해.

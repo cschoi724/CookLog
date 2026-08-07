@@ -4,6 +4,9 @@
 
 ## 2026-08-07
 
+- Product Owner가 `T-20260805-005`의 잔여 위험을 수용하고 완료·PR #94 squash merge를
+  승인했습니다. merge SHA `7c26ebb`로 공용 `done`을 확인했으며 T-006 선행은 해소됐지만
+  별도 실행 승인 전에는 `proposed`로 유지합니다.
 - `T-20260805-005` 독립 QA에서 Review 5개 상태, 동일 UUID·STEP snapshot과 생성·저장·
   수정·삭제 실패 보존, 전체 XCTest 72/72를 확인해 `PASS_WITH_RISK`로 판정했습니다.
 - Development Lead가 최신 develop 포함, 허용 경로·잔여 위험과 PR #94의 iOS build·

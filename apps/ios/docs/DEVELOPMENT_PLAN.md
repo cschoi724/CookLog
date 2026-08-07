@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, AI Review·완료 Recipe 완료 리뷰 통과·Product Owner 승인 대기
+- 상태: Mock Core MVP 조건부 통과, AI Review·완료 Recipe 완료·PR #94 병합
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -38,8 +38,8 @@
 1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `done`, PR #77 merge `3d1d012`
 2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `done`, PR #86 merge `9457133`
 3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `done`, Product Owner 완료·PR #90 squash merge 승인
-4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `completion_review`, Lead PASS_WITH_RISK·PR #94 병합 승인 대기
-5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `proposed`
+4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `done`, PR #94 merge `7c26ebb`
+5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `proposed`, 선행 해소·별도 실행 승인 대기
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `proposed`
 7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `proposed`
 
