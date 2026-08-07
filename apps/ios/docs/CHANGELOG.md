@@ -4,6 +4,8 @@
 
 ## 2026-08-07
 
+- Product Owner가 `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 실행을
+  승인했습니다. 선행 T-002~007의 공용 완료를 확인하고 iOS Agent에 인계했습니다.
 - Product Owner가 `T-20260805-007` 완료·병합을 승인했습니다. PR #106은 최신 `develop`
   기준 `ios-build`, `ios-xctest`를 통과하고 squash merge SHA `2f309ed`로 병합됐습니다.
 - `T-20260805-007` 재작업에서 주입형 Home Network Error, 로컬 기능 유지 안내와

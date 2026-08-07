@@ -50,7 +50,7 @@
 
 | Task ID | 도메인 | 예정 Verification Agent | 검증 초점 |
 |---|---|---|---|
-| `T-20260728-003`, `T-20260805-006~008` | iOS/Design | iOS QA Agent | 패키지별 기능·데이터 보존과 최종 82/23 상태·접근성·Visual QA |
+| `T-20260728-003`, `T-20260805-008` | iOS/Design | iOS QA Agent | 최종 82/23 상태·접근성·작은 화면·다크 모드·Visual QA |
 | `T-20260804-005` | Backend | Backend QA Agent | 원격 STT route·body read·egress 0·활성화 차단 |
 | `T-20260804-006` | Backend | Backend QA Agent | redaction·비용 hard cutoff·TTL cleanup |
 | `T-20260804-007` | Backend | Backend QA Agent | 전체 계약 동등성·보안 회귀·로컬 재현 |
