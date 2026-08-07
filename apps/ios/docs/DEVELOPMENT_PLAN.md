@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-20260805-002~006 완료, T-20260805-007 재작업 승인
+- 상태: Mock Core MVP 조건부 통과, T-20260805-002~006 완료, T-20260805-007 completion_review
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -40,7 +40,7 @@
 3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `done`, Product Owner 완료·PR #90 squash merge 승인
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `done`, PR #94 merge `7c26ebb`
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `done`, PR #101 merge `dcf58d5`
-6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `approved`, QA HIGH 2·MEDIUM 1 재작업
+6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `completion_review`, QA·Lead PASS_WITH_RISK
 7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `proposed`
 
 각 패키지는 iOS Agent 구현과 iOS QA 독립 검증을 분리하고, 선행 Task가 공용

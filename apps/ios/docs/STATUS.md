@@ -4,27 +4,37 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-007 독립 QA FAIL, `WP-R1~R3` 재작업 승인
+- 상태: T-20260805-007 독립 재검증·완료 리뷰 `PASS_WITH_RISK`, Product Owner 승인 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~006 done, T-20260805-007 approved rework
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~006 done, T-20260805-007 completion_review
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS Agent가 Home Network Error, 문의 초안 경계와 4 viewport 증빙을 재작업
-2. iOS QA Agent가 QA-HIGH-807007-001~002와 QA-MEDIUM-807007-003을 독립 재검증
+1. Product Owner가 T-007 잔여 위험과 완료·develop 병합을 승인
+2. 승인 후 재작업 브랜치 커밋·푸시·PR 생성, required checks 통과와 squash merge 확인
 3. 실제 문의 주소·법적 문안·공개 URL을 출시 통합 전에 확정
 4. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 5. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 6. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
+
+- iOS QA가 결함 3건 해소, 전체 XCTest 82/82, Debug build와 8개 viewport를 독립
+  재검증했습니다. Development Lead가 완료 리뷰를 `PASS_WITH_RISK`로 수용해 Product
+  Owner의 완료·병합 승인을 기다립니다.
+- T-007 재작업에서 주입 가능한 Home Network Error와 `연결 다시 확인`을 추가했습니다.
+  재확인은 실패했던 온라인 행동을 자동 실행하지 않고 로컬 기능을 유지합니다.
+- `SupportMailDraft`가 앱 버전을 기본 포함하고 진단 opt-in 때만 OS·오류 화면/시각·
+  비콘텐츠 범주를 포함하며 사용자 콘텐츠는 첨부하지 않도록 분리했습니다.
+- 전체 XCTest 82/82와 build, App Info·Network Error의 390×844·375×667 Light/Dark
+  렌더링을 확인해 독립 iOS QA에 재인계했습니다.
 
 - T-007 독립 QA에서 Home Network Error 누락과 문의 동의 결과의 실제 메일 초안 미반영
   HIGH 2건, viewport 증거 부재 MEDIUM 1건을 확인했습니다. Product Owner가 Mock Network

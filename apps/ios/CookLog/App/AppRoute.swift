@@ -66,6 +66,51 @@ struct AppInfoConfiguration: Equatable {
     }
 }
 
+struct SupportMailDraft: Equatable {
+    let recipient: String
+    let subject: String
+    let body: String
+
+    init(
+        recipient: String,
+        appVersion: String,
+        includeDiagnostics: Bool,
+        operatingSystemVersion: String = ProcessInfo.processInfo.operatingSystemVersionString
+    ) {
+        self.recipient = recipient
+        subject = "CookLog 문의"
+
+        var lines = [
+            "문의 내용을 직접 작성해주세요.",
+            "",
+            "앱 버전: CookLog \(appVersion)"
+        ]
+        if includeDiagnostics {
+            lines += [
+                "OS 버전: \(operatingSystemVersion)",
+                "오류 발생 화면·시각: 사용자가 직접 작성",
+                "비콘텐츠 진단 범주: 사용자 선택으로 포함"
+            ]
+        }
+        lines += [
+            "",
+            "음성, STT 본문, 레시피 내용과 검색어는 자동 첨부되지 않았습니다."
+        ]
+        body = lines.joined(separator: "\n")
+    }
+
+    var mailtoURL: URL? {
+        var components = URLComponents()
+        components.scheme = "mailto"
+        components.path = recipient
+        components.queryItems = [
+            URLQueryItem(name: "subject", value: subject),
+            URLQueryItem(name: "body", value: body)
+        ]
+        return components.url
+    }
+}
+
 struct AppInfoView: View {
     @Environment(\.openURL) private var openURL
     @State private var state: AppInfoState = .overview
@@ -212,7 +257,7 @@ struct AppInfoView: View {
                     ? "CookLog \(configuration.appVersion), OS 버전, 오류 발생 화면·시각과 비콘텐츠 진단 범주"
                     : "CookLog \(configuration.appVersion)만 포함됩니다. 사용자 콘텐츠는 포함되지 않습니다."
             )
-            Button("이메일 앱 열기") { openSupportEmail() }
+            Button("이메일 앱 열기") { openSupportEmail(includeDiagnostics: includeDiagnostics) }
                 .buttonStyle(.borderedProminent)
                 .tint(HomeTheme.accent)
                 .frame(minHeight: 44)
@@ -306,9 +351,13 @@ struct AppInfoView: View {
         }
     }
 
-    private func openSupportEmail() {
+    private func openSupportEmail(includeDiagnostics: Bool) {
         guard let supportEmail = configuration.supportEmail,
-              let url = URL(string: "mailto:\(supportEmail)?subject=CookLog%20문의") else {
+              let url = SupportMailDraft(
+                recipient: supportEmail,
+                appVersion: configuration.appVersion,
+                includeDiagnostics: includeDiagnostics
+              ).mailtoURL else {
             state = .mailUnavailable
             return
         }
