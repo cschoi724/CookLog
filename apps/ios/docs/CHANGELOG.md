@@ -4,6 +4,10 @@
 
 ## 2026-08-07
 
+- Product Owner가 `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model 구현을
+  승인했습니다. 기존 route·환경 조립은 유지하고 AudioPlayer·AudioGuide 내부의 5개 Player
+  상태, 버튼 공통 action, 중단·이탈 보존을 iOS Agent에 인계했습니다. 실제 TTS·음성 인식·
+  권한 요청과 T-007~008은 후속 범위로 유지합니다.
 - Product Owner가 `T-20260805-005`의 잔여 위험을 수용하고 완료·PR #94 squash merge를
   승인했습니다. merge SHA `7c26ebb`로 공용 `done`을 확인했으며 T-006 선행은 해소됐지만
   별도 실행 승인 전에는 `proposed`로 유지합니다.

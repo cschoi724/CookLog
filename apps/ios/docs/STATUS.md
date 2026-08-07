@@ -4,27 +4,31 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-005 완료·PR #94 병합, T-20260805-006 별도 실행 승인 대기
+- 상태: T-20260805-006 실행 승인·iOS Agent 인계 준비
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~005 done, T-20260805-006 proposed
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~005 done, T-20260805-006 approved
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. Product Owner가 `T-20260805-006` Audio Guide·핸즈프리 UI의 별도 실행 여부 결정
-2. 승인 시 T-006 구현·독립 QA 후 `T-20260805-007` 화면·상태 패키지 순차 구현
+1. iOS Agent가 최신 develop 기반 전용 worktree에서 T-006 lock·`in_progress` 전환 후 구현
+2. T-006 자체 검증·iOS QA 독립 검증 후 `T-20260805-007` 화면·상태 패키지 진행 판단
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- Product Owner가 T-006 Audio Guide·핸즈프리 UI·공통 action model 구현을 승인했습니다.
+  기존 Recipe Detail route·App 조립은 유지하고 AudioPlayer·AudioGuide 내부에서 Player
+  5개 상태, 버튼 공통 action과 중단·이탈 보존을 구현하도록 iOS Agent에 인계했습니다.
+  실제 TTS·음성 인식·권한 요청은 후속 Task 범위입니다.
 - Product Owner가 T-005 잔여 위험을 수용하고 완료·PR #94 squash merge를 승인했습니다.
   merge SHA `7c26ebb`로 공용 `develop`의 `done`을 확인했으며 T-006 선행은 해소됐습니다.
 - iOS QA가 Review 5개 상태, 동일 UUID·STEP snapshot, 생성·저장·수정·삭제 실패 보존과

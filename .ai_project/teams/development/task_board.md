@@ -40,7 +40,7 @@
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
 | `T-20260805-004` | `done` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | - | `T-20260805-003` 완료 | Product Owner 완료·PR #90 squash merge 승인 |
 | `T-20260805-005` | `done` | iOS | AI Review·완료 Recipe 편집·삭제 | - | `T-20260805-004` 완료 | Product Owner 완료·PR #94 squash merge `7c26ebb` |
-| `T-20260805-006` | `proposed` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` 완료 | 선행 해소·별도 실행 승인 대기 |
+| `T-20260805-006` | `approved` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` 완료 | Product Owner 실행 승인·iOS Agent 인계 |
 | `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
 | `T-20260805-008` | `proposed` | iOS | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `T-20260805-002~007` | 전체 구현 완료 후 통합 검증 |
 
@@ -213,6 +213,12 @@ iOS QA와 Development Lead가 전체 XCTest 72/72, PR #94 iOS build·XCTest와 �
 `PASS_WITH_RISK`로 수용했습니다. Product Owner가 완료·병합을 승인해 PR #94를
 `develop`에 squash merge했고 merge SHA `7c26ebb`를 확인해 T-005를 `done`으로
 확정했습니다. T-006 선행은 해소됐지만 별도 실행 승인 전에는 `proposed`로 유지합니다.
+
+Product Owner가 `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model 구현을
+별도 승인했습니다. iOS Agent는 최신 develop 기반 전용 worktree와 lock으로 착수하며,
+기존 Audio Player route·환경 조립을 유지한 채 허용된 AudioPlayer·AudioGuide 경로에서
+5개 Player 상태, 버튼과 공유하는 action model, 중단·이탈 보존을 구현합니다. 실제 TTS·
+음성 인식·권한 요청과 T-007~008 범위는 선행하지 않습니다.
 
 Product Owner가 `QA-MEDIUM-805004-001`의 재작업을 승인했습니다. iOS Agent는 통과한
 상태 전이·자동 저장·삭제·Undo 로직을 변경하지 않고 Cooking Log의 `bg/base|subtle|elevated`,
