@@ -41,7 +41,7 @@
 | `T-20260805-004` | `done` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | - | `T-20260805-003` 완료 | Product Owner 완료·PR #90 squash merge 승인 |
 | `T-20260805-005` | `done` | iOS | AI Review·완료 Recipe 편집·삭제 | - | `T-20260805-004` 완료 | Product Owner 완료·PR #94 squash merge `7c26ebb` |
 | `T-20260805-006` | `done` | iOS | Audio Guide·핸즈프리 UI·공통 action model | - | `T-20260805-005` 완료 | Product Owner 완료·PR #101 squash merge `dcf58d5` |
-| `T-20260805-007` | `completion_review` | iOS | 앱 정보·권한·오프라인·서비스 장애 | Development Lead Agent | `T-20260805-006` 완료 | Lead PASS_WITH_RISK·Product Owner 완료/병합 승인 대기 |
+| `T-20260805-007` | `done` | iOS | 앱 정보·권한·오프라인·서비스 장애 | - | `T-20260805-006` 완료 | Product Owner 완료·PR #106 squash merge `2f309ed` |
 | `T-20260805-008` | `proposed` | iOS | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `T-20260805-002~007` | 전체 구현 완료 후 통합 검증 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.

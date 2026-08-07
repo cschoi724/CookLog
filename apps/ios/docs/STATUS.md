@@ -4,28 +4,28 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-007 독립 재검증·완료 리뷰 `PASS_WITH_RISK`, Product Owner 승인 대기
+- 상태: T-20260805-007 완료·PR #106 squash merge `2f309ed`
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~006 done, T-20260805-007 completion_review
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~007 done, T-20260805-008 proposed
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. Product Owner가 T-007 잔여 위험과 완료·develop 병합을 승인
-2. 승인 후 재작업 브랜치 커밋·푸시·PR 생성, required checks 통과와 squash merge 확인
-3. 실제 문의 주소·법적 문안·공개 URL을 출시 통합 전에 확정
-4. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
-5. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
-6. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
+1. Product Owner가 `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 실행 여부 승인
+2. 실제 문의 주소·법적 문안·공개 URL을 출시 통합 전에 확정
+3. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
+4. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- Product Owner가 T-007 완료·병합을 승인했습니다. PR #106은 최신 `develop` 기준에서
+  `ios-build`, `ios-xctest`를 통과하고 squash merge SHA `2f309ed`로 병합됐습니다.
 - iOS QA가 결함 3건 해소, 전체 XCTest 82/82, Debug build와 8개 viewport를 독립
   재검증했습니다. Development Lead가 완료 리뷰를 `PASS_WITH_RISK`로 수용해 Product
   Owner의 완료·병합 승인을 기다립니다.

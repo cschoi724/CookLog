@@ -4,6 +4,8 @@
 
 ## 2026-08-07
 
+- Product Owner가 `T-20260805-007` 완료·병합을 승인했습니다. PR #106은 최신 `develop`
+  기준 `ios-build`, `ios-xctest`를 통과하고 squash merge SHA `2f309ed`로 병합됐습니다.
 - `T-20260805-007` 재작업에서 주입형 Home Network Error, 로컬 기능 유지 안내와
   실패 행동 자동 재실행 금지 계약을 구현했습니다.
 - 문의 초안을 `SupportMailDraft`로 분리해 앱 버전 기본 포함, 진단 opt-in과 사용자 콘텐츠

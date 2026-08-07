@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-007
 title: iOS 앱 정보·권한·오프라인·서비스 장애 상태 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 첫 공개 출시에서 법적·데이터 안내와 서비스 실패 시 데이터 보존 경계를 제공해야 한다.
@@ -114,21 +114,25 @@ qa_to: .ai_project/qa/T-20260805-007_ios-app-info-offline-failures-qa.md
   문안·공개 URL과 실제 네트워크·STT·Backend 연결은 출시 통합·후속 Task 위험으로
   유지한다. 재작업 브랜치에는 아직 PR이 없어 required checks와 mergeability 확인은
   Product Owner의 완료·병합 승인 후 커밋·푸시·PR 생성 단계에서 수행한다.
+- 2026-08-07: Product Owner가 Lead `PASS_WITH_RISK`와 잔여 위험을 수용하고 완료·병합을
+  승인했다. PR #106은 최신 `develop` rebase 후 `ios-build`, `ios-xctest`와 변경 감지
+  체크를 모두 통과했으며 squash merge SHA `2f309ed`로 공용 `develop`에 병합됐다.
+  `completion_review -> done`으로 완료를 확정한다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Product Owner야.
-Task T-20260805-007의 완료와 develop 통합 여부를 승인해줘.
+너는 Development Lead Agent야.
+Task T-20260805-007은 독립 QA와 완료 리뷰를 통과하고 PR #106으로 `develop`에 병합된 `done` Task야.
 
-- 현재 상태: `completion_review`
+- 현재 상태: `done`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `596d779`
-- 작업 브랜치: `task/T-20260805-007-rework-ios-app-info`
-- 다음에 해야 할 일: QA와 Lead의 `PASS_WITH_RISK` 및 잔여 위험을 수용할지 판단하고,
-  완료·병합을 승인하면 변경을 커밋·푸시한 뒤 `develop` 대상 PR을 생성해 `ios-build`,
-  `ios-xctest`, mergeability를 확인하고 squash merge해.
+- 기준 상태 SHA: `2f309ed`
+- 검증 대상 commit: `235469745229ad5da404a6183a77f42b13c353be`
+- PR #106: squash merge 완료
+- merge SHA: `2f309edc73afabc90e42425c8ce65fbcbb7fc389`
+- 다음에 해야 할 일: 후속 T-20260805-008의 별도 실행 승인 여부를 Product Owner에게 확인해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260805-007_ios-app-info-offline-failures-report.md`,
@@ -136,6 +140,5 @@ Task T-20260805-007의 완료와 develop 통합 여부를 승인해줘.
 - 변경/검토 대상: Home Network Error, SupportMailDraft, App Info 11개 상태, 8개 viewport
 - 남은 리스크: 실제 문의 주소·법적 문안·공개 URL과 실제 네트워크·STT·Backend 연결은
   출시 통합·후속 Task에서 확정 필요
-- 차단/결정 필요: 재작업 변경은 아직 커밋·푸시되지 않았고 PR도 없다. 완료 및 PR 병합은
-  Product Owner 승인 필요
+- 차단/결정 필요: T-008은 별도 실행 승인 전 `proposed` 유지
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
