@@ -111,6 +111,18 @@
 - [x] iOS QA 독립 전체 XCTest 72/72와 Review·Detail 실패 보존 반례 통과
 - [x] 최신 develop 포함·PR #94 iOS build/XCTest checks와 Development Lead 완료 리뷰 통과
 
+### T-20260805-006 구현 결과
+
+- [x] Player Paused·Playing·Loading·Error·No Steps와 not-found subtype 구현
+- [x] 7개 핸즈프리 명령을 공통 `AudioGuideAction` reducer로 정의
+- [x] 이전·다음·재생/일시정지·다시 듣기·재료 안내 버튼을 같은 action 경계에 연결
+- [x] 명시적 핸즈프리 시작·종료와 버튼 fallback, 실제 권한·인식 엔진 분리
+- [x] 첫/마지막·불확실 입력에서 단계·재생 상태 보존
+- [x] 오디오 중단·백그라운드·잠금에서 일시정지, 이탈 시 stop과 자동 재개 금지
+- [x] CookLog Light/Dark 토큰·SF Symbols·Dynamic Type·44pt 이상 네이티브 Button 유지
+- [x] 집중 13/13·전체 XCTest 77/77·build 통과
+- [x] 390×844·375×667 Light/Dark UIWindow 렌더링 4/4 확인
+
 ## 현재 개발 원칙
 
 - 제품 기능 범위는 `CookLog_MVP_SCOPE.md`의 Core MVP와 첫 App Store 공개 출시 구분을 따릅니다.

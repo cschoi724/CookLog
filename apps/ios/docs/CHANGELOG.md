@@ -8,6 +8,14 @@
   Light/Dark에서 `재료 알려줘` CTA가 하단 고정 control bar에 가려지는
   `QA-HIGH-806006-001`을 확인했습니다. Product Owner가 safe-area/content inset 한정
   재작업을 승인했으며 기존 상태·action·보존 로직과 44pt 버튼은 유지합니다.
+- `T-20260805-006`에서 Audio Player의 Paused·Playing·Loading·Error·No Steps와
+  not-found subtype, 자동 재생 없는 첫 단계 준비를 구현했습니다.
+- 이전·다음·멈춰·계속·다시 들려줘·재료 알려줘·핸즈프리 종료를 하나의
+  `AudioGuideAction`으로 정의하고 버튼·테스트 입력이 같은 reducer를 사용하게 했습니다.
+- 명시적 핸즈프리 시작·종료, 재료 안내, 첫/마지막·불확실 입력 보존과 오디오 중단·
+  백그라운드·잠금·이탈 후 자동 재생·자동 핸즈프리 금지 상태를 추가했습니다.
+- CookLog Light/Dark 토큰, Dynamic Type, SF Symbols와 44pt 이상 네이티브 버튼을 유지하고
+  집중 13/13·전체 XCTest 77/77·build·4개 viewport 렌더링을 통과해 iOS QA에 인계했습니다.
 - Product Owner가 `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model 구현을
   승인했습니다. 기존 route·환경 조립은 유지하고 AudioPlayer·AudioGuide 내부의 5개 Player
   상태, 버튼 공통 action, 중단·이탈 보존을 iOS Agent에 인계했습니다. 실제 TTS·음성 인식·

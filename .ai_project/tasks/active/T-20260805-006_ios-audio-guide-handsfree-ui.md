@@ -67,6 +67,12 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 
 ## 승인 및 실행 경계
 
+- 2026-08-07: iOS Agent가 Player 5개 상태와 not-found, 7개 명령·버튼 공통
+  `AudioGuideAction`, 명시적 핸즈프리, 중단·이탈 보존을 구현했다. 집중 13개·전체 XCTest
+  77/77, build와 390×844·375×667 Light/Dark 렌더링을 통과해 lock을 해제하고
+  `in_progress -> verification_ready`로 iOS QA Agent에 인계했다.
+- 2026-08-07: iOS Agent가 공용 `origin/develop@8d3712d`에서 승인·선행 완료를 재확인하고
+  전용 worktree에서 lock을 획득해 `approved -> in_progress`로 전환했다.
 - 2026-08-07: 선행 `T-20260805-005`가 PR #94 squash merge
   `7c26ebbcd2f98bb883d017dc420399c19aead8cf`로 공용 `develop`에서 `done`이 되어
   의존성이 해소됐다.
