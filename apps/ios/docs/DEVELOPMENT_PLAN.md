@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-20260805-002~007 완료, T-20260805-008 승인 대기
+- 상태: Mock Core MVP 조건부 통과, T-20260805-002~007 완료, T-20260805-008 실행 승인
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -41,7 +41,7 @@
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `done`, PR #94 merge `7c26ebb`
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `done`, PR #101 merge `dcf58d5`
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `done`, PR #106 merge `2f309ed`
-7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `proposed`
+7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `approved`, iOS Agent 인계
 
 각 패키지는 iOS Agent 구현과 iOS QA 독립 검증을 분리하고, 선행 Task가 공용
 `develop`에서 `done`이 된 뒤 다음 패키지를 승인합니다. 실제 Apple STT, Backend AI,
