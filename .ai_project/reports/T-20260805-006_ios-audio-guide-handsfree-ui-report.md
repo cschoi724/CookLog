@@ -3,7 +3,24 @@
 작성일: 2026-08-07
 작성 Role: iOS Agent / Execution Role
 상태: `verification_ready` — iOS QA 독립 검증 대기
-public source: `origin/develop@8d3712d`
+public source: `origin/develop@6eab9ec`
+
+## 재작업 결과
+
+`QA-HIGH-806006-001` 범위만 수정했습니다. 스크롤 본문의 하단에 고정 control bar를
+`safeAreaInset(edge: .bottom)`으로 배치해 작은 화면에서도 마지막 CTA와 안내 문구가
+control bar 위까지 스크롤되도록 했습니다. Player 상태·action reducer·서비스 경계는
+변경하지 않았습니다.
+
+- 390×844·375×667 Light/Dark 하단 도달 렌더링: `4/4`
+  - xcresult: `/private/tmp/T006ReworkVisual4.xcresult`
+  - attachments: `/private/tmp/T006ReworkAttachments4/`
+- 전체 XCTest: `77/77`, 실패·skip 0
+  - log: `/var/folders/2_/vyvgp5h54fg0vy8j133f4mph0000gn/T/CookLog-XCTest/20260807-120241-10407/xcodebuild.log`
+  - xcresult: `/var/folders/2_/vyvgp5h54fg0vy8j133f4mph0000gn/T/CookLog-XCTest/20260807-120241-10407/CookLogTests.xcresult`
+- iOS Simulator Debug build: 성공
+- 시각 관찰: 4개 조합 모두 `재료 알려줘` CTA와 안내 문구가 고정 control bar와 겹치지
+  않고 완전히 노출됨
 
 ## 결과
 
@@ -37,7 +54,8 @@ not-found subtype을 구현했습니다. 7개 핸즈프리 명령은 `AudioGuide
 - 390×844·375×667 Light/Dark UIWindow 렌더링 `4/4`
   - xcresult: `/private/tmp/T006Visual3.xcresult`
   - attachments: `/private/tmp/T006Attachments3/`
-- 시각 관찰: Light/Dark 토큰 전환, 스크롤 본문, 고정 재생 control, overflow·clipping 없음
+- 최초 시각 관찰은 독립 QA에서 375×667 CTA 겹침이 발견됐으며, 위 재작업 증적으로
+  교체해 동일 iOS QA Agent에 재검증을 요청함
 - 44pt: 이전·다시·재생/일시정지·다음·재료·핸즈프리 핵심 Button frame 확인
 - 금지 system 화면 배경·accent·status 색상 검색 0건
 - 변경 파일은 Task `allowed_paths` 안에 있음

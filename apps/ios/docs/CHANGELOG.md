@@ -4,6 +4,11 @@
 
 ## 2026-08-07
 
+- `T-20260805-006`의 Audio Player ScrollView 하단에 `safeAreaInset(edge: .bottom)`을
+  적용해 375×667에서 고정 control bar가 `재료 알려줘` CTA와 안내 문구를 가리던
+  `QA-HIGH-806006-001`을 수정했습니다.
+- 390×844·375×667 Light/Dark 하단 도달 렌더링 4/4, 전체 XCTest 77/77과 iOS
+  Simulator Debug build를 통과해 동일 iOS QA Agent에 독립 재검증을 요청했습니다.
 - `T-20260805-006` 독립 QA에서 전체 XCTest 77/77과 기능 계약은 통과했으나 375×667
   Light/Dark에서 `재료 알려줘` CTA가 하단 고정 control bar에 가려지는
   `QA-HIGH-806006-001`을 확인했습니다. Product Owner가 safe-area/content inset 한정

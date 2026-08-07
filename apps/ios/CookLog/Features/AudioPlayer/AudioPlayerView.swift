@@ -29,14 +29,15 @@ struct AudioPlayerView: View {
                 .padding(.vertical, 24)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-
-            if viewModel.canPlay {
-                AudioPlayerControlBarView(
-                    isPlaying: viewModel.isPlaying,
-                    canMoveToPreviousStep: viewModel.canMoveToPreviousStep,
-                    canMoveToNextStep: viewModel.canMoveToNextStep,
-                    onAction: send
-                )
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if viewModel.canPlay {
+                    AudioPlayerControlBarView(
+                        isPlaying: viewModel.isPlaying,
+                        canMoveToPreviousStep: viewModel.canMoveToPreviousStep,
+                        canMoveToNextStep: viewModel.canMoveToNextStep,
+                        onAction: send
+                    )
+                }
             }
         }
         .background(HomeTheme.backgroundBase)

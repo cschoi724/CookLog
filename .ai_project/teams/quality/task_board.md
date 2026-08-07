@@ -7,7 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
-| `T-20260805-006` | `rework_requested` | iOS Audio Guide·핸즈프리 UI·공통 action model | 77/77 기능 통과, 375×667 CTA 겹침 High 1건 | QA-HIGH-806006-001 재작업 승인·동일 viewport 재검증 |
+| `T-20260805-006` | `verification_ready` | iOS Audio Guide·핸즈프리 UI·공통 action model | safeAreaInset 재작업·77/77·390×844/375×667 Light/Dark 4/4 | QA-HIGH-806006-001 독립 재검증 |
 | `T-20260728-006` | `done` | Backend AI gateway·비활성 원격 STT Foundation | 하위 T-002~007 독립 QA·100/100·계약 5종·Node 24 container 집계 | PASS_WITH_RISK 수용·Product Owner 최종 완료/PR #93 병합 승인 |
 | `T-20260805-005` | `done` | iOS AI Review·완료 Recipe 편집·삭제 | Review 5개 상태·동일 UUID/STEP·snapshot 복원·완료 수정/삭제·실패 보존·전체 회귀 통과 | Lead PASS_WITH_RISK·Product Owner 완료/PR #94 병합 승인 |
 | `T-20260804-007` | `done` | Backend Foundation 통합 계약·보안 검증·handoff | HIGH 원본 반례·terminal sink/reservation/shape·Provider at-most-once·전체 회귀 | PASS_WITH_RISK·Product Owner 완료/PR #91 병합 승인 |

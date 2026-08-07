@@ -37,6 +37,21 @@ final class AudioPlayerViewModelTests: XCTestCase {
             host.view.layoutIfNeeded()
             try await Task.sleep(nanoseconds: 50_000_000)
 
+            guard let scrollView = window.allSubviews(of: UIScrollView.self)
+                .max(by: { $0.contentSize.height < $1.contentSize.height }) else {
+                XCTFail("\(item.name) ScrollView를 찾지 못했습니다.")
+                window.isHidden = true
+                continue
+            }
+            let bottomOffset = max(
+                -scrollView.adjustedContentInset.top,
+                scrollView.contentSize.height - scrollView.bounds.height
+                    + scrollView.adjustedContentInset.bottom
+            )
+            scrollView.setContentOffset(CGPoint(x: 0, y: bottomOffset), animated: false)
+            scrollView.layoutIfNeeded()
+            try await Task.sleep(nanoseconds: 20_000_000)
+
             let renderer = UIGraphicsImageRenderer(size: item.size)
             let image = renderer.image { context in
                 window.layer.render(in: context.cgContext)
@@ -45,7 +60,7 @@ final class AudioPlayerViewModelTests: XCTestCase {
             XCTAssertEqual(image.size, item.size)
             XCTAssertFalse(image.isUniformColor, "\(item.name) 렌더링이 빈 단색 화면입니다.")
             let attachment = XCTAttachment(image: image)
-            attachment.name = "T-20260805-006-player-\(item.name)"
+            attachment.name = "T-20260805-006-player-bottom-\(item.name)"
             attachment.lifetime = .keepAlways
             add(attachment)
             window.isHidden = true
@@ -332,6 +347,15 @@ private struct FailingAudioRecipeRepository: RecipeRepository {
 
 private struct AudioFetchFailure: Error {}
 private struct AudioPreparationFailure: Error {}
+
+private extension UIView {
+    func allSubviews<T: UIView>(of type: T.Type) -> [T] {
+        subviews.flatMap { subview -> [T] in
+            let match = subview as? T
+            return (match.map { [$0] } ?? []) + subview.allSubviews(of: type)
+        }
+    }
+}
 
 private extension UIImage {
     var isUniformColor: Bool {

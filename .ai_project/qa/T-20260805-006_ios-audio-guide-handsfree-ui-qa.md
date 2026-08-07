@@ -35,3 +35,16 @@ QA commit: `fb74ef4`
 - 전체 XCTest 77개 이상과 build 통과
 - 390×844·375×667 Light/Dark 4종 재촬영
 - 기존 Player 상태·action reducer·중단/이탈 보존 무회귀
+
+## 재작업 재검증 요청
+
+- 요청일: 2026-08-07
+- 상태: `verification_ready`
+- 변경: ScrollView의 고정 control bar를 `safeAreaInset(edge: .bottom)`으로 배치
+- 개발 자체 검증: 전체 XCTest 77/77, iOS Simulator Debug build 성공
+- 재촬영: 390×844·375×667 Light/Dark `4/4`
+  - `/private/tmp/T006ReworkVisual4.xcresult`
+  - `/private/tmp/T006ReworkAttachments4/`
+- 자체 관찰: 네 조합 모두 `재료 알려줘` CTA와 안내 문구가 control bar 위에 완전히 노출됨
+- 요청: 기존 FAIL 판정과 `QA-HIGH-806006-001` 이력을 보존하고 동일 결함의 해소 여부를
+  독립 판정한다.

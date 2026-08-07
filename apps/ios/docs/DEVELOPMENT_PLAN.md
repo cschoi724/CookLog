@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-20260805-006 High 1건 재작업 승인
+- 상태: Mock Core MVP 조건부 통과, T-20260805-006 High 1건 재작업 완료·재검증 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -39,7 +39,7 @@
 2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `done`, PR #86 merge `9457133`
 3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `done`, Product Owner 완료·PR #90 squash merge 승인
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `done`, PR #94 merge `7c26ebb`
-5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `rework_requested`, 375×667 CTA 겹침 재작업 승인
+5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `verification_ready`, 375×667 CTA 겹침 재작업 완료
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `proposed`
 7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `proposed`
 
@@ -122,6 +122,8 @@
 - [x] CookLog Light/Dark 토큰·SF Symbols·Dynamic Type·44pt 이상 네이티브 Button 유지
 - [x] 집중 13/13·전체 XCTest 77/77·build 통과
 - [x] 390×844·375×667 Light/Dark UIWindow 렌더링 4/4 확인
+- [x] `QA-HIGH-806006-001` 하단 `safeAreaInset` 적용과 CTA·안내 문구 비겹침 4/4 재확인
+- [x] 재작업 후 전체 XCTest 77/77·iOS Simulator Debug build 재통과
 
 ## 현재 개발 원칙
 
