@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-006
 title: iOS Audio Guide·핸즈프리 UI·공통 action model 구현
-status: approved
+status: verification_ready
 type: feature
 priority: P0
 priority_reason: 저장 Recipe를 다시 요리하는 핵심 경험과 향후 음성·버튼 입력의 동등한 action 경계를 고정해야 한다.
@@ -67,6 +67,12 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 
 ## 승인 및 실행 경계
 
+- 2026-08-07: iOS Agent가 Player 5개 상태와 not-found, 7개 명령·버튼 공통
+  `AudioGuideAction`, 명시적 핸즈프리, 중단·이탈 보존을 구현했다. 집중 13개·전체 XCTest
+  77/77, build와 390×844·375×667 Light/Dark 렌더링을 통과해 lock을 해제하고
+  `in_progress -> verification_ready`로 iOS QA Agent에 인계했다.
+- 2026-08-07: iOS Agent가 공용 `origin/develop@8d3712d`에서 승인·선행 완료를 재확인하고
+  전용 worktree에서 lock을 획득해 `approved -> in_progress`로 전환했다.
 - 2026-08-07: 선행 `T-20260805-005`가 PR #94 squash merge
   `7c26ebbcd2f98bb883d017dc420399c19aead8cf`로 공용 `develop`에서 `done`이 되어
   의존성이 해소됐다.
@@ -87,24 +93,16 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 iOS Agent / Execution Role이야.
-Task T-20260805-006을 구현해줘.
+너는 iOS QA Agent / Verification Role이야.
+Task T-20260805-006을 독립 검증해줘.
 
-- 현재 상태: `approved`
-- public source: 승인 기록 PR이 병합된 최신 `origin/develop`
-- 다음 작업: 최신 develop 기반 전용 worktree·브랜치를 만들고 lock을 획득한 뒤
-  `in_progress`로 전환해 Audio Guide·핸즈프리 UI·공통 action model을 구현해.
-- 기준 문서: Task `source_of_truth` 전체
-- 허용 경로: Task frontmatter의 `allowed_paths`만 사용
-- 기존 연결: Recipe Detail CTA, `AppRoute.audioPlayer`, `CookLogApp`, `AppEnvironment`는
-  이미 연결돼 있으며 이번 허용 경로 밖이야.
-- 필수 상태: `PLAYER-PAUSED`, `PLAYER-PLAYING`, `PLAYER-LOADING`, `PLAYER-ERROR`,
-  `PLAYER-NO-STEPS`와 not-found subtype
-- 필수 action: 이전·다음·재생/정지·다시 듣기·재료 안내·핸즈프리 종료를 포함한
-  7개 명령 경계를 버튼과 같은 action reducer에 연결
-- 보존 계약: 첫/마지막 경계, 불확실 입력, 중단·이탈에서 단계와 상태를 보존하고
-  자동 재생·자동 핸즈프리 재활성화 금지
-- 제외: 실제 TTS, 실제 음성 인식·권한 요청, 백그라운드 오디오, T-007~008 범위
-- 검증: 집중·전체 XCTest, build, 390×844·375×667 Light/Dark 상태와 44pt 버튼
-- 완료 시: 보고서와 iOS 상태 문서를 갱신하고 lock 해제 후 `verification_ready`로
-  iOS QA Agent / Verification Role에 인계해.
+- 현재 상태: `verification_ready`
+- 구현 기준: `origin/develop@8d3712d` 기반 T-006 구현 브랜치
+- 구현 범위: AudioPlayer·AudioGuide·테스트와 승인된 상태/보고 문서만 변경
+- 확인 상태: Player 5개 Core Loop 상태와 not-found subtype
+- 확인 action: `AudioGuideAction` 7개가 버튼·테스트 입력에서 같은 reducer를 사용하는지
+- 확인 보존: 첫/마지막·불확실 입력·중단·백그라운드·이탈에서 자동 재생/자동 핸즈프리 없음
+- 구현 증빙: 집중 13/13, 전체 XCTest 77/77, build, 390×844·375×667 Light/Dark 4/4
+- 제외: 실제 System TTS, 실제 마이크·Speech 권한·인식 엔진, 백그라운드 오디오
+- 다음 작업: 별도 QA worktree에서 구현 commit을 고정하고 반례·전체 회귀·시각 증빙을
+  독립 확인한 뒤 `verification_passed` 또는 `rework_requested`로 인계해.

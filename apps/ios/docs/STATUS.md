@@ -4,27 +4,35 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-006 실행 승인·iOS Agent 인계 준비
+- 상태: T-20260805-006 구현 완료·iOS QA 독립 검증 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~005 done, T-20260805-006 approved
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~005 done, T-20260805-006 verification_ready
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS Agent가 최신 develop 기반 전용 worktree에서 T-006 lock·`in_progress` 전환 후 구현
-2. T-006 자체 검증·iOS QA 독립 검증 후 `T-20260805-007` 화면·상태 패키지 진행 판단
+1. iOS QA Agent가 별도 worktree에서 T-006 action 동등성·보존·시각 회귀 독립 검증
+2. T-006 독립 검증·완료 리뷰 후 `T-20260805-007` 화면·상태 패키지 진행 판단
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- T-006에서 `PLAYER-PAUSED`, `PLAYER-PLAYING`, `PLAYER-LOADING`, `PLAYER-ERROR`,
+  `PLAYER-NO-STEPS`와 not-found subtype을 구현하고 자동 재생 없이 첫 단계를 준비합니다.
+- 이전·다음·멈춰·계속·다시 들려줘·재료 알려줘·핸즈프리 종료를 공통
+  `AudioGuideAction` reducer에 연결해 버튼과 향후 테스트 입력이 같은 상태 전이를 사용합니다.
+- 첫/마지막 경계와 불확실 입력은 단계·재생을 보존하고, 오디오 중단·백그라운드·잠금·
+  이탈은 명시적으로 일시정지 또는 중지해 자동 재생·핸즈프리 재활성화를 금지했습니다.
+- 집중 AudioPlayer 13/13, 전체 XCTest 77/77와 build를 통과했습니다. UIWindow 렌더링
+  attachment로 390×844·375×667 Light/Dark 4/4와 44pt 이상 버튼을 확인했습니다.
 - Product Owner가 T-006 Audio Guide·핸즈프리 UI·공통 action model 구현을 승인했습니다.
   기존 Recipe Detail route·App 조립은 유지하고 AudioPlayer·AudioGuide 내부에서 Player
   5개 상태, 버튼 공통 action과 중단·이탈 보존을 구현하도록 iOS Agent에 인계했습니다.

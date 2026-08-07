@@ -40,7 +40,7 @@
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
 | `T-20260805-004` | `done` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | - | `T-20260805-003` 완료 | Product Owner 완료·PR #90 squash merge 승인 |
 | `T-20260805-005` | `done` | iOS | AI Review·완료 Recipe 편집·삭제 | - | `T-20260805-004` 완료 | Product Owner 완료·PR #94 squash merge `7c26ebb` |
-| `T-20260805-006` | `approved` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` 완료 | Product Owner 실행 승인·iOS Agent 인계 |
+| `T-20260805-006` | `verification_ready` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS QA Agent | `T-20260805-005` 완료 | 구현·전체 XCTest 77/77·4 viewport 통과, 독립 QA 대기 |
 | `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
 | `T-20260805-008` | `proposed` | iOS | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `T-20260805-002~007` | 전체 구현 완료 후 통합 검증 |
 
@@ -219,6 +219,11 @@ Product Owner가 `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action mo
 기존 Audio Player route·환경 조립을 유지한 채 허용된 AudioPlayer·AudioGuide 경로에서
 5개 Player 상태, 버튼과 공유하는 action model, 중단·이탈 보존을 구현합니다. 실제 TTS·
 음성 인식·권한 요청과 T-007~008 범위는 선행하지 않습니다.
+
+iOS Agent가 Player 5개 상태와 not-found subtype, 7개 명령·버튼이 공유하는
+`AudioGuideAction` reducer, 명시적 핸즈프리 시작·종료와 중단·백그라운드·이탈 보존을
+구현했습니다. 집중 13/13·전체 XCTest 77/77, build와 390×844·375×667 Light/Dark
+렌더링 4/4를 통과해 `verification_ready`로 iOS QA Agent에 인계했습니다.
 
 Product Owner가 `QA-MEDIUM-805004-001`의 재작업을 승인했습니다. iOS Agent는 통과한
 상태 전이·자동 저장·삭제·Undo 로직을 변경하지 않고 Cooking Log의 `bg/base|subtle|elevated`,
