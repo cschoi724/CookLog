@@ -4,6 +4,9 @@
 
 ## 2026-08-07
 
+- Product Owner가 `T-20260805-007` 실행을 승인했습니다. Design T-013을 기준으로 App Info
+  11개 상태와 Home Network Error, STT Final Failure, AI Generation Error·Save Error를
+  iOS Agent에 인계했습니다. 실제 문의 주소·법적 문안·공개 URL은 임의 생성하지 않습니다.
 - Product Owner가 `T-20260805-006`의 독립 QA·완료 리뷰 잔여 위험을 수용하고 완료·병합을
   승인했습니다. PR #101의 `ios-build`·`ios-xctest` 통과 후 squash merge SHA
   `dcf58d5`를 확인해 공용 `done`으로 확정했습니다.
