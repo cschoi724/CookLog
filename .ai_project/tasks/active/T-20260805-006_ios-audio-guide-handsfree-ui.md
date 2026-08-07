@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-006
 title: iOS Audio Guide·핸즈프리 UI·공통 action model 구현
-status: verification_ready
+status: rework_requested
 type: feature
 priority: P0
 priority_reason: 저장 Recipe를 다시 요리하는 핵심 경험과 향후 음성·버튼 입력의 동등한 action 경계를 고정해야 한다.
@@ -71,6 +71,9 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
   `AudioGuideAction`, 명시적 핸즈프리, 중단·이탈 보존을 구현했다. 집중 13개·전체 XCTest
   77/77, build와 390×844·375×667 Light/Dark 렌더링을 통과해 lock을 해제하고
   `in_progress -> verification_ready`로 iOS QA Agent에 인계했다.
+- 2026-08-07: iOS QA Agent가 별도 worktree에서 77/77 회귀를 통과했으나 375×667
+  Light/Dark에서 하단 고정 control bar가 `재료 알려줘` CTA를 가리는
+  `QA-HIGH-806006-001`을 확인해 `verification_in_progress -> rework_requested`로 전환했다.
 - 2026-08-07: iOS Agent가 공용 `origin/develop@8d3712d`에서 승인·선행 완료를 재확인하고
   전용 worktree에서 lock을 획득해 `approved -> in_progress`로 전환했다.
 - 2026-08-07: 선행 `T-20260805-005`가 PR #94 squash merge
@@ -93,10 +96,9 @@ qa_to: .ai_project/qa/T-20260805-006_ios-audio-guide-handsfree-ui-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 iOS QA Agent / Verification Role이야.
-Task T-20260805-006을 독립 검증해줘.
+다음 Agent는 iOS Agent / Execution Role이야. QA 재작업 요청을 반영해줘.
 
-- 현재 상태: `verification_ready`
+- 현재 상태: `rework_requested`
 - 구현 기준: `origin/develop@8d3712d` 기반 T-006 구현 브랜치
 - 구현 범위: AudioPlayer·AudioGuide·테스트와 승인된 상태/보고 문서만 변경
 - 확인 상태: Player 5개 Core Loop 상태와 not-found subtype
@@ -104,5 +106,8 @@ Task T-20260805-006을 독립 검증해줘.
 - 확인 보존: 첫/마지막·불확실 입력·중단·백그라운드·이탈에서 자동 재생/자동 핸즈프리 없음
 - 구현 증빙: 집중 13/13, 전체 XCTest 77/77, build, 390×844·375×667 Light/Dark 4/4
 - 제외: 실제 System TTS, 실제 마이크·Speech 권한·인식 엔진, 백그라운드 오디오
-- 다음 작업: 별도 QA worktree에서 구현 commit을 고정하고 반례·전체 회귀·시각 증빙을
-  독립 확인한 뒤 `verification_passed` 또는 `rework_requested`로 인계해.
+- QA 결과: 전체 XCTest 77/77은 통과했으나 375×667 Light/Dark에서 하단 고정 control bar가
+  `재료 알려줘` CTA를 덮는 `QA-HIGH-806006-001`을 발견했다. `AudioPlayerView.swift:14-40`의
+  ScrollView/control bar 배치에 safe-area 하단 inset 또는 동등한 content inset을 추가해 CTA와
+  안내 문구가 완전히 도달 가능하도록 수정해줘. 44pt 터치 영역은 유지해야 한다.
+- 수정 후 77개 회귀 테스트와 390×844·375×667 Light/Dark 4종 캡처를 다시 제출해 QA 재검증을 요청해.
