@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-005
 title: iOS AI Review·완료 Recipe 편집·삭제 구현
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P0
 priority_reason: 기록을 사용자가 검토 가능한 Recipe로 전환하고 수정·저장 실패에서도 입력을 보존해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS QA Agent
-target_role: Verification Role
+target_agent: Development Lead Agent
+target_role: Completion Role
 required_capabilities: [ios_implementation, swiftui, state_management]
 depends_on: [T-20260805-004]
 blocks: [T-20260805-006, T-20260728-003]
@@ -76,6 +76,12 @@ qa_to: .ai_project/qa/T-20260805-005_ios-ai-review-recipe-editing-qa.md
   이탈 복원, 완료 Recipe 수정·영구 삭제와 실패 보존을 구현했다. 전체 XCTest 72/72,
   build와 iPhone 15 Light/Dark Review 실제 화면을 확인해 `in_progress ->
   verification_ready`로 전환하고 lock을 해제했다.
+- 2026-08-07: iOS QA Agent가 구현 커밋 `fad09ed`를 고정한 별도 QA worktree에서 lock을
+  획득하고 `verification_ready -> verification_in_progress`로 전환했다.
+- 2026-08-07: iOS QA Agent가 Review 5개 상태, 동일 UUID·STEP snapshot, 생성·임시/최종
+  저장 실패 보존, 완료 Recipe 수정·삭제 실패 재시도와 전체 XCTest 72/72를 독립 확인했다.
+  차단 결함이 없어 `verification_in_progress -> verification_passed`로 전환하고
+  Development Lead Agent / Completion Role에 인계했다.
 - AI 생성은 기존 Mock 경계를 사용하고 실제 Backend provider·네트워크 연동을 선행하지 않는다.
 - Cooking Log에서 전달된 동일 `[StepPreview]`와 `RecipeRecord.id`를 유지하며, 생성·저장·
   삭제 실패가 기존 입력이나 저장 원본을 변경하지 않게 한다.
@@ -90,14 +96,14 @@ qa_to: .ai_project/qa/T-20260805-005_ios-ai-review-recipe-editing-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 iOS QA Agent / Verification Role이야.
-Task T-20260805-005 구현본의 독립 검증을 진행해.
+너는 Development Lead Agent / Completion Role이야.
+Task T-20260805-005 구현본의 독립 검증이 완료된 상태야.
 
-- 현재 상태: `verification_ready`
+- 현재 상태: `verification_passed`
 - 구현 기준: 최신 `origin/develop@02e6d80` 정렬 예정 구현 브랜치
 - 자체 검증: 전체 XCTest 72/72, build, iPhone 15 Light/Dark Review
-- 시작 절차: 구현 commit 고정 별도 QA worktree 생성, Task lock 획득,
-  `verification_ready -> verification_in_progress`
+- QA 결과: `PASS_WITH_RISK`, 차단 결함 없음
+- 독립 증빙: 전체 XCTest 72/72, Light/Dark Review 화면, Detail 수정·삭제 실패 보존
 - 필수 AI Review 상태: `REVIEW-PROCESSING`, `REVIEW-EDITABLE`,
   `REVIEW-GENERATION-ERROR`, `REVIEW-SAVING`, `REVIEW-SAVE-ERROR`
 - 데이터 계약: 같은 `RecipeRecord.id`와 원본 `[StepPreview]`, 편집 draft 전체 보존,
@@ -111,5 +117,7 @@ Task T-20260805-005 구현본의 독립 검증을 진행해.
 - 기준 문서: `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`,
   `apps/ios/docs/NAVIGATION.md`
 - 허용 경로: Task frontmatter의 `allowed_paths`
-- 완료 조건: 전체 XCTest·build, Review 5개 상태와 Detail 수정·삭제 Light/Dark·작은 화면을
-  독립 확인하고 QA 보고서·판정과 다음 인계를 기록해.
+- 잔여 위험: 실제 Backend AI·네트워크, Audio/전역 장애, Accessibility 3·VoiceOver·
+  작은 화면 통합은 승인된 후속 Task 범위
+- 완료 조건: 구현·QA 보고서를 검토하고 Product Owner 완료·병합 승인 절차로 진행해.
+  iOS QA는 Task `done`, commit, push와 merge를 수행하지 않았어.
