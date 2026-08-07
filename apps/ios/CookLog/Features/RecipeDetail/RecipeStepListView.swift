@@ -19,9 +19,9 @@ struct RecipeStepListView: View {
                             Text("\(step.order)")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(HomeTheme.textOnAccent)
                                 .frame(width: 28, height: 28)
-                                .background(Circle().fill(Color.accentColor))
+                                .background(Circle().fill(HomeTheme.accent))
 
                             Text(step.text)
                                 .font(.body)

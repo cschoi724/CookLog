@@ -3,12 +3,12 @@
 이 문서는 CookLog iOS의 초기 Mock Core MVP 이정표와 구현 이력을 보존하고, 현재 첫 공개 출시 Task의 진입점을 안내합니다. 현재 실행 범위는 이 문서의 과거 M0~M8 체크리스트가 아니라 배정된 `.ai_project/tasks/`와 최신 제품 Source of Truth를 따릅니다.
 
 작성일: 2026-06-19
-최종 업데이트: 2026-08-06
+최종 업데이트: 2026-08-07
 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, AI Review·완료 Recipe 패키지 구현 승인
+- 상태: Mock Core MVP 조건부 통과, AI Review·완료 Recipe 완료 리뷰 통과·Product Owner 승인 대기
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -38,7 +38,7 @@
 1. `T-20260805-002` 로컬 도메인·SwiftData migration·draft 생명주기 — `done`, PR #77 merge `3d1d012`
 2. `T-20260805-003` Home·전체 보기·검색·상태별 routing — `done`, PR #86 merge `9457133`
 3. `T-20260805-004` Cooking Log·STEP Preview 자동 저장·오류 상태 — `done`, Product Owner 완료·PR #90 squash merge 승인
-4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `approved`, iOS Agent 구현 인계
+4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `completion_review`, Lead PASS_WITH_RISK·PR #94 병합 승인 대기
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `proposed`
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `proposed`
 7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `proposed`
@@ -94,6 +94,22 @@
 - [x] iPhone 15 Light/Dark `LOG-STEP-ADDED`·`LOG-ERROR`와 전체 XCTest 62/62 재확인
 - [x] iOS QA 독립 재검증 `PASS_WITH_RISK`, 금지 시스템 색상 0건 확인
 - [x] 최신 develop 통합·PR #90 iOS build/XCTest checks와 Development Lead 완료 리뷰 통과
+
+### T-20260805-005 구현 결과
+
+- [x] `REVIEW-PROCESSING`, `REVIEW-EDITABLE`, `REVIEW-GENERATION-ERROR`,
+  `REVIEW-SAVING`, `REVIEW-SAVE-ERROR` 구현
+- [x] 같은 `RecipeRecord.id`와 동일 `[StepPreview]` snapshot 검증·Mock AI 생성
+- [x] 생성 실패 시 STEP 보존·snapshot 잠금 해제, 자동 재시도 금지
+- [x] 제목·재료·양·예상 시간·메모와 독립 STEP 추가·삭제·Undo·순서 이동
+- [x] 수동 임시 저장, 마지막 성공 snapshot과 현재 편집본 분리, 이탈 경고·복원
+- [x] 제목·최소 1개 STEP·재료명 없는 양 검증과 저장 중 중복 입력 차단
+- [x] 저장 성공 후에만 동일 UUID completed 전환, 실패 시 편집본·영속 원본 보존
+- [x] Recipe Detail 조회·메뉴·완료 Recipe 수정·영구 삭제 확인·실패 재시도
+- [x] SwiftData 동일 UUID 완료 조회와 실패 보존 회귀 포함 전체 XCTest 72/72·build 통과
+- [x] iPhone 15 iOS 17.2 기록 → STEP → Review 진입과 Light/Dark 토큰 렌더링 확인
+- [x] iOS QA 독립 전체 XCTest 72/72와 Review·Detail 실패 보존 반례 통과
+- [x] 최신 develop 포함·PR #94 iOS build/XCTest checks와 Development Lead 완료 리뷰 통과
 
 ## 현재 개발 원칙
 

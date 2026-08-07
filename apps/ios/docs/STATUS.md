@@ -1,30 +1,45 @@
 # CookLog iOS Status
 
-최종 업데이트: 2026-08-06
+최종 업데이트: 2026-08-07
 
 ## 현재 상태
 
-- 상태: T-20260805-004 done, T-20260805-005 AI Review·Recipe 구현 승인
+- 상태: T-20260805-005 독립 QA·Development Lead 완료 리뷰 통과, Product Owner 승인 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~004 done, T-20260805-005 approved
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~004 done, T-20260805-005 completion_review
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS Agent가 `T-20260805-005` AI Review·완료 Recipe 편집·삭제 구현과 자체 검증
-2. `T-20260805-006~007` 화면·상태 패키지 순차 구현
+1. Product Owner가 `T-20260805-005` 완료 리뷰와 PR #94 병합을 승인
+2. T-005가 공용 `develop`에서 `done`이 되면 `T-20260805-006~007` 화면·상태 패키지 순차 구현
 3. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 검증
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- iOS QA가 Review 5개 상태, 동일 UUID·STEP snapshot, 생성·저장·수정·삭제 실패 보존과
+  전체 XCTest 72/72를 독립 확인해 `PASS_WITH_RISK`로 판정했습니다.
+- Development Lead가 최신 develop 포함, 허용 경로·잔여 위험과 PR #94의 iOS build·
+  XCTest checks 통과를 확인해 완료 리뷰를 `PASS_WITH_RISK`로 확정했습니다. Product Owner
+  승인 전 PR은 Draft, T-006은 `proposed`로 유지합니다.
+- T-005에서 Mock AI 생성의 processing·editable·generation error와 final saving·save error
+  상태를 같은 `RecipeRecord.id`·동일 STEP snapshot에 연결했습니다. 생성 실패는 snapshot
+  잠금을 해제하고, 저장 실패는 화면 편집본과 마지막 영속 snapshot을 모두 보존합니다.
+- Review 필드·재료·STEP 추가/삭제/Undo/위아래 이동, 수동 임시 저장, 이탈 확인과 마지막
+  성공 snapshot 복원을 구현했습니다. 완료 Recipe는 AI 재호출 없이 같은 폼에서 수정하며
+  Detail 메뉴에서 복구 불가 영구 삭제와 실패 재시도를 제공합니다.
+- SwiftData 동일 UUID 완료 전환·완료 조회, 임시/최종 저장 실패, 완료 수정 실패와 삭제 실패
+  보존 회귀를 포함한 전체 XCTest 72/72와 build를 iPhone 15 iOS 17.2에서 통과했습니다.
+- Simulator에서 Home → 기록 → STEP 자동 저장 → AI Review 진입·제목 편집과 Light/Dark
+  CookLog 토큰 렌더링을 확인했습니다. 화면 증빙은 T-005 보고서에 기록했습니다.
 - Product Owner가 T-005 별도 실행을 승인했습니다. Mock AI 기반 Review 5개 상태,
   편집·임시 저장·이탈 복원과 완료 Recipe 수정·삭제, 실패 시 입력·원본 보존을 iOS Agent에
   인계했습니다. 실제 Backend AI와 T-006~008은 후속 범위로 유지합니다.

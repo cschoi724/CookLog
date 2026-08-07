@@ -2,6 +2,29 @@
 
 이 문서는 iOS 앱 개발 변경 기록을 관리합니다.
 
+## 2026-08-07
+
+- `T-20260805-005` 독립 QA에서 Review 5개 상태, 동일 UUID·STEP snapshot과 생성·저장·
+  수정·삭제 실패 보존, 전체 XCTest 72/72를 확인해 `PASS_WITH_RISK`로 판정했습니다.
+- Development Lead가 최신 develop 포함, 허용 경로·잔여 위험과 PR #94의 iOS build·
+  XCTest checks 통과를 확인해 완료 리뷰를 `PASS_WITH_RISK`로 확정했습니다. Product Owner
+  완료·병합 승인 전 PR은 Draft로 유지합니다.
+- `T-20260805-005`에서 같은 `RecipeRecord.id`와 동일 `[StepPreview]`를 검증한 뒤 Mock AI
+  생성 성공 시에만 `draft_ai_review`로 전환하고, 실패 시 STEP과 snapshot 잠금을 복구하는
+  `GenerateAIReviewDraftUseCase`를 추가했습니다.
+- AI Review의 5개 Core Loop 상태, 모든 필드·재료·STEP 편집, STEP 추가·삭제·Undo·순서
+  이동, 수동 임시 저장과 마지막 성공 snapshot 기준 이탈 확인을 구현했습니다.
+- final 저장은 동일 UUID completed 전환 성공 후에만 Recipe Detail로 이동하며, 임시·최종
+  저장 실패 시 현재 편집값과 영속 원본을 보존하고 실패한 동작만 다시 시도합니다.
+- Recipe Detail의 완료 Recipe 메뉴, AI 재호출 없는 동일 폼 수정, 복구 불가 삭제 확인,
+  삭제 중·삭제 완료·삭제 실패 보존과 재시도를 구현했습니다.
+- 확정 CookLog `bg/base|subtle|elevated`, accent·success·error 토큰과 SwiftUI 네이티브
+  NavigationStack·Menu·Button·TextField·TextEditor·ProgressView를 유지했습니다.
+- 동일 snapshot 거부, 생성 실패 잠금 해제, 임시/최종 저장 실패, 완료 수정·삭제 실패,
+  SwiftData 동일 UUID 완료 조회 회귀를 포함한 전체 XCTest 72/72와 build를 통과했습니다.
+- iPhone 15 iOS 17.2에서 기록 → STEP 자동 저장 → AI Review 진입·제목 편집과 Light/Dark
+  화면을 확인해 iOS QA Agent에 `verification_ready`로 인계했습니다.
+
 ## 2026-08-06
 
 - Product Owner가 `T-20260805-005` AI Review·완료 Recipe 편집·삭제 구현을 별도

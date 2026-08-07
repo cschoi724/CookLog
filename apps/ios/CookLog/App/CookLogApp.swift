@@ -57,12 +57,15 @@ struct CookLogApp: App {
                                 path.append(.aiReview(recordID: recordID, stepPreviews: stepPreviews))
                             }
                         )
-                    case .aiReview(_, let stepPreviews):
+                    case .aiReview(let recordID, let stepPreviews):
                         AIReviewView(
                             viewModel: AIReviewViewModel(
+                                recordID: recordID,
                                 stepPreviews: stepPreviews,
-                                generateRecipeDraftUseCase: environment.generateRecipeDraftUseCase,
-                                saveRecipeUseCase: environment.saveRecipeUseCase
+                                fetchRecipeRecordUseCase: environment.fetchRecipeRecordUseCase,
+                                generateAIReviewDraftUseCase: environment.generateAIReviewDraftUseCase,
+                                saveAIReviewDraftUseCase: environment.saveAIReviewDraftUseCase,
+                                completeRecipeRecordUseCase: environment.completeRecipeRecordUseCase
                             ),
                             onSaved: { recipe in
                                 homeRefreshToken += 1
@@ -73,10 +76,32 @@ struct CookLogApp: App {
                         RecipeDetailView(
                             viewModel: RecipeDetailViewModel(
                                 recipeID: recipeID,
-                                fetchRecipeUseCase: environment.fetchRecipeUseCase
+                                fetchRecipeUseCase: environment.fetchRecipeUseCase,
+                                deleteRecipeUseCase: environment.deleteRecipeUseCase
                             ),
+                            onEdit: { recipe in
+                                path.append(.recipeEditor(recipe.id))
+                            },
+                            onDeletionCommitted: {
+                                homeRefreshToken += 1
+                            },
+                            onReturnHome: {
+                                path = []
+                            },
                             onStartAudioGuide: { recipe in
                                 path.append(.audioPlayer(recipe.id))
+                            }
+                        )
+                    case .recipeEditor(let recipeID):
+                        AIReviewView(
+                            viewModel: AIReviewViewModel(
+                                recipeID: recipeID,
+                                fetchRecipeUseCase: environment.fetchRecipeUseCase,
+                                saveRecipeUseCase: environment.saveRecipeUseCase
+                            ),
+                            onSaved: { recipe in
+                                homeRefreshToken += 1
+                                path = [.recipeDetail(recipe.id)]
                             }
                         )
                     case .audioPlayer(let recipeID):

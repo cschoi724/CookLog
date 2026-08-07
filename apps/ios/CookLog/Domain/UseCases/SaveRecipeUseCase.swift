@@ -14,6 +14,7 @@ struct SaveRecipeUseCase {
 
 enum RecipeRecordUseCaseError: Error, Equatable {
     case recordNotFound(UUID)
+    case stepPreviewSnapshotMismatch
 }
 
 struct CreateRecipeRecordUseCase {
@@ -42,6 +43,69 @@ struct FetchRecipeRecordsUseCase {
 
     func execute() async throws -> [RecipeRecord] {
         try await repository.fetchRecords()
+    }
+}
+
+struct FetchRecipeRecordUseCase {
+    private let repository: RecipeRecordRepository
+
+    init(repository: RecipeRecordRepository) {
+        self.repository = repository
+    }
+
+    func execute(id: UUID) async throws -> RecipeRecord? {
+        try await repository.fetchRecord(id: id)
+    }
+}
+
+struct GenerateAIReviewDraftUseCase {
+    private let repository: RecipeRecordRepository
+    private let recipeGenerationRepository: RecipeGenerationRepository
+
+    init(
+        repository: RecipeRecordRepository,
+        recipeGenerationRepository: RecipeGenerationRepository
+    ) {
+        self.repository = repository
+        self.recipeGenerationRepository = recipeGenerationRepository
+    }
+
+    func execute(
+        recordID: UUID,
+        stepPreviews: [StepPreview],
+        requestID: UUID = UUID(),
+        updatedAt: Date = Date()
+    ) async throws -> RecipeDraft {
+        var record = try await requiredRecord(id: recordID, repository: repository)
+        guard record.stepPreviews == stepPreviews else {
+            throw RecipeRecordUseCaseError.stepPreviewSnapshotMismatch
+        }
+        try record.beginAIProcessing(requestID: requestID, updatedAt: updatedAt)
+        try await repository.saveRecord(record)
+
+        do {
+            let draft = try await recipeGenerationRepository.generateRecipeDraft(
+                from: .stepPreviews(stepPreviews)
+            )
+            var lockedRecord = try await requiredRecord(id: recordID, repository: repository)
+            try lockedRecord.finishAIProcessing(with: draft, updatedAt: updatedAt)
+            try await repository.saveRecord(lockedRecord)
+            return draft
+        } catch {
+            await unlockSnapshotAfterFailure(recordID: recordID, updatedAt: updatedAt)
+            throw error
+        }
+    }
+
+    private func unlockSnapshotAfterFailure(recordID: UUID, updatedAt: Date) async {
+        guard var record = try? await repository.fetchRecord(id: recordID),
+              record.lifecycleState == .draftStepPreview,
+              record.isAISnapshotLocked else {
+            return
+        }
+
+        try? record.failAIProcessing(updatedAt: updatedAt)
+        try? await repository.saveRecord(record)
     }
 }
 

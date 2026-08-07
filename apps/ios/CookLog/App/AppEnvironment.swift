@@ -5,6 +5,7 @@ struct AppEnvironment {
     let fetchRecipesUseCase: FetchRecipesUseCase
     let fetchRecipeUseCase: FetchRecipeUseCase
     let fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase
+    let fetchRecipeRecordUseCase: FetchRecipeRecordUseCase
     let createRecipeRecordUseCase: CreateRecipeRecordUseCase
     let deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase
     let saveStepPreviewDraftUseCase: SaveStepPreviewDraftUseCase
@@ -12,6 +13,9 @@ struct AppEnvironment {
     let deleteRecipeUseCase: DeleteRecipeUseCase
     let addStepPreviewUseCase: AddStepPreviewUseCase
     let generateRecipeDraftUseCase: GenerateRecipeDraftUseCase
+    let generateAIReviewDraftUseCase: GenerateAIReviewDraftUseCase
+    let saveAIReviewDraftUseCase: SaveAIReviewDraftUseCase
+    let completeRecipeRecordUseCase: CompleteRecipeRecordUseCase
     let playRecipeStepUseCase: PlayRecipeStepUseCase
     let speechRecognitionService: SpeechRecognitionService
     let audioGuideService: AudioGuideService
@@ -30,6 +34,7 @@ struct AppEnvironment {
             fetchRecipesUseCase: FetchRecipesUseCase(recipeRepository: recipeRepository),
             fetchRecipeUseCase: FetchRecipeUseCase(recipeRepository: recipeRepository),
             fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase(repository: recipeRecordRepository),
+            fetchRecipeRecordUseCase: FetchRecipeRecordUseCase(repository: recipeRecordRepository),
             createRecipeRecordUseCase: CreateRecipeRecordUseCase(repository: recipeRecordRepository),
             deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase(repository: recipeRecordRepository),
             saveStepPreviewDraftUseCase: SaveStepPreviewDraftUseCase(repository: recipeRecordRepository),
@@ -37,6 +42,12 @@ struct AppEnvironment {
             deleteRecipeUseCase: DeleteRecipeUseCase(recipeRepository: recipeRepository),
             addStepPreviewUseCase: AddStepPreviewUseCase(),
             generateRecipeDraftUseCase: GenerateRecipeDraftUseCase(recipeGenerationRepository: recipeGenerationRepository),
+            generateAIReviewDraftUseCase: GenerateAIReviewDraftUseCase(
+                repository: recipeRecordRepository,
+                recipeGenerationRepository: recipeGenerationRepository
+            ),
+            saveAIReviewDraftUseCase: SaveAIReviewDraftUseCase(repository: recipeRecordRepository),
+            completeRecipeRecordUseCase: CompleteRecipeRecordUseCase(repository: recipeRecordRepository),
             playRecipeStepUseCase: PlayRecipeStepUseCase(audioGuideService: audioGuideService),
             speechRecognitionService: speechRecognitionService,
             audioGuideService: audioGuideService
@@ -59,6 +70,7 @@ struct AppEnvironment {
             fetchRecipesUseCase: FetchRecipesUseCase(recipeRepository: recipeRepository),
             fetchRecipeUseCase: FetchRecipeUseCase(recipeRepository: recipeRepository),
             fetchRecipeRecordsUseCase: FetchRecipeRecordsUseCase(repository: recipeRecordRepository),
+            fetchRecipeRecordUseCase: FetchRecipeRecordUseCase(repository: recipeRecordRepository),
             createRecipeRecordUseCase: CreateRecipeRecordUseCase(repository: recipeRecordRepository),
             deleteRecipeRecordUseCase: DeleteRecipeRecordUseCase(repository: recipeRecordRepository),
             saveStepPreviewDraftUseCase: SaveStepPreviewDraftUseCase(repository: recipeRecordRepository),
@@ -66,6 +78,12 @@ struct AppEnvironment {
             deleteRecipeUseCase: DeleteRecipeUseCase(recipeRepository: recipeRepository),
             addStepPreviewUseCase: AddStepPreviewUseCase(),
             generateRecipeDraftUseCase: GenerateRecipeDraftUseCase(recipeGenerationRepository: recipeGenerationRepository),
+            generateAIReviewDraftUseCase: GenerateAIReviewDraftUseCase(
+                repository: recipeRecordRepository,
+                recipeGenerationRepository: recipeGenerationRepository
+            ),
+            saveAIReviewDraftUseCase: SaveAIReviewDraftUseCase(repository: recipeRecordRepository),
+            completeRecipeRecordUseCase: CompleteRecipeRecordUseCase(repository: recipeRecordRepository),
             playRecipeStepUseCase: PlayRecipeStepUseCase(audioGuideService: audioGuideService),
             speechRecognitionService: speechRecognitionService,
             audioGuideService: audioGuideService

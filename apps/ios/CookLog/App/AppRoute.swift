@@ -5,6 +5,7 @@ enum AppRoute: Hashable {
     case cookingLog(recordID: UUID, stepPreviews: [StepPreview])
     case aiReview(recordID: UUID, stepPreviews: [StepPreview])
     case recipeDetail(UUID)
+    case recipeEditor(UUID)
     case audioPlayer(UUID)
 
     init(_ destination: HomeRecordDestination) {
