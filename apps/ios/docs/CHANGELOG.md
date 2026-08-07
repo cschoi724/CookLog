@@ -4,6 +4,13 @@
 
 ## 2026-08-07
 
+- `T-20260805-007` 재작업에서 주입형 Home Network Error, 로컬 기능 유지 안내와
+  실패 행동 자동 재실행 금지 계약을 구현했습니다.
+- 문의 초안을 `SupportMailDraft`로 분리해 앱 버전 기본 포함, 진단 opt-in과 사용자 콘텐츠
+  비첨부를 실제 `mailto:` URL에 반영하고 관련 계약 테스트를 추가했습니다.
+- 전체 XCTest 82/82와 build, 390×844·375×667 Light/Dark App Info·Network Error를
+  확인해 `verification_ready`로 독립 iOS QA에 재인계했습니다.
+
 - `T-20260805-007` 독립 QA에서 Home Network Error 누락, 문의 진단 opt-in의 실제 초안
   미반영과 viewport 증거 부재를 확인해 `FAIL`로 판정했습니다. Product Owner가 Mock
   Network Error·문의 초안 모델·4 viewport 증빙의 `WP-R1~R3` 재작업을 승인했습니다.

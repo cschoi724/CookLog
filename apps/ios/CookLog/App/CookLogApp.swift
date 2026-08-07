@@ -10,6 +10,7 @@ struct CookLogApp: App {
 
     @MainActor
     init() {
+        _path = State(initialValue: Self.launchesWithAppInfo ? [.appInfo] : [])
         do {
             let modelContainer = try ModelContainer(
                 for: PersistentRecipe.self,
@@ -35,6 +36,9 @@ struct CookLogApp: App {
                     onShowAppInfo: {
                         path.append(.appInfo)
                     },
+                    networkErrorState: Self.launchesWithNetworkError
+                        ? HomeNetworkErrorState()
+                        : nil,
                     onOpenRecord: { destination in
                         path.append(AppRoute(destination))
                     }
@@ -123,6 +127,14 @@ struct CookLogApp: App {
             }
             .modelContainer(modelContainer)
         }
+    }
+
+    private static var launchesWithNetworkError: Bool {
+        ProcessInfo.processInfo.arguments.contains("--cooklog-home-network-error")
+    }
+
+    private static var launchesWithAppInfo: Bool {
+        ProcessInfo.processInfo.arguments.contains("--cooklog-app-info")
     }
 
     private func makeHomeViewModel() -> HomeViewModel {

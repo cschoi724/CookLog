@@ -1,5 +1,12 @@
 import SwiftUI
 
+struct HomeNetworkErrorState: Equatable {
+    let title = "인터넷 연결을 확인해주세요"
+    let message = "실패한 온라인 행동은 자동으로 다시 실행하지 않았어요. 진행 기록·완료 레시피·검색·버튼 Audio Guide는 계속 사용할 수 있습니다."
+    let retryTitle = "연결 다시 확인"
+    let automaticallyRetriesFailedAction = false
+}
+
 struct HomeView: View {
     @StateObject private var viewModel: HomeViewModel
     @State private var deletionCandidate: RecipeRecord?
@@ -8,18 +15,24 @@ struct HomeView: View {
     private let onShowAllRecipes: () -> Void
     private let onShowAppInfo: () -> Void
     private let onOpenRecord: (HomeRecordDestination) -> Void
+    private let networkErrorState: HomeNetworkErrorState?
+    private let onRecheckNetwork: () -> Void
 
     init(
         viewModel: HomeViewModel,
         refreshToken: Int = 0,
         onShowAllRecipes: @escaping () -> Void,
         onShowAppInfo: @escaping () -> Void = {},
+        networkErrorState: HomeNetworkErrorState? = nil,
+        onRecheckNetwork: @escaping () -> Void = {},
         onOpenRecord: @escaping (HomeRecordDestination) -> Void
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.refreshToken = refreshToken
         self.onShowAllRecipes = onShowAllRecipes
         self.onShowAppInfo = onShowAppInfo
+        self.networkErrorState = networkErrorState
+        self.onRecheckNetwork = onRecheckNetwork
         self.onOpenRecord = onOpenRecord
     }
 
@@ -28,6 +41,7 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 24) {
                 hero
                 startButton
+                networkError
                 creationError
                 preservationNote
                 reviewReadyBanner
@@ -81,6 +95,28 @@ struct HomeView: View {
             }
         } message: {
             Text(viewModel.deletionErrorMessage ?? "기록은 그대로 보존됩니다.")
+        }
+    }
+
+    @ViewBuilder
+    private var networkError: some View {
+        if let networkErrorState {
+            VStack(alignment: .leading, spacing: 10) {
+                Label(networkErrorState.title, systemImage: "wifi.exclamationmark")
+                    .font(.headline)
+                    .foregroundStyle(HomeTheme.error)
+                Text(networkErrorState.message)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button(networkErrorState.retryTitle, action: onRecheckNetwork)
+                    .font(.subheadline.weight(.semibold))
+                    .frame(minHeight: 44)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(HomeTheme.error.opacity(0.1), in: RoundedRectangle(cornerRadius: 16))
+            .accessibilityElement(children: .contain)
         }
     }
 

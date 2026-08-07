@@ -4,7 +4,7 @@
 검증일: 2026-08-07  
 검증 Role: iOS QA Agent / Verification Role  
 검증 기준: `origin/develop@a173953` + 구현 worktree 변경  
-최종 판정: **FAIL — `rework_requested`**
+최종 판정: **PASS_WITH_RISK — 재작업 독립 재검증 통과**
 
 ## 검증 환경과 통과 범위
 
@@ -51,3 +51,35 @@
 빌드와 79개 회귀는 통과했으나 필수 Home Network Error 상태가 누락됐고 문의 동의 결과가
 실제 메일 초안 경계에 반영되지 않는다. **FAIL**로 판정하고 Development Lead Agent에
 재작업 범위 조율을 요청한다.
+
+## 재작업 독립 재검증
+
+- 재검증 기준: `origin/develop@596d779` + 재작업 worktree 변경
+- 독립 전체 XCTest: **82/82 passed**, failure·skip 0
+  - log: `/var/folders/2_/vyvgp5h54fg0vy8j133f4mph0000gn/T/CookLog-XCTest/20260807-161213-67301/xcodebuild.log`
+  - xcresult: `/var/folders/2_/vyvgp5h54fg0vy8j133f4mph0000gn/T/CookLog-XCTest/20260807-161213-67301/CookLogTests.xcresult`
+- iPhone 15 iOS 17.2 Debug build: 성공
+- `git diff --check`: 통과
+
+### 결함 해소
+
+- `QA-HIGH-807007-001`: **해소**. `HomeNetworkErrorState`가 영향 범위와 명시적
+  `연결 다시 확인`을 제공한다. callback은 네트워크 재확인만 전달하고 실패했던 온라인
+  action을 자동 호출하지 않으며 관련 테스트가 통과했다.
+- `QA-HIGH-807007-002`: **해소**. `SupportMailDraft`가 앱 버전을 기본 포함하고 진단
+  opt-in일 때만 OS 버전·오류 화면/시각·비콘텐츠 진단 범주를 body에 추가한다. 사용자
+  콘텐츠 비포함과 mailto subject/body 구성 테스트가 통과했다.
+- `QA-MEDIUM-807007-003`: **해소**. App Info와 Home Network Error를 390×844·375×667
+  Light/Dark 8개 조합으로 확인했다. 텍스트·CTA clipping이 없고 작은 화면의 하단 콘텐츠는
+  ScrollView로 도달 가능하며 핵심 버튼은 44pt 이상이다.
+
+### 잔여 위험
+
+- 실제 문의 주소·개인정보처리방침·이용약관 문안과 공개 URL은 출시 통합 전 확정해야 한다.
+- 실제 네트워크 감시·Apple STT·Backend AI 연결은 후속 Task 범위다.
+
+## 재검증 최종 판정
+
+기존 HIGH 2건과 MEDIUM 1건이 모두 해소됐고 전체 회귀와 build가 통과했다. 승인된 후속
+운영 값·실서비스 연결 위험을 남겨 **PASS_WITH_RISK**로 판정하며 Development Lead Agent /
+Completion Role에 완료 검토를 인계한다.

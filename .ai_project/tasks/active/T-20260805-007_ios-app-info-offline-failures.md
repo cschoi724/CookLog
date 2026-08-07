@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-007
 title: iOS 앱 정보·권한·오프라인·서비스 장애 상태 구현
-status: approved
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 첫 공개 출시에서 법적·데이터 안내와 서비스 실패 시 데이터 보존 경계를 제공해야 한다.
@@ -10,9 +10,9 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: iOS Agent
-target_role: Execution Role
-required_capabilities: [ios_implementation, swiftui, error_handling]
+target_agent: Development Lead Agent
+target_role: Completion Role
+required_capabilities: [development_child_completion]
 depends_on: [T-20260805-006]
 blocks: [T-20260805-008, T-20260728-003]
 parallel_group:
@@ -98,32 +98,44 @@ qa_to: .ai_project/qa/T-20260805-007_ios-app-info-offline-failures-qa.md
   `WP-R3` 390×844·375×667 Light/Dark 시각 증빙으로 제한했다. Product Owner가 세
   패키지의 재작업을 승인해 `rework_requested -> approved`로 전환하고 iOS Agent에
   재인계한다. 실제 네트워크 감시와 운영 문의·법적 값은 계속 제외한다.
+- 2026-08-07: iOS Agent가 `origin/develop@596d779` 기반으로 `WP-R1~R3`을 재작업했다.
+  주입형 Home Network Error와 자동 재실행 금지 계약, 실제 메일 초안 모델과 진단 opt-in,
+  390×844·375×667 Light/Dark App Info·Network Error 증빙을 추가했다.
+- 2026-08-07: iPhone 15 iOS 17.2 build, 전체 XCTest 82/82와 `git diff --check`를 통과해
+  lock을 해제하고 `in_progress -> verification_ready`로 동일 iOS QA Agent에 재인계했다.
+- 2026-08-07: iOS QA Agent가 독립 전체 XCTest 82/82, Debug build와 8개 viewport를
+  확인해 `QA-HIGH-807007-001~002`, `QA-MEDIUM-807007-003` 해소를 판정했다. 운영 값과
+  실서비스 연결을 후속 위험으로 남겨 `PASS_WITH_RISK`, `verification_passed`로
+  Development Lead Agent에 인계했다.
+- 2026-08-07: Development Lead Agent가 `origin/develop@596d779` 기준 재작업 diff,
+  허용 경로, 구현·QA 보고서, 독립 XCTest 82/82, Debug build와 8개 viewport를 직접
+  검토했다. QA 결함 3건 해소와 성공 기준 충족을 확인해 완료 리뷰를 `PASS_WITH_RISK`로
+  수용하고 `verification_passed -> completion_review`로 전환했다. 실제 문의 주소·법적
+  문안·공개 URL과 실제 네트워크·STT·Backend 연결은 출시 통합·후속 Task 위험으로
+  유지한다. 재작업 브랜치에는 아직 PR이 없어 required checks와 mergeability 확인은
+  Product Owner의 완료·병합 승인 후 커밋·푸시·PR 생성 단계에서 수행한다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 iOS Agent / Execution Role이야.
-Task T-20260805-007의 승인된 재작업을 진행해줘.
+너는 Product Owner야.
+Task T-20260805-007의 완료와 develop 통합 여부를 승인해줘.
 
-- 현재 상태: `approved`
+- 현재 상태: `completion_review`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `a173953`
-- 다음에 해야 할 일: 최신 `origin/develop`을 포함한 전용 worktree에서 lock을 획득하고
-  `WP-R1~R3`만 수정한 뒤 기존 통과 범위와 함께 자체 검증해.
+- 기준 상태 SHA: `596d779`
+- 작업 브랜치: `task/T-20260805-007-rework-ios-app-info`
+- 다음에 해야 할 일: QA와 Lead의 `PASS_WITH_RISK` 및 잔여 위험을 수용할지 판단하고,
+  완료·병합을 승인하면 변경을 커밋·푸시한 뒤 `develop` 대상 PR을 생성해 `ios-build`,
+  `ios-xctest`, mergeability를 확인하고 squash merge해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260805-007_ios-app-info-offline-failures-report.md`,
   `.ai_project/qa/T-20260805-007_ios-app-info-offline-failures-qa.md`
-- 재작업 `WP-R1`: 실제 네트워크 감시 없이 주입 가능한 Home Network Error 상태,
-  영향 안내, `연결 다시 확인`, 로컬 기능 유지와 실패 행동 자동 재실행 금지 테스트
-- 재작업 `WP-R2`: 메일 초안 모델·URL 구성 경계를 분리하고 앱 버전 기본 포함,
-  OS·오류 화면/시각·비콘텐츠 진단 opt-in, 사용자 콘텐츠 비포함을 각각 검증
-- 재작업 `WP-R3`: 핵심 App Info와 Home Network Error를 390×844·375×667 Light/Dark
-  4종에서 확인하고 44pt·스크롤 도달 증빙을 report에 남김
-- 보존: App Info 11개 상태, 법적 URL·문의 주소 nil placeholder, 데이터 보관 안내,
-  기존 STT·AI·로컬 저장 실패 데이터 보존과 전체 XCTest 79/79 통과 범위
-- 남은 리스크: 실제 문의 주소·법적 문안·공개 URL은 출시 통합 전 확정 필요
-- 차단/결정 필요: 허용 경로 밖 수정이나 실제 운영 값이 필요하면 중단하고 Lead에 보고
-- 완료 시: report와 iOS 문서를 갱신하고 lock을 해제한 뒤 `verification_ready`로 전환해
-  동일 iOS QA Agent / Verification Role에 독립 재검증을 요청해.
+- 변경/검토 대상: Home Network Error, SupportMailDraft, App Info 11개 상태, 8개 viewport
+- 남은 리스크: 실제 문의 주소·법적 문안·공개 URL과 실제 네트워크·STT·Backend 연결은
+  출시 통합·후속 Task에서 확정 필요
+- 차단/결정 필요: 재작업 변경은 아직 커밋·푸시되지 않았고 PR도 없다. 완료 및 PR 병합은
+  Product Owner 승인 필요
+- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.

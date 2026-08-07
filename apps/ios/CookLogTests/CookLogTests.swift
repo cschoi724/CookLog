@@ -34,6 +34,50 @@ final class CookLogTests: XCTestCase {
         XCTAssertEqual(Set(states).count, 11)
     }
 
+    func testHomeNetworkErrorRecheckDoesNotAutomaticallyRetryFailedAction() {
+        let state = HomeNetworkErrorState()
+
+        XCTAssertEqual(state.retryTitle, "연결 다시 확인")
+        XCTAssertFalse(state.automaticallyRetriesFailedAction)
+        XCTAssertTrue(state.message.contains("진행 기록"))
+        XCTAssertTrue(state.message.contains("완료 레시피"))
+        XCTAssertTrue(state.message.contains("검색"))
+        XCTAssertTrue(state.message.contains("버튼 Audio Guide"))
+    }
+
+    func testSupportMailDraftIncludesOnlyAppVersionByDefault() throws {
+        let draft = SupportMailDraft(
+            recipient: "support@example.com",
+            appVersion: "1.2.3",
+            includeDiagnostics: false,
+            operatingSystemVersion: "iOS Test"
+        )
+        let url = try XCTUnwrap(draft.mailtoURL)
+
+        XCTAssertEqual(url.scheme, "mailto")
+        XCTAssertTrue(url.absoluteString.hasPrefix("mailto:support@example.com?"))
+        XCTAssertTrue(draft.body.contains("앱 버전: CookLog 1.2.3"))
+        XCTAssertFalse(draft.body.contains("OS 버전: iOS Test"))
+        XCTAssertFalse(draft.body.contains("오류 발생 화면·시각:"))
+        XCTAssertTrue(draft.body.contains("자동 첨부되지 않았습니다"))
+    }
+
+    func testSupportMailDraftAddsNonContentDiagnosticsOnlyAfterOptIn() {
+        let draft = SupportMailDraft(
+            recipient: "support@example.com",
+            appVersion: "1.2.3",
+            includeDiagnostics: true,
+            operatingSystemVersion: "iOS Test"
+        )
+
+        XCTAssertTrue(draft.body.contains("OS 버전: iOS Test"))
+        XCTAssertTrue(draft.body.contains("오류 발생 화면·시각: 사용자가 직접 작성"))
+        XCTAssertTrue(draft.body.contains("비콘텐츠 진단 범주: 사용자 선택으로 포함"))
+        XCTAssertFalse(draft.body.contains("레시피 내용:"))
+        XCTAssertFalse(draft.body.contains("STT 본문:"))
+        XCTAssertFalse(draft.body.contains("검색어:"))
+    }
+
     func testRecipeRecordKeepsIdentifierAcrossDraftAndCompletion() throws {
         let recordID = UUID()
         let step = StepPreview(order: 1, transcript: "두부를 구웠어")
