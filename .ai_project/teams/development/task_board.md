@@ -39,7 +39,7 @@
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
 | `T-20260805-004` | `done` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | - | `T-20260805-003` 완료 | Product Owner 완료·PR #90 squash merge 승인 |
-| `T-20260805-005` | `approved` | iOS | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `T-20260805-004` 완료 | Product Owner 별도 실행 승인·clean worktree lock 후 구현 |
+| `T-20260805-005` | `verification_ready` | iOS | AI Review·완료 Recipe 편집·삭제 | iOS QA Agent | `T-20260805-004` 완료 | 전체 XCTest 72/72·build·Light/Dark 자체 검증, 독립 QA 대기 |
 | `T-20260805-006` | `proposed` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` | Review·Recipe 완료 대기 |
 | `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
 | `T-20260805-008` | `proposed` | iOS | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `T-20260805-002~007` | 전체 구현 완료 후 통합 검증 |
@@ -199,6 +199,15 @@ Product Owner가 `T-20260805-005` AI Review·완료 Recipe 편집·삭제 구현
 승인했습니다. iOS Agent는 최신 develop 기반 전용 worktree와 lock으로 착수하며,
 Mock AI와 동일 record·STEP snapshot 보존 범위만 구현합니다. 실제 Backend AI와
 T-006~008 범위는 선행하지 않습니다.
+
+Product Owner가 동일 record ID와 완료 Recipe 편집·삭제 조립에 필요한
+`AppEnvironment.swift`, `AppRoute.swift`, `CookLogApp.swift`의 최소 경로 확장을
+승인했습니다. iOS Agent는 `origin/develop@493743e` 전용 worktree에서 lock을 획득하고
+T-005를 `in_progress`로 전환했습니다.
+
+iOS Agent가 Review 5개 상태, 같은 UUID·STEP snapshot, 임시 저장·이탈 복원, 완료 Recipe
+수정·영구 삭제와 실패 보존을 구현했습니다. 전체 XCTest 72/72·build와 iPhone 15
+Light/Dark Review를 확인해 `verification_ready`로 iOS QA Agent에 인계했습니다.
 
 Product Owner가 `QA-MEDIUM-805004-001`의 재작업을 승인했습니다. iOS Agent는 통과한
 상태 전이·자동 저장·삭제·Undo 로직을 변경하지 않고 Cooking Log의 `bg/base|subtle|elevated`,

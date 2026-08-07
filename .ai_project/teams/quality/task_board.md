@@ -8,6 +8,7 @@
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
 | `T-20260728-006` | `done` | Backend AI gateway·비활성 원격 STT Foundation | 하위 T-002~007 독립 QA·100/100·계약 5종·Node 24 container 집계 | PASS_WITH_RISK 수용·Product Owner 최종 완료/PR #93 병합 승인 |
+| `T-20260805-005` | `verification_ready` | iOS AI Review·완료 Recipe 편집·삭제 | Review 5개 상태·동일 UUID/STEP·snapshot 복원·완료 수정/삭제·실패 보존·전체 회귀 | 구현 commit 고정 별도 QA worktree에서 독립 검증 |
 | `T-20260804-007` | `done` | Backend Foundation 통합 계약·보안 검증·handoff | HIGH 원본 반례·terminal sink/reservation/shape·Provider at-most-once·전체 회귀 | PASS_WITH_RISK·Product Owner 완료/PR #91 병합 승인 |
 | `T-20260805-004` | `done` | iOS Cooking Log·STEP Preview 자동 저장·오류 상태 | `QA-MEDIUM-805004-001` 해소·독립 전체 XCTest 62/62·Light/Dark 증빙 | Lead PASS_WITH_RISK·Product Owner 완료/PR #90 병합 승인 |
 | `T-20260805-003` | `done` | iOS Home·전체 보기·검색·상태별 routing | WP-R1~R4 해소·Home 13개·전체 XCTest 54개 | 완료 리뷰 PASS_WITH_RISK·Product Owner 완료/병합 승인 |

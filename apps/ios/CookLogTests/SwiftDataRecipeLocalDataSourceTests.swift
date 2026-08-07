@@ -238,6 +238,43 @@ final class SwiftDataRecipeLocalDataSourceTests: XCTestCase {
         XCTAssertNil(draftRecipe)
     }
 
+    func testAIReviewCompletionKeepsRecordIdentifierAndBecomesFetchableRecipe() async throws {
+        let store = try makeTestStore()
+        let recordID = UUID()
+        let stepPreviews = [
+            StepPreview(order: 1, transcript: "두부를 구웠어"),
+            StepPreview(order: 2, transcript: "간장을 넣었어")
+        ]
+        let record = RecipeRecord(id: recordID, stepPreviews: stepPreviews)
+        try await store.dataSource.createRecord(record)
+        let repository = DefaultRecipeRecordRepository(localDataSource: store.dataSource)
+        let generationRepository = DefaultRecipeGenerationRepository(
+            aiDataSource: MockRecipeAIDataSource()
+        )
+        let draft = try await GenerateAIReviewDraftUseCase(
+            repository: repository,
+            recipeGenerationRepository: generationRepository
+        ).execute(recordID: recordID, stepPreviews: stepPreviews)
+        let recipe = draft.makeRecipe(
+            id: recordID,
+            createdAt: record.createdAt,
+            updatedAt: Date(timeIntervalSince1970: 500)
+        )
+
+        _ = try await CompleteRecipeRecordUseCase(repository: repository).execute(
+            recordID: recordID,
+            recipe: recipe,
+            updatedAt: Date(timeIntervalSince1970: 500)
+        )
+
+        let completedRecord = try await store.dataSource.fetchRecord(id: recordID)
+        let fetchedRecipe = try await store.dataSource.fetchRecipe(id: recordID)
+        XCTAssertEqual(completedRecord?.lifecycleState, .completed)
+        XCTAssertEqual(completedRecord?.id, recordID)
+        XCTAssertEqual(fetchedRecipe?.id, recordID)
+        XCTAssertEqual(fetchedRecipe?.title, draft.title)
+    }
+
     private func makeTestStore() throws -> TestStore {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let modelContainer = try ModelContainer(
