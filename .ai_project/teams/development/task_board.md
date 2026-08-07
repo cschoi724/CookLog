@@ -39,7 +39,7 @@
 | `T-20260805-002` | `done` | iOS | 로컬 도메인·SwiftData migration·draft 생명주기 | - | 디자인 기준 완료 | PR #77 squash merge `3d1d012`·완료 확정 |
 | `T-20260805-003` | `done` | iOS | Home·전체 보기·검색·상태별 routing | - | `T-20260805-002` 완료 | 완료 리뷰 PASS_WITH_RISK·병합 승인, 공용 효력은 develop 병합 후 |
 | `T-20260805-004` | `done` | iOS | Cooking Log·STEP Preview 자동 저장·오류 상태 | - | `T-20260805-003` 완료 | Product Owner 완료·PR #90 squash merge 승인 |
-| `T-20260805-005` | `verification_passed` | iOS | AI Review·완료 Recipe 편집·삭제 | Development Lead Agent | `T-20260805-004` 완료 | QA PASS_WITH_RISK·완료 검토 및 Product Owner 승인 |
+| `T-20260805-005` | `completion_review` | iOS | AI Review·완료 Recipe 편집·삭제 | Development Lead Agent | `T-20260805-004` 완료 | Lead PASS_WITH_RISK·PR #94 checks PASS, Product Owner 완료/병합 승인 대기 |
 | `T-20260805-006` | `proposed` | iOS | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `T-20260805-005` | Review·Recipe 완료 대기 |
 | `T-20260805-007` | `proposed` | iOS | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `T-20260805-006` | Audio UI 완료 대기 |
 | `T-20260805-008` | `proposed` | iOS | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `T-20260805-002~007` | 전체 구현 완료 후 통합 검증 |

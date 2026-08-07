@@ -4,6 +4,11 @@
 
 ## 2026-08-07
 
+- `T-20260805-005` 독립 QA에서 Review 5개 상태, 동일 UUID·STEP snapshot과 생성·저장·
+  수정·삭제 실패 보존, 전체 XCTest 72/72를 확인해 `PASS_WITH_RISK`로 판정했습니다.
+- Development Lead가 최신 develop 포함, 허용 경로·잔여 위험과 PR #94의 iOS build·
+  XCTest checks 통과를 확인해 완료 리뷰를 `PASS_WITH_RISK`로 확정했습니다. Product Owner
+  완료·병합 승인 전 PR은 Draft로 유지합니다.
 - `T-20260805-005`에서 같은 `RecipeRecord.id`와 동일 `[StepPreview]`를 검증한 뒤 Mock AI
   생성 성공 시에만 `draft_ai_review`로 전환하고, 실패 시 STEP과 snapshot 잠금을 복구하는
   `GenerateAIReviewDraftUseCase`를 추가했습니다.

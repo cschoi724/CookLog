@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260805-005
 title: iOS AI Review·완료 Recipe 편집·삭제 구현
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 기록을 사용자가 검토 가능한 Recipe로 전환하고 수정·저장 실패에서도 입력을 보존해야 한다.
@@ -82,6 +82,10 @@ qa_to: .ai_project/qa/T-20260805-005_ios-ai-review-recipe-editing-qa.md
   저장 실패 보존, 완료 Recipe 수정·삭제 실패 재시도와 전체 XCTest 72/72를 독립 확인했다.
   차단 결함이 없어 `verification_in_progress -> verification_passed`로 전환하고
   Development Lead Agent / Completion Role에 인계했다.
+- 2026-08-07: Development Lead Agent가 최신 `origin/develop@02e6d80` 포함 여부, 허용
+  경로, 구현·QA 보고서와 PR #94 iOS build·XCTest checks를 검토했다. 차단 결함이 없어
+  완료 리뷰를 `PASS_WITH_RISK`로 확정하고 `verification_passed -> completion_review`로
+  전환해 Product Owner의 완료·병합 승인을 요청한다.
 - AI 생성은 기존 Mock 경계를 사용하고 실제 Backend provider·네트워크 연동을 선행하지 않는다.
 - Cooking Log에서 전달된 동일 `[StepPreview]`와 `RecipeRecord.id`를 유지하며, 생성·저장·
   삭제 실패가 기존 입력이나 저장 원본을 변경하지 않게 한다.
@@ -96,13 +100,16 @@ qa_to: .ai_project/qa/T-20260805-005_ios-ai-review-recipe-editing-qa.md
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Completion Role이야.
-Task T-20260805-005 구현본의 독립 검증이 완료된 상태야.
+너는 Product Owner야.
+Task T-20260805-005는 독립 QA와 Development Lead 완료 리뷰를 통과한 승인 대기 Task야.
 
-- 현재 상태: `verification_passed`
-- 구현 기준: 최신 `origin/develop@02e6d80` 정렬 예정 구현 브랜치
+- 현재 상태: `completion_review`
+- public source: `origin/develop@02e6d80`
+- 구현 ref: `task/T-20260805-005-implement-ios-ai-review-recipe-editing`
+- PR: #94, Draft·mergeable, iOS build·XCTest checks PASS
 - 자체 검증: 전체 XCTest 72/72, build, iPhone 15 Light/Dark Review
 - QA 결과: `PASS_WITH_RISK`, 차단 결함 없음
+- Development Lead 완료 리뷰: `PASS_WITH_RISK`
 - 독립 증빙: 전체 XCTest 72/72, Light/Dark Review 화면, Detail 수정·삭제 실패 보존
 - 필수 AI Review 상태: `REVIEW-PROCESSING`, `REVIEW-EDITABLE`,
   `REVIEW-GENERATION-ERROR`, `REVIEW-SAVING`, `REVIEW-SAVE-ERROR`
@@ -119,5 +126,5 @@ Task T-20260805-005 구현본의 독립 검증이 완료된 상태야.
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 잔여 위험: 실제 Backend AI·네트워크, Audio/전역 장애, Accessibility 3·VoiceOver·
   작은 화면 통합은 승인된 후속 Task 범위
-- 완료 조건: 구현·QA 보고서를 검토하고 Product Owner 완료·병합 승인 절차로 진행해.
-  iOS QA는 Task `done`, commit, push와 merge를 수행하지 않았어.
+- 승인 조건: 후속 Task로 이관한 잔여 위험을 수용하면 완료·PR #94 squash merge를
+  승인해. 승인 전 PR은 Draft로 유지하고 T-006은 `proposed`로 유지해.
