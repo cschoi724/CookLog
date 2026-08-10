@@ -59,6 +59,11 @@
 | `T-20260728-011` | Design | Design QA Agent | Paywall 진입·가격·복원·접근성·로컬 데이터 접근 유지 |
 | `T-20260728-012~017` | Cross-domain | Product·Design·iOS·Backend QA Agent | 계약·구매·quota·관측성·Sandbox 통합 |
 
+`T-20260805-008`은 통합 82개·Core Loop 23개 계약 validator, 전체 XCTest 82/82와
+Accessibility 3 viewport 표본 6장을 완료해 `verification_ready`로 인계됐습니다. iOS QA는
+23개 전체 신규 Current, 동일 fixture·scale의 Reference/Diff, 위험 조합 추가 캡처와
+VoiceOver 런타임 순서를 우선 반례로 확인하고 증거 누락을 합격으로 간주하지 않습니다.
+
 `T-20260805-002` 독립 검증에서 구현 상태 전체 XCTest 39/39와 실제 non-empty
 구버전 store migration은 통과했습니다. 그러나 알 수 없는 lifecycle 완료 행이 기존 Recipe
 조회에서 숨겨지는 `QA-HIGH-805002-001`, 완료 UUID로 새 draft를 만들면 완료 Recipe가

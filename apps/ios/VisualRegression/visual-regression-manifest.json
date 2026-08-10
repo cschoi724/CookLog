@@ -1,0 +1,65 @@
+{
+  "revision": "integrated-accessibility-handoff-20260804",
+  "integratedStateCounts": {
+    "home": 9,
+    "library": 5,
+    "cookingLog": 14,
+    "aiReview": 12,
+    "recipeDetail": 7,
+    "audioPlayer": 24,
+    "appInfo": 11
+  },
+  "coreLoopStateIDs": [
+    "HOME-CONTENT",
+    "HOME-EMPTY",
+    "HOME-LOADING",
+    "HOME-ERROR",
+    "LOG-EMPTY",
+    "LOG-RECORDING",
+    "LOG-PROCESSING",
+    "LOG-STEP-ADDED",
+    "LOG-ERROR",
+    "REVIEW-PROCESSING",
+    "REVIEW-EDITABLE",
+    "REVIEW-GENERATION-ERROR",
+    "REVIEW-SAVING",
+    "REVIEW-SAVE-ERROR",
+    "DETAIL-CONTENT",
+    "DETAIL-LOADING",
+    "DETAIL-ERROR",
+    "DETAIL-NOT-FOUND",
+    "PLAYER-PAUSED",
+    "PLAYER-PLAYING",
+    "PLAYER-LOADING",
+    "PLAYER-ERROR",
+    "PLAYER-NO-STEPS"
+  ],
+  "viewports": [
+    { "width": 390, "height": 844 },
+    { "width": 375, "height": 667 }
+  ],
+  "themes": ["light", "dark"],
+  "contentSizes": ["default", "accessibility3"],
+  "minimumInteractiveTargetPoints": 44,
+  "requiredRiskStates": [
+    "HOME-ERROR",
+    "LOG-RECORDING",
+    "LOG-PROCESSING",
+    "LOG-ERROR",
+    "REVIEW-EDITABLE",
+    "REVIEW-SAVE-ERROR",
+    "DETAIL-CONTENT",
+    "DETAIL-NOT-FOUND",
+    "PLAYER-PAUSED",
+    "PLAYER-ERROR",
+    "PLAYER-NO-STEPS",
+    "APP-INFO-OVERVIEW",
+    "HOME-NETWORK-ERROR"
+  ],
+  "evidencePolicy": {
+    "coreLoopDefault": "23 states at 390x844/light/default",
+    "riskMatrix": "requiredRiskStates at 375x667, dark, and accessibility3 where applicable",
+    "comparison": ["current", "reference", "diff"],
+    "independentVerificationRequired": true
+  }
+}

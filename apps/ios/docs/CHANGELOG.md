@@ -2,6 +2,15 @@
 
 이 문서는 iOS 앱 개발 변경 기록을 관리합니다.
 
+## 2026-08-10
+
+- `T-20260805-008`에서 통합 82개·Core Loop 23개 상태, 390×844·375×667,
+  Light/Dark, 기본/Accessibility 3, 44pt와 독립 QA 요구를 manifest로 고정하고 source
+  validator와 기계 판독 결과 파일을 추가했습니다.
+- 전체 XCTest 82/82와 Debug build를 통과하고 Accessibility 3의 App Info 4종과 Home
+  Network Error Dark 2종을 저장소 증거로 생성했습니다. 23개 전체 신규 캡처, 동일 scale
+  pixel Diff, 전체 VoiceOver 런타임 순서는 iOS QA에 `verification_ready`로 인계했습니다.
+
 ## 2026-08-07
 
 - Product Owner가 `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 실행을

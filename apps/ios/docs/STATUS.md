@@ -1,30 +1,35 @@
 # CookLog iOS Status
 
-최종 업데이트: 2026-08-07
+최종 업데이트: 2026-08-10
 
 ## 현재 상태
 
-- 상태: T-20260805-008 접근성·작은 화면·다크 모드·통합 회귀 실행 승인
+- 상태: T-20260805-008 실행 결과 `verification_ready`, iOS QA 독립 검증 대기
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~007 done, T-20260805-008 approved
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~007 done, T-20260805-008 verification_ready
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS Agent가 T-008 통합 fixture·자동화·시각 증빙을 완성하고 자체 검증
-2. iOS QA Agent가 실행 세션과 분리해 접근성·작은 화면·다크 모드·통합 회귀 독립 검증
+1. iOS QA Agent가 실행 세션과 분리해 23개 전체 캡처·동일 scale Diff·VoiceOver 순서를 우선 검증
+2. 통합 82개 기능 회귀와 390×844·375×667 Light/Dark·기본/Accessibility 3을 독립 판정
 3. 실제 문의 주소·법적 문안·공개 URL을 출시 통합 전에 확정
 4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
 5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- T-008에서 통합 82개·Core Loop 23개 상태, viewport·theme·content size·44pt 계약을
+  manifest와 validator로 고정했습니다. 전체 XCTest 82/82와 Debug build를 통과했습니다.
+- 격리 Simulator의 Accessibility 3에서 App Info 390×844·375×667 Light/Dark와 Home
+  Network Error Dark 표본 6장을 저장소 증거로 생성했습니다. 23개 전체 신규 캡처, 동일
+  scale pixel Diff, 전체 VoiceOver 런타임 순서는 iOS QA 필수 확인으로 인계했습니다.
 - Product Owner가 T-008 실행을 승인했습니다. 선행 T-002~007의 공용 `done`을 확인하고
   접근성·작은 화면·다크 모드·Core Loop 23개·통합 82개 상태 검증을 iOS Agent에
   인계했습니다.

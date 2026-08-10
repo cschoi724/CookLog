@@ -1,0 +1,39 @@
+{
+  "task": "T-20260805-008",
+  "status": "verification_ready_with_evidence_gaps",
+  "current": {
+    "appInfo": [
+      "VisualRegression/Evidence/current/app-info-390x844-light-a3.png",
+      "VisualRegression/Evidence/current/app-info-390x844-dark-a3.png",
+      "VisualRegression/Evidence/current/app-info-375x667-light-a3.png",
+      "VisualRegression/Evidence/current/app-info-375x667-dark-a3.png"
+    ],
+    "homeNetworkError": [
+      "VisualRegression/Evidence/current/home-network-error-390x844-dark-a3.png",
+      "VisualRegression/Evidence/current/home-network-error-375x667-dark-a3.png"
+    ]
+  },
+  "reference": {
+    "source": "design/prototype/ and design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md",
+    "appInfoState": "info/overview",
+    "homeNetworkErrorState": "home/network-error"
+  },
+  "diff": {
+    "method": "structural manual comparison; pixel baseline assets are not present in the repository",
+    "appInfo": "PASS sample: hierarchy and scrollable content preserved at Accessibility 3",
+    "homeNetworkError": "PASS sample: local-feature preservation and explicit recheck content preserved",
+    "knownVariance": "SwiftUI native navigation typography and system back label are allowed platform variance"
+  },
+  "accessibility": {
+    "contentSize": "accessibility-extra-extra-extra-large (Accessibility 3)",
+    "minimumInteractiveTargetPoints": 44,
+    "sourceContractValidator": "Scripts/validate-visual-regression-contract.js"
+  },
+  "coverage": {
+    "integratedFunctionalTests": "82/82",
+    "coreLoopStateContract": "23/23",
+    "newCoreLoopDefaultCaptures": "incomplete; independent QA required",
+    "voiceOverRuntimeOrder": "not executed for all 23 states"
+  },
+  "independentVerificationRequired": true
+}
