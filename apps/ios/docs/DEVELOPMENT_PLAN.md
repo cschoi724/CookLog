@@ -8,7 +8,7 @@
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-20260805-002~007 완료, T-20260805-008 독립 QA 대기
+- 상태: Mock Core MVP 조건부 통과, T-20260805-002~007 완료, T-20260805-008 재작업 승인
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -41,7 +41,7 @@
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `done`, PR #94 merge `7c26ebb`
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `done`, PR #101 merge `dcf58d5`
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `done`, PR #106 merge `2f309ed`
-7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `verification_ready`, iOS QA 인계
+7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `approved`, HIGH 4건 재작업
 
 각 패키지는 iOS Agent 구현과 iOS QA 독립 검증을 분리하고, 선행 Task가 공용
 `develop`에서 `done`이 된 뒤 다음 패키지를 승인합니다. 실제 Apple STT, Backend AI,
@@ -134,6 +134,10 @@
 - [x] Accessibility 3의 390×844·375×667 Home Network Error Dark 실제 표본 확인
 - [ ] 23개 전체 390×844·Light·기본 Current와 동일 fixture Reference/Diff 독립 검증
 - [ ] 위험 조합 추가 캡처와 23개 전체 VoiceOver 런타임 순서 독립 검증
+- [ ] `WP-R1` Core Loop 23개 Current 23/23
+- [ ] `WP-R2` 독립 Reference·동일 fixture/scale Diff 23/23
+- [ ] `WP-R3` 375×667·Dark·Accessibility 3 필수 위험 조합 실제 조작 결과
+- [ ] `WP-R4` VoiceOver 런타임 23/23와 증거 완결성 validator
 
 ## 현재 개발 원칙
 

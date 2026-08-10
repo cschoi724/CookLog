@@ -7,6 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
+| `T-20260805-008` | `approved` | iOS 접근성·작은 화면·다크 모드·통합 회귀 검증 | 독립 XCTest 82/82 PASS, Visual/VoiceOver HIGH 4건 | Product Owner `WP-R1~R4` 재작업 승인·독립 재검증 대기 |
 | `T-20260805-007` | `done` | iOS 앱 정보·권한·오프라인·서비스 장애 | HIGH 2·MEDIUM 1 해소·82/82·8 viewport | Product Owner 완료·PR #106 squash merge `2f309ed` |
 | `T-20260805-006` | `done` | iOS Audio Guide·핸즈프리 UI·공통 action model | QA-HIGH-806006-001 해소·독립 77/77·4 viewport | Product Owner 완료·PR #101 squash merge `dcf58d5` |
 | `T-20260728-006` | `done` | Backend AI gateway·비활성 원격 STT Foundation | 하위 T-002~007 독립 QA·100/100·계약 5종·Node 24 container 집계 | PASS_WITH_RISK 수용·Product Owner 최종 완료/PR #93 병합 승인 |
@@ -63,6 +64,11 @@
 Accessibility 3 viewport 표본 6장을 완료해 `verification_ready`로 인계됐습니다. iOS QA는
 23개 전체 신규 Current, 동일 fixture·scale의 Reference/Diff, 위험 조합 추가 캡처와
 VoiceOver 런타임 순서를 우선 반례로 확인하고 증거 누락을 합격으로 간주하지 않습니다.
+
+iOS QA 독립 검증에서 기능 XCTest 82/82와 validator는 통과했지만 필수 Current 0/23,
+Reference/Diff 0/23, 위험 조합 matrix 미완료, VoiceOver 런타임 0/23의 HIGH 4건으로
+`FAIL`을 판정했습니다. Product Owner가 23개 Current, 독립 Reference/Diff, 위험 조합,
+VoiceOver 23개와 자동 완결성 검사의 `WP-R1~R4` 재작업을 승인했습니다.
 
 `T-20260805-002` 독립 검증에서 구현 상태 전체 XCTest 39/39와 실제 non-empty
 구버전 store migration은 통과했습니다. 그러나 알 수 없는 lifecycle 완료 행이 기존 Recipe

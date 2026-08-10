@@ -4,27 +4,30 @@
 
 ## 현재 상태
 
-- 상태: T-20260805-008 실행 결과 `verification_ready`, iOS QA 독립 검증 대기
+- 상태: T-20260805-008 독립 QA FAIL, `WP-R1~R4` 재작업 승인
 - 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 현재 CI 기준 Xcode: 26.6 (`17F113`)
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
-- 현재 이정표: T-20260728-003 scoped, T-20260805-002~007 done, T-20260805-008 verification_ready
+- 현재 이정표: T-20260728-003 scoped, T-20260805-002~007 done, T-20260805-008 approved rework
 - scheme: `CookLog`
 - 로컬 회귀 destination: `platform=iOS Simulator,name=iPhone 15,OS=17.2`
 - CI destination: `platform=iOS Simulator,name=iPhone 17,OS=26.5`
 
 ## 다음 작업
 
-1. iOS QA Agent가 실행 세션과 분리해 23개 전체 캡처·동일 scale Diff·VoiceOver 순서를 우선 검증
-2. 통합 82개 기능 회귀와 390×844·375×667 Light/Dark·기본/Accessibility 3을 독립 판정
-3. 실제 문의 주소·법적 문안·공개 URL을 출시 통합 전에 확정
-4. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
-5. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
+1. iOS Agent가 23개 Current·독립 Reference/Diff·위험 조합·VoiceOver 23개를 재작업
+2. validator가 상태별 증거 1:1 대응과 완결성 누락을 실패 처리하도록 보강
+3. iOS QA Agent가 HIGH 4건과 기존 82/82 기능 회귀를 독립 재검증
+4. 실제 문의 주소·법적 문안·공개 URL을 출시 통합 전에 확정
+5. T-003 완료 후 T-20260729-004 Apple 기기 내 STT와 T-20260729-006 로컬 TTS 착수
+6. Backend production 준비 후 T-20260729-005 AI 정리·Review 실서비스 연동
 
 ## 최근 작업
 
+- iOS QA가 기능 XCTest 82/82는 통과시켰지만 필수 Visual·VoiceOver 증거 누락 HIGH
+  4건으로 `FAIL`을 판정했습니다. Product Owner가 `WP-R1~R4` 재작업을 승인했습니다.
 - T-008에서 통합 82개·Core Loop 23개 상태, viewport·theme·content size·44pt 계약을
   manifest와 validator로 고정했습니다. 전체 XCTest 82/82와 Debug build를 통과했습니다.
 - 격리 Simulator의 Accessibility 3에서 App Info 390×844·375×667 Light/Dark와 Home
