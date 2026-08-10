@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
-최종 업데이트: 2026-08-06
-상태: T-20260728-006 Backend Foundation `done`
+최종 업데이트: 2026-08-10
+상태: T-20260728-006 Backend Foundation `done`, T-20260729-003 `scoped`
 
 ## 현재 단계
 
@@ -24,12 +24,12 @@ cleanup을 연결했다. production은 local adapter를 거부하고 고정 `GET
 ## 다음 조치
 
 1. Foundation local/mock 범위는 `done`으로 유지한다.
-2. 실제 AI Provider·Cloud datastore·배포·credential은 `T-20260729-003` 별도 승인 전까지
-   착수하지 않는다.
-3. production Backend 실행 승인 시 provider·비용·cloud·secret 경계를 하위 Task로 분해한다.
+2. 실제 AI Provider·Cloud datastore·배포·credential은 `T-20260729-003`의 6개 하위
+   Task로 분리됐으며 provider·지역·계약·비용·cloud 결정과 개별 승인 전까지 착수하지 않는다.
+3. 하위 `T-20260810-001~006`은 모두 `proposed`로 유지한다.
 
 ## 차단 경계
 
-- 실제 AI provider·배포·secret: `T-20260729-003` 별도 승인 전 금지
+- 실제 AI provider·배포·secret: `T-20260729-003` scoped, 하위 T-20260810-001~006 proposed
 - 원격 STT endpoint·audio upload: 별도 제품 승인 전 금지
 - 후속 패키지: 선행 Task가 `develop`에서 `done`이 되기 전 착수 금지

@@ -1,6 +1,6 @@
 # Backend Foundation 개발 계획
 
-최종 업데이트: 2026-08-06
+최종 업데이트: 2026-08-10
 
 상위 상태: `T-20260728-006 done` — 하위 T-002~007 완료, Development Lead
 `PASS_WITH_RISK`, Product Owner 최종 완료·PR #93 병합 승인
@@ -9,6 +9,16 @@
 
 확정 계약을 실행 가능한 local/mock Backend로 만들되 실제 provider·cloud 배포와 원격
 STT 활성화를 포함하지 않는다.
+
+실제 provider·스테이징 후보는 `T-20260729-003`에서 아래 6개 패키지로 scope했다.
+모두 `proposed`이며 provider·지역·계약·비용·cloud 결정과 개별 승인 전에는 실행하지 않는다.
+
+1. `T-20260810-001` 실제 AI provider adapter·prompt·schema
+2. `T-20260810-002` Cloud datastore·AI job·ACK·24시간 lifecycle
+3. `T-20260810-003` App Attest·설치 token·abuse 방어
+4. `T-20260810-004` production 비용 hard cutoff·observability
+5. `T-20260810-005` production 원격 STT·음성 upload 비활성 보증
+6. `T-20260810-006` 스테이징 composition·배포·rollback 통합
 
 ## 실행 순서
 
