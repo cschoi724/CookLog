@@ -21,10 +21,10 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 0 |
-| `completion_review` | 1 |
+| `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
-| `done` | 42 |
+| `done` | 43 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
@@ -38,7 +38,7 @@ Team별 요약:
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 0 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 1 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Design | 0 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 13 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 | AI Ops | 0 | 0 | 0 | `T-20260730-006`, `T-20260731-002` `done` |
@@ -63,7 +63,7 @@ Team별 요약:
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
 | `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | - | `done`, 하위 T-008~014·통합 Design QA·PR #68 완료 |
-| `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | Design Lead Agent | `completion_review`, Design QA 독립 재검증 PASS·Gate B 미승인 |
+| `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260729-003` | P0 | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `scoped`, T-20260810-001~005 실행 승인·T-006 통합 대기 |
 | `T-20260729-004` | P0 | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` |
 | `T-20260729-005` | P0 | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
@@ -83,7 +83,7 @@ Design `T-20260729-002` 하위 실행 후보:
 | `T-20260729-012` | P0 | Audio Guide·핸즈프리·오디오 중단 상태 디자인 | - | `done`, PR #42 squash merge |
 | `T-20260729-013` | P0 | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | - | `done`, PR #53 squash merge |
 | `T-20260729-014` | P0 | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | - | `done`, Design QA PASS·PR #68 squash merge |
-| `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | Design Lead Agent | `completion_review`, Design QA 독립 재검증 PASS·Gate B 미승인 |
+| `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 
 Backend `T-20260728-005` 하위 실행 후보:
 
