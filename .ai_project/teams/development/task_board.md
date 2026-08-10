@@ -15,12 +15,12 @@
 | `T-20260728-007` | `done` | CI/Ops | Git·PR·CI 운영 기준 단일화 | - | 없음 | 완료 |
 | `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~005 완료, T-006 별도 승인 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
-| `T-20260729-003` | `scoped` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` 완료 | 6개 하위 패키지 구성·provider/지역/계약/비용/cloud 결정 대기 |
-| `T-20260810-001` | `proposed` | Backend | 실제 AI provider adapter·prompt·schema | Development Lead Agent | Backend Foundation 완료 | provider·지역·보관 계약 결정 후 승인 |
-| `T-20260810-002` | `proposed` | Backend | Cloud datastore·AI job·ACK·24시간 lifecycle | Development Lead Agent | Backend Foundation 완료 | cloud 지역·리소스 생성 범위 결정 후 승인 |
-| `T-20260810-003` | `proposed` | Backend | App Attest·설치 token·abuse 방어 | Development Lead Agent | Backend Foundation 완료 | App Attest compatibility 정책 결정 후 승인 |
-| `T-20260810-004` | `proposed` | Backend | production 비용 hard cutoff·observability | Development Lead Agent | T-001~003 | 최신 가격·월 예산·quota 승인 대기 |
-| `T-20260810-005` | `proposed` | Backend | production 원격 STT·음성 upload 비활성 보증 | Development Lead Agent | Backend Foundation 완료 | 첫 출시 비활성 경계 유지·개별 실행 승인 대기 |
+| `T-20260729-003` | `scoped` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` 완료 | T-001~005 실행 승인·T-006 통합 대기 |
+| `T-20260810-001` | `approved` | Backend | 실제 AI provider adapter·prompt·schema | Backend Agent | Backend Foundation 완료 | ZDR·credential 전 실제 외부 호출 비활성 |
+| `T-20260810-002` | `approved` | Backend | Cloud datastore·AI job·ACK·24시간 lifecycle | Backend Agent | Backend Foundation 완료 | local/emulator 구현; 실제 cloud 생성 별도 게이트 |
+| `T-20260810-003` | `approved` | Backend | App Attest·설치 token·abuse 방어 | Backend Agent | Backend Foundation 완료 | production 필수·개발/Simulator 제한 경로 |
+| `T-20260810-004` | `approved` | Backend | production 비용 hard cutoff·observability | Backend Agent | T-001~003 | 선행 3개가 canonical에서 done인 뒤 실행 |
+| `T-20260810-005` | `approved` | Backend | production 원격 STT·음성 upload 비활성 보증 | Backend Agent | Backend Foundation 완료 | 첫 출시 항상 비활성 경계 증명 |
 | `T-20260810-006` | `proposed` | Backend | 스테이징 composition·배포·rollback 통합 | Development Lead Agent | T-001~005 | 앞선 패키지 완료·외부 스테이징 승인 대기 |
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
 | `T-20260729-005` | `proposed` | iOS | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-005` 완료, `003`, `T-20260729-003` 대기 | 나머지 선행 구현·환경 대기 |
