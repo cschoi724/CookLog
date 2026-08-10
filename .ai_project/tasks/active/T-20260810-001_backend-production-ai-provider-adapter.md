@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260810-001
 title: Backend 실제 AI provider adapter·prompt·schema validation 구현
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 실제 AI Review 생성 경로의 첫 실행 패키지이며 provider 선택과 데이터 처리 계약을 코드 경계로 고정한다.
@@ -86,6 +86,7 @@ status_ref_sha: 344eadead5d23720994fdc8484135b86cf1cf0ff
 | 2026-08-10 | Backend Agent | in_progress | verification_ready | `WP-R1~R2` 구현·108/108·계약 5종·경계 감사 통과, lock 해제·Backend QA 재인계 |
 | 2026-08-10 | Backend QA Agent | verification_ready | verification_in_progress | 재작업 보고서·라우팅·canonical 확인 후 독립 재검증 lock 획득 |
 | 2026-08-10 | Backend QA Agent | verification_in_progress | verification_passed | PASS_WITH_RISK: 최초 HIGH 2건 해소, Node 26·24 108/108·계약 5종·경계 감사·독립 반례 통과; lock 해제·Development Lead 완료 검토 인계 |
+| 2026-08-10 | Development Lead Agent | verification_passed | completion_review | PR #116 최신 canonical 통합·전체 108/108·계약 5종·boundary·non-root container·CI 6개 통과; 완료 가능 판정 |
 
 ## Rework Scope
 
@@ -106,17 +107,28 @@ status_ref_sha: 344eadead5d23720994fdc8484135b86cf1cf0ff
 다음 Agent에게 전달할 말:
 
 너는 Development Lead Agent / Completion Role이야.
-Task T-20260810-001의 완료 확정 여부를 검토해줘.
+Task T-20260810-001의 최종 완료 승인을 이어서 처리해줘.
 
-- 현재 상태: verification_passed
+- 현재 상태: completion_review
 - 기준 상태 ref: origin/develop
 - 기준 상태 SHA: 344eadead5d23720994fdc8484135b86cf1cf0ff
-- 다음에 해야 할 일: QA `PASS_WITH_RISK`, 잔여 외부 gate와 non-root container 재검증 리스크를 수용할지 확인하고 완료 가능성을 판단해줘.
+- 다음에 해야 할 일: 완료 리뷰의 수용 가능한 잔여 외부 gate를 확인하고 Product Owner 승인 후 PR #116 병합과 `done` 전환을 진행해줘.
 - 기준 문서: 상위 Task, `apps/backend/docs/ARCHITECTURE_DECISION.md`, `apps/backend/docs/AI_RECIPE_CONTRACT.md`
 - 허용 경로: front matter의 `allowed_paths`
 - 참고 산출물: `.ai_project/reports/T-20260810-001_backend-production-ai-provider-adapter-report.md`, `.ai_project/qa/T-20260810-001_backend-production-ai-provider-adapter-qa.md`
 - 변경/검토 대상: `apps/backend/src/ai/openai-recipe-provider.ts`, `openai-structured-output-schema.ts`, `apps/backend/contracts/ai/`, `apps/backend/tests/ai/`
-- 남은 리스크: Node 24.18.0 108/108은 통과했으나 Docker 부재로 non-root container 재검증은 못 했다. 실제 sandbox schema handshake는 외부 gate 전까지 금지다.
-- 차단/결정 필요: 없음. 단, ZDR·Modified Retention·국외 처리 승인·credential 전에는 실제 외부 호출을 활성화하지 마.
-- 완료 가능 시: completion_review를 거쳐 done 전환과 develop 통합 범위를 검토해줘.
+- 남은 리스크: 실제 sandbox/provider handshake와 production 연결은 외부 gate 전까지 미검증이며 후속 T-20260810-006 범위다. GitHub non-root container 검증은 통과했다.
+- 차단/결정 필요: Product Owner의 완료·PR 병합 승인. ZDR·Modified Retention·국외 처리 승인·credential 전에는 실제 외부 호출을 활성화하지 마.
+- 완료 승인 시: PR #116을 develop에 병합하고 canonical에서 `done`을 확정해줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
+
+## Completion Review
+
+- 판정: `PASS_WITH_RISK`, 완료 가능
+- 검토 PR: `#116`
+- 최신 canonical 적용 충돌: Backend 코드·계약·테스트 충돌 없음; 운영 파일 5개는 승인 이력을 보존해 정합하게 해소함.
+- 로컬 통합 검증: `npm run verify` 108/108, 계약 5종, Foundation boundary audit PASS.
+- GitHub 검증: backend-verify, backend-container, ios-build, ios-xctest 및 변경 감지 2종 PASS.
+- 최초 High 2건: body-read `OUTCOME_UNKNOWN` 분리와 provider schema subset projection으로 해소.
+- 수용 가능한 잔여 위험: 실제 provider handshake와 production composition은 승인된 외부 gate 및 후속 Task 전까지 의도적으로 비활성.
+- 후속 영향: 완료·병합되면 T-20260810-004의 dependency 중 T-001을 해소할 수 있으나 T-002~003 완료 전에는 T-004를 시작하지 않는다.

@@ -16,7 +16,7 @@
 | `T-20260728-008` | `scoped` | CI | iOS CI 기본 파이프라인 구축 | Development Lead Agent | 하위 `T-20260730-001~006` | T-001~005 완료, T-006 별도 승인 대기 |
 | `T-20260728-009` | `proposed` | Release | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 | 선행 검증 후 6개 하위 패키지 |
 | `T-20260729-003` | `scoped` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` 완료 | T-001~005 실행 승인·T-006 통합 대기 |
-| `T-20260810-001` | `verification_passed` | Backend | 실제 AI provider adapter·prompt·schema | Development Lead Agent | Backend Foundation 완료 | `WP-R1~R2` 해소·Backend QA PASS_WITH_RISK·완료 리뷰 대기 |
+| `T-20260810-001` | `completion_review` | Backend | 실제 AI provider adapter·prompt·schema | Development Lead Agent | Backend Foundation 완료 | PR #116 전체 CI 통과·완료 리뷰 PASS_WITH_RISK·최종 승인 대기 |
 | `T-20260810-002` | `approved` | Backend | Cloud datastore·AI job·ACK·24시간 lifecycle | Backend Agent | Backend Foundation 완료 | local/emulator 구현; 실제 cloud 생성 별도 게이트 |
 | `T-20260810-003` | `approved` | Backend | App Attest·설치 token·abuse 방어 | Backend Agent | Backend Foundation 완료 | production 필수·개발/Simulator 제한 경로 |
 | `T-20260810-004` | `approved` | Backend | production 비용 hard cutoff·observability | Backend Agent | T-001~003 | 선행 3개가 canonical에서 done인 뒤 실행 |
