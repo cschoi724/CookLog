@@ -17,6 +17,7 @@
 | `T-20260729-013` | `done` | 앱 정보·데이터 보관·법적 문서·서비스 장애 디자인 | - | `T-20260729-012` | PR #53 squash merge·완료 |
 | `T-20260729-014` | `done` | 디자인 통합 접근성 검증·구현 핸드오프 갱신 | - | `T-20260729-013` 완료 | PR #68 squash merge·완료 |
 | `T-20260805-001` | `done` | iOS MVP 디자인 적용 기준과 Visual QA 계약 확정 | - | `T-20260728-002` 완료 | Core Loop 23개 계약·독립 Design QA PASS·완료 리뷰 확정 |
+| `T-20260810-007` | `completion_review` | Design Prototype GitHub Pages 공유 구성 | Design Lead Agent | 없음 | Design QA 독립 재검증 PASS; develop 병합 후 완료 확정, Gate B 미승인 |
 | `T-20260728-011` | `proposed` | 구독·Paywall UX 설계 | Design Lead Agent | `T-20260729-002`, `T-20260728-010` | 수익화 activation gate 대기 |
 
 `T-20260728-002`는 Design QA와 Design Lead 완료 검토를 통과하고 PR #6으로 `develop`에 squash merge되어 `done`으로 확정했습니다. `T-20260729-002`는 기존 결과를 재개방하지 않고 확정된 제품 상태를 후속 버전으로 갱신합니다.
@@ -30,3 +31,5 @@ Product Owner가 2026-08-04 `T-20260729-014`의 WP-1~4 로컬 실행, 독립 Des
 수익화 Design `T-20260728-011`은 Core v1 디자인과 다른 `proposed` 후보입니다. 보존 WIP의 Paywall 실행·QA 기록은 공식 완료나 의존성 해제 근거가 아닙니다.
 
 `T-20260805-001`은 통합 핸드오프의 82개 상태를 상위 기준으로 보존하고 첫 iOS 구현·Visual QA의 Core Loop 23개 상태에 측정 가능한 합격선을 제공해 `done`으로 확정했습니다.
+
+`T-20260810-007`은 `workflow_dispatch` 전용 Pages workflow로 `design/prototype/`만 패키징합니다. Development Lead 기술 ownership review와 Design QA 독립 재검증은 PASS했습니다. Gate B 승인 전 workflow 실행과 외부 공개를 금지합니다.

@@ -1,0 +1,90 @@
+name: design-prototype-pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: design-prototype-pages
+  cancel-in-progress: false
+
+jobs:
+  prepare-design-prototype:
+    name: prepare-design-prototype
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Validate public artifact boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          prototype_dir="design/prototype"
+          expected_files="${RUNNER_TEMP}/design-prototype-expected.txt"
+          actual_files="${RUNNER_TEMP}/design-prototype-actual.txt"
+
+          printf '%s\n' \
+            README.md \
+            app.js \
+            components.html \
+            gallery.html \
+            index.html \
+            styles.css > "${expected_files}"
+
+          find "${prototype_dir}" -type f -print \
+            | sed "s#^${prototype_dir}/##" \
+            | LC_ALL=C sort > "${actual_files}"
+
+          diff -u "${expected_files}" "${actual_files}"
+
+          if find "${prototype_dir}" -type l -print -quit | grep -q .; then
+            echo "Symbolic links are not allowed in the Pages artifact." >&2
+            exit 1
+          fi
+
+          test -s "${prototype_dir}/index.html"
+          test -s "${prototype_dir}/gallery.html"
+          test -s "${prototype_dir}/styles.css"
+          test -s "${prototype_dir}/app.js"
+
+          if grep -RInE \
+            --exclude='README.md' \
+            '(BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,})' \
+            "${prototype_dir}"; then
+            echo "Potential credential material detected in the public prototype." >&2
+            exit 1
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload design prototype artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: design/prototype
+
+  deploy-design-prototype:
+    name: deploy-design-prototype
+    needs: prepare-design-prototype
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy design prototype to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
