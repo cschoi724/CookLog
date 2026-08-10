@@ -3,12 +3,12 @@
 이 문서는 CookLog iOS의 초기 Mock Core MVP 이정표와 구현 이력을 보존하고, 현재 첫 공개 출시 Task의 진입점을 안내합니다. 현재 실행 범위는 이 문서의 과거 M0~M8 체크리스트가 아니라 배정된 `.ai_project/tasks/`와 최신 제품 Source of Truth를 따릅니다.
 
 작성일: 2026-06-19
-최종 업데이트: 2026-08-07
+최종 업데이트: 2026-08-10
 기준 PRD: `../../../docs/product/CookLog_PRD_v2.md`
 
 ## 현재 상태 요약
 
-- 상태: Mock Core MVP 조건부 통과, T-20260805-002~007 완료, T-20260805-008 실행 승인
+- 상태: Mock Core MVP 조건부 통과, T-20260805-002~007 완료, T-20260805-008 재작업 승인
 - iOS 프로젝트: `CookLog.xcodeproj` 생성 완료
 - 과거 프로젝트 생성 기준 Xcode: 15.2, 현재 호환성 미보장
 - 현재 설치/검증 Xcode: 26.6
@@ -41,7 +41,7 @@
 4. `T-20260805-005` AI Review·완료 Recipe 편집·삭제 — `done`, PR #94 merge `7c26ebb`
 5. `T-20260805-006` Audio Guide·핸즈프리 UI·공통 action model — `done`, PR #101 merge `dcf58d5`
 6. `T-20260805-007` 앱 정보·권한·오프라인·서비스 장애 — `done`, PR #106 merge `2f309ed`
-7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `approved`, iOS Agent 인계
+7. `T-20260805-008` 접근성·작은 화면·다크 모드·통합 회귀 — `approved`, HIGH 4건 재작업
 
 각 패키지는 iOS Agent 구현과 iOS QA 독립 검증을 분리하고, 선행 Task가 공용
 `develop`에서 `done`이 된 뒤 다음 패키지를 승인합니다. 실제 Apple STT, Backend AI,
@@ -124,6 +124,20 @@
 - [x] 390×844·375×667 Light/Dark UIWindow 렌더링 4/4 확인
 - [x] `QA-HIGH-806006-001` 하단 `safeAreaInset` 적용과 CTA·안내 문구 비겹침 4/4 재확인
 - [x] 재작업 후 전체 XCTest 77/77·iOS Simulator Debug build 재통과
+
+### T-20260805-008 실행 결과
+
+- [x] 통합 82개·Core Loop 23개 상태 ID와 필수 viewport·theme·content size 계약 고정
+- [x] 접근성 이름·44pt·고정 system font 금지 source validator 추가
+- [x] 전체 XCTest 82/82·iPhone 15 iOS 17.2 Debug build 통과
+- [x] Accessibility 3의 390×844·375×667 App Info Light/Dark 실제 표본 확인
+- [x] Accessibility 3의 390×844·375×667 Home Network Error Dark 실제 표본 확인
+- [ ] 23개 전체 390×844·Light·기본 Current와 동일 fixture Reference/Diff 독립 검증
+- [ ] 위험 조합 추가 캡처와 23개 전체 VoiceOver 런타임 순서 독립 검증
+- [ ] `WP-R1` Core Loop 23개 Current 23/23
+- [ ] `WP-R2` 독립 Reference·동일 fixture/scale Diff 23/23
+- [ ] `WP-R3` 375×667·Dark·Accessibility 3 필수 위험 조합 실제 조작 결과
+- [ ] `WP-R4` VoiceOver 런타임 23/23와 증거 완결성 validator
 
 ## 현재 개발 원칙
 

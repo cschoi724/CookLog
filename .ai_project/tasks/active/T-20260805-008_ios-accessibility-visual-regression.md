@@ -41,7 +41,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-05
-updated_at: 2026-08-07
+updated_at: 2026-08-10
 report_to: .ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md
 qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
 ---
@@ -76,28 +76,55 @@ qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
   Apple STT·Backend AI·TTS 엔진, 운영 문의·법적 값은 이번 통합 회귀 범위에서 제외한다.
 - 실행 완료 후 lock을 해제하고 `verification_ready`, iOS QA Agent / Verification Role로
   넘긴다. 독립 QA 전에는 T-008 또는 상위 T-20260728-003을 완료로 판정하지 않는다.
+- 2026-08-10: iOS Agent가 통합 82개·Core Loop 23개 계약 validator, 전체 XCTest 82/82,
+  Debug build와 Accessibility 3 표본 6장을 완료해 `verification_ready`로 인계했다.
+- 2026-08-10: iOS QA Agent가 기능 XCTest 82/82와 validator는 통과시켰으나 Core Loop
+  Current 0/23, 동일 fixture·scale Reference/Diff 0/23, 위험 조합 matrix 미완료,
+  VoiceOver 런타임 0/23의 `QA-HIGH-805008-001~004`를 확인해 `FAIL`,
+  `rework_requested`로 Development Lead Agent에 인계했다.
+- 2026-08-10: Development Lead Agent가 결함을 `WP-R1~R4`로 범위화했고 Product Owner가
+  재작업을 승인해 `rework_requested -> approved`로 전환하고 iOS Agent에 재인계한다.
+- `WP-R1`: 고정된 23개 상태 ID·fixture 진입 경로로 390×844·Light·기본 글자 크기
+  Current를 23/23 생성하고 상태별 필수 콘텐츠·CTA·데이터 조건을 기록한다.
+- `WP-R2`: 승인된 디자인 Source of Truth에서 Current보다 독립적인 Reference를 동일
+  fixture·상태 ID·viewport·Appearance·글자 크기·scale로 23/23 구성하고 1:1 overlay
+  Diff를 만든다. Current 복제나 Current를 자기 baseline으로 사용하지 않는다.
+- `WP-R3`: 계약의 필수 위험 상태를 375×667·Dark·Accessibility 3으로 추가 캡처하고
+  실제 스크롤·키보드 회피·CTA 도달·잘림/겹침·44×44pt 결과를 상태별로 남긴다.
+- `WP-R4`: 실제 VoiceOver를 켠 23개 상태의 focus 순서, label/value/trait,
+  disabled/selected 의미, 상태 알림과 과다 낭독 여부를 상태 ID별 기계 판독 기록과
+  재현 가능한 런타임 증거로 남긴다. validator는 Current/Reference/Diff 1:1 대응,
+  fixture·scale 일치, 위험 matrix와 VoiceOver 23/23 완결성 누락을 실패 처리한다.
+- 기존 기능 82/82와 manifest 상태 계약은 보존한다. 실제 Apple STT·Backend AI·TTS,
+  운영 문의 주소·법적 값은 계속 범위 밖이다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
 너는 iOS Agent / Execution Role이야.
-Task T-20260805-008은 승인된 실행 Task야.
+Task T-20260805-008의 승인된 재작업을 진행해줘.
 
 - 현재 상태: `approved`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `56cb68d`
-- 다음에 해야 할 일: 최신 canonical 기준 전용 worktree에서 lock을 획득하고, 허용 경로
-  안에서 접근성·작은 화면·다크 모드·통합 회귀 fixture와 증빙을 완성해. 발견된 iOS 결함은
-  범위 안에서 수정하고 자체 검증 후 task report를 작성해.
+- 기준 상태 SHA: `099047e`
+- 다음에 해야 할 일: 최신 canonical 기준 전용 worktree에서 lock을 획득하고
+  `WP-R1~R4`만 수행한 뒤 기존 기능 회귀와 함께 자체 검증해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
-- 참고 산출물: `.ai_project/tasks/active/T-20260805-008_ios-accessibility-visual-regression.md`
-- 변경/검토 대상: `apps/ios/`, Core Loop 23개, 통합 82개 상태, 390×844·375×667
-  Light/Dark·기본/Accessibility 3, Dynamic Type·VoiceOver·44pt
-- 남은 리스크: 실제 Apple STT·Backend AI·TTS 엔진과 운영 문의·법적 값은 후속 범위
-- 차단/결정 필요: 허용 경로 밖 수정이나 Source of Truth 충돌이 발견되면 중단하고
-  Development Lead Agent에 보고
-- 완료 시: report를 갱신하고 lock을 해제한 뒤 `verification_ready`로 전환해 iOS QA
-  Agent / Verification Role에 독립 검증을 요청해.
+- 참고 산출물: `.ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md`,
+  `.ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md`
+- 변경/검토 대상: `apps/ios/VisualRegression/`,
+  `apps/ios/Scripts/validate-visual-regression-contract.js`, 전체 iOS 화면·테스트
+- 재작업 `WP-R1`: Core Loop 23개 Current 23/23와 상태별 필수 결과
+- 재작업 `WP-R2`: 독립 Reference·동일 fixture/scale Diff 23/23, 자기 baseline 금지
+- 재작업 `WP-R3`: 필수 위험 상태의 375×667·Dark·Accessibility 3 실제 조작 결과
+- 재작업 `WP-R4`: VoiceOver 런타임 23/23와 증거 완결성 validator
+- 보존: 통합 82개·Core Loop 23개 manifest, 전체 XCTest 82/82, 기존 기능·데이터 흐름
+- 남은 리스크: Visual QA와 VoiceOver 합격 여부는 독립 재검증 전 미확정
+- 범위 제외: 실제 Apple STT·Backend AI·TTS 엔진, 운영 문의·법적 값
+- 차단/결정 필요: 승인된 디자인 기준에서 독립 Reference를 만들 수 없거나 실제
+  VoiceOver 런타임 증거를 만들 수 없으면 임의 완화하지 말고 Lead에 보고해.
+- 완료 시: report와 iOS 문서를 갱신하고 lock을 해제한 뒤 `verification_ready`로 전환해
+  동일 iOS QA Agent / Verification Role에 독립 재검증을 요청해.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
