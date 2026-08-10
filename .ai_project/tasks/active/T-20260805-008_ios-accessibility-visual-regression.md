@@ -97,6 +97,21 @@ qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
   fixture·scale 일치, 위험 matrix와 VoiceOver 23/23 완결성 누락을 실패 처리한다.
 - 기존 기능 82/82와 manifest 상태 계약은 보존한다. 실제 Apple STT·Backend AI·TTS,
   운영 문의 주소·법적 값은 계속 범위 밖이다.
+- 2026-08-10: iOS Agent가 첫 재작업에서 Current/Reference/Diff 23개, 위험 matrix,
+  VoiceOver JSON을 보강하고 전체 XCTest 82/82를 통과해 독립 재검증에 인계했다.
+- 2026-08-10: iOS QA Agent가 상태 본문 불일치·letterbox viewport·미정렬 overlay Diff·
+  위험 matrix 중복 이미지·실제 VoiceOver focus/알림 누락을 확인해 다시 `FAIL`,
+  `rework_requested`로 판정했다.
+- 2026-08-10: Development Lead Agent가 아래 `WP-R5~R8`로 재작업 범위를 조율했고 Product
+  Owner가 재작업을 승인해 `approved`, iOS Agent / Execution Role로 다시 인계한다.
+- `WP-R5`: 23개 상태를 실제 fixture로 주입하고 고유 콘텐츠·CTA assertion을 통과한 뒤
+  letterbox 없는 390×844 full-screen Current를 생성한다.
+- `WP-R6`: Current/Reference의 safe area·fixture·viewport·scale·시간 마스크·좌표계를
+  정렬하고 mask 적용 후 spacing·정렬 등 계약 허용치별 수치 Diff를 기록한다.
+- `WP-R7`: 위험 matrix에서 상태별 고유 콘텐츠·CTA·오류/로딩/disabled 의미를 검증하며
+  byte-identical 이미지를 서로 다른 상태 증거로 허용하지 않는다.
+- `WP-R8`: 실제 VoiceOver focus 이동 또는 신뢰 가능한 접근성 자동화 결과를 상태별 독립
+  기대 계약과 대조하고 상태 알림·카운트다운 과다 낭독을 이벤트 로그로 증명한다.
 
 ## Next Agent Handoff
 
@@ -107,21 +122,22 @@ Task T-20260805-008의 승인된 재작업을 진행해줘.
 
 - 현재 상태: `approved`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `099047e`
+- 기준 상태 SHA: `2b666590`
 - 다음에 해야 할 일: 최신 canonical 기준 전용 worktree에서 lock을 획득하고
-  `WP-R1~R4`만 수행한 뒤 기존 기능 회귀와 함께 자체 검증해.
+  `WP-R5~R8`만 수행한 뒤 기존 기능 회귀와 함께 자체 검증해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md`,
   `.ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md`
 - 변경/검토 대상: `apps/ios/VisualRegression/`,
   `apps/ios/Scripts/validate-visual-regression-contract.js`, 전체 iOS 화면·테스트
-- 재작업 `WP-R1`: Core Loop 23개 Current 23/23와 상태별 필수 결과
-- 재작업 `WP-R2`: 독립 Reference·동일 fixture/scale Diff 23/23, 자기 baseline 금지
-- 재작업 `WP-R3`: 필수 위험 상태의 375×667·Dark·Accessibility 3 실제 조작 결과
-- 재작업 `WP-R4`: VoiceOver 런타임 23/23와 증거 완결성 validator
+- 재작업 `WP-R5`: 실제 상태 fixture·고유 콘텐츠/CTA assertion·full-screen Current 23/23
+- 재작업 `WP-R6`: 동일 좌표계 정렬·mask·계약 허용치별 수치 Diff 23/23
+- 재작업 `WP-R7`: 위험 상태 고유 의미 assertion·서로 다른 상태의 동일 이미지 금지
+- 재작업 `WP-R8`: 실제 VoiceOver focus·독립 기대 계약·상태 알림 이벤트 증거
 - 보존: 통합 82개·Core Loop 23개 manifest, 전체 XCTest 82/82, 기존 기능·데이터 흐름
-- 남은 리스크: Visual QA와 VoiceOver 합격 여부는 독립 재검증 전 미확정
+- 남은 리스크: 첫 재검증의 상태 중복·letterbox·미정렬 Diff·가짜 focus 순서 반례가
+  독립 재검증에서 해소되는지 미확정
 - 범위 제외: 실제 Apple STT·Backend AI·TTS 엔진, 운영 문의·법적 값
 - 차단/결정 필요: 승인된 디자인 기준에서 독립 Reference를 만들 수 없거나 실제
   VoiceOver 런타임 증거를 만들 수 없으면 임의 완화하지 말고 Lead에 보고해.
