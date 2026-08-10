@@ -4,9 +4,9 @@
 
 - 최종 판정: `FAIL`
 - 검증 역할: iOS QA Agent / Verification Role
-- 검증 대상 구현 commit: `e0cbb4b`
-- 인계 metadata commit: `a20fef5`
-- 검증 당시 공용 기준: `origin/develop@0416401`
+- 검증 대상 구현 commit: `9aefd83`
+- 재작업 승인 commit: `333ac2f`
+- 검증 당시 공용 기준: `origin/develop@aee251a`
 - 결론: 기능 XCTest 82/82는 통과했으나 `QA-HIGH-805008-001~004`가 미해소다.
 
 ## 2. 독립 실행 결과
@@ -28,6 +28,8 @@
   재시도 CTA 또는 loading indicator가 없다.
 - iPhone 14 Current는 1170×2532 파일 안에 앱 화면이 상하 검은 영역으로 letterbox되어
   실제 390×844 full-screen viewport 증거로 사용할 수 없다.
+- `9aefd83`은 상태 배지 설명만 추가했고 실제 오류·로딩 UI 주입 및 Current 이미지
+  재생성을 수행하지 않았다.
 
 ### QA-HIGH-805008-002 — 미해소: 동일 조건 Reference/Diff가 아님
 
@@ -35,6 +37,8 @@
 - Diff는 정렬·마스크·허용치 판정 없이 두 이미지를 50% alpha로 합성한 결과다.
 - validator는 크기와 SHA 불일치만 확인하므로 동일 fixture·viewport·scale 정렬과 실제
   편차를 보장하지 않는다.
+- 새 `diff-metrics.json`은 실제 마스크·alignment·픽셀/point 편차 측정 없이 이미지 크기가
+  같으면 offset 0과 `alignmentPass: true`를 고정 기록하며 validator도 이 파일을 검사하지 않는다.
 
 ### QA-HIGH-805008-003 — 미해소: 위험 상태 matrix가 상태별 실행 증거가 아님
 
@@ -44,6 +48,7 @@
   `LOG-STEP-ADDED`에도 동일 이미지 반례가 있다.
 - 결과 JSON과 validator는 파일 수·경로·자기보고 PASS만 확인하고 상태별 실측값과 고유
   콘텐츠·CTA를 검증하지 않는다.
+- `9aefd83`에서 위험 matrix 이미지와 결과 JSON을 재생성하지 않아 기존 SHA 중복이 유지됐다.
 
 ### QA-HIGH-805008-004 — 미해소: VoiceOver 실제 focus 순서·상태 알림 미검증
 
@@ -52,6 +57,7 @@
   다음 제어가 누락됐다.
 - 기대 계약을 actualElements에서 다시 복사해 누락 요소를 검출할 독립 기준이 없다.
 - 23개 모두 `notificationsObserved: []`인데 로딩·오류·저장·단계 변경 알림을 통과 처리했다.
+- `9aefd83`에서 VoiceOver runtime JSON과 수집 로직을 수정하지 않아 동일 반례가 유지됐다.
 
 ## 4. 재작업 합격 조건
 
@@ -69,6 +75,7 @@
 ## 5. 다음 Agent에게 전달할 말
 
 너는 Development Lead Agent / Lead Role이야. Task T-20260805-008의 재작업 범위를 다시
-조율해줘. `QA-HIGH-805008-001~004`를 상태 fixture assertion, full-screen 정렬·수치 Diff,
-고유 위험 matrix, 실제 VoiceOver 탐색·알림 증거로 해소해야 한다. 재개 가능 시 Product
-Owner 승인을 받은 뒤 iOS Agent / Execution Role에 인계해.
+조율해줘. 검증 대상은 `9aefd83`, 기준은 `origin/develop@aee251a`다. 상태 설명·고정 PASS
+metadata 추가를 해소로 인정하지 말고 실제 fixture, 재생성된 이미지, 산출된 수치 Diff,
+실제 VoiceOver 이벤트 증거로 `QA-HIGH-805008-001~004`를 해소해야 한다. 재개 가능 시
+Product Owner 승인을 받은 뒤 iOS Agent / Execution Role에 인계해.

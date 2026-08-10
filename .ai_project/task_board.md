@@ -110,7 +110,7 @@ iOS `T-20260728-003` 하위 실행 후보:
 | `T-20260805-005` | P0 | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `proposed`, T-004 선행 |
 | `T-20260805-006` | P0 | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `proposed`, T-005 선행 |
 | `T-20260805-007` | P0 | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `proposed`, T-006 선행 |
-| `T-20260805-008` | P0 | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `approved`, 독립 재검증 FAIL·WP-R5~R8 재작업 승인 |
+| `T-20260805-008` | P0 | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `approved`, 세 번째 독립 검증 FAIL·WP-R9~R12 재작업 승인 |
 
 CI `T-20260728-008` 하위 실행 후보:
 

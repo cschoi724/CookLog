@@ -112,6 +112,24 @@ qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
   byte-identical 이미지를 서로 다른 상태 증거로 허용하지 않는다.
 - `WP-R8`: 실제 VoiceOver focus 이동 또는 신뢰 가능한 접근성 자동화 결과를 상태별 독립
   기대 계약과 대조하고 상태 알림·카운트다운 과다 낭독을 이벤트 로그로 증명한다.
+- 2026-08-10: iOS Agent가 `WP-R5~R8` 재작업으로 상태 설명과 `diff-metrics.json`을
+  추가했으나 실제 상태 UI·Current·위험 matrix·VoiceOver 산출물을 재생성하지 않았다.
+- 2026-08-10: iOS QA Agent가 전체 XCTest 82/82는 통과시켰으나 동일 High 4건이 실제
+  산출물에서 그대로임을 확인해 세 번째 `FAIL`, `rework_requested`로 판정했다.
+- 2026-08-10: Development Lead Agent가 아래 `WP-R9~R12`로 합격 게이트를 강화했고
+  Product Owner가 재작업을 승인해 `approved`, iOS Agent / Execution Role로 다시 인계한다.
+- `WP-R9`: 상태 설명 배지를 합격 증거에서 제외한다. 23개 상태별 fixture 주입 assertion과
+  화면 내 고유 콘텐츠·CTA assertion이 캡처 전에 실패 가능해야 하며 Current 23개를 전부
+  새로 생성한다. 산출물 생성 시각과 SHA를 report에 기록한다.
+- `WP-R10`: letterbox 검출을 자동화하고 실제 이미지 픽셀에서 viewport crop·alignment·mask·
+  pixel/point 편차를 계산한다. 상수 PASS/offset 0 입력을 금지하고 validator negative fixture가
+  미정렬·미마스크·허용치 초과를 실제 실패시켜야 한다.
+- `WP-R11`: 위험 matrix 18개 top/bottom을 전부 재생성하고 상태 간 byte-identical 이미지를
+  validator가 실패 처리한다. 각 상태의 주입·스크롤·키보드·CTA 조작 로그와 assertion 결과를
+  독립 필드로 기록한다.
+- `WP-R12`: 기존 runtime JSON을 폐기·재생성하고 실제 focus 이동/접근성 자동화 이벤트 원본을
+  보존한다. 독립 기대 계약과 비교하며 필수 알림 상태의 빈 `notificationsObserved`, 고정
+  `overReadingDetected: false`, actualElements 복제 계약을 validator가 실패 처리한다.
 
 ## Next Agent Handoff
 
@@ -122,21 +140,21 @@ Task T-20260805-008의 승인된 재작업을 진행해줘.
 
 - 현재 상태: `approved`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `2b666590`
+- 기준 상태 SHA: `aee251a`
 - 다음에 해야 할 일: 최신 canonical 기준 전용 worktree에서 lock을 획득하고
-  `WP-R5~R8`만 수행한 뒤 기존 기능 회귀와 함께 자체 검증해.
+  `WP-R9~R12`만 수행한 뒤 기존 기능 회귀와 함께 자체 검증해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md`,
   `.ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md`
 - 변경/검토 대상: `apps/ios/VisualRegression/`,
   `apps/ios/Scripts/validate-visual-regression-contract.js`, 전체 iOS 화면·테스트
-- 재작업 `WP-R5`: 실제 상태 fixture·고유 콘텐츠/CTA assertion·full-screen Current 23/23
-- 재작업 `WP-R6`: 동일 좌표계 정렬·mask·계약 허용치별 수치 Diff 23/23
-- 재작업 `WP-R7`: 위험 상태 고유 의미 assertion·서로 다른 상태의 동일 이미지 금지
-- 재작업 `WP-R8`: 실제 VoiceOver focus·독립 기대 계약·상태 알림 이벤트 증거
+- 재작업 `WP-R9`: 실제 fixture assertion 후 Current 23개 전량 재생성·SHA 기록
+- 재작업 `WP-R10`: 실제 픽셀 측정 Diff·letterbox 검출·negative fixture 실패 검증
+- 재작업 `WP-R11`: 위험 matrix 전량 재생성·동일 SHA 금지·실제 조작 assertion
+- 재작업 `WP-R12`: VoiceOver 원본 이벤트 재수집·독립 기대 계약·빈/고정 증거 실패 검증
 - 보존: 통합 82개·Core Loop 23개 manifest, 전체 XCTest 82/82, 기존 기능·데이터 흐름
-- 남은 리스크: 첫 재검증의 상태 중복·letterbox·미정렬 Diff·가짜 focus 순서 반례가
+- 남은 리스크: 세 번째 재검증의 상태 중복·letterbox·미정렬 Diff·가짜 focus 순서 반례가
   독립 재검증에서 해소되는지 미확정
 - 범위 제외: 실제 Apple STT·Backend AI·TTS 엔진, 운영 문의·법적 값
 - 차단/결정 필요: 승인된 디자인 기준에서 독립 Reference를 만들 수 없거나 실제
