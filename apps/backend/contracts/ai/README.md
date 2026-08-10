@@ -6,6 +6,8 @@
 - `recipe-draft.schema.json`: AI Review 초안
 - `recipe-job-status.schema.json`: queued·processing·succeeded·failed·expired 상태
 - `recipe-job-acknowledgement.schema.json`: 앱 결과 수신 확인
+- `openai-provider-manifest.v1.json`: 고정 endpoint·model·prompt·schema, Structured
+  Outputs keyword allowlist와 활성화 gate
 - `fixtures/recipe-job-create.json`: 정상 STEP snapshot
 - `fixtures/recipe-draft.json`: evidence와 review flag를 포함한 정상 결과
 - `fixtures/state-transitions.json`: 상태 전이·provider 호출 상한

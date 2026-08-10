@@ -1,5 +1,19 @@
 # Backend 변경 기록
 
+- 2026-08-10: `T-20260810-001` Backend QA HIGH 2건 재작업으로 response body read
+  timeout·연결 유실을 `OUTCOME_UNKNOWN`으로 분리했습니다. OpenAI Structured
+  Outputs 지원 keyword allowlist로 provider schema를 투영하고 `uniqueItems`·length
+  제약은 전송에서 제외하되 기존 runtime validator에서 중복·길이 계약을
+  계속 fail closed하도록 회귀를 추가했습니다. 실제 provider 호출은 0건입니다.
+
+- 2026-08-10: `T-20260810-001`에서 OpenAI `gpt-5-mini-2025-08-07`, 한국 저장
+  Chat Completions endpoint, `recipe-prompt.v1`과 strict `recipe-draft.v1` schema를 고정한
+  `openai-recipe-adapter.v1`을 구현했습니다. ZDR·Modified Retention·국외 처리·
+  credential gate 미충족 시 transport 호출 0건, `store=false`, 자동 retry·fallback
+  금지와 429·timeout·refusal·invalid output 매핑을 synthetic local test로 검증했습니다.
+  기본 network transport를 등록하지 않았고 실제 credential·외부 호출·Cloud
+  리소스·배포를 활성화하지 않았습니다.
+
 - 2026-08-10: Development Lead가 `T-20260729-003` 실제 provider·스테이징 Backend를
   provider, datastore/job, 인증, 비용·관측성, STT 비활성, 배포·rollback의 6개 하위
   Task로 scope했습니다. 외부 결정과 개별 승인 전에는 모두 `proposed`로 유지합니다.

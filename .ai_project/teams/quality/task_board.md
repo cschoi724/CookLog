@@ -7,7 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
-| `T-20260810-001` | `approved` | Backend 실제 AI provider adapter·prompt·schema | 105/105 PASS, body-read 오분류·strict schema subset High 2건 | Product Owner `WP-R1~R2` 재작업 승인·Backend Agent 재인계 |
+| `T-20260810-001` | `completion_review` | Backend 실제 AI provider adapter·prompt·schema | `WP-R1~R2` 해소·108/108·계약 5종·container·CI PASS_WITH_RISK | 완료 리뷰 통과·Product Owner 최종 승인 대기 |
 | `T-20260805-008` | `approved` | iOS 접근성·작은 화면·다크 모드·통합 회귀 검증 | 세 번째 검증 XCTest 82/82 PASS, Visual/VoiceOver HIGH 4건 미해소 | Product Owner `WP-R9~R12` 재작업 승인·iOS Agent 재인계 |
 | `T-20260805-007` | `done` | iOS 앱 정보·권한·오프라인·서비스 장애 | HIGH 2·MEDIUM 1 해소·82/82·8 viewport | Product Owner 완료·PR #106 squash merge `2f309ed` |
 | `T-20260805-006` | `done` | iOS Audio Guide·핸즈프리 UI·공통 action model | QA-HIGH-806006-001 해소·독립 77/77·4 viewport | Product Owner 완료·PR #101 squash merge `dcf58d5` |

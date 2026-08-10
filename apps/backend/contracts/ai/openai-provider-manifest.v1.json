@@ -1,0 +1,51 @@
+{
+  "manifest_version": "openai-recipe-provider.v1",
+  "adapter_config_version": "openai-recipe-adapter.v1",
+  "provider": "openai",
+  "endpoint": "https://kr.api.openai.com/v1/chat/completions",
+  "model": "gpt-5-mini-2025-08-07",
+  "prompt_version": "recipe-prompt.v1",
+  "output_schema_version": "recipe-draft.v1",
+  "storage_region": "KR",
+  "regional_processing_supported": false,
+  "processing_boundary": "outside-KR-approved-only",
+  "store": false,
+  "external_tools_enabled": false,
+  "automatic_fallback_enabled": false,
+  "automatic_retry_enabled": false,
+  "timeout_ms": 60000,
+  "structured_output_keyword_allowlist": [
+    "$defs",
+    "$ref",
+    "additionalProperties",
+    "anyOf",
+    "description",
+    "enum",
+    "exclusiveMaximum",
+    "exclusiveMinimum",
+    "format",
+    "items",
+    "maximum",
+    "maxItems",
+    "minimum",
+    "minItems",
+    "multipleOf",
+    "pattern",
+    "properties",
+    "required",
+    "type"
+  ],
+  "runtime_only_schema_keywords": [
+    "const",
+    "maxLength",
+    "minLength",
+    "uniqueItems"
+  ],
+  "activation_gates": [
+    "product_approval",
+    "zdr_approval",
+    "modified_retention_amendment",
+    "cross_border_processing_approval",
+    "dedicated_credential"
+  ]
+}
