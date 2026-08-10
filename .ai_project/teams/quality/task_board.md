@@ -7,7 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
-| `T-20260805-008` | `approved` | iOS 접근성·작은 화면·다크 모드·통합 회귀 검증 | 재검증 XCTest 82/82 PASS, Visual/VoiceOver HIGH 4건 미해소 | Product Owner `WP-R5~R8` 재작업 승인·iOS Agent 재인계 |
+| `T-20260805-008` | `approved` | iOS 접근성·작은 화면·다크 모드·통합 회귀 검증 | 세 번째 검증 XCTest 82/82 PASS, Visual/VoiceOver HIGH 4건 미해소 | Product Owner `WP-R9~R12` 재작업 승인·iOS Agent 재인계 |
 | `T-20260805-007` | `done` | iOS 앱 정보·권한·오프라인·서비스 장애 | HIGH 2·MEDIUM 1 해소·82/82·8 viewport | Product Owner 완료·PR #106 squash merge `2f309ed` |
 | `T-20260805-006` | `done` | iOS Audio Guide·핸즈프리 UI·공통 action model | QA-HIGH-806006-001 해소·독립 77/77·4 viewport | Product Owner 완료·PR #101 squash merge `dcf58d5` |
 | `T-20260728-006` | `done` | Backend AI gateway·비활성 원격 STT Foundation | 하위 T-002~007 독립 QA·100/100·계약 5종·Node 24 container 집계 | PASS_WITH_RISK 수용·Product Owner 최종 완료/PR #93 병합 승인 |
@@ -72,6 +72,9 @@ VoiceOver 23개와 자동 완결성 검사의 `WP-R1~R4` 재작업을 승인했�
 상태 중복·letterbox·미정렬 Diff·실제 VoiceOver 탐색과 알림 증거 부족으로 다시
 `FAIL`이었습니다. Product Owner가 상태 fixture assertion, full-screen 수치 Diff,
 고유 위험 matrix, 실제 VoiceOver 이벤트 증거의 `WP-R5~R8` 재작업을 승인했습니다.
+세 번째 검증에서도 실제 산출물은 재생성되지 않고 상태 설명·고정 PASS metadata만 추가되어
+동일 High 4건이 유지됐습니다. Product Owner가 실제 산출물 전량 재생성, 측정 기반 Diff,
+negative fixture 실패, VoiceOver 원본 이벤트 수집의 `WP-R9~R12` 재작업을 승인했습니다.
 
 `T-20260805-002` 독립 검증에서 구현 상태 전체 XCTest 39/39와 실제 non-empty
 구버전 store migration은 통과했습니다. 그러나 알 수 없는 lifecycle 완료 행이 기존 Recipe
