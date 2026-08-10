@@ -9,8 +9,8 @@ import {
 import type { RecipeJobCreateRequest, RecipeJobStatus } from "../ai/types.js";
 import {
   ContentCleanupPendingError,
-  InMemoryRecipeJobRepository,
   type PendingTerminalFacts,
+  type RecipeJobRepository,
 } from "../storage/recipe-job-repository.js";
 
 export interface RecipeJobAdmission {
@@ -53,13 +53,13 @@ export type TimeoutEvent =
   | { readonly kind: "connection_lost" };
 
 export class RecipeJobService {
-  readonly #repository: InMemoryRecipeJobRepository;
+  readonly #repository: RecipeJobRepository;
   readonly #provider: RecipeAIProvider;
   readonly #admission: RecipeJobAdmission;
   readonly #auditTerminal: TerminalAudit;
 
   constructor(options: {
-    readonly repository: InMemoryRecipeJobRepository;
+    readonly repository: RecipeJobRepository;
     readonly provider: RecipeAIProvider;
     readonly admission?: RecipeJobAdmission;
     readonly auditTerminal?: TerminalAudit;
@@ -95,7 +95,11 @@ export class RecipeJobService {
         ? { kind: "invalid_request" }
         : { kind: "accepted", status, replayed: true };
     }
-    if (this.#repository.isNewJobBlocked()) return { kind: "service_disabled" };
+    try {
+      if (this.#repository.isNewJobBlocked()) return { kind: "service_disabled" };
+    } catch {
+      return { kind: "service_disabled" };
+    }
     const admission = this.#admission.reserve({ installationId, request: structuredClone(request) });
     if (admission !== "accepted") return { kind: admission };
     const created = this.#repository.create(installationId, idempotencyKey, bodyHash, request);

@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-10
-상태: T-20260728-006 Backend Foundation `done`, T-20260810-001 HIGH 2건 재작업 완료·QA 재인계 준비
+상태: T-20260728-006 Backend Foundation `done`, T-20260810-002 QA PASS_WITH_RISK·Product Owner 최종 완료·병합 승인
 
 ## 현재 단계
 
@@ -31,11 +31,28 @@ Backend QA의 HIGH 2건에 따라 response body read 연결 유실을
 지원 keyword subset으로 투영했다. provider에서 제외된 uniqueness·length 제약은
 기존 runtime semantic validator에서 계속 fail closed한다.
 
+T-20260810-002는 repository port와 서울 리전 Firestore·Cloud Tasks local contract
+adapter를 추가했다. datastore 재구성 뒤 job·idempotency·outbox·결과·ACK 복구,
+queue 장애 뒤 단일 재발행, 22시간 cleanup·15분 sweeper, 23시간 신규 job 차단,
+23시간 45분 격리 삭제 전환,
+24시간 접근 차단과 삭제 실패 복구를 synthetic test로 검증했다.
+
+QA-HIGH-810002-001 재작업으로 객체 identity 기반 `WeakMap` 저장을 제거하고 선택적
+durable file backing을 추가했다. 실제 child process를 네 번 재기동해 새 adapter에서
+job·content·create/ACK idempotency·worker/cleanup outbox·published marker를 복구하고,
+cleanup pending·delete failure도 새 adapter 연쇄에서 삭제 완료되는 것을 검증했다.
+
+QA-HIGH-810002-002 재작업으로 backing별 cross-process transaction lock과 transaction
+진입 시 최신 state 재로딩을 추가했다. 먼저 열린 stale adapter 및 barrier로 동시에 시작한
+child process 경쟁에서 create는 신규 1건+replay 1건, worker는 provider 총 1회만 허용했고,
+ACK/delete·cleanup pending·outbox/published marker도 단일 승자를 유지했다.
+
 ## 다음 조치
 
 1. Foundation local/mock 범위는 `done`으로 유지한다.
-2. `T-20260810-001`은 Backend QA가 `QA-HIGH-810001-001~002` 원본 반례,
-   provider keyword allowlist·runtime uniqueness·게이트·provider-at-most-once를 독립 재검증한다.
+2. `T-20260810-002`는 HIGH 2건 해소와 Backend QA `PASS_WITH_RISK`를 Development Lead와
+   Product Owner가 수용해 최종 완료·병합을 승인했다. 실제 Firestore·Cloud Tasks 통합
+   검증은 `T-20260810-006` 외부 변경 게이트에서 수행한다.
 3. credential 등록·실제 sandbox/production 호출·Cloud 리소스·배포는 별도
    외부 변경 승인 전까지 비활성으로 유지한다.
 

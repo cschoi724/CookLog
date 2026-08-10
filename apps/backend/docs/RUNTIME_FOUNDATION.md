@@ -81,6 +81,42 @@ HTTP 경계가 parser 전에 고정 `SERVICE_DISABLED`로 차단합니다.
 연속 signal을 검증합니다. 모든 시나리오는 실제 exit code와 signal 종료 여부를
 assertion하고 9초 안에 끝나야 합니다.
 
+## Cloud job storage·cleanup 계약
+
+`T-20260810-002`는 기존 in-memory 구현을 `RecipeJobRepository` port 뒤로 분리하고,
+Firestore·Cloud Tasks의 서울 리전 계약을 로컬 adapter로 검증합니다.
+
+QA-HIGH-810002-001 재작업으로 datastore adapter는 선택적 durable file backing을
+원자 임시 파일 교체 방식으로 저장합니다. 새 adapter와 실제 child process가 같은 backing을
+다시 열어 job·content·idempotency·outbox·published marker·cleanup pending을 복구하며,
+손상되거나 schema가 다른 상태 파일은 startup에서 fail closed합니다.
+
+QA-HIGH-810002-002 재작업으로 durable repository의 모든 읽기·mutation은 backing별
+cross-process transaction lock 안에서 최신 state를 다시 읽습니다. mutation 완료 뒤에만
+원자 파일 교체를 수행하고 lock timeout·손상 state는 fail closed합니다. 따라서 먼저 열린
+stale adapter끼리 경쟁해도 동일 create idempotency는 신규 job 1건과 replay 1건만 만들고,
+동일 worker generation의 provider 소유권·ACK delete·cleanup·outbox marker는 단일 승자만
+갖습니다.
+
+- datastore와 task queue는 `asia-northeast3`만 허용합니다.
+- job, content, create/ACK idempotency, worker·cleanup outbox는 같은 datastore 상태에서
+  재구성되어 repository instance가 교체돼도 복구됩니다.
+- queue payload에는 `jobId`, generation, cleanup 예정 시각만 포함하고 transcript,
+  RecipeDraft, snapshot hash를 포함하지 않습니다.
+- queue 장애 시 outbox는 남고 재발행은 task key로 중복 제거됩니다.
+- ACK 성공은 content 삭제가 확인된 뒤에만 외부로 확정합니다.
+- 생성 후 22시간부터 명시적 cleanup을 실행하고 15분 sweeper가 누락 task를 복구합니다.
+- 22.5시간 warning, 23시간 critical·신규 job 차단, 23.5시간 incident를 content read 없이
+  계산합니다.
+- 23시간 45분에는 일반 queue retry를 끝내고 격리 삭제 경로로 전환합니다.
+- 24시간에는 delete 성공 여부와 무관하게 결과 접근을 차단합니다. TTL은 최종 안전망일
+  뿐 명시적 삭제 성공으로 간주하지 않습니다.
+- 유효하지 않은 server time은 신규 job admission을 `SERVICE_DISABLED`로 닫습니다.
+
+현재 durable backing은 process restart를 검증하기 위한 emulator/local fake입니다.
+실제 Firestore·Cloud Tasks 리소스,
+credential, provider 호출, network transport와 배포는 생성하거나 활성화하지 않습니다.
+
 ## 한계와 후속 소유권
 
 - 공통 인증·rate limit·idempotency: `T-20260804-003`

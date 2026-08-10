@@ -1,5 +1,25 @@
 # Backend 변경 기록
 
+- 2026-08-10: `T-20260810-002`의 `QA-HIGH-810002-002` 재작업으로 durable backing별
+  cross-process transaction lock과 최신 state 재로딩을 추가했습니다. 먼저 열린 stale
+  adapter와 동시에 시작한 child process 사이에서 동일 create는 신규 1건+replay 1건,
+  동일 worker generation은 provider 총 1회만 실행하며 ACK/delete·cleanup·outbox marker도
+  단일 승자를 유지합니다. 전체 122/122·계약 validator 5종·경계 감사를 통과했고 실제
+  credential·외부 호출·Google Cloud 리소스·배포는 활성화하지 않았습니다.
+
+- 2026-08-10: `T-20260810-002`의 `QA-HIGH-810002-001` 재작업으로 adapter 객체 identity
+  기반 `WeakMap`을 제거하고 schema-versioned durable local backing과 원자 파일 교체를
+  추가했습니다. 네 개의 실제 child process와 새 adapter에서 job·content·create/ACK
+  idempotency·worker/cleanup outbox·published marker·cleanup pending을 복구하고 손상 상태를
+  fail closed하는 회귀를 추가해 전체 119/119·계약 5종·경계 감사를 통과했습니다.
+  실제 credential·외부 호출·Google Cloud 리소스·배포는 활성화하지 않았습니다.
+
+- 2026-08-10: `T-20260810-002`에서 job storage를 repository port로 분리하고 서울 리전
+  Firestore·Cloud Tasks local contract adapter, 원자 outbox·중복 제거, 재시작 복구,
+  ACK 즉시 삭제, 22시간 cleanup·15분 sweeper, 23시간 신규 job 차단, 23시간 45분 격리
+  삭제 전환, 24시간 접근 차단을 구현했습니다. synthetic 116/116와 계약 validator 5종·경계 감사를 통과했으며 실제
+  credential·외부 호출·Google Cloud 리소스·배포는 활성화하지 않았습니다.
+
 - 2026-08-10: `T-20260810-001` Backend QA HIGH 2건 재작업으로 response body read
   timeout·연결 유실을 `OUTCOME_UNKNOWN`으로 분리했습니다. OpenAI Structured
   Outputs 지원 keyword allowlist로 provider schema를 투영하고 `uniqueItems`·length
