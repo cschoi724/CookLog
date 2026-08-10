@@ -2,15 +2,15 @@
 schema: aiops.task.v1
 id: T-20260810-007
 title: Design Prototype GitHub Pages 공유 구성
-status: completion_review
+status: done
 type: feature
 priority: P2
 org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities: [design_handoff]
 ownership_review:
   required: true
@@ -42,7 +42,7 @@ updated_at: 2026-08-10
 report_to: .ai_project/reports/T-20260810-007_publish-design-prototype-github-pages-report.md
 qa_to: .ai_project/qa/T-20260810-007_publish-design-prototype-github-pages-qa.md
 status_ref: origin/develop
-status_ref_sha: d8fc12f
+status_ref_sha: 0f97c07
 worktree_path: /private/tmp/cooklog-t-20260810-007-reintegration
 worktree_role: Completion Role
 base_ref: origin/develop
@@ -96,3 +96,4 @@ Task T-20260810-007의 develop 통합 후 완료 확정 여부를 검토해줘.
 | 2026-08-10 | Design QA Agent | verification_ready | verification_in_progress | 전용 재통합 worktree에서 lock을 획득하고 독립 재검증 시작 |
 | 2026-08-10 | Design QA Agent | verification_in_progress | verification_passed | workflow·artifact·권한·기존 CI를 독립 재검증해 PASS 판정, Design Lead 완료 검토로 인계 |
 | 2026-08-10 | Design Lead Agent | verification_passed | completion_review | Design QA PASS·Development Lead 기술 review·정적 재검증을 수용. develop 병합 후 done 확정 예정 |
+| 2026-08-10 | Design Lead Agent | completion_review | done | PR #118 squash merge `0f97c07`의 canonical 반영, 검증 결과와 Gate B 보존 조건을 수용해 Design 하위 Task 완료 확정 |
