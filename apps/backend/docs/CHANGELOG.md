@@ -1,5 +1,9 @@
 # Backend 변경 기록
 
+- 2026-08-10: Development Lead가 `T-20260729-003` 실제 provider·스테이징 Backend를
+  provider, datastore/job, 인증, 비용·관측성, STT 비활성, 배포·rollback의 6개 하위
+  Task로 scope했습니다. 외부 결정과 개별 승인 전에는 모두 `proposed`로 유지합니다.
+
 - 2026-08-06: Product Owner가 T-20260728-006 완료 리뷰의 잔여 위험을 수용하고 최종
   완료·PR #93 squash merge를 승인했습니다. Foundation을 `done`으로 확정하고 실제
   provider·cloud production Backend는 T-20260729-003 별도 승인 범위로 유지했습니다.

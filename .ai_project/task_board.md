@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation T-20260728-006과 하위 T-20260804-002~007도 모두 `done`입니다. 실제 production Backend T-20260729-003은 별도 실행 승인 전 `proposed`입니다. iOS T-003은 7개 하위 패키지로 `scoped`이며 T-20260805-002~004는 `done`, T-20260805-005는 `approved`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation T-20260728-006과 하위 T-20260804-002~007도 모두 `done`입니다. 실제 production Backend T-20260729-003은 6개 하위 패키지로 `scoped`이며 provider·지역·계약·비용·cloud 결정 전 하위 Task는 모두 `proposed`입니다. iOS T-003은 7개 하위 패키지로 `scoped`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -63,7 +63,7 @@ Team별 요약:
 | `T-20260728-009` | P0 | iOS 첫 공개 출시 통합·TestFlight·App Store 게이트 | Development Lead Agent | R1·R2 차단 Task 전체 |
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
 | `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | - | `done`, 하위 T-008~014·통합 Design QA·PR #68 완료 |
-| `T-20260729-003` | P0 | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | Foundation 선행 완료·provider/비용/cloud 별도 승인 대기 |
+| `T-20260729-003` | P0 | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `scoped`, 6개 하위 Task·외부 결정/승인 대기 |
 | `T-20260729-004` | P0 | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` |
 | `T-20260729-005` | P0 | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
 | `T-20260729-006` | P0 | iOS 로컬 TTS·오디오 중단·핸즈프리 Audio Guide 구현 | Development Lead Agent | `T-20260728-003` |
