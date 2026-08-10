@@ -1,7 +1,7 @@
 # Backend 런타임·AI Provider 결정안
 
 작성일: 2026-07-30
-상태: Product Owner 결정 대기
+상태: Product Owner 결정 완료, provider 활성화 gate 대기
 적용 범위: 첫 공개 출시의 온라인 `AI 정리하기` gateway
 
 ## 결론
@@ -24,8 +24,11 @@
 `gemini-3.1-flash-lite` GA로 교체한다. 차선안도 global endpoint, grounding,
 context cache와 Batch를 사용하지 않는다.
 
-이 문서는 Product Owner가 항목별로 승인하기 위한 결정안이다. 승인 전 provider
-계약·결제·배포를 확정하지 않는다.
+2026-08-10 Product Owner가 위 endpoint·model·저장 지역·보관 경계와
+adapter·local contract 구현을 승인했다. `openai-recipe-adapter.v1`은 이 결정을
+고정하지만 ZDR, Modified Retention amendment, 국외 처리 승인과 전용
+credential이 모두 준비되기 전에는 외부 호출을 fail closed한다. 이 구현은
+credential 등록·실제 provider 호출·결제·배포를 활성화하지 않는다.
 
 ## 변경하지 않는 제품 경계
 

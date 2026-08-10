@@ -182,4 +182,31 @@ jq -e '
   .allOf[4].then.properties.result_version.type == "null"
 ' "$contract_dir/recipe-job-status.schema.json" >/dev/null
 
+jq -e '
+  .manifest_version == "openai-recipe-provider.v1" and
+  .adapter_config_version == "openai-recipe-adapter.v1" and
+  .provider == "openai" and
+  .endpoint == "https://kr.api.openai.com/v1/chat/completions" and
+  .model == "gpt-5-mini-2025-08-07" and
+  .prompt_version == "recipe-prompt.v1" and
+  .output_schema_version == "recipe-draft.v1" and
+  .storage_region == "KR" and
+  .regional_processing_supported == false and
+  .processing_boundary == "outside-KR-approved-only" and
+  .store == false and
+  .external_tools_enabled == false and
+  .automatic_fallback_enabled == false and
+  .automatic_retry_enabled == false and
+  .timeout_ms == 60000 and
+  (.structured_output_keyword_allowlist | sort) ==
+    (["$defs", "$ref", "additionalProperties", "anyOf", "description", "enum",
+      "exclusiveMaximum", "exclusiveMinimum", "format", "items", "maximum", "maxItems",
+      "minimum", "minItems", "multipleOf", "pattern", "properties", "required", "type"] | sort) and
+  (.runtime_only_schema_keywords | sort) ==
+    (["const", "maxLength", "minLength", "uniqueItems"] | sort) and
+  (.activation_gates | sort) ==
+    (["product_approval", "zdr_approval", "modified_retention_amendment",
+      "cross_border_processing_approval", "dedicated_credential"] | sort)
+' "$contract_dir/openai-provider-manifest.v1.json" >/dev/null
+
 echo "AI recipe contract validation: PASS"

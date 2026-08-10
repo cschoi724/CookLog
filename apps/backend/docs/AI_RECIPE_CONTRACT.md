@@ -101,6 +101,27 @@ provider adapter는 고정 prompt version과 `recipe-draft.v1` Structured Output
 사용한다. alias가 아니라 T-020이 승인한 고정 model snapshot/GA ID를 runtime config에
 결합하지만 공개 API에는 노출하지 않는다.
 
+`openai-recipe-adapter.v1`은 `recipe-prompt.v1`, `recipe-draft.v1`,
+`gpt-5-mini-2025-08-07`, `kr.api.openai.com/v1/chat/completions`를 하나의
+변경 불가 경계로 고정한다. 요청은 `store=false`, strict JSON Schema,
+외부 tool·background·fallback·자동 retry 미사용을 유지한다. ZDR·Modified
+Retention·국외 처리·제품 승인·전용 credential 게이트 중 하나라도 비어
+있으면 transport를 호출하지 않는다. 429·5xx는 `AI_UNAVAILABLE`, 호출 시작 후
+timeout·연결 유실은 `OUTCOME_UNKNOWN`, refusal은 `SAFETY_REJECTED`, 구조·의미
+검증 실패는 `OUTPUT_INVALID`로 terminal 처리하며 동일 provider idempotency key를
+adapter가 두 번 전송하지 않는다. T-20260810-001 산출물은 요청 구성·응답
+매핑 adapter와 synthetic transport 계약까지만 포함하며, 기본 network transport나
+production composition을 등록하지 않는다.
+
+provider-facing schema는 공용 `recipe-draft.v1` schema에서 OpenAI Structured Outputs가
+지원하는 keyword만 fail-closed 투영한다. `uniqueItems`, `minLength`,
+`maxLength`는 provider에 전송하지 않고 `const`는 동치 `enum`으로 변환한다.
+대신 공용 runtime semantic validator가 중복 evidence, 문자열 길이, 근거·추론·
+안전 제약을 계속 검증하여 provider subset이 공개 계약을 완화하지 못한다.
+provider response header를 받은 후 body read timeout·연결 유실은
+`OUTCOME_UNKNOWN`이며, body read가 완료된 후 JSON·schema·semantic 검증 실패만
+`OUTPUT_INVALID`다.
+
 RecipeDraft는 다음을 포함한다.
 
 - 제목
