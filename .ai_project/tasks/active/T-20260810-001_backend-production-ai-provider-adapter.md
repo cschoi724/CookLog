@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260810-001
 title: Backend 실제 AI provider adapter·prompt·schema validation 구현
-status: proposed
+status: approved
 type: feature
 priority: P0
 priority_reason: 실제 AI Review 생성 경로의 첫 실행 패키지이며 provider 선택과 데이터 처리 계약을 코드 경계로 고정한다.
@@ -10,9 +10,9 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Lead Role
-required_capabilities: [technical_planning, dependency_management]
+target_agent: Backend Agent
+target_role: Execution Role
+required_capabilities: [backend_architecture, api_contract, implementation, developer_verification]
 ownership:
   paths: [apps/backend/src/ai/, apps/backend/contracts/ai/, apps/backend/tests/ai/]
   domains: [ai-provider, structured-output]
@@ -41,7 +41,7 @@ source_of_truth:
   - apps/backend/docs/ARCHITECTURE_DECISION.md
   - apps/backend/docs/AI_RECIPE_CONTRACT.md
 created_by: Development Lead Agent
-approved_by:
+approved_by: Product Owner
 locked_by:
 locked_at:
 lock_session:
@@ -51,7 +51,7 @@ updated_at: 2026-08-10
 report_to: .ai_project/reports/T-20260810-001_backend-production-ai-provider-adapter-report.md
 qa_to: .ai_project/qa/T-20260810-001_backend-production-ai-provider-adapter-qa.md
 status_ref: origin/develop
-status_ref_sha: 1657056
+status_ref_sha: 0416401ecc6ed68179d630ea8bd3fc6017ed4adf
 ---
 
 # Backend 실제 AI provider adapter·prompt·schema validation 구현
@@ -65,12 +65,32 @@ status_ref_sha: 1657056
 
 ## Decision Gate
 
-- provider/model 최신 공식 정보와 저장·처리 지역을 재검증한다.
-- Product Owner가 provider, MAM/ZDR 또는 동등 보관 경계, sandbox credential 사용을 승인해야 한다.
-- 결정 전에는 `approved`로 전환하지 않는다.
+- 2026-08-10 Product Owner 승인: OpenAI `gpt-5-mini-2025-08-07`, 한국 데이터 저장 프로젝트와 `kr.api.openai.com`을 기본안으로 사용한다.
+- 비미국 리전 사용에 필요한 OpenAI 승인과 ZDR 계약은 외부 호출 활성화 전 필수 게이트다.
+- ZDR·sandbox credential이 준비되기 전에는 adapter·contract·local test까지만 구현하고 실제 provider 호출은 비활성으로 유지한다.
 
 ## Activity
 
 | 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
 |---|---|---|---|---|
 | 2026-08-10 | Development Lead Agent |  | proposed | 실제 AI provider 실행 패키지 생성 |
+| 2026-08-10 | Development Lead Agent | proposed | scoped | provider·model·지역·보관·비용 결정과 실행 범위 조율 완료 |
+| 2026-08-10 | Product Owner | scoped | approved | 추천 결정안과 T-20260810-001~005 실행 승인 |
+
+## Next Agent Handoff
+
+다음 Agent에게 전달할 말:
+
+너는 Backend Agent / Execution Role이야. Task T-20260810-001은 승인된 실행 Task야.
+
+- 현재 상태: approved
+- 기준 상태 ref: origin/develop
+- 기준 상태 SHA: 0416401ecc6ed68179d630ea8bd3fc6017ed4adf
+- 다음에 해야 할 일: allowed_paths 안에서 OpenAI provider adapter·versioned prompt·structured schema validation을 구현하고 자체 검증 후 task report를 작성해줘.
+- 기준 문서: 상위 Task, `apps/backend/docs/ARCHITECTURE_DECISION.md`, `apps/backend/docs/AI_RECIPE_CONTRACT.md`
+- 허용 경로: front matter의 `allowed_paths`
+- 참고 산출물: 이 Task 파일
+- 변경/검토 대상: `apps/backend/src/ai/`, `apps/backend/contracts/ai/`, `apps/backend/tests/ai/`
+- 남은 리스크: 한국 리전은 저장만 지원하며 한국 내 추론 처리는 보장되지 않는다.
+- 차단/결정 필요: ZDR 승인·sandbox credential 전에는 실제 외부 호출을 활성화하지 않는다.
+- 완료 시: status를 verification_ready로 바꾸고 target_agent를 Backend QA Agent, target_role을 Verification Role로 넘겨줘.
