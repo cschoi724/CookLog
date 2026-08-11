@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260810-004
 title: Backend production 비용 hard cutoff·redaction·observability 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 실제 provider·storage·인증을 비용과 개인정보 fail-closed 경계 안에서 운영해야 한다.
@@ -90,6 +90,7 @@ status_ref_sha: 09d6c21e0740c94ec724c55cd449650468430702
 | 2026-08-11 | Backend QA Agent | verification_ready | verification_in_progress | canonical SHA·선행 Task·WP-R5~R6 승인·구현 보고서·빈 lock 확인 후 2차 재작업 독립 재검증 lock 획득 |
 | 2026-08-11 | Backend QA Agent | verification_in_progress | verification_passed | accessor·Proxy read/trap 0, strict own schema·error mapping·replay·비로깅과 기존 QA 4건, 전체 153/153·계약 5종·경계 감사 독립 재검증 PASS_WITH_RISK 후 lock 해제 |
 | 2026-08-11 | Development Lead Agent | verification_passed | completion_review | QA 결함 6건 해소·153/153·계약 5종·경계 감사 수용. process-local·Node 24·실제 Billing/sink/composition은 T-006 필수 gate, App Attest fixture 간헐성은 비차단 후속 위험으로 분리 |
+| 2026-08-11 | Product Owner | completion_review | done | 잔여 위험과 T-006 필수 gate를 수용하고 구현·보고·QA 결과의 PR #123 게시·`develop` squash 병합 승인 |
 
 ## 2026-08-11 재작업 범위
 
@@ -143,12 +144,12 @@ status_ref_sha: 09d6c21e0740c94ec724c55cd449650468430702
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Completion Role이야. Task T-20260810-004의 Product Owner 완료 결정을 이어서 처리해줘.
+너는 Development Lead Agent / Lead Role이야. Task T-20260810-004의 병합 후 의존성을 조율해줘.
 
-- 현재 상태: completion_review
+- 현재 상태: done
 - 기준 상태 ref/SHA: origin/develop@09d6c21e0740c94ec724c55cd449650468430702
 - 검증 판정: PASS_WITH_RISK
-- 다음에 해야 할 일: Product Owner에게 잔여 위험 수용과 구현·보고·QA 결과의 commit/push/PR 게시·develop 병합 승인을 확인해줘.
+- 다음에 해야 할 일: PR #123 squash 병합 후 canonical `origin/develop`의 `done`을 확인하고 T-20260810-005~006 및 상위 T-20260729-003 의존성을 조율해줘.
 - 기준 문서: 상위 production gateway Task, T-024 security guardrail, `SECURITY_PRIVACY_OBSERVABILITY.md`
 - 허용 경로: front matter의 `allowed_paths`
 - 참고 산출물: 구현 보고서와 `.ai_project/qa/T-20260810-004_backend-production-cost-observability-qa.md` 9절
@@ -172,6 +173,6 @@ status_ref_sha: 09d6c21e0740c94ec724c55cd449650468430702
 - 비차단 후속 위험: 범위 밖 App Attest forgery fixture는 base64url 마지막 문자 변조가 같은
   byte로 decode될 수 있는 간헐성이 있다. 이번 독립 검증은 첫 실행 153/153이었지만, T-006의
   CI gate 확정 전 별도 테스트 신뢰성 보완 대상으로 추적해야 한다.
-- 완료 조건: Product Owner가 위 잔여 위험을 수용하고, 미커밋 구현·보고·QA 결과의
-  commit/push/PR 게시와 `develop` 병합을 승인해야 한다. 병합 후 canonical Task 상태를 확인한
-  뒤에만 `done`을 전역 완료로 확정한다.
+- 완료 조건: Product Owner가 위 잔여 위험을 수용하고 구현·보고·QA 결과의 PR #123 게시와
+  `develop` squash 병합을 승인했다. 병합 후 canonical Task 상태를 확인한 뒤에만 `done`을
+  전역 완료로 확정한다.
