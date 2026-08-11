@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-11
-상태: T-20260728-006 Backend Foundation `done`, T-20260810-003 `done`·PR #122 병합 승인
+상태: T-20260728-006 Backend Foundation `done`, T-20260810-004 구현 완료·Backend QA 독립 검증 대기
 
 ## 현재 단계
 
@@ -49,6 +49,24 @@ installation token의 위조·clock skew·활성/직전 key 회전·installation
 IP/installation/project/AI rate limit, non-production compatibility 하향 cap을 synthetic
 test로 검증했다. 실제 Apple adapter·credential·Cloud resource·배포는 활성화하지 않았다.
 
+T-20260810-004는 UTC 월 단위 provider 5,500회·입력 20M·출력 8M token·외부비
+KRW 50,000을 하나의 원자 reservation에서 독립 hard cutoff한다. provider envelope에
+Cloud Run·Tasks·Firestore·network·telemetry 비용을 필수화하고 storage·인증·logging·
+cleanup retry도 같은 KRW 원장에 포함했다. admission·terminal telemetry 장애는 provider
+side effect와 결과 공개 전에 kill switch로 닫히며 콘텐츠·secret field는 허용하지 않는다.
+
+Backend QA의 HIGH 3건·MEDIUM 1건 재작업으로 provider 13-SKU exact maximum envelope와
+operation kind별 SKU·quantity 계약을 고정했다. kind·전체 envelope·price manifest의
+canonical hash가 같은 경우만 replay하고, 0·과소·과대·누락·wrong-kind·unknown extra와
+같은 반올림 KRW의 다른 envelope를 차단한다. provider terminal token metric도
+입력 5,000·출력 2,000 상한을 logger schema에서 직접 강제한다.
+
+2차 QA의 HIGH 1건·MEDIUM 1건 재작업으로 provider·billable request를 exact enumerable
+own data-property schema에서 한 번만 불변 projection한다. accessor·Proxy·symbol·
+non-enumerable·unknown field·invalid kind는 getter 실행이나 ledger mutation 없이
+`service_disabled`가 되며, token·kind·quantity의 동일 projection을 검증·가격·hash·원장에
+사용해 under-reservation과 privacy cleanup 권한 전환을 차단한다.
+
 QA-HIGH-810002-002 재작업으로 backing별 cross-process transaction lock과 transaction
 진입 시 최신 state 재로딩을 추가했다. 먼저 열린 stale adapter 및 barrier로 동시에 시작한
 child process 경쟁에서 create는 신규 1건+replay 1건, worker는 provider 총 1회만 허용했고,
@@ -66,6 +84,9 @@ ACK/delete·cleanup pending·outbox/published marker도 단일 승자를 유지�
    위험 수용을 거쳐 `done`이다. process 재생성 후 durable revocation과 key 회전 중
    replay 응답 정책, 실제 Apple·Firestore·KMS·기기 proof는 T-006 필수 gate로 유지한다.
    PR #122의 canonical 병합 확인 후 T-20260810-004 선행 조건을 해제한다.
+5. `T-20260810-004` 2차 재작업은 `verification_ready`이며 Backend QA가 기존 RESOLVED
+   4건과 QA-HIGH-004-004·QA-MEDIUM-004-002의 getter/proxy/non-enumerable/invalid-kind
+   원본 반례, 전체 153/153을 독립 재검증한다.
 
 ## 차단 경계
 

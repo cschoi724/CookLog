@@ -53,6 +53,7 @@ const uuidFields = new Set(["request_id"]);
 const routeTemplatePattern = /^\/v1\/[a-z0-9_/{}/-]{1,120}$/u;
 const forbiddenKeyPattern = /(?:body|header|query|cookie|authorization|token|secret|transcript|prompt|recipe|provider_raw|exception|stack|audio|url)/iu;
 const forbiddenValuePattern = /(?:bearer\s|sk-[A-Za-z0-9]|private[_-]?key|synthetic-secret|raw-recipe|raw-transcript)/iu;
+const approvedTokenMetricFields = new Set(["input_tokens", "output_tokens"]);
 const fixedEnums: Readonly<Record<string, ReadonlySet<string>>> = {
   public_error_code: new Set(["NONE", "INVALID_REQUEST", "AUTH_REQUIRED", "TOKEN_EXPIRED", "ATTESTATION_INVALID", "ATTESTATION_REPLAYED", "INSTALLATION_REVOKED", "RESOURCE_NOT_FOUND", "API_VERSION_UNSUPPORTED", "IDEMPOTENCY_KEY_REUSED", "REQUEST_IN_PROGRESS", "REQUEST_OUTCOME_UNKNOWN", "PAYLOAD_TOO_LARGE", "VALIDATION_FAILED", "RATE_LIMITED", "QUOTA_EXCEEDED", "UPSTREAM_UNAVAILABLE", "SERVICE_DISABLED", "LIMITER_UNAVAILABLE", "UPSTREAM_TIMEOUT", "INTERNAL_ERROR"]),
   latency_ms_bucket: new Set(["lt_100", "lt_500", "lt_1000", "lt_5000", "gte_5000"]),
@@ -70,7 +71,7 @@ const fixedEnums: Readonly<Record<string, ReadonlySet<string>>> = {
   cleanup_age_bucket: new Set(["lt_22h", "22h_to_24h", "28d_to_29d", "29d_to_30d", "expired"]),
   provider_gate: new Set(["product", "endpoint", "storage_region", "processing_boundary", "retention", "cost", "privacy"]),
   gate_outcome: new Set(["passed", "failed"]),
-  percentage_bucket: new Set(["50", "75", "90", "100"]),
+  percentage_bucket: new Set(["lt_50", "50", "75", "90", "100"]),
   quota_outcome: new Set(["accepted", "rejected", "blocked"]),
   feature: new Set(["ai_provider", "remote_stt", "raw_metadata", "external_cost"]),
   secret_alias: new Set(["ai_provider", "token_signing", "observability_hmac"]),
@@ -98,12 +99,20 @@ function ownPlainRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function validValue(
+  eventName: TelemetryEventName,
   field: string,
   value: unknown,
   approvedDeploymentVersions: ReadonlySet<string>,
   approvedManifestVersions: ReadonlySet<string>,
 ): value is string | number | boolean {
-  if (integerFields.has(field)) return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 && value <= 1_000_000_000;
+  if (integerFields.has(field)) {
+    const maximum = eventName === "provider_call_completed" && field === "input_tokens"
+      ? 5_000
+      : eventName === "provider_call_completed" && field === "output_tokens"
+        ? 2_000
+        : field === "estimated_cost_micros" ? 50_000_000_000 : 1_000_000_000;
+    return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 && value <= maximum;
+  }
   if (booleanFields.has(field)) return typeof value === "boolean";
   if (uuidFields.has(field)) return typeof value === "string" && isUuidV4(value);
   if (field === "route_template") return typeof value === "string" && routeTemplatePattern.test(value) && !value.includes("?");
@@ -122,7 +131,8 @@ function validValue(
 
 function containsForbiddenTelemetry(event: Record<string, string | number | boolean>): boolean {
   return Object.entries(event).some(([key, value]) =>
-    forbiddenKeyPattern.test(key) || (typeof value === "string" && forbiddenValuePattern.test(value)));
+    (!approvedTokenMetricFields.has(key) && forbiddenKeyPattern.test(key)) ||
+    (typeof value === "string" && forbiddenValuePattern.test(value)));
 }
 
 export class TelemetryRedactionScanner {
@@ -175,6 +185,7 @@ export class SafeLogger {
       for (const key of keys) {
         const descriptor = Object.getOwnPropertyDescriptor(input, key);
         if (descriptor === undefined || !("value" in descriptor) || !validValue(
+          eventName,
           key,
           descriptor.value,
           this.#approvedDeploymentVersions,

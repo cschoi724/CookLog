@@ -443,6 +443,41 @@ cutoff를 대체하지 않는다. logging 폭주, cleanup retry와 TTL delete �
 상한을 높일 수 없다. 월 경계 reset은 새 ledger를 열 뿐 이전 audit record를
 변경하지 않는다.
 
+### 9.5 Production 비용·telemetry 실행 경계
+
+- production reservation은 UTC 월, 불변 operation ID와 operation kind를 서버가
+  소유하며 provider 호출·입력 token·출력 token·KRW를 한 번에 전액 승인 또는 거절한다.
+- provider operation은 입력 5,000·출력 2,000 token과 provider attempt 1회의 서버 소유
+  canonical envelope만 허용한다. AI 단가와 Cloud Run·Tasks·Firestore·network·Logging·
+  Trace·Monitoring 13개 SKU의 exact maximum quantity에서 누락·0·과소·과대·비정상·
+  unknown extra가 하나라도 있으면 reservation을 만들지 않는다.
+- storage, authentication, logging, egress, build와 cleanup retry도 operation kind별
+  exact SKU·maximum quantity 계약으로 같은 KRW 원장에 예약한다. wrong-kind SKU나 계약과
+  다른 envelope는 거부하며 privacy cleanup은 동일 kind의 유효한 사전 reservation만
+  kill switch 이후에도 계속 실행할 수 있다.
+- provider·billable reservation request는 enumerable own string data property의 exact
+  key set만 한 번 읽어 불변 local projection으로 만든다. accessor, Proxy, symbol,
+  non-enumerable·unknown field, custom prototype과 invalid operation kind는 getter나 ledger를
+  실행하지 않고 fail closed하며 검증·가격 계산·canonical hash·repository request는 같은
+  projection만 사용한다.
+- 동일 operation ID·동일 envelope replay는 `replayed`로 반환해 두 번째 provider 실행을
+  승인하지 않는다. identity는 operation kind, 정렬된 전체 SKU·quantity와 price manifest
+  identity의 canonical hash다. 반올림 KRW가 같아도 hash가 다르면 accepted/rejected 모두
+  conflict로 fail closed한다.
+- reservation 승인 뒤 billable side effect 전에 콘텐츠 없는 `cost_guardrail_changed`
+  event가 필수 sink에 기록되어야 한다. reservation·schema·redaction·sink 중 하나라도
+  실패하면 reservation은 보수적으로 유지하고 kill switch를 켠다.
+- provider 결과는 reserved maximum 안에서 정산되고 콘텐츠 없는 terminal telemetry가
+  기록된 뒤에만 공개할 수 있다. token 상한 초과, 원장 정합성 오류 또는 terminal sink
+  장애는 결과를 비공개로 유지하고 새 비용 operation을 차단한다.
+- `provider_call_completed.input_tokens`는 5,000 이하, `output_tokens`는 2,000 이하의
+  정수 metric만 허용한다. access token,
+  authorization, attestation proof, prompt, recipe, transcript와 raw provider response는
+  이름이나 값으로 telemetry에 들어갈 수 없다.
+- 구현의 process-local repository와 synthetic 가격/telemetry adapter는 계약 검증용이다.
+  실제 distributed transaction, Billing export와 sink 연결은 T-20260810-006의 외부
+  composition gate를 통과하기 전 production에 연결하지 않는다.
+
 ## 10. Alert와 자동 보호
 
 | 조건 | 등급 | 자동 동작 |

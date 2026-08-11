@@ -1,5 +1,26 @@
 # Backend 변경 기록
 
+- 2026-08-11: `T-20260810-004` 2차 재작업에서 `QA-HIGH-004-004`,
+  `QA-MEDIUM-004-002`를 해소했습니다. provider·billable request를 exact enumerable own
+  data-property schema로 한 번만 불변 projection하고 accessor·Proxy·symbol·non-enumerable·
+  unknown field·invalid kind를 getter 실행, ledger mutation, cleanup 권한 없이 차단합니다.
+  전체 153/153·계약 5종·경계 감사를 통과했고 실제 외부 호출·credential·Cloud 리소스·
+  배포는 0건입니다.
+
+- 2026-08-11: `T-20260810-004`의 `QA-HIGH-004-001~003`, `QA-MEDIUM-004-001`
+  재작업으로 provider 13-SKU exact maximum envelope, operation kind별 SKU·quantity 계약,
+  kind·전체 envelope·price manifest canonical hash replay identity를 추가했습니다. 누락·0·
+  과소·과대·wrong-kind·unknown extra와 같은 KRW의 다른 envelope를 차단하고 provider
+  token metric을 입력 5,000·출력 2,000 이하로 제한했습니다. 전체 151/151·계약 5종·
+  경계 감사를 통과했고 실제 외부 호출·credential·Cloud 리소스·배포는 0건입니다.
+
+- 2026-08-11: `T-20260810-004`에서 provider 5,500회·입력 20M·출력 8M token·외부비
+  KRW 50,000 월 hard cutoff를 하나의 원자 reservation으로 구현했습니다. provider의
+  Cloud Run·Tasks·Firestore·network·telemetry 최대 비용을 필수화하고 storage·인증·
+  logging·cleanup retry를 같은 원장에 포함했습니다. telemetry sink 장애와 token/정산
+  무결성 실패는 billable side effect·결과 공개 전에 kill switch로 차단합니다. 실제
+  credential·provider/Cloud Billing 호출·Google Cloud 리소스·배포는 활성화하지 않았습니다.
+
 - 2026-08-11: `T-20260810-003`에서 256-bit·120초 hash-only App Attest challenge,
   production cryptographic verifier 경계, 등록 공개키·receipt 기반 assertion 검증,
   전역 key ID·monotonic counter·동시 replay 단일 승자와 committed token grant

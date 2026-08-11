@@ -1,0 +1,59 @@
+{
+  "contract_version": "backend-production-cost-hard-cutoff.v1",
+  "billing_month_boundary": "UTC calendar month",
+  "monthly_limits": {
+    "provider_calls": 5500,
+    "input_tokens": 20000000,
+    "output_tokens": 8000000,
+    "external_cost_krw": 50000,
+    "delayed_billing_reserve_krw": 5000
+  },
+  "per_operation_limits": {
+    "input_tokens": 5000,
+    "output_tokens": 2000,
+    "provider_attempts": 1
+  },
+  "provider_envelope": {
+    "ai_provider_input": 0.005,
+    "ai_provider_output": 0.002,
+    "cloud_run_cpu_seoul_tier2": 60,
+    "cloud_run_memory_seoul_tier2": 60,
+    "cloud_run_requests": 0.000001,
+    "cloud_tasks_operations_seoul": 0.000001,
+    "firestore_reads_seoul": 4,
+    "firestore_writes_seoul": 4,
+    "firestore_deletes_seoul": 2,
+    "network_egress": 0.001,
+    "cloud_logging": 0.001,
+    "cloud_trace": 0.000001,
+    "cloud_monitoring": 0.000001
+  },
+  "operation_kind_envelopes": {
+    "runtime": {"cloud_run_cpu_seoul_tier2": 60, "cloud_run_memory_seoul_tier2": 60, "cloud_run_requests": 0.000001},
+    "tasks": {"cloud_tasks_operations_seoul": 0.000001},
+    "firestore": {"firestore_reads_seoul": 4, "firestore_writes_seoul": 4, "firestore_deletes_seoul": 2, "firestore_storage_seoul": 0.000001},
+    "ttl_delete": {"firestore_ttl_deletes_seoul": 1},
+    "logging": {"cloud_logging": 0.001, "cloud_trace": 0.000001, "cloud_monitoring": 0.000001},
+    "egress": {"network_egress": 0.001},
+    "build": {"cloud_build": 1, "artifact_registry": 0.001},
+    "privacy_cleanup": {"cloud_run_cpu_seoul_tier2": 60, "cloud_run_memory_seoul_tier2": 60, "cloud_run_requests": 0.000001, "cloud_tasks_operations_seoul": 0.000001, "firestore_deletes_seoul": 2, "firestore_ttl_deletes_seoul": 1},
+    "authentication": {"cloud_run_cpu_seoul_tier2": 1, "cloud_run_memory_seoul_tier2": 1, "cloud_run_requests": 0.000001, "firestore_reads_seoul": 1, "firestore_writes_seoul": 1}
+  },
+  "required_fail_closed_gates": [
+    "price_manifest",
+    "fx_snapshot",
+    "billing_reconciliation",
+    "atomic_ledger",
+    "required_telemetry"
+  ],
+  "forbidden_telemetry_fields": [
+    "authorization",
+    "access_token",
+    "attestation_proof",
+    "prompt",
+    "recipe",
+    "transcript",
+    "provider_raw_response"
+  ],
+  "external_activation": false
+}

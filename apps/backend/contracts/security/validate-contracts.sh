@@ -128,6 +128,50 @@ jq -e '
 ' "$contract_dir/fixtures/cost-ledger-cases.json" >/dev/null
 
 jq -e '
+  .contract_version == "backend-production-cost-hard-cutoff.v1" and
+  .billing_month_boundary == "UTC calendar month" and
+  .monthly_limits.provider_calls == 5500 and
+  .monthly_limits.input_tokens == 20000000 and
+  .monthly_limits.output_tokens == 8000000 and
+  .monthly_limits.external_cost_krw == 50000 and
+  .monthly_limits.delayed_billing_reserve_krw == 5000 and
+  .per_operation_limits.input_tokens == 5000 and
+  .per_operation_limits.output_tokens == 2000 and
+  .per_operation_limits.provider_attempts == 1 and
+  .provider_envelope == {
+    "ai_provider_input": 0.005,
+    "ai_provider_output": 0.002,
+    "cloud_run_cpu_seoul_tier2": 60,
+    "cloud_run_memory_seoul_tier2": 60,
+    "cloud_run_requests": 0.000001,
+    "cloud_tasks_operations_seoul": 0.000001,
+    "firestore_reads_seoul": 4,
+    "firestore_writes_seoul": 4,
+    "firestore_deletes_seoul": 2,
+    "network_egress": 0.001,
+    "cloud_logging": 0.001,
+    "cloud_trace": 0.000001,
+    "cloud_monitoring": 0.000001
+  } and
+  (.operation_kind_envelopes | keys | sort) ==
+    ["authentication", "build", "egress", "firestore", "logging",
+     "privacy_cleanup", "runtime", "tasks", "ttl_delete"] and
+  all(.operation_kind_envelopes[];
+    (keys | length) > 0 and all(.[]; type == "number" and . > 0)) and
+  .operation_kind_envelopes.privacy_cleanup.firestore_deletes_seoul == 2 and
+  .operation_kind_envelopes.privacy_cleanup.firestore_ttl_deletes_seoul == 1 and
+  .operation_kind_envelopes.authentication.firestore_reads_seoul == 1 and
+  .operation_kind_envelopes.logging.cloud_logging == 0.001 and
+  (.required_fail_closed_gates | sort) ==
+    ["atomic_ledger", "billing_reconciliation", "fx_snapshot",
+     "price_manifest", "required_telemetry"] and
+  (.forbidden_telemetry_fields | sort) ==
+    ["access_token", "attestation_proof", "authorization", "prompt",
+     "provider_raw_response", "recipe", "transcript"] and
+  .external_activation == false
+' "$contract_dir/fixtures/production-cost-hard-cutoffs.json" >/dev/null
+
+jq -e '
   (.cases | map(.name) | sort) ==
     ["openai_korea_storage_cross_border_approved",
      "openai_korea_storage_cross_border_not_approved",
