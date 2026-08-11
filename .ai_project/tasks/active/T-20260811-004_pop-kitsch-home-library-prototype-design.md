@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-004
 title: 팝 키치 레시피 클럽 Home·Library 원본 시안 적용
-status: approved
+status: verification_ready
 type: feature
 priority: P1
 priority_reason: Foundation 이후 첫 사용자 흐름 묶음으로 빠른 기록과 레시피 탐색을 일관되게 만든다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent: Design QA Agent
+target_role: Verification Role
 required_capabilities: [ux_flow, ui_design, prototyping, design_handoff, developer_verification, task_reporting]
 ownership:
   paths: [design/prototype/app.js, design/prototype/styles.css]
@@ -94,16 +94,17 @@ pr:
 ```text
 다음 Agent에게 전달할 말:
 
-너는 UI/UX Design Agent / Execution Role이야.
-Task T-20260811-004의 승인된 Home·Library 프로토타입 시안 적용을 진행해줘.
+너는 Design QA Agent / Verification Role이야.
+Task T-20260811-004의 Home·Library 프로토타입 시안 적용 결과를 독립 검증해줘.
 
 - 공용 기준: origin/develop@92de3f6
-- 현재 상태: approved
-- 허용 경로: design/prototype/app.js, design/prototype/styles.css 및 Task frontmatter의 추적 경로만
-- 범위: Home 9개 상태와 Library 5개 상태의 시각 계층·카피 밀도·상태 피드백. Foundation T-003의 토큰·공통 컴포넌트를 사용해.
-- 보존: routing, recipe lifecycle, 최근 3개 규칙, AI 비챗봇 표현, 검색 개인정보 안내, 390×844·375×667, Light/Dark, 대비, 44pt, keyboard·focus.
-- 제외: Log/Review/Detail, Player/Info/Error, Foundation 토큰 재정의, 외부 asset·폰트, iOS·Backend.
-- 완료 시: report와 자체 검증을 남기고 lock을 해제한 뒤 verification_ready로 전환해 Design QA Agent / Verification Role에 독립 검증을 요청해.
+- 현재 상태: verification_ready
+- 작업 경로: /private/tmp/cooklog-t20260811-004-pop-kitsch-home-library
+- 변경 대상: design/prototype/app.js, design/prototype/styles.css
+- 실행 보고서: .ai_project/reports/T-20260811-004_pop-kitsch-home-library-prototype-design-report.md
+- 검증 범위: Home 9개·Library 5개 상태, 원본 팝 키치 시안 정합성, CTA·검색·AI/오류 위계, Light/Dark, 390×844·375×667, Accessibility 3, 대비, 44pt, keyboard·focus.
+- 보존 확인: routing, recipe lifecycle, 최근 3개 규칙, AI 비챗봇 표현, 검색 개인정보 안내, 외부 asset·폰트 없음, Home·Library 밖 화면 무변경.
+- 판정 후: PASS 계열이면 Design Lead Agent / Completion Role에, FAIL/BLOCKED면 Design Lead Agent에 재작업 범위와 함께 인계해.
 ```
 
 ## Activity
@@ -112,3 +113,5 @@ Task T-20260811-004의 승인된 Home·Library 프로토타입 시안 적용을 
 |---|---|---|---|---|
 | 2026-08-11 | Design Lead Agent | proposed | scoped | T-003 완료 기준을 반영해 Home·Library 14개 상태 범위와 실행 승인 경계를 정리 |
 | 2026-08-11 | Design Lead Agent | scoped | approved | Product Owner 실행 승인을 기록하고 UI/UX Design Agent / Execution Role에 인계 |
+| 2026-08-11 | UI/UX Design Agent | approved | in_progress | 승인 scope commit f4b8cc4 기반 전용 worktree에서 lock을 획득하고 Home·Library 14개 상태 구현 시작 |
+| 2026-08-11 | UI/UX Design Agent | in_progress | verification_ready | 팝 키치 Home·Library 시안 적용과 정적·대표 렌더 검증을 완료하고 lock 해제 후 Design QA 독립 검증에 인계 |
