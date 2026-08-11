@@ -51,7 +51,7 @@ updated_at: 2026-08-10
 report_to: .ai_project/reports/T-20260810-005_backend-production-remote-stt-disabled-proof-report.md
 qa_to: .ai_project/qa/T-20260810-005_backend-production-remote-stt-disabled-proof-qa.md
 status_ref: origin/develop
-status_ref_sha: ca6a165ad0e9c61560646ccb09183666b7b699a4
+status_ref_sha: 421052159b38ade9516c18390e70ea6a1d129430
 ---
 
 # Backend production 원격 STT·음성 upload 비활성 보증
@@ -88,7 +88,7 @@ status_ref_sha: ca6a165ad0e9c61560646ccb09183666b7b699a4
 너는 Development Lead Agent / Completion Role이야. Task T-20260810-005의 완료 확정 여부를 검토해줘.
 
 - 현재 상태: verification_passed
-- 기준 상태 ref/SHA: origin/develop@ca6a165ad0e9c61560646ccb09183666b7b699a4
+- 기준 상태 ref/SHA: origin/develop@421052159b38ade9516c18390e70ea6a1d129430
 - 검증 판정: PASS_WITH_RISK
 - 다음에 해야 할 일: 전체 155/155·계약 5종·runtime/adversarial/audit mutation 증빙을 확인하고, Node 24 non-root container required check를 실행·통과한 뒤 완료 가능성을 판단해줘.
 - 기준 문서: 상위 T-20260729-003, T-20260729-022, `apps/backend/docs/REMOTE_STT_ADAPTER.md`
