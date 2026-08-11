@@ -1,0 +1,30 @@
+{
+  "contract_version": "remote-stt-production-disabled-proof.v1",
+  "release_profile": "first_public_release",
+  "activation_policy": "new_approved_policy_task_required",
+  "runtime_capabilities": {
+    "upload_routes_registered": 0,
+    "audio_body_parsers_registered": 0,
+    "queue_publishers_registered": 0,
+    "audio_storage_adapters_registered": 0,
+    "providers_registered": 0,
+    "audio_egress_destinations_configured": 0,
+    "automatic_fallbacks_registered": 0
+  },
+  "image_contract": {
+    "dockerfile": "Dockerfile",
+    "runtime_base": "node:24.18.0-bookworm-slim",
+    "runtime_user": "node",
+    "runtime_entrypoint": "node dist/src/app/server.js",
+    "remote_stt_environment_settings": 0,
+    "runtime_audio_assets": 0
+  },
+  "deployment_contract": {
+    "manifest_policy": "absent_or_explicitly_disabled",
+    "allowed_mode": "disabled",
+    "upload_route_registered": false,
+    "provider_configured": false,
+    "audio_egress_allowed": false,
+    "automatic_fallback": false
+  }
+}

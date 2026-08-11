@@ -22,6 +22,30 @@
 `apps/backend/contracts/stt/remote-stt-release-config.schema.json`이다. 이 Task는
 endpoint, provider SDK, secret, 배포 설정과 활성화를 구현하지 않는다.
 
+### 1.1 Production 비활성 증적
+
+첫 출시 production artifact는
+`contracts/stt/fixtures/production-disabled-proof.json`과 정확히 일치해야 한다.
+
+- upload route, audio body parser, queue publisher, audio storage adapter, provider,
+  audio egress destination과 automatic fallback 등록 수는 모두 0이다.
+- runtime image는 `node:24.18.0-bookworm-slim`, non-root `node`,
+  `node dist/src/app/server.js` entrypoint만 사용하며 remote STT 환경 설정·audio asset·
+  contract·test를 runtime stage에 넣지 않는다.
+- production server는 health-only app을 선택한다. local/mock composition과 AI text route는
+  production remote STT 활성화 수단이 아니며 후보 audio upload 경로는 등록하지 않는다.
+- deployment manifest는 없거나 remote STT를 명시적으로 disabled로 유지해야 한다.
+  enabled mode, upload/provider/egress/fallback true, provider·endpoint·credential과 audio
+  route 선언이 하나라도 있으면 감사에 실패한다.
+- `scripts/audit-production-remote-stt-disabled.mjs`가 source, package dependency,
+  Dockerfile과 Backend deployment/workflow manifest를 fail-closed로 검사한다.
+- `scripts/verify-container.sh`는 Node 24 non-root image에서 remote STT 환경 변수와 runtime
+  audio/test asset 부재, 활성화 환경 startup 거부, 후보 audio POST 404·입력 비반사를
+  실제 container로 검증한다.
+
+이 증적은 활성화 승인이 아니다. 별도 정책 Task가 계약·fixture·구현·배포 manifest와
+독립 QA를 함께 변경하기 전에는 disabled proof를 완화할 수 없다.
+
 ## 2. 활성화 승인 경계
 
 원격 adapter 활성화는 단순 feature flag 변경이 아니다. 다음 조건을 모두 만족하는 새
@@ -228,3 +252,6 @@ Backend QA Agent는 최소한 다음을 독립 검증한다.
 7. `UPSTREAM_UNAVAILABLE`만 최대 1회 재처리하고 timeout은 첫 발생에 terminal인지
 8. 로그·trace·metric·오류·receipt에 audio, transcript, provider 정보와 secret이 없는지
 9. schema·fixture와 `validate-contracts.sh`가 통과하는지
+10. production disabled proof와 source·Dockerfile·package·manifest 정적 감사가 통과하는지
+11. Node 24 non-root runtime image가 활성화 환경에서 startup을 거부하고 후보 audio POST를
+    읽거나 반사하지 않는지

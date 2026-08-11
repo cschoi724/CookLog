@@ -19,6 +19,12 @@ import {
   resolveRemoteSTTAdapter,
   resolveRemoteSTTReleaseConfig,
 } from "../../src/stt/disabled-resolver.js";
+import {
+  PRODUCTION_REMOTE_STT_DISABLED_PROOF,
+  ProductionRemoteSTTProofError,
+  validateProductionRemoteSTTDisabledProof,
+  type ProductionRemoteSTTDisabledProof,
+} from "../../src/stt/production-disabled-proof.js";
 
 interface SharedDisabledFixture {
   readonly release_config: RemoteSTTReleaseConfig;
@@ -45,6 +51,72 @@ test("first public release config exactly matches the approved disabled fixture"
   assert.deepEqual(FIRST_PUBLIC_RELEASE_REMOTE_STT_CONFIG, fixture);
   assert.deepEqual(resolveRemoteSTTReleaseConfig({}), fixture);
   assert.ok(Object.isFrozen(FIRST_PUBLIC_RELEASE_REMOTE_STT_CONFIG));
+});
+
+test("production image and manifest proof exactly expose zero remote STT capabilities", async () => {
+  const proof = await readJson<ProductionRemoteSTTDisabledProof>(
+    "contracts/stt/fixtures/production-disabled-proof.json",
+  );
+  assert.strictEqual(
+    validateProductionRemoteSTTDisabledProof(proof),
+    PRODUCTION_REMOTE_STT_DISABLED_PROOF,
+  );
+  assert.deepEqual(PRODUCTION_REMOTE_STT_DISABLED_PROOF, proof);
+  assert.ok(Object.isFrozen(PRODUCTION_REMOTE_STT_DISABLED_PROOF));
+  assert.ok(Object.isFrozen(PRODUCTION_REMOTE_STT_DISABLED_PROOF.runtime_capabilities));
+
+  for (const capability of Object.keys(proof.runtime_capabilities) as Array<
+  keyof ProductionRemoteSTTDisabledProof["runtime_capabilities"]>) {
+    assert.throws(() => validateProductionRemoteSTTDisabledProof({
+      ...proof,
+      runtime_capabilities: { ...proof.runtime_capabilities, [capability]: 1 },
+    }), ProductionRemoteSTTProofError, capability);
+  }
+
+  for (const mutation of [
+    { image_contract: { ...proof.image_contract, runtime_user: "root" } },
+    { image_contract: { ...proof.image_contract, remote_stt_environment_settings: 1 } },
+    { image_contract: { ...proof.image_contract, runtime_audio_assets: 1 } },
+    { deployment_contract: { ...proof.deployment_contract, allowed_mode: "enabled" } },
+    { deployment_contract: { ...proof.deployment_contract, upload_route_registered: true } },
+    { deployment_contract: { ...proof.deployment_contract, provider_configured: true } },
+    { deployment_contract: { ...proof.deployment_contract, audio_egress_allowed: true } },
+    { deployment_contract: { ...proof.deployment_contract, automatic_fallback: true } },
+  ]) {
+    assert.throws(() => validateProductionRemoteSTTDisabledProof({ ...proof, ...mutation }),
+      ProductionRemoteSTTProofError);
+  }
+
+  let getterReads = 0;
+  const accessorProof = { ...proof } as Record<string, unknown>;
+  Object.defineProperty(accessorProof, "release_profile", {
+    enumerable: true,
+    get(): string {
+      getterReads += 1;
+      return "first_public_release";
+    },
+  });
+  assert.throws(() => validateProductionRemoteSTTDisabledProof(accessorProof),
+    ProductionRemoteSTTProofError);
+  assert.equal(getterReads, 0);
+
+  let proxyTrapReads = 0;
+  const proxyProof = new Proxy(proof, {
+    ownKeys(): never {
+      proxyTrapReads += 1;
+      throw new Error("proof proxy trap must not execute");
+    },
+  });
+  assert.throws(() => validateProductionRemoteSTTDisabledProof(proxyProof),
+    ProductionRemoteSTTProofError);
+  assert.equal(proxyTrapReads, 0);
+
+  const nonEnumerableExtra = { ...proof } as Record<string, unknown>;
+  Object.defineProperty(nonEnumerableExtra, "remote_endpoint", {
+    value: "must-not-be-used", enumerable: false,
+  });
+  assert.throws(() => validateProductionRemoteSTTDisabledProof(nonEnumerableExtra),
+    ProductionRemoteSTTProofError);
 });
 
 test("explicit disabled settings are accepted without creating an activation path", () => {
@@ -171,10 +243,14 @@ test("direct attempts and local failure fallback stop before every side effect",
       retryable: false,
       effects: {
         routesRegistered: 0,
+        audioBodyParsersRegistered: 0,
         bodyReads: 0,
         temporaryObjectsCreated: 0,
+        storageWrites: 0,
         queueMessagesCreated: 0,
+        providersRegistered: 0,
         providerCalls: 0,
+        egressDestinationsConfigured: 0,
         egressCalls: 0,
       },
     });
@@ -206,6 +282,38 @@ test("runtime registers no remote STT route and reflects no attempted audio", as
   });
 
   assert.equal(response.statusCode, 404);
+});
+
+test("production profile exposes health only and has no candidate audio upload parser", async () => {
+  const app = await buildApp(loadRuntimeConfig({
+    COOKLOG_ENV: "production",
+    HOST: "0.0.0.0",
+    PORT: "8080",
+    K_SERVICE: "cooklog-proof",
+    K_REVISION: "cooklog-proof-00001",
+    K_CONFIGURATION: "cooklog-proof",
+  }));
+  const marker = "synthetic-production-audio-must-not-be-read";
+  for (const url of [
+    "/v1/stt",
+    "/v1/stt/transcriptions",
+    "/v1/%73tt/transcriptions",
+    "/v1/speech/transcriptions",
+    "/v1/transcriptions",
+    "/v1/audio/upload",
+  ]) {
+    const response = await app.inject({
+      method: "POST",
+      url,
+      payload: marker,
+      headers: { "content-type": "audio/x-cooklog-proof" },
+    });
+    assert.equal(response.statusCode, 404, url);
+    assert.doesNotMatch(response.body, new RegExp(marker), url);
+  }
+  assert.doesNotMatch(app.printRoutes(), /stt|speech|transcription|audio|upload/i);
+  assert.match(app.printRoutes(), /healthz/);
+  await app.close();
 });
 
 test("disabled HTTP boundary sends SERVICE_DISABLED before its audio parser runs", async () => {

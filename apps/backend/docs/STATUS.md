@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-11
-상태: T-20260728-006 Backend Foundation `done`, T-20260810-004 구현 완료·Backend QA 독립 검증 대기
+상태: T-20260728-006·T-20260810-001~004 `done`, T-20260810-005 구현 완료·Backend QA 독립 검증 대기
 
 ## 현재 단계
 
@@ -72,6 +72,13 @@ QA-HIGH-810002-002 재작업으로 backing별 cross-process transaction lock과 
 child process 경쟁에서 create는 신규 1건+replay 1건, worker는 provider 총 1회만 허용했고,
 ACK/delete·cleanup pending·outbox/published marker도 단일 승자를 유지했다.
 
+T-20260810-005는 첫 출시 production profile의 upload route·audio body parser·queue·
+storage·provider·audio egress·automatic fallback 등록을 모두 0으로 고정했다. source,
+package dependency, Dockerfile과 Backend workflow/deployment manifest를 검사하는 fail-closed
+감사와 production health-only 후보 audio POST negative test를 추가했다. container gate는
+Node 24 non-root image에서 remote STT 환경·audio/test asset 부재, 활성화 startup 거부와
+후보 upload 404·입력 비반사를 검증하며 실제 원격 STT·음성 upload 구현은 없다.
+
 ## 다음 조치
 
 1. Foundation local/mock 범위는 `done`으로 유지한다.
@@ -84,9 +91,11 @@ ACK/delete·cleanup pending·outbox/published marker도 단일 승자를 유지�
    위험 수용을 거쳐 `done`이다. process 재생성 후 durable revocation과 key 회전 중
    replay 응답 정책, 실제 Apple·Firestore·KMS·기기 proof는 T-006 필수 gate로 유지한다.
    PR #122의 canonical 병합 확인 후 T-20260810-004 선행 조건을 해제한다.
-5. `T-20260810-004` 2차 재작업은 `verification_ready`이며 Backend QA가 기존 RESOLVED
-   4건과 QA-HIGH-004-004·QA-MEDIUM-004-002의 getter/proxy/non-enumerable/invalid-kind
-   원본 반례, 전체 153/153을 독립 재검증한다.
+5. `T-20260810-004`는 QA 6건 해소와 Product Owner 위험 수용 후 PR #123으로 병합돼
+   canonical `done`이다.
+6. `T-20260810-005`는 `verification_ready`이며 Backend QA가 production config·route·
+   body parser·queue·storage·provider·egress zero-capability, image/manifest audit와 전체
+   155/155를 독립 재검증한다. Docker가 있는 QA/CI에서 container gate를 실행한다.
 
 ## 차단 경계
 

@@ -1,5 +1,11 @@
 # Backend 변경 기록
 
+- 2026-08-11: `T-20260810-005`에서 production 원격 STT·음성 upload 비활성 proof를
+  구현했습니다. upload route·audio parser·queue·storage·provider·egress·fallback 등록을
+  모두 0으로 고정하고 source·dependency·Dockerfile·Backend manifest 정적 감사와 production
+  후보 audio POST negative test를 추가했습니다. 전체 155/155·계약 5종·경계 감사를
+  통과했고 실제 원격 STT 호출·음성 upload·credential·Cloud 리소스·배포는 0건입니다.
+
 - 2026-08-11: `T-20260810-004` 2차 재작업에서 `QA-HIGH-004-004`,
   `QA-MEDIUM-004-002`를 해소했습니다. provider·billable request를 exact enumerable own
   data-property schema로 한 번만 불변 projection하고 accessor·Proxy·symbol·non-enumerable·
