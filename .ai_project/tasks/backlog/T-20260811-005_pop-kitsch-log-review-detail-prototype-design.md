@@ -22,7 +22,7 @@ ownership:
 ownership_review:
   required: false
   reviewer:
-depends_on: [T-20260811-002, T-20260811-004]
+depends_on: [T-20260811-002, T-20260811-004, T-20260811-008]
 blocks: [T-20260811-006]
 parallel_group: pop-kitsch-design-sequence
 allowed_paths:
@@ -78,4 +78,8 @@ pr:
 
 ## Execution
 
-- `T-004` Design QA 통과와 Product Owner의 이 화면군 실행 승인 뒤에만 UI/UX Design Agent에 인계한다.
+- `T-004`와 T-008의 Design QA 통과, T-008 Product Owner 시각 승인과 이 화면군의 별도 Product Owner 실행 승인 뒤에만 UI/UX Design Agent에 인계한다.
+
+## Dependency Update
+
+- 2026-08-11: Product Owner 요청으로 T-008 Visual Fidelity 리터치가 Home 기준 화면과 공통 시각 언어를 확정할 때까지 본 Task의 실행을 대기한다.
