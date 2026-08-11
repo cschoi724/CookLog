@@ -4,10 +4,14 @@ export type RemoteSTTAttempt = "direct_upload" | "automatic_remote_fallback";
 
 export interface DisabledRemoteSTTEffects {
   readonly routesRegistered: 0;
+  readonly audioBodyParsersRegistered: 0;
   readonly bodyReads: 0;
   readonly temporaryObjectsCreated: 0;
+  readonly storageWrites: 0;
   readonly queueMessagesCreated: 0;
+  readonly providersRegistered: 0;
   readonly providerCalls: 0;
+  readonly egressDestinationsConfigured: 0;
   readonly egressCalls: 0;
 }
 
@@ -21,10 +25,14 @@ export interface RemoteSTTDisabledDecision {
 
 const ZERO_EFFECTS: DisabledRemoteSTTEffects = Object.freeze({
   routesRegistered: 0,
+  audioBodyParsersRegistered: 0,
   bodyReads: 0,
   temporaryObjectsCreated: 0,
+  storageWrites: 0,
   queueMessagesCreated: 0,
+  providersRegistered: 0,
   providerCalls: 0,
+  egressDestinationsConfigured: 0,
   egressCalls: 0,
 });
 

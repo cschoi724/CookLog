@@ -17,6 +17,32 @@ jq -e '
 ' "$contract_dir/fixtures/disabled-release.json" >/dev/null
 
 jq -e '
+  (. | keys | sort) ==
+    ["activation_policy", "contract_version", "deployment_contract",
+     "image_contract", "release_profile", "runtime_capabilities"] and
+  .contract_version == "remote-stt-production-disabled-proof.v1" and
+  .release_profile == "first_public_release" and
+  .activation_policy == "new_approved_policy_task_required" and
+  (.runtime_capabilities | keys | sort) ==
+    ["audio_body_parsers_registered", "audio_egress_destinations_configured",
+     "audio_storage_adapters_registered", "automatic_fallbacks_registered",
+     "providers_registered", "queue_publishers_registered", "upload_routes_registered"] and
+  ([.runtime_capabilities[]] | all(. == 0)) and
+  .image_contract.dockerfile == "Dockerfile" and
+  .image_contract.runtime_base == "node:24.18.0-bookworm-slim" and
+  .image_contract.runtime_user == "node" and
+  .image_contract.runtime_entrypoint == "node dist/src/app/server.js" and
+  .image_contract.remote_stt_environment_settings == 0 and
+  .image_contract.runtime_audio_assets == 0 and
+  .deployment_contract.manifest_policy == "absent_or_explicitly_disabled" and
+  .deployment_contract.allowed_mode == "disabled" and
+  .deployment_contract.upload_route_registered == false and
+  .deployment_contract.provider_configured == false and
+  .deployment_contract.audio_egress_allowed == false and
+  .deployment_contract.automatic_fallback == false
+' "$contract_dir/fixtures/production-disabled-proof.json" >/dev/null
+
+jq -e '
   [.cases[].expected_decision] | all(. == "reject_before_body_read")
 ' "$contract_dir/fixtures/activation-negative.json" >/dev/null
 
