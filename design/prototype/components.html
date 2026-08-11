@@ -8,9 +8,10 @@
   <link rel="stylesheet" href="./styles.css">
   <style>
     body { min-height: 100vh; color: var(--text-primary); background: var(--bg-base); }
-    .component-board { width: 390px; min-height: 844px; padding: 34px 22px 56px; }
-    .component-board > header { margin-bottom: 28px; }
-    .component-board h1 { margin: 8px 0 0; font-size: 30px; line-height: 1.15; letter-spacing: -.05em; }
+    .component-board { width: 390px; min-height: 844px; padding: 34px 22px 56px; overflow: hidden; background: var(--bg-base); }
+    .component-board > header { position: relative; margin: 0 -4px 34px; padding: 22px 20px 24px; border: 2px solid var(--border-strong); border-radius: 28px 28px 18px 28px; background: color-mix(in srgb, var(--butter) 38%, var(--bg-elevated)); box-shadow: var(--card-shadow); }
+    .component-board > header::after { content: "CLUB"; position: absolute; right: -6px; bottom: -16px; padding: 6px 11px; border: 2px solid var(--cobalt); border-radius: 999px; color: var(--text-on-cobalt); background: var(--cobalt); font-size: 10px; font-weight: 900; letter-spacing: .12em; transform: rotate(-4deg); }
+    .component-board h1 { max-width: 290px; margin: 8px 0 0; font-size: 34px; line-height: 1.02; letter-spacing: -.07em; }
     .component-section { margin-top: 30px; }
     .component-section > h2 { margin: 0 0 13px; font-size: 18px; letter-spacing: -.03em; }
     .state-grid { display: grid; gap: 10px; }
@@ -21,8 +22,8 @@
     .control-demo { display: grid; grid-template-columns: repeat(4, 52px); justify-content: space-between; align-items: center; }
     .component-note { margin: 9px 0 0; color: var(--text-secondary); font-size: 12px; line-height: 18px; }
     .foundation-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
-    .token-card { min-height: 72px; padding: 12px; display: grid; align-content: space-between; border: 1px solid var(--border); border-radius: 16px; background: var(--bg-elevated); }
-    .token-card i { width: 28px; height: 12px; display: block; border-radius: 999px; background: var(--token-color); }
+    .token-card { min-height: 82px; padding: 12px; display: grid; align-content: space-between; border: 2px solid var(--border); border-radius: 18px 18px 12px 18px; background: var(--bg-elevated); box-shadow: 0 4px 0 color-mix(in srgb, var(--butter) 34%, transparent); }
+    .token-card i { width: 34px; height: 14px; display: block; border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent); border-radius: 999px; background: var(--token-color); }
     .token-card strong { margin-top: 10px; font-size: 12px; }
     .token-card span { color: var(--text-secondary); font-size: 10px; }
     .section-intro { margin: -5px 0 14px; color: var(--text-secondary); font-size: 12px; line-height: 18px; }
@@ -33,8 +34,8 @@
 <body>
   <main class="component-board">
     <header>
-      <p class="eyebrow">FOUNDATION REFRESH · T-20260729-008</p>
-      <h1>확정 UX 공통 컴포넌트</h1>
+      <p class="eyebrow">POP KITSCH FOUNDATION · T-20260811-003</p>
+      <h1>CookLog 레시피 클럽</h1>
       <p class="component-note">상태는 색상뿐 아니라 아이콘, 명시적 문구, 다음 행동으로 구분합니다.</p>
     </header>
 
@@ -43,6 +44,8 @@
       <p class="section-intro">Light·Dark에서 동일한 역할 이름을 사용합니다.</p>
       <div class="foundation-grid">
         <div class="token-card" style="--token-color:var(--bg-accent)"><i></i><strong>Accent</strong><span>핵심 행동</span></div>
+        <div class="token-card" style="--token-color:var(--butter)"><i></i><strong>Butter</strong><span>따뜻한 강조</span></div>
+        <div class="token-card" style="--token-color:var(--cobalt)"><i></i><strong>Cobalt</strong><span>정보·포커스</span></div>
         <div class="token-card" style="--token-color:var(--success)"><i></i><strong>Success</strong><span>완료·저장</span></div>
         <div class="token-card" style="--token-color:var(--warning)"><i></i><strong>Warning</strong><span>AI 추정·주의</span></div>
         <div class="token-card" style="--token-color:var(--error)"><i></i><strong>Error</strong><span>실패·누락</span></div>
@@ -177,6 +180,25 @@
         <div class="handsfree-card is-failed"><div class="handsfree-status"><span class="handsfree-orb">!</span><div class="handsfree-copy"><strong>음성 명령을 듣지 못했어요</strong><p>현재 재생 위치를 유지했습니다. 버튼으로 계속 진행하세요.</p></div></div><div class="handsfree-fallback"><button>이전</button><button>다시 듣기</button><button>다음</button></div></div>
       </div>
       <p class="component-rule">Dynamic Type에서 텍스트 영역은 높이를 확장하고, 공간이 부족하면 행동 버튼을 세로로 쌓으며 콘텐츠를 자르지 않고 스크롤합니다.</p>
+    </section>
+
+    <section class="component-section" data-component="Info List Item">
+      <h2>Info List Item</h2>
+      <div class="info-menu">
+        <button class="info-menu-item"><span class="info-menu-symbol" aria-hidden="true">?</span><span><strong>문의하기</strong><small>앱 정보만 기본 포함</small></span><span class="info-menu-arrow" aria-hidden="true">›</span></button>
+        <button class="info-menu-item"><span class="info-menu-symbol" aria-hidden="true">§</span><span><strong>개인정보처리방침</strong><small>운영 URL에서 확인</small></span><span class="info-menu-arrow" aria-hidden="true">›</span></button>
+        <button class="info-menu-item" disabled><span class="info-menu-symbol" aria-hidden="true">!</span><span><strong>이용약관을 열 수 없어요</strong><small>연결을 확인한 뒤 다시 시도해주세요</small></span><span class="info-menu-arrow" aria-hidden="true">×</span></button>
+      </div>
+      <p class="component-rule">Default·Pressed·Unavailable은 문구와 아이콘을 함께 사용하며 모든 행은 44pt 이상을 유지합니다.</p>
+    </section>
+
+    <section class="component-section" data-component="Diagnostic Consent">
+      <h2>Diagnostic Consent</h2>
+      <div class="demo-stack">
+        <button class="diagnostic-choice" aria-pressed="false"><span class="choice-check" aria-hidden="true"></span><span><strong>OS 버전 제외</strong><small>선택하지 않으면 문의에 포함하지 않습니다.</small></span></button>
+        <button class="diagnostic-choice" aria-pressed="true"><span class="choice-check" aria-hidden="true">✓</span><span><strong>오류 시각 포함</strong><small>사용자가 선택한 비콘텐츠 진단만 포함합니다.</small></span></button>
+      </div>
+      <p class="component-rule">음성·전사·레시피·검색어 같은 사용자 콘텐츠는 진단 정보에 첨부하지 않습니다.</p>
     </section>
   </main>
   <script>
