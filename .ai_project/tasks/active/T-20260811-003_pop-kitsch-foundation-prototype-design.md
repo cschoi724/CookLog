@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-003
 title: 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P1
 priority_reason: 앱 전반 리디자인의 첫 단계로 의미 토큰과 13개 공통 컴포넌트를 안정화한다. P0 iOS·Backend 작업을 중단하지 않는다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design QA Agent
-target_role: Verification Role
+target_agent: Design Lead Agent
+target_role: Completion Role
 required_capabilities: [ui_design, prototyping, design_handoff, developer_verification, task_reporting]
 ownership:
   paths: [design/prototype/app.js, design/prototype/styles.css, design/prototype/components.html]
@@ -91,17 +91,18 @@ pr:
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Design QA Agent / Verification Role이야.
-Task T-20260811-003의 Foundation 원본 정비 결과를 독립 검증해줘.
+너는 Design Lead Agent / Completion Role이야.
+Task T-20260811-003의 완료 확정 여부를 검토해줘.
 
-- 공용 기준: origin/develop@2a002a6
-- 현재 상태: verification_ready
+- 공용 기준: origin/develop@ee0add9
+- 현재 상태: verification_passed
 - 작업 경로: /private/tmp/cooklog-t20260811-003-pop-kitsch-foundation-v2
 - 변경 대상: design/prototype/styles.css, design/prototype/components.html
-- 실행 보고서: .ai_project/reports/T-20260811-003_pop-kitsch-foundation-prototype-design-report.md
-- 검증 범위: 13개 공통 컴포넌트, Light/Dark, 390×844·375×667, Accessibility 3, 대비, 44pt, keyboard·VoiceOver·focus 계약.
-- 보존 확인: app.js와 82개 화면 구조·행동·routing·문자 의미 무변경, 외부 asset·폰트 없음.
-- 후속 차단: 독립 PASS 전 T-20260811-004 실행 금지.
+- 참고 산출물: .ai_project/reports/T-20260811-003_pop-kitsch-foundation-prototype-design-report.md, .ai_project/qa/T-20260811-003_pop-kitsch-foundation-prototype-design-qa.md
+- 다음에 해야 할 일: Design QA PASS와 공용 기준 비충돌 기록을 수용하고 completion_review 전환 여부를 판단해줘.
+- 남은 리스크: 최신 origin/develop보다 1커밋 뒤처졌으나 prototype 경로 충돌 없음; 82개 상태 통합 QA는 T-20260811-007에서 별도 수행.
+- 차단/결정 필요: T-20260811-004 실행은 Completion Role의 완료 수용 및 별도 승인 규칙을 먼저 확인.
+- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
 ## Activity
@@ -115,3 +116,5 @@ Task T-20260811-003의 Foundation 원본 정비 결과를 독립 검증해줘.
 | 2026-08-11 | UI/UX Design Agent | in_progress | verification_ready | 팝 키치 Light/Dark 토큰과 13개 공통 컴포넌트 정비·자체 검증을 완료하고 Design QA에 인계 |
 | 2026-08-11 | UI/UX Design Agent | verification_ready | verification_ready | 작업 중 전진한 origin/develop@2a002a6의 T-002 scope·project board 변경을 새 worktree에 재통합하고 검증 결과를 보존 |
 | 2026-08-11 | UI/UX Design Agent | verification_ready | verification_ready | 커밋 `65831ca`를 push하고 develop 대상 draft PR #130을 생성해 Design QA 인계 준비 완료 |
+| 2026-08-11 | Design QA Agent | verification_ready | verification_in_progress | 최신 origin/develop 비충돌 commit 확인 후 lock을 획득하고 독립 Foundation 검증 시작 |
+| 2026-08-11 | Design QA Agent | verification_in_progress | verification_passed | 13개 컴포넌트, Light/Dark, viewport, Accessibility 3, 대비, 44pt, keyboard·focus, gallery·console을 독립 검증해 PASS 판정 후 Design Lead 완료 검토로 인계 |
