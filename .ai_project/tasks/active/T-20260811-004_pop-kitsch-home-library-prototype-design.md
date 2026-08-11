@@ -61,8 +61,8 @@ branch:
   name: task/T-20260811-004-pop-kitsch-home-library-prototype-design
   base: develop
 pr:
-  url:
-  status:
+  url: https://github.com/cschoi724/CookLog/pull/134
+  status: draft
 ---
 
 # 팝 키치 레시피 클럽 Home·Library 원본 시안 적용

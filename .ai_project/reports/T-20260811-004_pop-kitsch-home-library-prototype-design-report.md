@@ -6,6 +6,7 @@
 - canonical 기준: `origin/develop@92de3f6`
 - 승인 scope commit: `f4b8cc4`
 - 작업 브랜치: `task/T-20260811-004-pop-kitsch-home-library-prototype-design`
+- Draft PR: `#134` (`develop` 대상)
 - 작업 경로: `/private/tmp/cooklog-t20260811-004-pop-kitsch-home-library`
 
 ## 변경 파일
@@ -65,6 +66,7 @@ Task T-20260811-004를 이어서 독립 검증해줘.
 
 - 현재 상태: verification_ready
 - 기준 상태: origin/develop@92de3f6
+- Draft PR: https://github.com/cschoi724/CookLog/pull/134
 - 작업 경로: /private/tmp/cooklog-t20260811-004-pop-kitsch-home-library
 - 변경 대상: design/prototype/app.js, design/prototype/styles.css
 - 실행 보고서: .ai_project/reports/T-20260811-004_pop-kitsch-home-library-prototype-design-report.md
