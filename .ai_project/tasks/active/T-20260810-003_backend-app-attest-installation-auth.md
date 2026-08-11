@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260810-003
 title: Backend App Attest·설치 token·abuse 방어 구현
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 로그인 없는 첫 출시에서 익명 무제한 provider 호출과 설치 위조를 차단해야 한다.
@@ -10,8 +10,8 @@ org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: feature
-target_agent: Development Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 required_capabilities: [backend_architecture, api_contract, implementation, developer_verification]
 ownership:
   paths: [apps/backend/src/auth/, apps/backend/src/limits/, apps/backend/tests/auth/, apps/backend/contracts/common/]
@@ -80,6 +80,7 @@ status_ref_sha: 9bc23e911baaea3eb7f8e02e277169f023d95ce7
 | 2026-08-11 | Backend QA Agent | verification_ready | verification_in_progress | canonical SHA·라우팅·보고서·선행 Task 확인 후 독립 검증 lock 획득 |
 | 2026-08-11 | Backend QA Agent | verification_in_progress | verification_passed | PASS_WITH_RISK: Node 24/26 135/135·계약 5종·경계 감사와 challenge/token/rate cap 경계 통과; 실제 Apple·durable revocation·KMS 미검증 위험 인계 |
 | 2026-08-11 | Development Lead Agent | verification_passed | completion_review | 완료 리뷰 PASS_WITH_RISK: local/domain contract는 수용하고 durable revocation·key 회전 replay·실제 Apple/Firestore/KMS 검증은 T-006 필수 gate로 유지 |
+| 2026-08-11 | Product Owner | completion_review | done | 잔여 위험의 T-006 필수 gate 유지를 수용하고 T-20260810-003 완료와 PR #122 `develop` 병합 승인 |
 
 ## Completion Review
 
@@ -99,23 +100,23 @@ status_ref_sha: 9bc23e911baaea3eb7f8e02e277169f023d95ce7
 - 의존성: 이 Task가 canonical `origin/develop`에서 `done`으로 확인되기 전에는
   `T-20260810-004`의 선행 조건을 해제하지 않는다.
 - 완료 조건: Product Owner가 위 잔여 위험과 T-006 필수 gate를 수용하고 구현·보고·QA
-  결과의 `develop` 대상 PR 병합을 승인해야 한다.
+  결과의 `develop` 대상 PR #122 병합을 승인했다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Product Owner야. Task T-20260810-003의 완료 리뷰 결과와 잔여 위험을 확인해줘.
+너는 Development Lead Agent / Lead Role이야. T-20260810-003 병합 후 후속 의존성을 조율해줘.
 
-- 현재 상태: completion_review
+- 현재 상태: done
 - 기준 상태 ref: origin/develop
 - 기준 상태 SHA: 9bc23e911baaea3eb7f8e02e277169f023d95ce7
 - QA 판정: `PASS_WITH_RISK`
 - 독립 검증: Node 26 `npm run verify` 135/135·계약 5종·경계 감사 PASS, Node 24.18.0 135/135 PASS. production synthetic verifier 거부, cryptographic result fail-closed, challenge/counter/idempotency 단일 승자, token 위조·시간·회전·폐기, rate cap·compatibility 경계를 확인했다.
-- 다음에 해야 할 일: 완료 리뷰 `PASS_WITH_RISK`와 아래 잔여 위험을 수용할지 결정하고, 수용 시 Task 완료와 `develop` 대상 PR 병합을 승인해줘.
+- 다음에 해야 할 일: PR #122 병합 후 canonical `done`을 확인하고 T-20260810-004 의존성 해제 여부를 판단해줘.
 - 기준 문서: 상위 Task, API 계약, 보안·개인정보·관측성 문서
 - 허용 경로: front matter의 `allowed_paths`
 - QA 보고서: `.ai_project/qa/T-20260810-003_backend-app-attest-installation-auth-qa.md`
 - 남은 리스크: process 재생성 후 폐기 token 재승인, signing key 회전 중 replay token bytes 변화, concrete Apple CBOR/인증서 adapter·Firestore transaction·실제 signing key/KMS·기기 proof 미검증.
 - 차단/결정 필요: credential 등록, 실제 외부 호출, Google Cloud 리소스 생성·배포는 금지한다.
-- 수용 조건: 위 위험을 T-006 production composition 필수 gate로 유지하고 canonical 병합 후에만 T-004 dependency를 해제한다.
+- 수용 결과: Product Owner가 위 위험을 T-006 production composition 필수 gate로 유지하는 조건으로 완료·병합을 승인했다.

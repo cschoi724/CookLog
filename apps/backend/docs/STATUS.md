@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
 최종 업데이트: 2026-08-11
-상태: T-20260728-006 Backend Foundation `done`, T-20260810-003 완료 리뷰 `PASS_WITH_RISK`
+상태: T-20260728-006 Backend Foundation `done`, T-20260810-003 `done`·PR #122 병합 승인
 
 ## 현재 단계
 
@@ -62,10 +62,10 @@ ACK/delete·cleanup pending·outbox/published marker도 단일 승자를 유지�
    검증은 `T-20260810-006` 외부 변경 게이트에서 수행한다.
 3. credential 등록·실제 sandbox/production 호출·Cloud 리소스·배포는 별도
    외부 변경 승인 전까지 비활성으로 유지한다.
-4. `T-20260810-003`은 Backend QA `PASS_WITH_RISK`와 Development Lead 완료 리뷰를 거쳐
-   `completion_review`다. process 재생성 후 durable revocation과 key 회전 중 replay
-   응답 정책, 실제 Apple·Firestore·KMS·기기 proof는 T-006 필수 gate로 유지하며 Product
-   Owner의 잔여 위험 수용과 PR 병합 승인을 기다린다.
+4. `T-20260810-003`은 Backend QA·Development Lead `PASS_WITH_RISK`와 Product Owner
+   위험 수용을 거쳐 `done`이다. process 재생성 후 durable revocation과 key 회전 중
+   replay 응답 정책, 실제 Apple·Firestore·KMS·기기 proof는 T-006 필수 gate로 유지한다.
+   PR #122의 canonical 병합 확인 후 T-20260810-004 선행 조건을 해제한다.
 
 ## 차단 경계
 

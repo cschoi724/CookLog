@@ -7,7 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
-| `T-20260810-003` | `completion_review` | Backend App Attest·설치 token·abuse 방어 | Node 24/26 135/135·인증/원자 replay/rate cap PASS, durable revocation·key 회전 replay 위험 | Lead PASS_WITH_RISK·T-006 필수 gate·Product Owner 승인 대기 |
+| `T-20260810-003` | `done` | Backend App Attest·설치 token·abuse 방어 | Node 24/26 135/135·인증/원자 replay/rate cap PASS, durable revocation·key 회전 replay 위험 | Product Owner 위험 수용·T-006 필수 gate 유지·PR #122 병합 승인 |
 | `T-20260810-002` | `done` | Backend Cloud datastore·AI job·ACK·24시간 lifecycle | HIGH 2건 해소·stale create/worker 원본 반례·Node 24/26 122/122 | Product Owner PASS_WITH_RISK 수용·최종 완료·병합 승인 |
 | `T-20260810-001` | `done` | Backend 실제 AI provider adapter·prompt·schema | `WP-R1~R2` 해소·108/108·계약 5종·container·CI PASS_WITH_RISK | Product Owner 잔여 위험 수용·PR #116 병합·완료 확정 |
 | `T-20260805-008` | `approved` | iOS 접근성·작은 화면·다크 모드·통합 회귀 검증 | XCTest 82/82·negative 7/7 PASS, HIGH 001 해소·002~004 미해소 | Product Owner `WP-R13~R15` 재작업 승인·iOS Agent 재인계 |
