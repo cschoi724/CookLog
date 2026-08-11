@@ -9,7 +9,7 @@
 |---|---|---|---|---|
 | `T-20260810-002` | `done` | Backend Cloud datastore·AI job·ACK·24시간 lifecycle | HIGH 2건 해소·stale create/worker 원본 반례·Node 24/26 122/122 | Product Owner PASS_WITH_RISK 수용·최종 완료·병합 승인 |
 | `T-20260810-001` | `done` | Backend 실제 AI provider adapter·prompt·schema | `WP-R1~R2` 해소·108/108·계약 5종·container·CI PASS_WITH_RISK | Product Owner 잔여 위험 수용·PR #116 병합·완료 확정 |
-| `T-20260805-008` | `approved` | iOS 접근성·작은 화면·다크 모드·통합 회귀 검증 | 세 번째 검증 XCTest 82/82 PASS, Visual/VoiceOver HIGH 4건 미해소 | Product Owner `WP-R9~R12` 재작업 승인·iOS Agent 재인계 |
+| `T-20260805-008` | `approved` | iOS 접근성·작은 화면·다크 모드·통합 회귀 검증 | XCTest 82/82·negative 7/7 PASS, HIGH 001 해소·002~004 미해소 | Product Owner `WP-R13~R15` 재작업 승인·iOS Agent 재인계 |
 | `T-20260805-007` | `done` | iOS 앱 정보·권한·오프라인·서비스 장애 | HIGH 2·MEDIUM 1 해소·82/82·8 viewport | Product Owner 완료·PR #106 squash merge `2f309ed` |
 | `T-20260805-006` | `done` | iOS Audio Guide·핸즈프리 UI·공통 action model | QA-HIGH-806006-001 해소·독립 77/77·4 viewport | Product Owner 완료·PR #101 squash merge `dcf58d5` |
 | `T-20260728-006` | `done` | Backend AI gateway·비활성 원격 STT Foundation | 하위 T-002~007 독립 QA·100/100·계약 5종·Node 24 container 집계 | PASS_WITH_RISK 수용·Product Owner 최종 완료/PR #93 병합 승인 |
