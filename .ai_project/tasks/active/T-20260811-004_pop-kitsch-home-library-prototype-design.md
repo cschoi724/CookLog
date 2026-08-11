@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-004
 title: 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업
-status: scoped
+status: approved
 type: feature
 priority: P1
 priority_reason: Foundation 이후 첫 사용자 흐름 묶음으로 빠른 기록과 레시피 탐색을 일관되게 만든다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Product Owner
-target_role: Direction Role
+target_agent: UI/UX Design Agent
+target_role: Execution Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities: [design_scoping, component_system_design, ux_flow, ui_design, prototyping, design_handoff, developer_verification, task_reporting]
@@ -47,7 +47,7 @@ source_of_truth:
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
   - docs/product/CookLog_USER_FLOW.md
 created_by: Design Lead Agent
-approved_by:
+approved_by: Product Owner (2026-08-11, Foundation·Home·Library 단일 재작업 실행 승인)
 locked_by:
 locked_at:
 lock_session:
@@ -62,11 +62,11 @@ parent_scope_ref: origin/develop@639ba36
 base_ref: origin/develop
 base_sha: 639ba36
 branch:
-  name: task/T-20260811-004-pop-kitsch-home-library-prototype-design
+  name: task/T-20260811-004-concept-rework
   base: develop
 pr:
-  url: https://github.com/cschoi724/CookLog/pull/134
-  status: draft
+  url:
+  status: to_create_after_execution
 ---
 
 # 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업
@@ -89,15 +89,16 @@ pr:
 
 ## Rework Execution Plan
 
-- `rework_requested`된 기존 PR #134는 PASS·Completion·병합 보류 상태로 보존한다. 재실행은 Product Owner가 이 범위와 실행을 승인한 뒤에만 UI/UX Design Agent / Execution Role에 인계한다.
-- UI/UX Design Agent는 최신 `origin/develop@639ba36` 기반의 깨끗한 전용 worktree에서 작업을 시작한다. 기존 Draft PR의 구현 결과는 참고만 하며, stale worktree를 자동 rebase·reset·stash하지 않는다.
+- 기존 PR #134는 PASS·Completion·병합 보류 상태로 보존한다. 이 PR은 이전 구현과 QA 재작업 기록의 참고 산출물이며 재작업 결과를 병합하지 않는다.
+- Product Owner가 2026-08-11 이 범위의 재실행을 승인했다. UI/UX Design Agent / Execution Role만 재작업을 수행할 수 있다.
+- UI/UX Design Agent는 최신 `origin/develop@639ba36`에서 새 `task/T-20260811-004-concept-rework` 전용 worktree를 만들고 작업을 시작한다. 기존 Draft PR의 구현 결과는 참고만 하며, stale worktree를 자동 rebase·reset·stash하지 않는다.
 - 완료 후 Design QA Agent가 Foundation 표현, Home·Library 14개 상태와 보존 계약을 독립 검증한다. PASS 전에는 T-005 실행·PR #134 병합 근거로 사용할 수 없다.
 
-## Product Owner Approval Required
+## Product Owner Approval
 
-- 승인 대상: 위 Foundation·Home·Library 단일 재작업 범위와 UI/UX Design Agent 재실행.
-- 승인 후 상태: `approved`
-- 실행 전 최종 확인: Home 원본 시안의 레이아웃 정합성과 Foundation 보강을 함께 수행하되, Library 기능 의미·14개 상태·접근성 계약을 보존한다.
+- 승인자: Product Owner
+- 승인일: 2026-08-11
+- 승인 대상: Foundation·Home·Library 단일 재작업 범위와 UI/UX Design Agent 재실행
 
 ## Rework Request
 
@@ -111,16 +112,17 @@ pr:
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product Owner / Direction Role이야.
-Task T-20260811-004의 단일 재작업 범위와 UI/UX Design Agent 재실행을 승인해줘.
+너는 UI/UX Design Agent / Execution Role이야.
+Task T-20260811-004는 승인된 Foundation·Home·Library 단일 재작업 Task야.
 
 - 공용 기준: origin/develop@639ba36
-- 현재 상태: scoped
+- 현재 상태: approved
 - 변경 대상: design/prototype/app.js, design/prototype/styles.css, design/prototype/components.html
 - 참고 산출물: .ai_project/reports/T-20260811-004_pop-kitsch-home-library-prototype-design-report.md, .ai_project/qa/T-20260811-004_pop-kitsch-home-library-prototype-design-qa.md, design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
-- 다음에 해야 할 일: Foundation 보강과 원본 시안 기준 Home·Library 재작업을 승인하고 UI/UX Design Agent / Execution Role에 할당해줘.
+- 다음에 해야 할 일: 최신 origin/develop@639ba36에서 새 `task/T-20260811-004-concept-rework` worktree를 만들고, Foundation 보강 후 Home을 원본 시안 위계로 재구성하고 Library에 같은 Foundation을 적용해줘.
 - 유지 계약: Home/Library 14개 상태, routing, recipe lifecycle, 최근 3개, AI 비챗봇, 로컬 검색 개인정보, 390×844·375×667, Accessibility 3, 대비, 44pt, keyboard·VoiceOver·focus, 외부 asset·폰트 없음.
-- 차단/결정 필요: PR #134 병합은 재작업·독립 QA·완료 검토 전 보류. Home 컨셉에 포함된 음식 사진은 신규 외부 asset 범위에 포함하지 않는다.
+- 차단/결정 필요: PR #134는 이전 구현 참고용으로 병합하지 않는다. Home 컨셉에 포함된 음식 사진은 신규 외부 asset 범위에 포함하지 않는다.
+- 완료 시: 작업 보고서를 작성하고 status를 verification_ready로 전환해 Design QA Agent / Verification Role에 인계해.
 ```
 
 ## Activity
@@ -133,3 +135,4 @@ Task T-20260811-004의 단일 재작업 범위와 UI/UX Design Agent 재실행�
 | 2026-08-11 | UI/UX Design Agent | in_progress | verification_ready | 팝 키치 Home·Library 시안 적용과 정적·대표 렌더 검증을 완료하고 lock 해제 후 Design QA 독립 검증에 인계 |
 | 2026-08-11 | Design QA Agent | verification_ready | rework_requested | Product Owner 요청으로 PASS 수용·병합을 보류하고 원본 concept 기준 Foundation 보강·Home 레이아웃 정합화를 같은 T-004 재작업으로 Design Lead에 인계 |
 | 2026-08-11 | Design Lead Agent | rework_requested | scoped | T-003을 재오픈하지 않고 Foundation 보강·Home·Library 재작업을 하나의 T-004 실행 단위로 조율 |
+| 2026-08-11 | Product Owner | scoped | approved | Foundation·Home·Library 단일 재작업과 UI/UX Design Agent 재실행 승인 |
