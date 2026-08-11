@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260810-005
 title: Backend production 원격 STT·음성 upload 비활성 보증
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 실제 배포 구성에서도 Apple 기기 내 STT 기본 정책과 음성 비전송을 보장해야 한다.
@@ -80,22 +80,43 @@ status_ref_sha: 421052159b38ade9516c18390e70ea6a1d129430
 | 2026-08-11 | Backend QA Agent | verification_ready | verification_in_progress | canonical SHA·선행 Task·라우팅·구현 보고서·빈 lock 확인 후 production remote STT disabled proof 독립 검증 lock 획득 |
 | 2026-08-11 | Backend QA Agent | verification_in_progress | verification_passed | zero-capability·startup/request/error/strict proof·비로깅, 155/155·계약 5종·감사 mutation 12종 PASS_WITH_RISK; Docker image 실행은 required follow-up으로 남기고 lock 해제 |
 | 2026-08-11 | Development Lead Agent | verification_passed | verification_passed | dirty 변경을 보존해 최신 `origin/develop@ca6a165` 비충돌 fast-forward 반영, 전체 155/155·계약 5종·STT/boundary audit 재통과 후 PR·backend-container gate 준비 |
+| 2026-08-11 | Development Lead Agent | verification_passed | completion_review | PR #127의 Node 24 non-root `backend-container`, backend-verify, iOS required checks PASS를 확인해 필수 보완 조건 해소; 실제 staging manifest·새 framework/IaC 감사 확장은 T-006 gate로 유지 |
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Completion Role이야. Task T-20260810-005의 완료 확정 여부를 검토해줘.
+너는 Development Lead Agent / Completion Role이야. Task T-20260810-005의 Product Owner 완료 결정을 이어서 처리해줘.
 
-- 현재 상태: verification_passed
+- 현재 상태: completion_review
 - 기준 상태 ref/SHA: origin/develop@421052159b38ade9516c18390e70ea6a1d129430
 - 검증 판정: PASS_WITH_RISK
-- 다음에 해야 할 일: 전체 155/155·계약 5종·runtime/adversarial/audit mutation 증빙을 확인하고, Node 24 non-root container required check를 실행·통과한 뒤 완료 가능성을 판단해줘.
+- 다음에 해야 할 일: Product Owner에게 잔여 위험 수용과 PR #127의 `develop` squash 병합 승인을 확인해줘.
 - 기준 문서: 상위 T-20260729-003, T-20260729-022, `apps/backend/docs/REMOTE_STT_ADAPTER.md`
 - 허용 경로: front matter의 `allowed_paths`
 - 참고 산출물: 구현 보고서와 `.ai_project/qa/T-20260810-005_backend-production-remote-stt-disabled-proof-qa.md`
 - 변경/검토 대상: `apps/backend/src/stt/`, `tests/stt/`, `contracts/stt/`, `scripts/`, 관련 Backend 문서
 - 확인된 결과: zero-capability proof, config/request/error mapping, parser·transport 0, 비로깅, 감사 mutation 12종 PASS
-- 남은 리스크: 현재 host Docker 부재로 Node 24 non-root image 미실행, 실제 staging manifest와 새 framework/IaC 감사는 T-006 범위
-- 차단/결정 필요: PR `backend-container` 또는 T-006 Docker 환경에서 `npm run verify:container` PASS 필요
+- 남은 리스크: 실제 staging manifest 부재와 새 framework/IaC 감사 pattern, 활성 remote STT grant·삭제 경계는 현재 비활성 범위 밖이며 T-006 또는 별도 정책 gate에서 검증 필요
+- 차단/결정 필요: 기술 차단 없음. Product Owner의 잔여 위험 수용과 PR #127 병합 승인 필요
 - 주의: 별도 정책·ZDR/Modified Retention·처리 지역/국외 처리·credential·개인정보/보안 승인 전 실제 remote STT·음성 upload·Cloud 변경·배포 금지
+
+## Completion Review
+
+- 판정: `PASS_WITH_RISK`, 완료 가능.
+- 수용 근거: production zero-capability proof, startup/request/error fail-closed, exact plain-data
+  schema, 비로깅과 감사 mutation 12종이 독립 검증을 통과했고 전체 155/155, 계약 validator
+  5/5, production STT audit와 Backend boundary audit가 통과했다.
+- 필수 보완 조건 해소: PR #127의 `backend-container`가 Node 24 non-root image build/run과
+  강화된 `npm run verify:container`를 통과했다. `backend-verify`, `ios-build`, `ios-xctest`도
+  모두 PASS이며 PR은 `CLEAN / MERGEABLE`이다.
+- 범위 판단: 첫 출시의 remote STT·음성 upload는 기능이 아니라 강제 비활성 경계다. 실제
+  provider·endpoint·credential·upload route를 만들지 않고 capability 0을 증명했으므로 활성
+  remote STT의 grant·삭제 계약 미검증은 T-005 재작업 사유가 아니다.
+- 필수 후속 gate: `T-20260810-006`에서 실제 staging manifest가 추가될 때
+  `absent_or_explicitly_disabled` 감사, 새 runtime/framework/IaC pattern과 rollback 이후에도
+  capability 0이 유지되는지 다시 검증한다.
+- 금지 경계: 별도 정책, ZDR·Modified Retention, 처리 지역·국외 처리, credential과
+  개인정보·보안 승인 전 실제 remote STT·음성 upload·Cloud 변경·배포를 금지한다.
+- 완료 조건: Product Owner가 위 잔여 위험을 수용하고 PR #127의 `develop` squash 병합을
+  승인해야 한다. 병합 후 canonical Task 상태를 확인한 뒤 `done`으로 확정한다.

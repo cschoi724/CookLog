@@ -102,3 +102,13 @@
   grant·cleanup·provider 물리 삭제는 별도 승인 범위
 - 차단/결정 필요: Docker 환경에서 `npm run verify:container` 실행 필요
 - 주의: 실제 원격 STT 호출·음성 upload·credential·Cloud 리소스·배포는 계속 금지한다.
+
+## 2026-08-11 PR container 검증
+
+- PR #127에서 `backend-verify`, `backend-container`, `ios-build`, `ios-xctest`가 모두 PASS했다.
+- `backend-container`는 Node 24 non-root image build/run과 강화된 production remote STT
+  disabled proof를 검증해, 독립 QA가 남긴 필수 container 후속 조건을 해소했다.
+- PR은 최신 `origin/develop@421052159b38ade9516c18390e70ea6a1d129430`을 포함하며
+  `CLEAN / MERGEABLE` 상태다.
+- 실제 staging manifest·새 framework/IaC 감사 확장과 rollback 후 capability 0 검증은
+  T-20260810-006 필수 gate로 유지한다.
