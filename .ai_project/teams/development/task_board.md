@@ -21,7 +21,7 @@
 | `T-20260810-003` | `done` | Backend | App Attest·설치 token·abuse 방어 | - | Backend Foundation 완료 | Product Owner PASS_WITH_RISK 수용·T-006 필수 gate 유지·PR #122 병합 승인 |
 | `T-20260810-004` | `done` | Backend | production 비용 hard cutoff·observability | Development Lead Agent | T-001~003 canonical done | Product Owner 위험 수용·T-006 gate 유지·PR #123 squash 병합 승인 |
 | `T-20260810-005` | `done` | Backend | production 원격 STT·음성 upload 비활성 보증 | Development Lead Agent | Backend Foundation 완료 | Product Owner 위험 수용·T-006 gate 유지·PR #127 squash 병합 승인 |
-| `T-20260810-006` | `approved` | Backend | 스테이징 composition·배포·rollback 통합 | Backend Agent / Execution Role | T-001~005 canonical done | Gate A repository-only 구현 승인·Gate B external staging 보류·Backend Agent 인계 |
+| `T-20260810-006` | `approved` | Backend | 스테이징 composition·배포·rollback 통합 | Backend Agent / Execution Role | T-001~005 canonical done | Product Owner `QA-HIGH-006-001~004` repository-only 재작업 승인·Gate B 보류·Backend Agent 재인계 |
 | `T-20260729-004` | `proposed` | iOS | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` | 제품 정책 완료 후 scope |
 | `T-20260729-005` | `proposed` | iOS | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-005` 완료, `003`, `T-20260729-003` 대기 | 나머지 선행 구현·환경 대기 |
 | `T-20260729-006` | `proposed` | iOS | iOS 로컬 TTS·오디오 중단·핸즈프리 구현 | Development Lead Agent | `T-003` | 핸즈프리 spike 포함 scope |
