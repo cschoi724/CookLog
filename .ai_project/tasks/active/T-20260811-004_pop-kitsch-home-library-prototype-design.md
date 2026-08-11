@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-004
 title: 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업
-status: approved
+status: in_progress
 type: feature
 priority: P1
 priority_reason: Foundation 이후 첫 사용자 흐름 묶음으로 빠른 기록과 레시피 탐색을 일관되게 만든다.
@@ -40,7 +40,7 @@ allowed_paths:
   - .ai_project/task_board.md
   - .ai_project/teams/design/task_board.md
 source_of_truth:
-  - origin/develop@639ba36
+  - origin/develop@d7e9ea7
   - design/prototype/
   - design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
@@ -48,19 +48,19 @@ source_of_truth:
   - docs/product/CookLog_USER_FLOW.md
 created_by: Design Lead Agent
 approved_by: Product Owner (2026-08-11, Foundation·Home·Library 단일 재작업 실행 승인)
-locked_by:
-locked_at:
-lock_session:
+locked_by: UI/UX Design Agent
+locked_at: 2026-08-11T17:35:42+09:00
+lock_session: codex-t-20260811-004-concept-rework
 lock_timeout_minutes: 240
 created_at: 2026-08-11
 updated_at: 2026-08-11
 report_to: .ai_project/reports/T-20260811-004_pop-kitsch-home-library-prototype-design-report.md
 qa_to: .ai_project/qa/T-20260811-004_pop-kitsch-home-library-prototype-design-qa.md
 status_ref: origin/develop
-status_ref_sha: 639ba36
-parent_scope_ref: origin/develop@639ba36
+status_ref_sha: d7e9ea7
+parent_scope_ref: origin/develop@d7e9ea7
 base_ref: origin/develop
-base_sha: 639ba36
+base_sha: d7e9ea7
 branch:
   name: task/T-20260811-004-concept-rework
   base: develop
@@ -91,7 +91,7 @@ pr:
 
 - 기존 PR #134는 PASS·Completion·병합 보류 상태로 보존한다. 이 PR은 이전 구현과 QA 재작업 기록의 참고 산출물이며 재작업 결과를 병합하지 않는다.
 - Product Owner가 2026-08-11 이 범위의 재실행을 승인했다. UI/UX Design Agent / Execution Role만 재작업을 수행할 수 있다.
-- UI/UX Design Agent는 최신 `origin/develop@639ba36`에서 새 `task/T-20260811-004-concept-rework` 전용 worktree를 만들고 작업을 시작한다. 기존 Draft PR의 구현 결과는 참고만 하며, stale worktree를 자동 rebase·reset·stash하지 않는다.
+- UI/UX Design Agent는 최신 `origin/develop@d7e9ea7`에서 새 `task/T-20260811-004-concept-rework` 전용 worktree를 만들고 작업을 시작한다. 기존 Draft PR의 구현 결과는 참고만 하며, stale worktree를 자동 rebase·reset·stash하지 않는다.
 - 완료 후 Design QA Agent가 Foundation 표현, Home·Library 14개 상태와 보존 계약을 독립 검증한다. PASS 전에는 T-005 실행·PR #134 병합 근거로 사용할 수 없다.
 
 ## Product Owner Approval
@@ -136,3 +136,4 @@ Task T-20260811-004는 승인된 Foundation·Home·Library 단일 재작업 Task
 | 2026-08-11 | Design QA Agent | verification_ready | rework_requested | Product Owner 요청으로 PASS 수용·병합을 보류하고 원본 concept 기준 Foundation 보강·Home 레이아웃 정합화를 같은 T-004 재작업으로 Design Lead에 인계 |
 | 2026-08-11 | Design Lead Agent | rework_requested | scoped | T-003을 재오픈하지 않고 Foundation 보강·Home·Library 재작업을 하나의 T-004 실행 단위로 조율 |
 | 2026-08-11 | Product Owner | scoped | approved | Foundation·Home·Library 단일 재작업과 UI/UX Design Agent 재실행 승인 |
+| 2026-08-11 | UI/UX Design Agent | approved | in_progress | 최신 origin/develop@d7e9ea7 기반 전용 worktree에서 lock을 획득하고 Foundation → Home → Library 순서 재작업 시작 |

@@ -243,6 +243,7 @@ function visibleRecipes() {
 function recipeCard(item, { match = "", menuOpen = false } = {}) {
   const inProgress = item.state !== "complete";
   const stateClass = item.state === "review" ? "is-review" : `is-${item.state}`;
+  const mediaLabel = item.state === "recording" ? "NOW!" : item.state === "organizing" ? "AI!" : item.state === "review" ? "CHECK!" : "GOOD!";
   const matchLabel = match ? `<span class="match-label">${match}</span>` : "";
   const stateMarkup = inProgress
     ? `<span class="recipe-state ${stateClass}"><i class="recipe-state-symbol"></i>${item.status}</span>`
@@ -250,11 +251,10 @@ function recipeCard(item, { match = "", menuOpen = false } = {}) {
   const supporting = item.state === "complete"
     ? `${item.detail} · ${item.steps}단계`
     : `${item.detail} · ${item.activity}`;
-  return `<article class="card recipe-card recipe-card-shell" data-recipe-id="${item.id}" data-content-state="${item.state}">
+  return `<article class="card recipe-card recipe-card-shell media-recipe-card" data-recipe-id="${item.id}" data-content-state="${item.state}">
     <button class="recipe-card-main" data-nav="${item.nav}" data-state="${item.navState}" aria-label="${escapeHTML(item.title)}, ${inProgress ? item.status : "레시피 상세"} 열기">
-      ${matchLabel}${stateMarkup}
-      <h4>${escapeHTML(item.title)}</h4>
-      <p>${escapeHTML(supporting)}</p>
+      <span class="recipe-card-media" aria-hidden="true"><i class="recipe-media-sticker">${mediaLabel}</i></span>
+      <span class="recipe-card-copy">${matchLabel}${stateMarkup}<h4>${escapeHTML(item.title)}</h4><p>${escapeHTML(supporting)}</p></span>
       <span class="recipe-arrow" aria-hidden="true">→</span>
     </button>
     ${inProgress ? `<button class="recipe-more" type="button" data-action="open-record-menu" data-id="${item.id}" aria-label="${escapeHTML(item.title)} 메뉴" aria-expanded="${menuOpen}" aria-controls="recipe-menu-${item.id}">${icons.more}</button>` : ""}
@@ -297,9 +297,22 @@ function feedbackCard(kind, title, copy, retry) {
   </div>`;
 }
 
+function homeUtilityHeader() {
+  return header({ title: "나의 주방", action: `<div class="header-actions"><button class="icon-button" data-nav="info" data-state="overview" aria-label="앱 정보">${icons.info}</button><button class="icon-button" data-nav="library" data-state="all" aria-label="전체 요리 기록">${icons.book}</button></div>` });
+}
+
+function homeBrandHero({ compact = false } = {}) {
+  return `<div class="home-brand-hero${compact ? " is-compact" : ""}">
+    <span class="club-burst home-question-burst" aria-hidden="true">오늘<br>뭐 먹지?</span>
+    <span class="home-cook-doodle" aria-hidden="true"><i></i></span>
+    <h1 class="club-display">CookLog</h1>
+    <span class="club-tape">내 손맛, 기록 한 입!</span>
+  </div>`;
+}
+
 function renderHome() {
-  if (state === "loading") return `<section class="screen">${header()}${feedbackCard("loading", "레시피를 불러오는 중", "나의 요리 기록을 정리하고 있어요.")}</section>`;
-  if (state === "error") return `<section class="screen">${header()}${feedbackCard("error", "레시피를 불러오지 못했어요", "잠시 후 다시 시도해주세요.", "content")}</section>`;
+  if (state === "loading") return `<section class="screen home-screen home-feedback-screen">${homeUtilityHeader()}${homeBrandHero({ compact: true })}${feedbackCard("loading", "레시피를 불러오는 중", "나의 요리 기록을 정리하고 있어요.")}</section>`;
+  if (state === "error") return `<section class="screen home-screen home-feedback-screen">${homeUtilityHeader()}${homeBrandHero({ compact: true })}${feedbackCard("error", "레시피를 불러오지 못했어요", "잠시 후 다시 시도해주세요.", "content")}</section>`;
   if (state === "menu-open") {
     recordMenuId = "draft-step";
     deleteDialogOpen = false;
@@ -311,23 +324,24 @@ function renderHome() {
   const recent = visibleRecipes().slice(0, 3);
   const content = state === "empty" || recent.length === 0
     ? `<div class="card empty-card"><div><div class="empty-icon">${icons.book}</div><h4>아직 요리 기록이 없어요</h4><p>첫 요리를 10초씩 기록하면 진행 기록과 완성한 레시피가 여기에 쌓입니다.</p></div></div>`
-    : `<div class="recipe-list">${recent.map(item => recipeCard(item, { menuOpen: recordMenuId === item.id })).join("")}</div>`;
+    : `<div class="recipe-list home-recipe-grid">${recent.map(item => recipeCard(item, { menuOpen: recordMenuId === item.id })).join("")}</div>`;
   return `<section class="screen home-screen">
-    ${header({ action: `<div class="header-actions"><button class="icon-button" data-nav="info" data-state="overview" aria-label="앱 정보">${icons.info}</button><button class="icon-button" data-nav="library" data-state="all" aria-label="전체 요리 기록">${icons.book}</button></div>` })}
-    <div class="hero">
-      <p class="eyebrow">나의 주방 기록</p>
-      <h2>오늘의 맛을<br>잊지 않도록</h2>
-      <p>요리하면서 10초씩 말해보세요.<br>다시 만들 수 있는 레시피로 남겨드려요.</p>
+    ${homeUtilityHeader()}
+    ${homeBrandHero()}
+    <div class="home-record-zone">
+      <button class="record-club-control home-record-cta" data-action="start-new-log" aria-describedby="home-record-preservation">
+        ${icons.mic}<span class="sr-only">10초 요리 기록 시작</span>
+      </button>
+      <span class="club-sticker home-record-sticker" aria-hidden="true">바로 말하고<br>기록해요!</span>
+      <p class="home-record-title">음성으로 요리 기록 시작</p>
+      <p class="preservation-note" id="home-record-preservation">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</p>
     </div>
-    <button class="button button-primary" data-action="start-new-log">
-      ${icons.mic}<span>10초 요리 기록 시작</span>
-    </button>
-    <p class="preservation-note">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</p>
     ${state === "ai-ready" ? `<div class="banner banner-success" role="status"><strong aria-hidden="true">✓</strong><div><strong>AI 정리가 끝났어요</strong><p>달큰한 간장 삼겹살 검토본이 준비됐습니다.</p><button class="banner-action" type="button" data-nav="review" data-state="editable">레시피 검토하기</button></div></div>` : ""}
     ${state === "network-error" ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>인터넷 연결을 확인해주세요</strong><p>실패한 온라인 행동은 자동으로 다시 실행하지 않았어요. 진행 기록·완료 레시피·검색·버튼 Audio Guide는 계속 사용할 수 있습니다.</p><button class="banner-action" type="button" data-action="retry-network-check">연결 다시 확인</button></div></div>` : ""}
     ${homeFeedback ? `<div class="compact-feedback" role="status">${escapeHTML(homeFeedback)}</div>` : ""}
     <div class="section-head"><div><h3>${state === "empty" ? "나의 요리 기록" : "최근 레시피"}</h3><span>최근 활동순 · 최대 3개</span></div><button class="text-action" data-nav="library" data-state="all">전체 보기</button></div>
     ${content}
+    <aside class="ai-helper-card home-ai-helper" aria-label="AI 요리도우미 안내"><span class="ai-helper-face" aria-hidden="true">:)</span><span class="ai-helper-copy"><span class="club-sticker">AI 요리도우미</span><strong>오늘 뭐 만들지 고민이라면?</strong><small>기록한 STEP만 레시피로 정리해요.</small></span></aside>
     ${deleteDialog()}
   </section>`;
 }
@@ -441,11 +455,11 @@ function renderLibrary() {
     ? `${results.length}개 결과 · ${state === "search-ingredient" ? "재료 일치" : "제목 일치 우선"}`
     : `최근 활동순 · ${results.length}개`;
   const body = results.length
-    ? `<div class="recipe-list">${results.map(result => recipeCard(result.item, { match: result.match, menuOpen: recordMenuId === result.item.id })).join("")}</div>`
+    ? `<div class="recipe-list library-recipe-list">${results.map(result => recipeCard(result.item, { match: result.match, menuOpen: recordMenuId === result.item.id })).join("")}</div>`
     : `<div class="card search-empty"><div class="empty-icon">${icons.search}</div><h3>${searching ? "일치하는 레시피가 없어요" : "아직 요리 기록이 없어요"}</h3><p>${searching ? "제목이나 재료명을 다시 확인하거나 검색어를 지워보세요." : "Home에서 첫 요리 기록을 시작해보세요."}</p>${searching ? `<button class="button button-secondary" type="button" data-action="clear-search">검색어 지우기</button>` : ""}</div>`;
   return `<section class="screen library-screen">
     ${header({ back: "home", title: "전체 보기" })}
-    <div class="library-intro"><p class="eyebrow">MY COOKLOG</p><h2>모든 요리 기록</h2><p>진행 중인 기록과 완료 레시피를 최근 활동순으로 모았습니다.</p></div>
+    <div class="library-intro"><span class="library-club-sticker club-sticker" aria-hidden="true">MY<br>CLUB</span><p class="eyebrow">RECIPE INDEX</p><h2>모든 요리 기록</h2><p>진행 중인 기록과 완료 레시피를 최근 활동순으로 모았습니다.</p></div>
     <label class="search-field" for="recipe-search">
       <span class="search-icon">${icons.search}</span>
       <input id="recipe-search" type="search" inputmode="search" autocomplete="off" placeholder="제목·재료명 검색" value="${escapeHTML(searchQuery)}" aria-describedby="search-privacy">
