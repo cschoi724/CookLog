@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation T-20260728-006과 하위 T-20260804-002~007도 모두 `done`입니다. 실제 production Backend T-20260729-003은 6개 하위 패키지로 `scoped`이며 T-20260810-001~005는 모두 `done`입니다. T-006은 ownership review를 마치고 repository-only Gate A를 승인받아 `approved`, Backend Agent 실행 대기이며 external staging Gate B는 보류입니다. iOS T-003은 7개 하위 패키지로 `scoped`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation T-20260728-006과 하위 T-20260804-002~007도 모두 `done`입니다. 실제 production Backend T-20260729-003은 6개 하위 패키지로 `scoped`이며 T-20260810-001~005는 모두 `done`입니다. T-006은 Gate A 독립 QA에서 HIGH 4건으로 FAIL했으며 Product Owner가 repository-only 재작업을 승인해 `approved`, Backend Agent 재실행 대기입니다. external staging Gate B는 계속 보류입니다. iOS T-003은 7개 하위 패키지로 `scoped`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 

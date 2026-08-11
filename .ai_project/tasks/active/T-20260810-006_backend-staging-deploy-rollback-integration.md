@@ -87,9 +87,9 @@ updated_at: 2026-08-11
 report_to: .ai_project/reports/T-20260810-006_backend-staging-deploy-rollback-integration-report.md
 qa_to: .ai_project/qa/T-20260810-006_backend-staging-deploy-rollback-integration-qa.md
 status_ref: origin/develop
-status_ref_sha: 2a002a6948eb8b32038b8102214ca12d5174a171
-worktree_path: /private/tmp/cooklog-t20260810-006-scope
-worktree_role: Lead Role
+status_ref_sha: 92de3f60b0d5a7219759601673d9641747a6c197
+worktree_path: /private/tmp/cooklog-t20260810-006-staging-composition-gate-a
+worktree_role: Execution Role
 ---
 
 # Backend 스테이징 composition·배포·rollback 통합
@@ -196,6 +196,13 @@ worktree_role: Lead Role
 | 2026-08-10 | Development Lead Agent |  | proposed | 스테이징 통합·배포·rollback 패키지 생성 |
 | 2026-08-11 | Development Lead Agent | proposed | scoped | T-001~005 canonical done 확인, production composition gap·전용 adapter/manifest/workflow ownership·CI 비충돌·외부 Gate A/B와 최종 검증 범위 확정 |
 | 2026-08-11 | Product Owner | scoped | approved | Gate A repository-only 구현·local/container/emulator 검증 승인, Gate B cloud resource·secret·provider 호출·external staging 보류, Backend Agent 실행 인계 승인 |
+| 2026-08-11 | Backend Agent | approved | in_progress | canonical `origin/develop@ee0add9`, T-001~005 done·빈 lock·단일 Backend Task 확인 후 Gate A 전용 worktree lock 획득 |
+| 2026-08-11 | Backend Agent | in_progress | verification_ready | WP-C1~C5 repository 구현, 전체 172/172·계약 5종·manifest/audit PASS, 금지 대상 외부 변경·호출 0건 확인 후 lock 해제·Backend QA 독립 검증 인계 |
+| 2026-08-11 | Backend Agent | verification_ready | in_progress | 사용자 요청과 최신 canonical `origin/develop@92de3f6`의 `approved` Execution routing 확인 후 Gate A 변경 보존·canonical 통합·전체 재검증을 위해 lock 재획득 |
+| 2026-08-11 | Backend Agent | in_progress | verification_ready | `origin/develop@92de3f6` fast-forward 통합, 최종 전체 172/172·계약 5종·staging/audit PASS 확인, status ref 갱신·lock 해제 후 Backend QA 재인계 |
+| 2026-08-11 | Backend QA Agent | verification_ready | verification_in_progress | `develop@92de3f6`와 작업 HEAD 일치, 빈 lock·Verification Role routing·Gate A 승인 범위를 확인하고 외부 변경·호출 없이 독립 검증 lock 획득 |
+| 2026-08-11 | Backend QA Agent | verification_in_progress | rework_requested | 172/172·계약 5종·합성 provider-at-most-once는 PASS. production entrypoint 미조립, external adapter gate 우회, manifest strict 검증 우회, candidate smoke·rollback 미연결 HIGH 4건으로 FAIL·lock 해제 |
+| 2026-08-11 | Product Owner | rework_requested | approved | `QA-HIGH-006-001~004` repository-only 재작업 승인, Gate B external staging·cloud resource·secret·provider 호출 보류 유지, Backend Agent 재인계 승인 |
 
 ## Next Agent Handoff
 
@@ -259,3 +266,61 @@ Task T-20260810-006의 Gate A repository-only 구현은 승인됐어.
 - 완료 시: 외부 변경·호출 0건을 report에 기록하고 lock을 해제한 뒤 `verification_ready`,
   Backend QA Agent / Verification Role에 독립 검증을 요청해.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
+
+## Gate A 구현 완료 및 Backend QA 인계
+
+다음 Agent에게 전달할 말:
+
+너는 Backend QA Agent / Verification Role이야. Task T-20260810-006의 Gate A repository-only
+실행 결과를 독립 검증해줘.
+
+- 현재 상태: `verification_ready`
+- 기준 상태 ref/SHA: `origin/develop@92de3f60b0d5a7219759601673d9641747a6c197`
+- 보고서: `.ai_project/reports/T-20260810-006_backend-staging-deploy-rollback-integration-report.md`
+- 중점 검증: production profile/adapter fail-closed, secret 비노출, synthetic App Attest/token·
+  durable replay·provider at-most-once·ACK/lifecycle·cost/sink disable, manifest mutation,
+  workflow manual/least privilege/SHA pin, remote STT capability 0
+- container 후속: Docker 환경에서 `cd apps/backend && npm run verify:container`
+- 남은 위험: 실제 Google/Apple/provider driver와 external deploy/smoke/rollback/disable은
+  Gate B 전 미검증이며 Gate A PASS로 간주할 수 없음
+- 금지: cloud resource·secret·WIF/environment 설정, workflow 실행, image push,
+  provider·Apple 외부 호출, 실제 staging 배포·production traffic 변경
+- 주의: 외부 변경·호출 0건을 유지하고 합성 증거와 실제 staging 증거를 구분해줘.
+
+## Gate A QA 실패 재작업 승인 및 Backend 재인계
+
+- 승인 범위: `QA-HIGH-006-001~004`의 production entrypoint composition, 서버 소유 external
+  adapter factory/capability, parsed exact manifest validator, revision-specific candidate smoke와
+  rollback state·실패 handler·post-check를 repository-only로 수정하고 부정 검증을 추가한다.
+- 필수 성공 조건:
+  1. production entrypoint가 typed config와 서버 소유 adapter factory를 조립하며 external
+     profile의 누락·local/facade/wrapper/plain object 주입을 listen 전에 fail closed한다.
+  2. manifest validator가 exact YAML schema/value·중복·unknown field를 검사하고 ingress,
+     profile, region, identity, digest, numeric secret version 변형을 모두 거부한다.
+  3. validated/rendered manifest가 deploy 정의의 단일 source가 되고 zero-traffic candidate
+     revision 전용 private smoke와 실패 시 이전 healthy revision 100% 복구가 연결된다.
+  4. rollback 뒤 인증, provider at-most-once, ACK·22h cleanup·24h access block, cost cutoff·required
+     sink와 remote STT capability 0을 재검증한다.
+- 보류 범위: Docker 실행기가 없는 환경의 Node 24 non-root 검증은 Backend QA/CI 후속 증거로
+  남길 수 있으나 최종 Gate A 검증 전에는 반드시 수행한다.
+- 계속 금지: Gate B cloud resource·secret·WIF/environment 설정, workflow 실행, image push,
+  Google/Apple/provider 호출, 실제 staging deploy·traffic·rollback과 production 전환.
+
+다음 Agent에게 전달할 말:
+
+너는 Backend Agent / Execution Role이야. Task T-20260810-006 Gate A의 재작업은 승인됐어.
+
+- 현재 상태: `approved`
+- 기준 상태 ref/SHA: `origin/develop@92de3f60b0d5a7219759601673d9641747a6c197`
+- 다음에 해야 할 일: 현재 전용 worktree의 미커밋 Gate A 구현을 보존하고
+  `QA-HIGH-006-001~004`를 위 필수 성공 조건대로 repository-only로 수정·자체 검증해.
+- 참고 산출물: Task report와 Backend QA FAIL 보고서
+- 필수 검증: 기존 172/172·계약 5종·targeted suite 무회귀, QA adversarial probe 원본,
+  entrypoint HTTP, adapter spoof 변형, parsed manifest negative mutation, candidate-specific
+  smoke·rollback failure/post-check contract, Node 24 non-root container
+- 남은 위험: 실제 distributed/cloud/Apple/provider와 external staging은 Gate B 전 미검증
+- 금지: cloud resource·secret·WIF/environment 설정, workflow 실행, image push, provider·Apple
+  외부 호출, 실제 staging 배포·traffic 변경
+- 완료 시: 외부 변경·호출 0건을 report에 기록하고 `verification_ready`, Backend QA Agent /
+  Verification Role로 독립 재검증을 요청해.
+- 주의: 최신 canonical을 확인하되 현재 dirty worktree의 구현·QA 증거를 삭제하거나 덮어쓰지 마.
