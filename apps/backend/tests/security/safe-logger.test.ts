@@ -43,6 +43,56 @@ test("allowlist logger projects only fixed non-content metadata", () => {
   }]);
 });
 
+test("provider token counts are allowed metrics while token material remains forbidden", () => {
+  const sink = new InMemoryTelemetrySink();
+  const logger = new SafeLogger({ sink });
+  assert.equal(logger.emit("provider_call_completed", {
+    provider_outcome: "succeeded",
+    latency_ms_bucket: "lt_500",
+    input_tokens: 5_000,
+    output_tokens: 2_000,
+    estimated_cost_micros: 50_000_000_000,
+  }), true);
+  assert.equal(logger.emit("provider_call_completed", {
+    provider_outcome: "succeeded",
+    latency_ms_bucket: "lt_500",
+    input_tokens: 5_000,
+    output_tokens: 2_000,
+    estimated_cost_micros: 50_000_000_000,
+    access_token: "Bearer synthetic-secret",
+  }), false);
+  assert.equal(sink.events().length, 1);
+});
+
+test("QA-MEDIUM-004-001 provider token metrics enforce exact per-call maxima", () => {
+  const sink = new InMemoryTelemetrySink();
+  const logger = new SafeLogger({ sink });
+  const event = (inputTokens: number, outputTokens: number) => logger.emit(
+    "provider_call_completed",
+    {
+      provider_outcome: "succeeded",
+      latency_ms_bucket: "lt_500",
+      input_tokens: inputTokens,
+      output_tokens: outputTokens,
+      estimated_cost_micros: 1,
+    },
+  );
+  assert.equal(event(0, 0), true);
+  assert.equal(event(4_999, 1_999), true);
+  assert.equal(event(5_000, 2_000), true);
+  for (const [inputTokens, outputTokens] of [
+    [5_001, 2_000],
+    [5_000, 2_001],
+    [-1, 0],
+    [0, -1],
+    [1.5, 1],
+    [1, 1.5],
+    [1_000_000_000, 1_000_000_000],
+  ] as const) assert.equal(event(inputTokens, outputTokens), false);
+  assert.equal(sink.events().length, 3);
+  assert.equal(logger.dropCounts().INVALID_VALUE, 7);
+});
+
 test("content, secret, headers, query, exceptions, and structural tricks are dropped", () => {
   const sink = new InMemoryTelemetrySink();
   const logger = new SafeLogger({ sink });
