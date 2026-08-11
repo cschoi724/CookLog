@@ -63,8 +63,8 @@ branch:
   name: task/T-20260811-003-pop-kitsch-foundation-v2
   base: develop
 pr:
-  url:
-  status:
+  url: https://github.com/cschoi724/CookLog/pull/130
+  status: draft
 ---
 
 # 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비
@@ -114,3 +114,4 @@ Task T-20260811-003의 Foundation 원본 정비 결과를 독립 검증해줘.
 | 2026-08-11 | UI/UX Design Agent | approved | in_progress | 최신 origin/develop@1461129 전용 worktree에서 lock을 획득하고 Foundation 원본 정비 시작 |
 | 2026-08-11 | UI/UX Design Agent | in_progress | verification_ready | 팝 키치 Light/Dark 토큰과 13개 공통 컴포넌트 정비·자체 검증을 완료하고 Design QA에 인계 |
 | 2026-08-11 | UI/UX Design Agent | verification_ready | verification_ready | 작업 중 전진한 origin/develop@2a002a6의 T-002 scope·project board 변경을 새 worktree에 재통합하고 검증 결과를 보존 |
+| 2026-08-11 | UI/UX Design Agent | verification_ready | verification_ready | 커밋 `65831ca`를 push하고 develop 대상 draft PR #130을 생성해 Design QA 인계 준비 완료 |
