@@ -41,7 +41,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-05
-updated_at: 2026-08-10
+updated_at: 2026-08-11
 report_to: .ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md
 qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
 ---
@@ -130,6 +130,23 @@ qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
 - `WP-R12`: 기존 runtime JSON을 폐기·재생성하고 실제 focus 이동/접근성 자동화 이벤트 원본을
   보존한다. 독립 기대 계약과 비교하며 필수 알림 상태의 빈 `notificationsObserved`, 고정
   `overReadingDetected: false`, actualElements 복제 계약을 validator가 실패 처리한다.
+- 2026-08-10: iOS Agent가 `WP-R9~R12`와 전체 XCTest 82/82, negative fixture 7/7을
+  완료하고 고정 구현 commit `8b4a989`을 독립 재검증으로 인계했다.
+- 2026-08-10: iOS QA Agent가 `QA-HIGH-805008-001` 해소를 확인했으나 Diff 정렬 편차,
+  위험 interaction 실패 원본·중복 이미지, 실제 VoiceOver focus 순서 미관측의
+  `QA-HIGH-805008-002~004`를 확인해 `FAIL`, `rework_requested`로 판정했다.
+- 2026-08-11: Development Lead Agent가 아래 `WP-R13~R15`로 재작업 범위를 조율했고
+  Product Owner가 재작업과 `develop` 공용 인계를 승인해 `approved`, iOS Agent /
+  Execution Role로 다시 인계한다.
+- `WP-R13`: `contentFeatureOffsetPoints`를 커스텀 ±2pt·native container ±4pt 허용치에
+  직접 연결하고 초과 시 Diff·validator를 실패시킨다. `HOME-ERROR -56pt`를 포함한 초과
+  상태는 정렬·재캡처하며 허용치 초과 negative fixture를 보강한다.
+- `WP-R14`: 위험 interaction 원본의 fixture 주입, 44pt target, 비어 있지 않은 target,
+  CTA 조작 결과를 모두 필수 게이트로 연결한다. 18개 상태를 실제 성공값으로 재생성하고
+  top/bottom 및 상태 간 SHA 중복을 차단하며 network error 의미와 복구 CTA를 보존한다.
+- `WP-R15`: 기대 배열 index를 sequence로 쓰지 않고 실제 접근성 traversal/focus 이동을
+  관측한다. Core 23개 전체를 독립 기대 계약과 비교하고 실제 VoiceOver 증거가 확보되지
+  않으면 PASS로 완화하지 않고 `BLOCKED`로 보고한다.
 
 ## Next Agent Handoff
 
@@ -140,25 +157,24 @@ Task T-20260805-008의 승인된 재작업을 진행해줘.
 
 - 현재 상태: `approved`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `aee251a`
+- 기준 상태 SHA: `081c206f60ef6e5f3d533a5a2b3aafafaa52b133`
 - 다음에 해야 할 일: 최신 canonical 기준 전용 worktree에서 lock을 획득하고
-  `WP-R9~R12`만 수행한 뒤 기존 기능 회귀와 함께 자체 검증해.
+  `WP-R13~R15`만 수행한 뒤 기존 기능 회귀와 함께 자체 검증해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md`,
   `.ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md`
 - 변경/검토 대상: `apps/ios/VisualRegression/`,
   `apps/ios/Scripts/validate-visual-regression-contract.js`, 전체 iOS 화면·테스트
-- 재작업 `WP-R9`: 실제 fixture assertion 후 Current 23개 전량 재생성·SHA 기록
-- 재작업 `WP-R10`: 실제 픽셀 측정 Diff·letterbox 검출·negative fixture 실패 검증
-- 재작업 `WP-R11`: 위험 matrix 전량 재생성·동일 SHA 금지·실제 조작 assertion
-- 재작업 `WP-R12`: VoiceOver 원본 이벤트 재수집·독립 기대 계약·빈/고정 증거 실패 검증
+- 재작업 `WP-R13`: 실측 content feature offset을 ±2pt/±4pt 허용치에 연결하고 초과 상태 재캡처
+- 재작업 `WP-R14`: 위험 interaction 54개 원본을 실제 성공값으로 재생성하고 모든 실패값·중복 SHA 차단
+- 재작업 `WP-R15`: 기대 배열 순번이 아닌 실제 접근성 traversal/focus 순서를 Core 23개에서 관측
 - 보존: 통합 82개·Core Loop 23개 manifest, 전체 XCTest 82/82, 기존 기능·데이터 흐름
-- 남은 리스크: 세 번째 재검증의 상태 중복·letterbox·미정렬 Diff·가짜 focus 순서 반례가
+- 남은 리스크: 네 번째 재검증에서 미정렬 Diff·실패 interaction·중복 이미지·가짜 focus 순서 반례가
   독립 재검증에서 해소되는지 미확정
 - 범위 제외: 실제 Apple STT·Backend AI·TTS 엔진, 운영 문의·법적 값
-- 차단/결정 필요: 승인된 디자인 기준에서 독립 Reference를 만들 수 없거나 실제
-  VoiceOver 런타임 증거를 만들 수 없으면 임의 완화하지 말고 Lead에 보고해.
+- 차단/결정 필요: 실제 VoiceOver traversal/focus 증거를 만들 수 없으면 기대 배열 index를
+  대체 증거로 사용하지 말고 `BLOCKED`로 Lead에 보고해.
 - 완료 시: report와 iOS 문서를 갱신하고 lock을 해제한 뒤 `verification_ready`로 전환해
   동일 iOS QA Agent / Verification Role에 독립 재검증을 요청해.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
