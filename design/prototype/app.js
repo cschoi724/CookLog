@@ -298,8 +298,8 @@ function feedbackCard(kind, title, copy, retry) {
 }
 
 function renderHome() {
-  if (state === "loading") return `<section class="screen">${header()}${feedbackCard("loading", "레시피를 불러오는 중", "나의 요리 기록을 정리하고 있어요.")}</section>`;
-  if (state === "error") return `<section class="screen">${header()}${feedbackCard("error", "레시피를 불러오지 못했어요", "잠시 후 다시 시도해주세요.", "content")}</section>`;
+  if (state === "loading") return `<section class="screen home-screen home-feedback-screen">${header()}${feedbackCard("loading", "레시피를 불러오는 중", "나의 요리 기록을 정리하고 있어요.")}</section>`;
+  if (state === "error") return `<section class="screen home-screen home-feedback-screen">${header()}${feedbackCard("error", "레시피를 불러오지 못했어요", "잠시 후 다시 시도해주세요.", "content")}</section>`;
   if (state === "menu-open") {
     recordMenuId = "draft-step";
     deleteDialogOpen = false;
@@ -314,18 +314,26 @@ function renderHome() {
     : `<div class="recipe-list">${recent.map(item => recipeCard(item, { menuOpen: recordMenuId === item.id })).join("")}</div>`;
   return `<section class="screen home-screen">
     ${header({ action: `<div class="header-actions"><button class="icon-button" data-nav="info" data-state="overview" aria-label="앱 정보">${icons.info}</button><button class="icon-button" data-nav="library" data-state="all" aria-label="전체 요리 기록">${icons.book}</button></div>` })}
-    <div class="hero">
+    <div class="hero home-hero">
+      <span class="home-doodle home-doodle-burst" aria-hidden="true">오늘<br>뭐 먹지?</span>
+      <span class="home-doodle home-doodle-star" aria-hidden="true">☆</span>
       <p class="eyebrow">나의 주방 기록</p>
       <h2>오늘의 맛을<br>잊지 않도록</h2>
       <p>요리하면서 10초씩 말해보세요.<br>다시 만들 수 있는 레시피로 남겨드려요.</p>
     </div>
-    <button class="button button-primary" data-action="start-new-log">
-      ${icons.mic}<span>10초 요리 기록 시작</span>
-    </button>
-    <p class="preservation-note">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</p>
+    <div class="home-record-card">
+      <button class="button button-primary home-record-cta" data-action="start-new-log" aria-describedby="home-record-note">
+        <span class="home-record-icon" aria-hidden="true">${icons.mic}</span><span class="home-record-copy"><strong>10초 기록</strong><small>말하고 남겨요</small></span>
+      </button>
+      <p class="home-record-label">음성으로 요리 기록 시작</p>
+      <p class="preservation-note" id="home-record-note">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</p>
+    </div>
     ${state === "ai-ready" ? `<div class="banner banner-success" role="status"><strong aria-hidden="true">✓</strong><div><strong>AI 정리가 끝났어요</strong><p>달큰한 간장 삼겹살 검토본이 준비됐습니다.</p><button class="banner-action" type="button" data-nav="review" data-state="editable">레시피 검토하기</button></div></div>` : ""}
     ${state === "network-error" ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>인터넷 연결을 확인해주세요</strong><p>실패한 온라인 행동은 자동으로 다시 실행하지 않았어요. 진행 기록·완료 레시피·검색·버튼 Audio Guide는 계속 사용할 수 있습니다.</p><button class="banner-action" type="button" data-action="retry-network-check">연결 다시 확인</button></div></div>` : ""}
     ${homeFeedback ? `<div class="compact-feedback" role="status">${escapeHTML(homeFeedback)}</div>` : ""}
+    <aside class="home-ai-nudge" aria-label="AI 요리도우미 안내">
+      <span class="home-ai-mark" aria-hidden="true">${icons.sparkles}</span><p><strong>AI 요리도우미</strong><span>기록한 STEP만 레시피로 정리해요.</span></p><span class="home-ai-tag" aria-hidden="true">HELPER</span>
+    </aside>
     <div class="section-head"><div><h3>${state === "empty" ? "나의 요리 기록" : "최근 레시피"}</h3><span>최근 활동순 · 최대 3개</span></div><button class="text-action" data-nav="library" data-state="all">전체 보기</button></div>
     ${content}
     ${deleteDialog()}
@@ -445,7 +453,7 @@ function renderLibrary() {
     : `<div class="card search-empty"><div class="empty-icon">${icons.search}</div><h3>${searching ? "일치하는 레시피가 없어요" : "아직 요리 기록이 없어요"}</h3><p>${searching ? "제목이나 재료명을 다시 확인하거나 검색어를 지워보세요." : "Home에서 첫 요리 기록을 시작해보세요."}</p>${searching ? `<button class="button button-secondary" type="button" data-action="clear-search">검색어 지우기</button>` : ""}</div>`;
   return `<section class="screen library-screen">
     ${header({ back: "home", title: "전체 보기" })}
-    <div class="library-intro"><p class="eyebrow">MY COOKLOG</p><h2>모든 요리 기록</h2><p>진행 중인 기록과 완료 레시피를 최근 활동순으로 모았습니다.</p></div>
+    <div class="library-intro"><span class="library-sticker" aria-hidden="true">MY<br>CLUB</span><p class="eyebrow">MY COOKLOG</p><h2>모든 요리 기록</h2><p>진행 중인 기록과 완료 레시피를 최근 활동순으로 모았습니다.</p></div>
     <label class="search-field" for="recipe-search">
       <span class="search-icon">${icons.search}</span>
       <input id="recipe-search" type="search" inputmode="search" autocomplete="off" placeholder="제목·재료명 검색" value="${escapeHTML(searchQuery)}" aria-describedby="search-privacy">
