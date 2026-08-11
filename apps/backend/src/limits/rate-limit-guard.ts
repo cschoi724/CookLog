@@ -4,6 +4,7 @@ import { getAuthenticatedInstallation } from "../auth/authentication.js";
 import { sendProblem } from "../http/common-http.js";
 import {
   defaultLimitPolicies,
+  type RateLimitPolicies,
   type IpPartitioner,
   type LimitCheck,
   type RateLimiter,
@@ -13,10 +14,11 @@ export interface RateLimitGuardOptions {
   readonly limiter: RateLimiter;
   readonly projectKey?: string;
   readonly projectRequestsPerMinute?: number;
+  readonly policies?: RateLimitPolicies;
 }
 
 export function createProtectedRateLimitGuard(
-  options: RateLimitGuardOptions & { readonly mutation?: boolean },
+  options: RateLimitGuardOptions & { readonly mutation?: boolean; readonly aiJob?: boolean },
 ) {
   return async function enforceProtectedLimits(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const authentication = getAuthenticatedInstallation(request);
@@ -24,11 +26,13 @@ export function createProtectedRateLimitGuard(
       sendProblem(request, reply, "AUTH_REQUIRED");
       return;
     }
+    const policies = options.policies ?? defaultLimitPolicies;
+    const projectLimit = resolveProjectLimit(options.projectRequestsPerMinute, policies);
     const checks: LimitCheck[] = [
       {
         scope: "installation",
         key: `${authentication.installationId}:all`,
-        limit: defaultLimitPolicies.installationRequestsPerMinute,
+        limit: policies.installationRequestsPerMinute,
         windowMs: 60_000,
       },
     ];
@@ -36,14 +40,28 @@ export function createProtectedRateLimitGuard(
       checks.push({
         scope: "installation",
         key: `${authentication.installationId}:mutation`,
-        limit: defaultLimitPolicies.installationMutationsPerMinute,
+        limit: policies.installationMutationsPerMinute,
+        windowMs: 60_000,
+      });
+    }
+    if (options.aiJob === true) {
+      checks.push({
+        scope: "installation",
+        key: `${authentication.installationId}:ai-job`,
+        limit: policies.installationAiJobsPerDay,
+        windowMs: 86_400_000,
+      });
+      checks.push({
+        scope: "project",
+        key: `${options.projectKey ?? "cooklog-backend"}:ai-job`,
+        limit: policies.projectAiJobsPerMinute,
         windowMs: 60_000,
       });
     }
     checks.push({
       scope: "project",
       key: options.projectKey ?? "cooklog-backend",
-      limit: options.projectRequestsPerMinute ?? defaultLimitPolicies.projectRequestsPerMinute,
+      limit: projectLimit,
       windowMs: 60_000,
     });
     await enforce(options.limiter, checks, request, reply);
@@ -58,25 +76,35 @@ export function createUnauthenticatedRateLimitGuard(
 ) {
   return async function enforceUnauthenticatedLimits(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const ipKey = options.ipPartitioner.partition(request.ip);
+    const policies = options.policies ?? defaultLimitPolicies;
+    const projectLimit = resolveProjectLimit(options.projectRequestsPerMinute, policies);
     const isChallenge = options.endpoint === "auth-challenge";
     const checks: LimitCheck[] = [
       {
         scope: "ip",
         key: `${ipKey}:${options.endpoint}`,
         limit: isChallenge
-          ? defaultLimitPolicies.authChallengePerMinute
-          : defaultLimitPolicies.installationAuthPerTenMinutes,
+          ? policies.authChallengePerMinute
+          : policies.installationAuthPerTenMinutes,
         windowMs: isChallenge ? 60_000 : 600_000,
       },
       {
         scope: "project",
         key: options.projectKey ?? "cooklog-backend",
-        limit: options.projectRequestsPerMinute ?? defaultLimitPolicies.projectRequestsPerMinute,
+        limit: projectLimit,
         windowMs: 60_000,
       },
     ];
     await enforce(options.limiter, checks, request, reply);
   };
+}
+
+function resolveProjectLimit(requested: number | undefined, policies: RateLimitPolicies): number {
+  const limit = requested ?? policies.projectRequestsPerMinute;
+  if (!Number.isInteger(limit) || limit < 0 || limit > policies.projectRequestsPerMinute) {
+    throw new Error("project request limit cannot exceed the approved policy");
+  }
+  return limit;
 }
 
 async function enforce(

@@ -26,10 +26,12 @@ interface WindowCounter {
 export class InMemoryRateLimiter implements RateLimiter {
   readonly #counters = new Map<string, WindowCounter>();
   readonly #now: () => number;
+  readonly #failClosedInvalidClock: boolean;
   #available = true;
 
-  constructor(now: () => number = Date.now) {
+  constructor(now: () => number = Date.now, options: { readonly failClosedInvalidClock?: boolean } = {}) {
     this.#now = now;
+    this.#failClosedInvalidClock = options.failClosedInvalidClock ?? false;
   }
 
   setAvailable(available: boolean): void {
@@ -39,6 +41,12 @@ export class InMemoryRateLimiter implements RateLimiter {
   async consume(checks: readonly LimitCheck[]): Promise<LimitResult> {
     if (!this.#available) return { allowed: false, unavailable: true };
     const now = this.#now();
+    if (checks.length === 0 || (this.#failClosedInvalidClock && (!Number.isSafeInteger(now) || now < 0))) {
+      return { allowed: false, unavailable: true };
+    }
+    const uniqueChecks = new Set(checks.map((check) =>
+      `${check.scope}\u0000${check.key}\u0000${check.windowMs}`));
+    if (uniqueChecks.size !== checks.length) throw new Error("duplicate rate limit dimensions are invalid");
     const resolved = checks.map((check) => {
       if (!Number.isInteger(check.limit) || check.limit < 0 || !Number.isInteger(check.windowMs) || check.windowMs < 1) {
         throw new Error("rate limit policy is invalid");
@@ -81,10 +89,45 @@ export class IpPartitioner {
   }
 }
 
-export const defaultLimitPolicies = Object.freeze({
+export interface RateLimitPolicies {
+  readonly authChallengePerMinute: number;
+  readonly installationAuthPerTenMinutes: number;
+  readonly installationRequestsPerMinute: number;
+  readonly installationMutationsPerMinute: number;
+  readonly installationAiJobsPerDay: number;
+  readonly projectRequestsPerMinute: number;
+  readonly projectAiJobsPerMinute: number;
+}
+
+export const defaultLimitPolicies: RateLimitPolicies = Object.freeze({
   authChallengePerMinute: 10,
   installationAuthPerTenMinutes: 5,
   installationRequestsPerMinute: 60,
   installationMutationsPerMinute: 12,
+  installationAiJobsPerDay: 20,
   projectRequestsPerMinute: 600,
+  projectAiJobsPerMinute: 100,
 });
+
+export function createRateLimitPolicies(
+  overrides: Partial<RateLimitPolicies> = {},
+  mode: "production" | "development_compatibility" = "production",
+): RateLimitPolicies {
+  const compatibilityCaps: RateLimitPolicies = {
+    authChallengePerMinute: 2,
+    installationAuthPerTenMinutes: 2,
+    installationRequestsPerMinute: 10,
+    installationMutationsPerMinute: 3,
+    installationAiJobsPerDay: 2,
+    projectRequestsPerMinute: 30,
+    projectAiJobsPerMinute: 2,
+  };
+  const caps = mode === "production" ? defaultLimitPolicies : compatibilityCaps;
+  const resolved = { ...caps, ...overrides };
+  for (const key of Object.keys(caps) as Array<keyof RateLimitPolicies>) {
+    if (!Number.isInteger(resolved[key]) || resolved[key] < 0 || resolved[key] > caps[key]) {
+      throw new Error("rate limit policy cannot exceed the approved cap");
+    }
+  }
+  return Object.freeze(resolved);
+}

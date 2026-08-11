@@ -18,7 +18,7 @@
 | `T-20260729-003` | `scoped` | Backend | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `T-20260728-005`, `006` 완료 | T-001~005 실행 승인·T-006 통합 대기 |
 | `T-20260810-001` | `done` | Backend | 실제 AI provider adapter·prompt·schema | Development Lead Agent | Backend Foundation 완료 | PR #116 병합 `19cb422`·PASS_WITH_RISK 수용·완료 확정 |
 | `T-20260810-002` | `done` | Backend | Cloud datastore·AI job·ACK·24시간 lifecycle | - | Backend Foundation 완료 | Product Owner 잔여 위험 수용·최종 완료·develop 대상 PR 병합 승인 |
-| `T-20260810-003` | `approved` | Backend | App Attest·설치 token·abuse 방어 | Backend Agent | Backend Foundation 완료 | production 필수·개발/Simulator 제한 경로 |
+| `T-20260810-003` | `verification_passed` | Backend | App Attest·설치 token·abuse 방어 | Development Lead Agent | Backend Foundation 완료 | QA PASS_WITH_RISK: 135/135·HIGH 없음, 실제 Apple/durable revocation/KMS는 T-006 gate |
 | `T-20260810-004` | `approved` | Backend | production 비용 hard cutoff·observability | Backend Agent | T-001~003 | 선행 3개가 canonical에서 done인 뒤 실행 |
 | `T-20260810-005` | `approved` | Backend | production 원격 STT·음성 upload 비활성 보증 | Backend Agent | Backend Foundation 완료 | 첫 출시 항상 비활성 경계 증명 |
 | `T-20260810-006` | `proposed` | Backend | 스테이징 composition·배포·rollback 통합 | Development Lead Agent | T-001~005 | 앞선 패키지 완료·외부 스테이징 승인 대기 |

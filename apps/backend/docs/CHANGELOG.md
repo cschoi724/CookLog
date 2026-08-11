@@ -1,5 +1,13 @@
 # Backend 변경 기록
 
+- 2026-08-11: `T-20260810-003`에서 256-bit·120초 hash-only App Attest challenge,
+  production cryptographic verifier 경계, 등록 공개키·receipt 기반 assertion 검증,
+  전역 key ID·monotonic counter·동시 replay 단일 승자와 committed token grant
+  idempotency를 구현했습니다. 최대 900초 signed installation token의 위조·clock skew·
+  key 회전·installation/JTI 폐기, IP/installation/project/AI rate limit과 제한된
+  non-production compatibility 경로를 추가했습니다. 실제 Apple/Google Cloud 호출,
+  credential 등록, Cloud 리소스 생성·배포는 활성화하지 않았습니다.
+
 - 2026-08-10: `T-20260810-002`의 `QA-HIGH-810002-002` 재작업으로 durable backing별
   cross-process transaction lock과 최신 state 재로딩을 추가했습니다. 먼저 열린 stale
   adapter와 동시에 시작한 child process 사이에서 동일 create는 신규 1건+replay 1건,

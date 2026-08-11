@@ -15,10 +15,58 @@ export interface AttestationInput {
 export interface VerifiedAttestation {
   readonly provider: AttestationProvider;
   readonly appId: string;
-  readonly environment: "production";
+  readonly environment: "development" | "production";
   readonly installationId: string;
   readonly replayProtected: true;
   readonly verifiedAt: Date;
+}
+
+export class LimitedDevelopmentAttestationVerifier implements AttestationVerifier {
+  readonly #acceptedProofHash: string;
+  readonly #allowedAppIds: ReadonlySet<string>;
+  readonly #consumedProofHashes = new Set<string>();
+  readonly #maxVerifications: number;
+  readonly #now: () => Date;
+
+  constructor(options: {
+    readonly runtimeEnvironment: RuntimeEnvironment;
+    readonly acceptedProof: string;
+    readonly allowedAppIds: readonly string[];
+    readonly maxVerifications?: number;
+    readonly now?: () => Date;
+  }) {
+    if (options.runtimeEnvironment === "production" || options.acceptedProof.length < 16 ||
+      options.allowedAppIds.length === 0) {
+      throw new AttestationVerificationError("ATTESTATION_INVALID");
+    }
+    this.#acceptedProofHash = hash(options.acceptedProof);
+    this.#allowedAppIds = new Set(options.allowedAppIds);
+    this.#maxVerifications = options.maxVerifications ?? 3;
+    if (!Number.isInteger(this.#maxVerifications) || this.#maxVerifications < 1 ||
+      this.#maxVerifications > 5) throw new AttestationVerificationError("ATTESTATION_INVALID");
+    this.#now = options.now ?? (() => new Date());
+  }
+
+  async verify(input: AttestationInput): Promise<VerifiedAttestation> {
+    const proofHash = hash(input.proof);
+    if (input.provider !== "apple_app_attest" || input.environment !== "development" ||
+      !this.#allowedAppIds.has(input.appId) || proofHash !== this.#acceptedProofHash ||
+      this.#consumedProofHashes.size >= this.#maxVerifications) {
+      throw new AttestationVerificationError("ATTESTATION_INVALID");
+    }
+    if (this.#consumedProofHashes.has(proofHash)) {
+      throw new AttestationVerificationError("ATTESTATION_REPLAYED");
+    }
+    this.#consumedProofHashes.add(proofHash);
+    return {
+      provider: "apple_app_attest",
+      appId: input.appId,
+      environment: "development",
+      installationId: input.installationId,
+      replayProtected: true,
+      verifiedAt: this.#now(),
+    };
+  }
 }
 
 export interface AttestationVerifier {
