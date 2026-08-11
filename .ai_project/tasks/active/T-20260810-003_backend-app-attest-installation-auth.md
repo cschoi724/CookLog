@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260810-003
 title: Backend App Attest·설치 token·abuse 방어 구현
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 로그인 없는 첫 출시에서 익명 무제한 provider 호출과 설치 위조를 차단해야 한다.
@@ -51,7 +51,7 @@ updated_at: 2026-08-11
 report_to: .ai_project/reports/T-20260810-003_backend-app-attest-installation-auth-report.md
 qa_to: .ai_project/qa/T-20260810-003_backend-app-attest-installation-auth-qa.md
 status_ref: origin/develop
-status_ref_sha: 081c206f60ef6e5f3d533a5a2b3aafafaa52b133
+status_ref_sha: 9bc23e911baaea3eb7f8e02e277169f023d95ce7
 ---
 
 # Backend App Attest·설치 token·abuse 방어 구현
@@ -79,22 +79,43 @@ status_ref_sha: 081c206f60ef6e5f3d533a5a2b3aafafaa52b133
 | 2026-08-11 | Backend Agent | in_progress | verification_ready | App Attest verifier 경계·설치 token·원자 replay 방어·rate limit 구현, 135/135·계약 5종·경계 감사 PASS 후 lock 해제·Backend QA 인계 |
 | 2026-08-11 | Backend QA Agent | verification_ready | verification_in_progress | canonical SHA·라우팅·보고서·선행 Task 확인 후 독립 검증 lock 획득 |
 | 2026-08-11 | Backend QA Agent | verification_in_progress | verification_passed | PASS_WITH_RISK: Node 24/26 135/135·계약 5종·경계 감사와 challenge/token/rate cap 경계 통과; 실제 Apple·durable revocation·KMS 미검증 위험 인계 |
+| 2026-08-11 | Development Lead Agent | verification_passed | completion_review | 완료 리뷰 PASS_WITH_RISK: local/domain contract는 수용하고 durable revocation·key 회전 replay·실제 Apple/Firestore/KMS 검증은 T-006 필수 gate로 유지 |
+
+## Completion Review
+
+- 판정: `PASS_WITH_RISK`
+- 수용 근거: production synthetic verifier 거부, App Attest 검증 결과 fail-closed,
+  challenge·credential·counter·idempotency 단일 승자, token 위조·시간·폐기와 제한 상한이
+  Node 24/26 135/135, 계약 validator 5종, 경계 감사에서 통과했다.
+- `QA-RISK-810003-001`: process-local installation/JTI 폐기는 서비스 재생성 뒤 복구되지
+  않는다. `T-20260810-006`에서 durable revocation 조회와 Firestore 단일 승자 transaction을
+  production composition에 연결하고 재시작 반례를 필수 통합 검증한다.
+- `QA-RISK-810003-002`: signing key 회전 중 committed grant replay는 같은 `jti`를
+  유지하지만 token bytes와 `kid`가 달라진다. T-006에서 원래 응답 복구 정책을
+  byte-identical token 고정 또는 명시적으로 승인된 semantic replay 계약 중 하나로
+  확정하고 회전 중 재시도 회귀를 추가한다.
+- 외부 gate: 실제 Apple CBOR·인증서 chain, 기기 proof, Firestore, distributed limiter,
+  Secret Manager/KMS, non-root container는 별도 스테이징 승인 전 실행하지 않는다.
+- 의존성: 이 Task가 canonical `origin/develop`에서 `done`으로 확인되기 전에는
+  `T-20260810-004`의 선행 조건을 해제하지 않는다.
+- 완료 조건: Product Owner가 위 잔여 위험과 T-006 필수 gate를 수용하고 구현·보고·QA
+  결과의 `develop` 대상 PR 병합을 승인해야 한다.
 
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 Development Lead Agent / Completion Role이야. Task T-20260810-003의 완료 리뷰를 진행해줘.
+너는 Product Owner야. Task T-20260810-003의 완료 리뷰 결과와 잔여 위험을 확인해줘.
 
-- 현재 상태: verification_passed
+- 현재 상태: completion_review
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 081c206f60ef6e5f3d533a5a2b3aafafaa52b133
+- 기준 상태 SHA: 9bc23e911baaea3eb7f8e02e277169f023d95ce7
 - QA 판정: `PASS_WITH_RISK`
 - 독립 검증: Node 26 `npm run verify` 135/135·계약 5종·경계 감사 PASS, Node 24.18.0 135/135 PASS. production synthetic verifier 거부, cryptographic result fail-closed, challenge/counter/idempotency 단일 승자, token 위조·시간·회전·폐기, rate cap·compatibility 경계를 확인했다.
-- 다음에 해야 할 일: 승인된 local/domain contract 성공 기준과 아래 잔여 위험을 검토해 완료 여부를 판단해줘.
+- 다음에 해야 할 일: 완료 리뷰 `PASS_WITH_RISK`와 아래 잔여 위험을 수용할지 결정하고, 수용 시 Task 완료와 `develop` 대상 PR 병합을 승인해줘.
 - 기준 문서: 상위 Task, API 계약, 보안·개인정보·관측성 문서
 - 허용 경로: front matter의 `allowed_paths`
 - QA 보고서: `.ai_project/qa/T-20260810-003_backend-app-attest-installation-auth-qa.md`
-- 남은 리스크: concrete Apple CBOR/인증서 adapter·Firestore transaction·실제 signing key/KMS·기기 proof는 미검증이다. process-local revocation은 token service 재생성 뒤 기존 폐기 token이 다시 승인되는 반례가 있으므로 production composition 전에 durable revocation 조회 경계를 반드시 연결해야 한다.
+- 남은 리스크: process 재생성 후 폐기 token 재승인, signing key 회전 중 replay token bytes 변화, concrete Apple CBOR/인증서 adapter·Firestore transaction·실제 signing key/KMS·기기 proof 미검증.
 - 차단/결정 필요: credential 등록, 실제 외부 호출, Google Cloud 리소스 생성·배포는 금지한다.
-- 완료 시: Product Owner의 잔여 위험 수용과 후속 T-006 production composition 필수 gate를 명시해 인계해줘.
+- 수용 조건: 위 위험을 T-006 production composition 필수 gate로 유지하고 canonical 병합 후에만 T-004 dependency를 해제한다.
