@@ -7,6 +7,7 @@
 
 | Task ID | 상태 | 제목 | 검증 범위 | 다음 조치 |
 |---|---|---|---|---|
+| `T-20260810-005` | `done` | Backend production 원격 STT·음성 upload 비활성 보증 | zero-capability·strict proof·request/error·비로깅·155/155·감사 mutation 12종·Node 24 container PASS_WITH_RISK | Product Owner 위험 수용·T-006 staging gate 유지·PR #127 squash 병합 승인 |
 | `T-20260810-004` | `done` | Backend production 비용 hard cutoff·observability | QA 6건 RESOLVED, accessor·Proxy·strict schema·replay·비로깅, 전체 153/153 PASS_WITH_RISK | Product Owner 위험 수용·T-006 gate 유지·PR #123 squash 병합 승인 |
 | `T-20260810-003` | `done` | Backend App Attest·설치 token·abuse 방어 | Node 24/26 135/135·인증/원자 replay/rate cap PASS, durable revocation·key 회전 replay 위험 | Product Owner 위험 수용·T-006 필수 gate 유지·PR #122 병합 승인 |
 | `T-20260810-002` | `done` | Backend Cloud datastore·AI job·ACK·24시간 lifecycle | HIGH 2건 해소·stale create/worker 원본 반례·Node 24/26 122/122 | Product Owner PASS_WITH_RISK 수용·최종 완료·병합 승인 |

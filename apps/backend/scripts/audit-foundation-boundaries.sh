@@ -4,6 +4,8 @@ set -eu
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 backend_dir=$(CDPATH= cd -- "$script_dir/.." && pwd)
 
+node "$script_dir/audit-production-remote-stt-disabled.mjs"
+
 if grep -REn 'app\.(post|put|patch|delete|get).*\/v1\/stt' "$backend_dir/src"; then
   echo "remote STT route registration detected" >&2
   exit 1
