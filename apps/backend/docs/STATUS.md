@@ -1,7 +1,7 @@
 # Backend 개발 상태
 
-최종 업데이트: 2026-08-10
-상태: T-20260728-006 Backend Foundation `done`, T-20260810-002 QA PASS_WITH_RISK·Product Owner 최종 완료·병합 승인
+최종 업데이트: 2026-08-11
+상태: T-20260728-006 Backend Foundation `done`, T-20260810-003 `done`·PR #122 병합 승인
 
 ## 현재 단계
 
@@ -42,6 +42,13 @@ durable file backing을 추가했다. 실제 child process를 네 번 재기동�
 job·content·create/ACK idempotency·worker/cleanup outbox·published marker를 복구하고,
 cleanup pending·delete failure도 새 adapter 연쇄에서 삭제 완료되는 것을 검증했다.
 
+T-20260810-003은 256-bit·120초 hash-only challenge, production App Attest cryptographic
+verifier 경계, 전역 key ID와 등록 공개키·receipt 고정, monotonic assertion counter,
+원자 challenge/credential/idempotency/token grant를 구현했다. 최대 900초 signed
+installation token의 위조·clock skew·활성/직전 key 회전·installation/JTI 폐기와
+IP/installation/project/AI rate limit, non-production compatibility 하향 cap을 synthetic
+test로 검증했다. 실제 Apple adapter·credential·Cloud resource·배포는 활성화하지 않았다.
+
 QA-HIGH-810002-002 재작업으로 backing별 cross-process transaction lock과 transaction
 진입 시 최신 state 재로딩을 추가했다. 먼저 열린 stale adapter 및 barrier로 동시에 시작한
 child process 경쟁에서 create는 신규 1건+replay 1건, worker는 provider 총 1회만 허용했고,
@@ -55,6 +62,10 @@ ACK/delete·cleanup pending·outbox/published marker도 단일 승자를 유지�
    검증은 `T-20260810-006` 외부 변경 게이트에서 수행한다.
 3. credential 등록·실제 sandbox/production 호출·Cloud 리소스·배포는 별도
    외부 변경 승인 전까지 비활성으로 유지한다.
+4. `T-20260810-003`은 Backend QA·Development Lead `PASS_WITH_RISK`와 Product Owner
+   위험 수용을 거쳐 `done`이다. process 재생성 후 durable revocation과 key 회전 중
+   replay 응답 정책, 실제 Apple·Firestore·KMS·기기 proof는 T-006 필수 gate로 유지한다.
+   PR #122의 canonical 병합 확인 후 T-20260810-004 선행 조건을 해제한다.
 
 ## 차단 경계
 

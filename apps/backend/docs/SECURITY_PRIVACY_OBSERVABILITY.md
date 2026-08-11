@@ -162,6 +162,30 @@ content store의 backup·PITR은 즉시 삭제·최대 수명 계약을 깨지 �
 삭제 SLA를 만족한다는 별도 Product Owner 승인과 Backend QA 검증 전에는 활성화하지
 않는다.
 
+### 5.1 App Attest와 installation token 경계
+
+- production composition은 `apple-app-attest-production` cryptographic verifier만
+  주입할 수 있다. synthetic verifier, development environment와 debug proof는 startup
+  또는 검증 단계에서 거부한다.
+- challenge는 256-bit CSPRNG로 만들고 hash만 120초 보관한다. 한 번 소비되거나 검증
+  실패 3회에 도달하면 재사용할 수 없다.
+- 최초 attestation은 chain, nonce, App ID hash, production AAGUID와 credential/key ID를
+  검증한 결과만 허용한다. key ID는 installation 전체에서 유일해야 한다.
+- assertion verifier에는 등록 시 고정한 App ID, key ID, 공개키, receipt hash와 이전
+  counter를 전달한다. 서명 검증 결과의 공개키·receipt가 달라지거나 counter가 증가하지
+  않으면 token을 발급하지 않는다.
+- challenge 소비, credential/counter 변경, idempotency body hash와 committed token grant는
+  단일 transaction 경계에서 함께 확정한다. commit 이전에는 token을 서명하지 않는다.
+- installation token TTL은 60~900초이며 `kid`, issuer, audience, subject, `iat`, `exp`,
+  `jti`, App ID와 attestation provider를 서명한다. 활성·직전 key만 검증하고 installation
+  또는 JTI 폐기를 지원한다.
+- 개발·Simulator compatibility verifier는 non-production에서만 생성 가능하고 proof
+  replay를 거부한다. compatibility rate policy는 production 상한보다 낮게 고정하며
+  설정으로 상향할 수 없다.
+- 실제 Apple 검증 adapter, durable credential transaction과 signing key는 production
+  composition에서 주입한다. credential 등록이나 실제 외부 호출 없이 synthetic contract
+  adapter를 production에 연결해서는 안 된다.
+
 ## 6. Provider 활성화 gate
 
 AI 또는 향후 Remote STT provider는 다음 manifest를 배포 artifact로 고정하고 배포
@@ -484,6 +508,8 @@ Agent가 독립 재검증한다.
 - 합성 provider key와 token canary가 log, trace, metric, 오류, artifact에 0건인지 확인
 - API·worker·cleanup·observability service account의 권한 분리 확인
 - 정상 회전, 긴급 회전, 이전 version 폐기와 회전 실패 kill switch 확인
+- production이 synthetic/development App Attest verifier를 거부하고 실제 verifier가
+  저장 공개키로 assertion signature를 검증하는지 확인
 
 ### 개인정보·redaction
 
@@ -510,6 +536,13 @@ Agent가 독립 재검증한다.
 
 ### Quota·장애
 
+- challenge 재사용·3회 실패·검증 중 만료, App Attest key 중복, 낮거나 같은 counter와
+  공개키·receipt 변경이 token grant 전 차단되는지 확인
+- 동일 challenge 동시 요청의 단일 승자와 동일 idempotency replay의 동일 committed grant,
+  다른 body의 `IDEMPOTENCY_KEY_REUSED`를 확인
+- token 위조·미래 `iat`·만료·두 세대보다 오래된 key·installation/JTI 폐기를 확인
+- IP, installation, mutation, 일일 AI, project, project AI 상한과 emergency 0,
+  compatibility 하향 cap을 원자적으로 확인
 - 동시 요청이 네 월 hard cutoff 중 하나도 초과 예약하지 못하는지 확인
 - provider와 Cloud Run·Tasks·Firestore·TTL·egress·observability·build 비용이 같은
   원장에 들어가고 동시 경합 합계가 KRW 50,000을 넘지 않는지 확인
