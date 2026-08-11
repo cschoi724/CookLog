@@ -15,8 +15,8 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | 상태 | 개수 |
 |---|---:|
 | `proposed` | 15 |
-| `scoped` | 3 |
-| `approved` | 7 |
+| `scoped` | 4 |
+| `approved` | 6 |
 | `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
@@ -66,7 +66,7 @@ Team별 요약:
 | `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | Product Lead Agent | `scoped`, 앱 전반 범위·82개 상태·화면군별 실행 순서 확정; P0 Task 무중단 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
-| `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Home·Library 원본 시안 적용 | UI/UX Design Agent | `approved`, Product Owner 실행 승인·Home 9 + Library 5 상태·Design QA 인계 예정 |
+| `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | Product Owner | `scoped`, Foundation 보강과 원본 concept 기준 Home·Library 재작업 단일 범위; 재실행 승인 대기 |
 | `T-20260811-005` | P1 | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, `T-004` 이후·Core Loop 33 상태 |
 | `T-20260811-006` | P1 | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, `T-005` 이후·35 상태 |
 | `T-20260811-007` | P1 | 팝 키치 레시피 클럽 Prototype 통합 Design QA | Design Lead Agent → Design QA Agent | `proposed`, 화면군 완료 뒤 82 상태 독립 QA |
