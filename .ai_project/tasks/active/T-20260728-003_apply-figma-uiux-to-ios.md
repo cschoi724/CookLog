@@ -25,7 +25,6 @@ depends_on:
   - T-20260805-006
   - T-20260805-007
   - T-20260805-008
-  - T-20260811-007
   - T-20260812-001
 child_tasks:
   - T-20260805-002
@@ -35,6 +34,7 @@ child_tasks:
   - T-20260805-006
   - T-20260805-007
   - T-20260805-008
+  - T-20260812-003
   - T-20260812-001
 blocks:
   - T-20260729-004
@@ -59,10 +59,11 @@ source_of_truth:
   - apps/ios/AGENTS.md
   - apps/ios/docs/ARCHITECTURE.md
   - apps/ios/docs/STATUS.md
-  - design/prototype/
-  - design/figma-build/manifest.json
+  - docs/product/CookLog_FIGMA_DELIVERY_FLOW.md
+  - .ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md
+  - design/prototype/ # Legacy/Baseline 참고
+  - design/figma-build/manifest.json # Legacy 상태 계약 참고
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
-  - .ai_project/tasks/backlog/T-20260811-007_pop-kitsch-prototype-integration-design-qa.md
   - .ai_project/tasks/active/T-20260812-001_ios-implementation-visual-design-qa.md
   - T-20260729-002의 승인된 디자인 핸드오프
   - T-20260805-001의 승인된 Core Loop 구현·Visual QA 계약
@@ -79,6 +80,12 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 ---
 
 # 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용
+
+## T-20260812-004 재정렬
+
+- 기존 완료 iOS 기능·로컬 상태 모델은 재구현하지 않고 Legacy 기능 baseline으로 보존한다.
+- T-20260812-003의 Figma baseline 고정 후 변경된 UI/UX 차이만 하나의 iOS 동기화 범위로 확정한다.
+- 완료 게이트는 `T-20260812-003 → iOS 일괄 동기화 및 T-20260805-008 → T-20260812-001 → 상위 완료 리뷰` 순서다.
 
 ## 목적
 
@@ -134,8 +141,8 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 - 2026-08-12: Product Owner가 개발 검증과 디자인 검증의 책임 분리를 승인했다. 기존
   `T-20260805-008`의 시각 증거와 실패 이력은 진단 자료로 보존하되 최종 Visual Fidelity
   판정은 신규 `T-20260812-001`에서 Design QA Agent가 수행한다.
-- 현재 Prototype은 Home부터 전면 수정 중이므로 최신 통합 Design QA `T-20260811-007`과
-  Product Owner의 디자인 baseline 고정 전에는 iOS 최종 시각 판정을 시작하지 않는다.
+- T-20260812-003의 비공개 Figma 핵심 흐름·Product Owner 시각 승인·독립 Design QA와
+  Figma baseline 고정 전에는 iOS UI 동기화와 최종 시각 판정을 시작하지 않는다.
 
 ## Development Lead 하위 Task 분해 요구
 

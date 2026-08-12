@@ -13,8 +13,8 @@
 | `T-20260810-003` | `done` | Backend App Attest·설치 token·abuse 방어 | Node 24/26 135/135·인증/원자 replay/rate cap PASS, durable revocation·key 회전 replay 위험 | Product Owner 위험 수용·T-006 필수 gate 유지·PR #122 병합 승인 |
 | `T-20260810-002` | `done` | Backend Cloud datastore·AI job·ACK·24시간 lifecycle | HIGH 2건 해소·stale create/worker 원본 반례·Node 24/26 122/122 | Product Owner PASS_WITH_RISK 수용·최종 완료·병합 승인 |
 | `T-20260810-001` | `done` | Backend 실제 AI provider adapter·prompt·schema | `WP-R1~R2` 해소·108/108·계약 5종·container·CI PASS_WITH_RISK | Product Owner 잔여 위험 수용·PR #116 병합·완료 확정 |
-| `T-20260805-008` | `blocked` | iOS UI 구현·기능·기술 접근성 통합 검증 | 기능 82 상태·Dynamic Type·44pt·label/value/trait·오류 회복 | 변경 중인 Design baseline 고정 후 재개; Visual Fidelity는 T-20260812-001로 분리 |
-| `T-20260812-001` | `scoped` | iOS 구현 Visual Fidelity Design QA | 고정 디자인 SHA·iOS commit의 Core 23 Current/Reference/Diff와 대표 위험 상태 | T-20260811-007·T-20260805-008 완료 후 UI/UX 증거 준비·Design QA 독립 검증 |
+| `T-20260805-008` | `blocked` | iOS UI 구현·기능·기술 접근성 통합 검증 | 기능 82 상태·Dynamic Type·44pt·label/value/trait·오류 회복 | T-20260812-003 Figma baseline 고정 후 일괄 동기화·재개; 375pt는 위험 표본만 검증 |
+| `T-20260812-001` | `scoped` | iOS 구현 Visual Fidelity Design QA | 고정 Figma baseline·iOS commit의 Core 23 Current/Reference/Diff와 대표 위험 상태 | T-20260812-003·T-20260805-008 완료 후 UI/UX 증거 준비·Design QA 독립 검증 |
 | `T-20260805-007` | `done` | iOS 앱 정보·권한·오프라인·서비스 장애 | HIGH 2·MEDIUM 1 해소·82/82·8 viewport | Product Owner 완료·PR #106 squash merge `2f309ed` |
 | `T-20260805-006` | `done` | iOS Audio Guide·핸즈프리 UI·공통 action model | QA-HIGH-806006-001 해소·독립 77/77·4 viewport | Product Owner 완료·PR #101 squash merge `dcf58d5` |
 | `T-20260728-006` | `done` | Backend AI gateway·비활성 원격 STT Foundation | 하위 T-002~007 독립 QA·100/100·계약 5종·Node 24 container 집계 | PASS_WITH_RISK 수용·Product Owner 최종 완료/PR #93 병합 승인 |

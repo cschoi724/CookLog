@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-007
 title: 팝 키치 레시피 클럽 Prototype 통합 Design QA
-status: proposed
+status: cancelled
 type: qa
 priority: P1
 priority_reason: 화면군별 시안 완료 뒤 82개 상태와 접근성 계약의 무회귀를 독립적으로 확인한다.
@@ -10,8 +10,8 @@ org_unit: Quality Division
 team: Quality Team
 team_lead:
 workflow: qa
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent:
+target_role:
 planned_execution_agent: Design QA Agent
 planned_execution_role: Verification Role
 required_capabilities: [design_scoping, design_dependency_management, design_qa, accessibility_review, design_handoff_review]
@@ -58,9 +58,17 @@ branch:
 pr:
   url:
   status:
+blocker: T-20260812-004 승인에 따라 로컬 Prototype 통합 QA를 종료하고 동일한 독립 검증 책임을 T-20260812-003 Figma Design QA로 흡수한다.
+next_decision:
 ---
 
 # 팝 키치 레시피 클럽 Prototype 통합 Design QA
+
+## T-20260812-004 재정렬
+
+- 상태: `cancelled`
+- 82개 상태·접근성·handoff 독립 검증 책임은 T-20260812-003의 비공개 Figma 전체 흐름 Design QA로 이전한다.
+- 기존 Prototype QA 계약은 Legacy 회귀 참고물로 보존한다.
 
 ## Scope And Acceptance Criteria
 
@@ -71,3 +79,9 @@ pr:
 ## Execution
 
 - 모든 선행 화면군의 Design QA 통과와 Product Owner의 통합 QA 실행 승인 뒤 Design QA Agent / Verification Role에 인계한다.
+
+## Activity
+
+| 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
+|---|---|---|---|---|
+| 2026-08-12 | Product Owner | proposed | cancelled | T-004 일괄 재정렬 승인에 따라 Prototype 통합 QA 책임을 T-003 Figma 독립 Design QA로 흡수 |

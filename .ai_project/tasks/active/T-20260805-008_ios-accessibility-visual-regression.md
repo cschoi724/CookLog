@@ -22,7 +22,7 @@ depends_on:
   - T-20260805-005
   - T-20260805-006
   - T-20260805-007
-  - T-20260811-007
+  - T-20260812-003
 blocks: [T-20260812-001, T-20260728-003]
 parallel_group: ios-redesign-integration-sequential
 allowed_paths:
@@ -37,7 +37,8 @@ source_of_truth:
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
   - apps/ios/docs/TESTING.md
   - apps/ios/docs/MANUAL_QA_CHECKLIST.md
-  - .ai_project/tasks/backlog/T-20260811-007_pop-kitsch-prototype-integration-design-qa.md
+  - .ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md
+  - docs/product/CookLog_FIGMA_DELIVERY_FLOW.md
   - .ai_project/tasks/active/T-20260812-001_ios-implementation-visual-design-qa.md
 created_by: Development Lead Agent
 approved_by: Product Owner
@@ -49,11 +50,17 @@ created_at: 2026-08-05
 updated_at: 2026-08-12
 report_to: .ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md
 qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
-blocker: T-20260811-007 통합 Design QA가 완료되지 않았고 Product Owner가 최종 디자인 SHA를 고정하지 않아 변경 중인 Prototype 기준으로 iOS 최종 구현·검증을 재개할 수 없다.
-next_decision: T-20260811-007 완료 후 Development Lead가 보존 WIP와 최신 canonical 충돌을 조율하고 Product Owner가 고정 디자인 SHA 기준 T-20260805-008 재개를 승인할지 결정한다.
+blocker: T-20260812-003의 비공개 Figma 핵심 흐름·Product Owner 시각 승인·독립 Design QA·Figma baseline 고정 전에는 iOS 최종 구현·검증을 재개할 수 없다.
+next_decision: T-20260812-003 완료 후 Development Lead가 Figma baseline과 기존 iOS WIP의 차이를 일괄 동기화 범위로 조율하고 Product Owner가 재개를 승인할지 결정한다.
 ---
 
 # iOS UI 구현·기능·기술 접근성 통합 검증
+
+## T-20260812-004 재정렬
+
+- 로컬 Prototype 통합 QA 대신 T-20260812-003의 고정 Figma baseline을 디자인 선행 조건으로 사용한다.
+- 전체 필수 기준은 `390×844pt`이며, `375×667pt`는 CTA 가림·스크롤 도달성·키보드 회피 등 실제 위험 상태와 저비용 대응 항목만 검증한다.
+- 기존 기능 82개 계약과 WP-R1~R15 산출물·WIP는 삭제하지 않고 기능 회귀·진단 참고물로 보존한다.
 
 ## 범위
 
@@ -168,8 +175,8 @@ next_decision: T-20260811-007 완료 후 Development Lead가 보존 WIP와 최�
 - 실제 iPhone VoiceOver 수집은 별도 승인 전까지 최종 합격 필수 조건에서 제외한다. 대신
   Simulator/XCTest 기반 label/value/trait, focus 계약, Dynamic Type, 44pt, clipping과
   상태 알림을 기술 접근성 게이트로 유지한다.
-- 현재 Design Prototype은 Home부터 재작업 중이므로 `T-20260811-007` 통합 Design QA 완료와
-  Product Owner의 디자인 SHA 고정 전까지 이 Task는 `blocked`다.
+- T-20260812-003의 비공개 Figma 전체 핵심 흐름, Product Owner 시각 승인, 독립 Design QA와
+  Figma baseline 고정 전까지 이 Task는 `blocked`다.
 - 차단 해제 시 Development Lead가 최신 canonical과 보존 WIP 충돌을 조율하고 Product Owner의
   재개 승인을 받아 `blocked -> approved`, iOS Agent / Execution Role로 라우팅한다.
 - iOS Agent와 iOS QA Agent는 독립 Design Reference를 만들거나 시각 PASS를 승인하지 않는다.
@@ -185,8 +192,8 @@ Task T-20260805-008의 디자인 baseline 차단과 재개 조건을 관리해�
 - 현재 상태: `blocked`
 - 기준 상태 ref: `origin/develop`
 - 기준 상태 SHA: `2f64328ac8e24bb7cdaae33520155df4762047c3`
-- 다음에 해야 할 일: `T-20260811-007` 통합 Design QA 완료와 Product Owner의 디자인 SHA
-  고정을 기다린 뒤, 보존 중인 T-008 WIP와 최신 canonical의 충돌을 먼저 조율해.
+- 다음에 해야 할 일: `T-20260812-003` 완료와 Figma baseline 고정을 기다린 뒤, 보존 중인
+  iOS WIP와 최신 canonical·Figma 차이를 일괄 동기화 범위로 먼저 조율해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md`,
@@ -196,7 +203,7 @@ Task T-20260805-008의 디자인 baseline 차단과 재개 조건을 관리해�
 - 재개 범위: 최신 고정 디자인의 iOS UI 반영, 기능 회귀, Simulator/XCTest 기반 기술 접근성
 - 범위 제외: Visual Fidelity PASS/FAIL과 독립 Reference 생성, 실제 기기 VoiceOver 증거
 - 범위 제외: 실제 Apple STT·Backend AI·TTS 엔진, 운영 문의·법적 값
-- 차단 해제 조건: T-20260811-007 `done`, 고정 디자인 SHA 기록, Product Owner 재개 승인
+- 차단 해제 조건: T-20260812-003 `done`, Figma baseline 고정 기록, Product Owner 재개 승인
 - 차단 해제 후: `approved`, iOS Agent / Execution Role로 인계하고 완료 시 iOS QA Agent /
   Verification Role이 기능·기술 접근성을 독립 검증하도록 요청해.
 - iOS QA 통과 후: 고정 iOS commit과 fixture/capture 진입점을 T-20260812-001로 인계해.

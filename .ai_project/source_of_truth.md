@@ -37,9 +37,10 @@
 | MVP 범위 | `docs/product/CookLog_MVP_SCOPE.md` | `docs/product/CookLog_PRD_v2.md` | PRD v2와 MVP Scope를 함께 확인 |
 | 사용자 흐름 | `docs/product/CookLog_USER_FLOW.md` | `docs/product/CookLog_PRD_v2.md` | PRD v2와 User Flow 우선 |
 | 와이어프레임 | `docs/product/CookLog_WIREFRAME.md` | 디자인 산출물 | 최신 승인 산출물 우선 |
-| UI/UX 원본 | `design/prototype/` | `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `design/figma-build/manifest.json` | Product Owner가 승인한 로컬 Prototype과 Manifest 우선 |
+| UI/UX 원본 | T-20260812-003에서 Product Owner 시각 승인·Design QA 통과 후 고정될 비공개 Figma baseline | `design/prototype/`, `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `design/figma-build/manifest.json` | Figma baseline 고정 전에는 로컬 산출물을 Legacy/Baseline으로 보존한다. 고정 후 UI/UX 판단은 Figma 우선, 기능·상태·데이터 계약은 PRD·User Flow·82개 Legacy 계약과 함께 확인 |
 | iOS 디자인 구현 인수 기준 | `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md` | `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `T-20260805-001` report·QA | 통합 82개 상태는 상위 기준으로 보존하고 Core Loop 23개 상태의 구현·Visual QA 세부 판정에 사용 |
-| Figma 미러 | [CookLog — MVP UI/UX v1](https://www.figma.com/design/tAvYn6TatLKb3SXDjkH1hn) | `design/figma-build/` | 버전 스냅샷·형상 보존용이며 충돌 시 로컬 UI/UX 원본 우선 |
+| 기존 Figma 미러 | 기존 CookLog MVP UI/UX v1 미러 | `design/figma-build/` | Legacy 스냅샷으로만 보존하며 새 비공개 Figma 원천을 대체하지 않음 |
+| Figma 전달 흐름 | `docs/product/CookLog_FIGMA_DELIVERY_FLOW.md` | T-20260812-003·T-20260812-004 Task | 비공개 식별자는 저장하지 않고, 원천 전환 시점·승인·QA·iOS 동기화 순서는 전달 흐름 문서 우선 |
 | 출시 Roadmap | `docs/product/CookLog_ROADMAP.md` | `docs/PROJECT_STATUS.md`, `.ai_project/task_board.md` | Roadmap은 단계·의존성, Task 파일은 실행 상태를 담당 |
 | 수익화 정책·가설 | `docs/product/CookLog_MONETIZATION.md` | `docs/PROJECT_DECISIONS.md`, `T-20260728-010~018` | Core v1과 분리된 `proposed` Workstream이며 가격·quota는 T-010과 Product Owner 승인 전까지 가설 |
 | 전체 현재 상태 | `docs/PROJECT_STATUS.md` | 플랫폼별 `apps/*/docs/STATUS.md` | 플랫폼 문서가 더 최신이면 PM Agent가 루트 상태 갱신 필요 |
@@ -137,3 +138,4 @@ apps/android/docs/
 | 2026-07-31 | T-20260731-002에서 다중 worktree 공용 상태를 최신 `origin/develop`로 고정하고 로컬 실행 상태와 의존성 판단 경계를 명시 |
 | 2026-08-05 | T-20260805-001의 Core Loop 23개 iOS 구현·Visual QA 계약을 통합 82개 상태의 하위 인수 기준으로 등록 |
 | 2026-08-04 | T-20260728-006 scope에서 Backend 세션·상태·계획·스펙과 Foundation 검증 경계를 등록 |
+| 2026-08-12 | T-20260812-004 승인에 따라 로컬 Prototype·Manifest를 Legacy/Baseline으로 전환하고, T-20260812-003의 승인·QA 통과 Figma baseline을 차기 UI/UX 원천으로 지정 |

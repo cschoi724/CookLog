@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-008
 title: 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인
-status: approved
+status: cancelled
 type: feature
 priority: P1
 priority_reason: Home 기준 화면의 시각 완성도를 확정하기 전 다음 화면군을 진행하면 약한 기존 레이아웃과 카피 밀도가 전파될 위험이 있다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent:
+target_role:
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities: [design_scoping, visual_direction, visual_fidelity_review, ux_flow, ui_design, prototyping, design_handoff]
@@ -23,7 +23,7 @@ ownership_review:
   required: false
   reviewer:
 depends_on: [T-20260811-004]
-blocks: [T-20260811-005]
+blocks: []
 parallel_group: pop-kitsch-design-sequence
 allowed_paths:
   - design/prototype/app.js
@@ -64,9 +64,17 @@ branch:
 pr:
   url:
   status:
+blocker: T-20260812-004 승인에 따라 별도 Prototype 리터치를 종료하고 기존 결과와 미병합 WIP를 T-20260812-003의 Legacy/Baseline으로 보존한다.
+next_decision:
 ---
 
 # 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인
+
+## T-20260812-004 재정렬
+
+- 상태: `cancelled`
+- 기존 Prototype 결과와 별도 worktree의 미병합 WIP는 삭제·덮어쓰기 없이 보존한다.
+- Home의 실제 고충실도 원본 작업과 시각 승인은 T-20260812-003 비공개 Figma 전체 흐름으로 흡수한다.
 
 ## Scope
 
@@ -97,20 +105,12 @@ pr:
 ```text
 다음 Agent에게 전달할 말:
 
-너는 UI/UX Design Agent / Execution Role이야.
-Task T-20260811-008은 승인된 Visual Fidelity 리터치 Task야.
+이 Task는 T-20260812-004 재정렬로 종료됐다.
 
-- 현재 상태: approved
-- 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 049dab0
-- 다음에 해야 할 일: 최신 develop에서 전용 worktree와 lock을 획득해 Home·Library Visual Fidelity 리터치를 수행해줘.
-- 기준 문서: T-002, T-004, design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png, design/prototype/
-- 허용 경로: design/prototype/app.js, design/prototype/styles.css, design/prototype/components.html 및 Task frontmatter의 추적 경로
-- 참고 산출물: T-004 실행·QA 보고서와 Home 대표 preview
-- 변경/검토 대상: Home·Library Foundation 표현, Home의 타이포·카피 밀도·CTA·카드·AI 도우미 위계
-- 남은 리스크: 외부 음식 사진·고유 폰트는 승인된 자산 없이는 사용하지 않는다.
-- 차단/결정 필요: T-004 완료, Product Owner 시각 승인
-- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
+- 현재 상태: cancelled
+- 보존 대상: 기존 Prototype 결과와 별도 worktree의 미병합 WIP
+- 후속 Task: T-20260812-003
+- 주의: 산출물을 삭제·덮어쓰지 말고 Figma 작업의 Legacy/Baseline 참고물로만 사용한다.
 ```
 
 ## Activity
@@ -121,3 +121,4 @@ Task T-20260811-008은 승인된 Visual Fidelity 리터치 Task야.
 | 2026-08-12 | Product Owner | scoped | approved | Visual Fidelity 리터치 및 시각 승인 실행을 승인했고, T-004 완료 후 UI/UX Design Agent 실행으로 인계 |
 | 2026-08-12 | Design Lead Agent | proposed | scoped | T-004 후속 리터치 범위, T-005 대기 조건, 허용 경로와 기준 문서를 실행 가능하게 조율 |
 | 2026-08-12 | Product Owner | scoped | approved | Visual Fidelity 리터치와 Product Owner 시각 승인 흐름 실행 승인; T-004 완료 전 실행 대기 |
+| 2026-08-12 | Product Owner | approved | cancelled | T-004 일괄 재정렬 승인에 따라 별도 Prototype 리터치를 종료하고 기존 결과·WIP를 보존해 T-003으로 흡수 |
