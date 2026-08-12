@@ -43,8 +43,9 @@ ownership_review:
   required: true
   reviewer: Product Lead Agent
 depends_on:
-  - T-20260812-002
-blocks: []
+  - T-20260812-004
+blocks:
+  - T-20260805-008
 parallel_group: private-figma-source-transition
 allowed_paths:
   - ".ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md"
@@ -63,6 +64,8 @@ source_of_truth:
   - design/prototype/
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
   - ".ai_project/tasks/active/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions.md"
+  - ".ai_project/tasks/active/T-20260812-004_rebaseline-private-figma-delivery-flow.md"
+  - docs/product/CookLog_FIGMA_DELIVERY_FLOW.md
   - "Product Owner가 지정한 비공개 Draft Figma 파일 (URL·파일 키·조직 식별자는 저장소에 기록하지 않음)"
 created_by: Product Lead Agent
 approved_by:
@@ -84,8 +87,8 @@ branch:
 pr:
   url:
   status:
-blocker: T-20260812-002의 Product QA 검증·완료 확정 전에는 UI/UX 원본 실행을 시작하지 않는다.
-next_decision: Product Owner가 T-20260812-002 완료 후 Figma 실행 범위와 실행 승인을 결정한다.
+blocker: T-20260812-004의 Product QA 검증과 완료 확정 전에는 UI/UX 원본 실행을 시작하지 않는다.
+next_decision: T-20260812-004 완료 후 Design Lead Agent가 전체 핵심 흐름·로컬 디자인 시스템·시각 승인·독립 Design QA를 scoped로 조율하고 Product Owner가 Figma 실행을 별도 승인한다.
 ---
 
 # CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축
@@ -134,8 +137,8 @@ Product Owner가 지정한 비공개 Draft Figma 파일을 팝 키치 레시피 
 
 ## Coordination Notes
 
-- 이 Task는 T-20260812-002의 Product QA 검증과 완료 확정 뒤에 Design Lead가 `proposed -> scoped`로 전환한다.
-- Design Lead는 T-008 및 T-005~007을 자동 취소하지 않는다. 새 Figma 원천 기준과 충돌하는 부분, 재사용 가능한 산출물, 순서 조정 필요성을 별도 scope 제안으로 Product Owner에게 보고한다.
+- 이 Task는 T-20260812-004의 Product QA 검증과 완료 확정 뒤에 Design Lead가 `proposed -> scoped`로 전환한다.
+- T-008 및 T-005~007은 T-20260812-004에서 `cancelled` 처리됐고, 기존 산출물과 WIP는 삭제하지 않은 `Legacy/Baseline` 입력으로만 사용한다.
 - Product Owner의 Figma 실행 승인 후 UI/UX Design Agent가 전용 private Figma 파일에서만 화면·컴포넌트 작업을 실행한다.
 - Design QA Agent는 외부 공유 여부와 설정 식별자를 수집하지 않고, 민감정보 비기록·외부 의존성 미사용·화면 상태·handoff 완결성만 독립 검토한다.
 

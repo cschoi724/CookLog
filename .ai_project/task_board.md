@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation T-20260728-006과 하위 T-20260804-002~007도 모두 `done`입니다. 실제 production Backend T-20260729-003은 6개 하위 패키지로 `scoped`이며 T-20260810-001~005는 모두 `done`입니다. T-006은 Gate A 독립 QA에서 HIGH 4건으로 FAIL했으며 Product Owner가 repository-only 재작업을 승인해 `approved`, Backend Agent 재실행 대기입니다. external staging Gate B는 계속 보류입니다. iOS T-003은 개발 검증 7개와 별도 Visual Design QA 1개, 총 8개 하위 패키지로 `scoped`입니다. T-008은 변경 중인 Prototype의 통합 Design QA와 baseline 고정을 기다려 `blocked`, 신규 T-20260812-001은 iOS 구현 Visual Fidelity 검증을 담당하며 `scoped`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환을 기준으로 Task 체계를 재정렬 중이며, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존하고 T-20260812-003에 흡수했습니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
 
 Team별 요약:
 
@@ -51,7 +51,7 @@ Team별 요약:
 |---|---|---|---|---|
 | `T-20260728-001` | - | iOS M8 잔여 안정화와 최종 검증 | - | `cancelled`, 유효 항목은 T-003/T-009로 통합 |
 | `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | `done` |
-| `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `scoped`; 개발 검증 T-008과 별도 Design QA T-20260812-001 모두 필요 |
+| `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `scoped`; T-20260812-003 Figma baseline → T-20260805-008 → T-20260812-001 순서 완료 필요 |
 | `T-20260805-001` | P1 | iOS MVP 디자인 적용 기준과 Visual QA 계약 확정 | - | `done`, 통합 82개 상태 아래 Core Loop 23개 인수 계약 |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #65 squash merge `4e0bca4` |
@@ -64,17 +64,17 @@ Team별 요약:
 | `T-20260729-001` | P0 | 확정 제품 정책과 출시 계획 통합 문서화 | - | `done` |
 | `T-20260729-002` | P0 | 확정 제품 UX 기반 디자인 시스템·프로토타입 갱신 | - | `done`, 하위 T-008~014·통합 Design QA·PR #68 완료 |
 | `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
-| `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | Product Lead Agent | `scoped`, 앱 전반 범위·82개 상태·화면군별 실행 순서 확정; P0 Task 무중단 |
+| `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | - | `cancelled`, 선택 컨셉·시안을 T-20260812-003 Legacy/Baseline 입력으로 보존 |
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | `done`, Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 375×667 Legacy 충돌은 T-20260812-004로 인계 |
-| `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `proposed`, T-002 완료 후 비공개 Figma 범위·기존 디자인 Task 영향 조율 및 실행 승인 필요 |
-| `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | Product Planning Agent | `approved`, T-003 중심 재정렬 패키지와 기존 Task 상태·의존성 일괄 반영 승인 완료 |
+| `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `proposed`, T-004 완료 후 전체 핵심 흐름·로컬 디자인 시스템·시각 승인·독립 Design QA scope 조율 |
+| `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | Product QA Agent | `verification_ready`, T-003 중심 Task·Source of Truth·전달 흐름 일괄 재정렬 독립 검증 대기 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | `done`, 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
-| `T-20260811-008` | P1 | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | UI/UX Design Agent | `approved`, T-004 완료·Home 고충실도·Product Owner 시각 승인 |
-| `T-20260811-005` | P1 | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, T-004·T-008 이후·Core Loop 33 상태 |
-| `T-20260811-006` | P1 | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, `T-005` 이후·35 상태 |
-| `T-20260811-007` | P1 | 팝 키치 레시피 클럽 Prototype 통합 Design QA | Design Lead Agent → Design QA Agent | `proposed`, 화면군 완료 뒤 82 상태 독립 QA |
-| `T-20260812-001` | P0 | iOS 구현 Visual Fidelity Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-20260811-007·T-20260805-008 완료 뒤 별도 실행 승인 |
+| `T-20260811-008` | P1 | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | - | `cancelled`, 결과·미병합 WIP 보존 후 T-20260812-003으로 흡수 |
+| `T-20260811-005` | P1 | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | - | `cancelled`, 화면·상태 계약을 T-20260812-003으로 흡수 |
+| `T-20260811-006` | P1 | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | - | `cancelled`, 화면·상태 계약을 T-20260812-003으로 흡수 |
+| `T-20260811-007` | P1 | 팝 키치 레시피 클럽 Prototype 통합 Design QA | - | `cancelled`, 독립 QA 책임을 T-20260812-003 Figma Design QA로 흡수 |
+| `T-20260812-001` | P0 | iOS 구현 Visual Fidelity Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-20260812-003·T-20260805-008 완료 후 Figma baseline 대비 검증 |
 | `T-20260729-003` | P0 | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `scoped`, T-20260810-001~005 실행 승인·T-006 통합 대기 |
 | `T-20260729-004` | P0 | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` |
 | `T-20260729-005` | P0 | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
@@ -123,8 +123,8 @@ iOS `T-20260728-003` 하위 실행 후보:
 | `T-20260805-005` | P0 | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `proposed`, T-004 선행 |
 | `T-20260805-006` | P0 | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `proposed`, T-005 선행 |
 | `T-20260805-007` | P0 | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `proposed`, T-006 선행 |
-| `T-20260805-008` | P0 | iOS UI 구현·기능·기술 접근성 통합 검증 | Development Lead Agent | `blocked`, T-20260811-007·디자인 SHA 고정 후 재개 승인 |
-| `T-20260812-001` | P0 | iOS 구현 Visual Fidelity Design QA | Design Lead Agent | `scoped`, T-20260811-007·T-20260805-008 완료 뒤 실행 승인 |
+| `T-20260805-008` | P0 | iOS UI 구현·기능·기술 접근성 통합 검증 | Development Lead Agent | `blocked`, T-20260812-003 Figma baseline 고정 후 iOS 일괄 동기화·재개 승인 |
+| `T-20260812-001` | P0 | iOS 구현 Visual Fidelity Design QA | Design Lead Agent | `scoped`, T-20260812-003·T-20260805-008 완료 뒤 Figma 대비 실행 승인 |
 
 CI `T-20260728-008` 하위 실행 후보:
 

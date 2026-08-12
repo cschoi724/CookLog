@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-002
 title: 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전
-status: scoped
+status: cancelled
 type: feature
 priority: P1
 priority_reason: 앱 전반의 시각 방향을 일관되게 확정해야 후속 UX 개선과 디자인·iOS 반영이 분절되지 않지만, 현재 P0 iOS·Backend
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product Lead Agent
-target_role: Direction Role
+target_agent:
+target_role:
 required_capabilities:
 - product_direction
 - priority_management
@@ -71,11 +71,17 @@ branch:
 pr:
   url:
   status:
-blocker:
+blocker: T-20260812-004 승인에 따라 별도 컨셉 원본 실행을 종료하고 선택 시안과 방향을 T-20260812-003의 Legacy 입력으로 보존한다.
 next_decision:
 ---
 
 # 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전
+
+## T-20260812-004 재정렬
+
+- 상태: `cancelled`
+- 선택된 팝 키치 방향과 시안은 폐기하지 않고 T-20260812-003 비공개 Figma 작업의 `Legacy/Baseline` 입력으로 보존한다.
+- 후보 비교와 별도 로컬 원본 발전은 더 진행하지 않는다.
 
 ## Scope
 
@@ -113,20 +119,12 @@ next_decision:
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product Lead Agent / Direction Role이야.
-Task T-20260811-002를 이어서 처리해줘.
+이 Task는 T-20260812-004 재정렬로 종료됐다.
 
-- 현재 상태: scoped
-- 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 421052159b38ade9516c18390e70ea6a1d129430
-- 다음에 해야 할 일: 상위 범위 확정을 확인한 뒤, Foundation 하위 Task `T-20260811-003`의 실행 승인 여부를 Product Owner가 결정해줘. 승인 전에는 Design 원본이나 iOS 구현을 시작하지 않는다.
-- 기준 문서: docs/product/CookLog_PRD_v2.md, docs/product/CookLog_USER_FLOW.md, design/prototype/, design/COOKLOG_MVP_UIUX_V1_HANDOFF.md, design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
-- 허용 경로: .ai_project/tasks/, .ai_project/task_board.md, .ai_project/teams/product/task_board.md, .ai_project/reports/, .ai_project/qa/
-- 참고 산출물: design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
-- 변경/검토 대상: Home, 전체 레시피·검색, Cooking Log, AI Review, Recipe Detail, Audio Guide Player, App Info와 모든 연계 상태·공통 컴포넌트
-- 남은 리스크: 컨셉 시안의 생성 이미지 텍스트와 구성은 참고용이다. 실제 원본은 82개 상태·접근성·작은 화면 계약을 보존해야 한다.
-- 차단/결정 필요: Foundation 하위 Task `T-20260811-003`의 Product Owner 실행 승인이 필요하다. 이후 화면군은 순차적으로 별도 승인한다.
-- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
+- 현재 상태: cancelled
+- 보존 산출물: design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
+- 후속 Task: T-20260812-003
+- 주의: 선택된 컨셉과 시안은 Legacy/Baseline 입력이며 별도 실행하지 않는다.
 ```
 
 ## Activity
@@ -136,6 +134,7 @@ Task T-20260811-002를 이어서 처리해줘.
 | 2026-08-11 | Product Lead Agent |  | proposed | Product Owner가 선택한 팝 키치 레시피 클럽을 Home 시안 비교 방향으로 등록 |
 | 2026-08-11 | Product Lead Agent | proposed | proposed | Product Owner 정정에 따라 Home 한 장 제한을 해제하고 앱 전반 원본 발전·화면군별 하위 Task 분해 범위로 재조율 |
 | 2026-08-11 | Product Lead Agent | proposed | scoped | 앱 전반 범위·82개 상태·화면군별 순서·소유권·기준 문서·의존성을 확정 |
+| 2026-08-12 | Product Owner | scoped | cancelled | T-004 일괄 재정렬 승인에 따라 선택 컨셉·시안을 Legacy로 보존하고 비공개 Figma 원천 T-003으로 흡수 |
 
 ## AI Ops CLI 기록
 

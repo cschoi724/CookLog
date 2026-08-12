@@ -20,12 +20,12 @@
 | `T-20260810-007` | `done` | Design Prototype GitHub Pages 공유 구성 | - | 없음 | PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260811-003` | `done` | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | T-002 scope 완료 확인 | Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | `done` | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | T-003 완료 이력·원본 concept | 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
-| `T-20260811-008` | `approved` | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | UI/UX Design Agent / Execution Role | `T-20260811-004` 완료 | Home 고충실도 리터치·Product Owner 시각 승인 후 T-005 해제 |
-| `T-20260812-003` | `proposed` | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent / Lead Role | `T-20260812-002` 완료 | 비공개 Figma 운영·핵심 흐름 원본·구현 동기화 게이트 scope 조율 |
-| `T-20260811-005` | `proposed` | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `T-20260811-004`, `T-20260811-008` | Core Loop 33 상태·별도 실행 승인 필요 |
-| `T-20260811-006` | `proposed` | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `T-20260811-005` | Player/Info 35 상태·별도 실행 승인 필요 |
-| `T-20260811-007` | `proposed` | 팝 키치 레시피 클럽 Prototype 통합 Design QA | Design Lead Agent → Design QA Agent | `T-20260811-003~006` | 82 상태 독립 QA·통합 QA 실행 승인 필요 |
-| `T-20260812-001` | `scoped` | iOS 구현 Visual Fidelity Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `T-20260811-007`, `T-20260805-008` | 디자인 baseline·iOS commit 고정 후 비교 증거 준비·독립 Design QA |
+| `T-20260811-008` | `cancelled` | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | - | - | 기존 결과·미병합 WIP를 Legacy로 보존하고 T-20260812-003으로 흡수 |
+| `T-20260812-003` | `proposed` | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent / Lead Role | `T-20260812-004` 완료 | 전체 핵심 흐름·CookLog 로컬 디자인 시스템·시각 승인·독립 Design QA scope 조율 |
+| `T-20260811-005` | `cancelled` | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | - | - | 화면·상태 계약을 T-20260812-003으로 흡수 |
+| `T-20260811-006` | `cancelled` | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | - | - | 화면·상태 계약을 T-20260812-003으로 흡수 |
+| `T-20260811-007` | `cancelled` | 팝 키치 레시피 클럽 Prototype 통합 Design QA | - | - | 독립 QA 책임을 T-20260812-003 Figma Design QA로 흡수 |
+| `T-20260812-001` | `scoped` | iOS 구현 Visual Fidelity Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `T-20260812-003`, `T-20260805-008` | 고정 Figma baseline·iOS commit 비교 증거 준비·독립 Design QA |
 | `T-20260728-011` | `proposed` | 구독·Paywall UX 설계 | Design Lead Agent | `T-20260729-002`, `T-20260728-010` | 수익화 activation gate 대기 |
 
 `T-20260728-002`는 Design QA와 Design Lead 완료 검토를 통과하고 PR #6으로 `develop`에 squash merge되어 `done`으로 확정했습니다. `T-20260729-002`는 기존 결과를 재개방하지 않고 확정된 제품 상태를 후속 버전으로 갱신합니다.

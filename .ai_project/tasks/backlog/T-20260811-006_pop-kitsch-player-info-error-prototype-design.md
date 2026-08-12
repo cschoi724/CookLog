@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-006
 title: 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용
-status: proposed
+status: cancelled
 type: feature
 priority: P1
 priority_reason: 조리 중 Player와 정보·복구 화면을 마지막 화면군으로 정합화해 안정적 Core Loop를 보존한다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent:
+target_role:
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities: [design_scoping, design_dependency_management, ux_flow, ui_design, prototyping, design_handoff]
@@ -23,7 +23,7 @@ ownership_review:
   required: false
   reviewer:
 depends_on: [T-20260811-002, T-20260811-005]
-blocks: [T-20260811-007]
+blocks: []
 parallel_group: pop-kitsch-design-sequence
 allowed_paths:
   - design/prototype/app.js
@@ -60,9 +60,17 @@ branch:
 pr:
   url:
   status:
+blocker: T-20260812-004 승인에 따라 Player·Info·오류 로컬 Prototype 실행을 T-20260812-003 비공개 Figma 핵심 흐름으로 흡수한다.
+next_decision:
 ---
 
 # 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용
+
+## T-20260812-004 재정렬
+
+- 상태: `cancelled`
+- 화면·상태·복구·접근성 계약은 폐기하지 않고 T-20260812-003의 Figma 설계 및 Design QA 범위로 이전한다.
+- 이 Task의 로컬 Prototype 실행과 별도 승인은 더 진행하지 않는다.
 
 ## Scope
 
@@ -79,3 +87,9 @@ pr:
 ## Execution
 
 - `T-005` Design QA 통과와 Product Owner의 이 화면군 실행 승인 뒤에만 UI/UX Design Agent에 인계한다.
+
+## Activity
+
+| 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
+|---|---|---|---|---|
+| 2026-08-12 | Product Owner | proposed | cancelled | T-004 일괄 재정렬 승인에 따라 Player·Info·오류 범위를 T-003 Figma 전체 흐름으로 흡수 |

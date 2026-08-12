@@ -26,7 +26,7 @@ ownership:
 ownership_review:
   required: false
   reviewer:
-depends_on: [T-20260811-007, T-20260805-008]
+depends_on: [T-20260812-003, T-20260805-008]
 blocks: [T-20260728-003]
 parallel_group: ios-redesign-integration-sequential
 allowed_paths:
@@ -40,8 +40,9 @@ allowed_paths:
 source_of_truth:
   - .ai_project/tasks/active/T-20260728-003_apply-figma-uiux-to-ios.md
   - .ai_project/tasks/active/T-20260805-008_ios-accessibility-visual-regression.md
-  - .ai_project/tasks/backlog/T-20260811-007_pop-kitsch-prototype-integration-design-qa.md
-  - design/prototype/
+  - .ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md
+  - docs/product/CookLog_FIGMA_DELIVERY_FLOW.md
+  - design/prototype/ # Legacy/Baseline 참고
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
 created_by: Development Lead Agent
@@ -67,6 +68,12 @@ pr:
 ---
 
 # iOS 구현 Visual Fidelity Design QA
+
+## T-20260812-004 재정렬
+
+- 시각 Reference는 로컬 Prototype이 아니라 T-20260812-003에서 승인·QA 통과 후 고정된 Figma baseline이다.
+- 고정 Figma baseline과 T-20260805-008을 통과한 고정 iOS commit을 동일 상태·viewport·fixture로 비교한다.
+- 390×844pt를 전체 비교 기준으로 사용하고 375×667pt는 승인된 위험 상태만 비교한다.
 
 ## 목적
 
@@ -101,7 +108,7 @@ pr:
 
 ## 활성화 및 인계
 
-- `T-20260811-007` 통합 Design QA와 `T-20260805-008` iOS QA가 모두 완료될 때까지
+- `T-20260812-003` Figma baseline 고정과 `T-20260805-008` iOS QA가 모두 완료될 때까지
   `scoped`를 유지한다.
 - Design Lead Agent가 동일한 고정 디자인 SHA와 iOS commit을 확인한 뒤 Product Owner에게
   별도 실행 승인을 요청한다.
@@ -116,7 +123,7 @@ pr:
 Task T-20260812-001의 활성화 조건과 Design QA ownership을 관리해줘.
 
 - 현재 상태: `scoped`
-- 선행 조건: `T-20260811-007`과 `T-20260805-008` 완료
-- 다음 조치: 디자인 SHA와 iOS commit을 함께 고정하고 Product Owner의 별도 실행 승인을 받아.
+- 선행 조건: `T-20260812-003`과 `T-20260805-008` 완료
+- 다음 조치: Figma baseline revision과 iOS commit을 함께 고정하고 Product Owner의 별도 실행 승인을 받아.
 - 실행 경계: UI/UX Design Agent는 비교 증거만 준비하며 제품 코드·Prototype을 수정하지 않아.
 - 독립 검증: 증거 준비 후 Design QA Agent / Verification Role에 인계해 Visual Fidelity를 판정해.
