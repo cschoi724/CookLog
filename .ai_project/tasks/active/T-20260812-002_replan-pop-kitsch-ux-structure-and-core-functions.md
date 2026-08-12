@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-002
 title: 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획
-status: approved
+status: verification_ready
 type: feature
 priority: P1
 priority_reason: 확정된 팝 키치 시각 언어를 실제 사용 흐름과 정보 구조에 연결해야 이후 화면군 디자인이 장식 변경에 머물지 않는다.
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product Planning Agent
-target_role: Execution Role
+target_agent: Product QA Agent
+target_role: Verification Role
 planned_execution_agent: Product Planning Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -71,13 +71,13 @@ updated_at: '2026-08-12'
 report_to: ".ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md"
 qa_to: ".ai_project/qa/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-qa.md"
 status_ref: origin/develop
-status_ref_sha: 3877105d8eb814a31bedd800f810c5402a9d1b0d
-worktree_path: "/private/tmp/cooklog-t20260812-002-rework-scope"
-worktree_role: Lead Role
+status_ref_sha: 706b8518bcce91cf86e3bc9c55b4388870d44a48
+worktree_path: "/private/tmp/cooklog-t20260812-002-rework-execution"
+worktree_role: Execution Role
 base_ref: origin/develop
-base_sha: 3877105d8eb814a31bedd800f810c5402a9d1b0d
+base_sha: 706b8518bcce91cf86e3bc9c55b4388870d44a48
 branch:
-  name: task/T-20260812-002-rework-scope
+  name: task/T-20260812-002-rework-execution
   base: develop
 pr:
   url:
@@ -127,20 +127,20 @@ Product Owner는 Product QA 재작업 중 375×667pt를 기본 완료 조건에�
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product Planning Agent / Execution Role이야.
-Task T-20260812-002의 승인된 재작업을 수행해줘.
+너는 Product QA Agent / Verification Role이야.
+Task T-20260812-002의 재작업 결과를 독립적으로 검증해줘.
 
-- 현재 상태: approved
+- 현재 상태: verification_ready
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 3877105d8eb814a31bedd800f810c5402a9d1b0d
-- 다음에 해야 할 일: PQA-HIGH-812002-001과 PQA-MEDIUM-812002-003을 해소하도록 82개 상태·데이터/복구 계약 결정표와 Home 전체 보기 단일 baseline을 UX 계획에 보완해줘.
+- 기준 상태 SHA: 706b8518bcce91cf86e3bc9c55b4388870d44a48
+- 다음에 해야 할 일: 공식 manifest의 82개 상태와 재작업 추적표를 1:1 대조하고, Home 전체 요리책 단일 진입점·390×844pt 기준·기능 확장 금지를 PASS/PASS_WITH_RISK/FAIL/BLOCKED로 판단해줘.
 - 기준 문서: docs/product/CookLog_PRD_v2.md, docs/product/CookLog_USER_FLOW.md, design/prototype/, design/COOKLOG_MVP_UIUX_V1_HANDOFF.md, design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md, T-002, T-004, T-008
 - 허용 경로: .ai_project/tasks/active/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions.md, .ai_project/task_board.md, .ai_project/teams/product/task_board.md, docs/product/CookLog_POP_KITSCH_UX_PLAN.md, .ai_project/reports/, .ai_project/qa/
 - 참고 산출물: docs/product/CookLog_POP_KITSCH_UX_PLAN.md, .ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md, .ai_project/qa/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-qa.md
-- 변경/검토 대상: 기존 기능 결정표, 82개 상태·데이터/복구 계약 추적표, 7개 화면의 390×844 명세와 Home 전체 보기 기준안
-- 남은 리스크: T-008은 별도 승인 범위에서 계속 진행하며 자동 중단하지 않는다. T-005~007은 재작업·재검증 전 이 문서를 최종 scope 기준으로 확정하지 않는다.
-- 차단/결정 필요: 375×667pt 전체 화면 명세는 기본 범위에서 제외한다. 구현 위험이 확인될 때만 별도 Task 후보로 제안해.
-- 완료 시: 실행 보고서를 갱신하고 Product QA Agent에게 verification_ready로 인계해.
+- 변경/검토 대상: docs/product/CookLog_POP_KITSCH_UX_PLAN.md와 재작업 실행 보고서
+- 남은 리스크: 375×667pt 전체 화면 명세는 Product Owner 결정으로 기본 완료 조건에서 제외됐다. 기존 Prototype의 작은 화면 계약은 Legacy/Baseline에만 남는다.
+- 차단/결정 필요: T-004 전체 재정렬 전 T-003·T-008·T-005~007과 iOS UI 동기화를 시작하지 않는다.
+- 통과 시: status를 verification_passed로 바꾸고 Product Lead Agent / Completion Role에 인계해줘. 수정 필요 시: rework_requested로 바꾸고 누락 추적 키·계약을 명확히 남겨줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -153,6 +153,8 @@ Task T-20260812-002의 승인된 재작업을 수행해줘.
 | 2026-08-12 | Product Lead Agent | scoped | approved | Product Owner가 기능 분류·UX 구조·레이아웃·상호작용·Design handoff 문서 작성을 실행 승인 |
 | 2026-08-12 | Product Lead Agent | rework_requested | scoped | Product QA FAIL을 82개 상태·데이터/복구 계약 결정표와 Home 단일 전체 보기 baseline 보완으로 재범위화 |
 | 2026-08-12 | Product Owner | scoped | approved | 375×667pt 기본 완료 조건 제외와 승인된 재작업 범위를 Product Planning Agent 실행으로 승인 |
+| 2026-08-12 | Product Planning Agent | approved | in_progress | 82개 상태 계약 추적표와 Home 단일 전체 보기 baseline 재작업 착수 |
+| 2026-08-12 | Product Planning Agent | in_progress | verification_ready | 82개 상태 추적표·390×844pt 기준·Home 단일 진입점·실행 보고 보완 완료, Product QA 재검증 인계 |
 
 ## AI Ops CLI 기록
 
@@ -169,3 +171,6 @@ Task T-20260812-002의 승인된 재작업을 수행해줘.
 | 2026-08-12 | Product QA Agent | unlock | task unlock |
 | 2026-08-12 | Product Lead Agent | transition: rework_requested -> scoped | Product QA FAIL을 82개 상태·데이터/복구 계약 결정표와 Home 단일 전체 보기 baseline 보완으로 재범위화한다. 375×667pt 전체 화면 명세는 Product Owner 결정에 따라 기본 완료 조건에서 제외한다. |
 | 2026-08-12 | Product Lead Agent | transition: scoped -> approved | Product Owner가 승인한 재작업 범위를 Product Planning Agent 실행으로 승인한다. |
+| 2026-08-12 | Product Planning Agent | lock | task lock |
+| 2026-08-12 | Product Planning Agent | transition: approved -> in_progress | 승인된 재작업 범위에 따라 82개 상태·데이터/복구 계약 추적표와 Home 전체 요리책 단일 진입점 baseline을 보완한다. |
+| 2026-08-12 | Product Planning Agent | transition: in_progress -> verification_ready | 공식 82개 상태·데이터/복구 계약 추적표, 390×844pt 기본 기준, Home 전체 요리책 단일 진입점과 재작업 보고를 완료해 Product QA 독립 재검증으로 인계한다. |
