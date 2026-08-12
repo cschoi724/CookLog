@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-002
 title: 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획
-status: verification_ready
+status: rework_requested
 type: feature
 priority: P1
 priority_reason: 확정된 팝 키치 시각 언어를 실제 사용 흐름과 정보 구조에 연결해야 이후 화면군 디자인이 장식 변경에 머물지 않는다.
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product QA Agent
-target_role: Verification Role
+target_agent: Product Lead Agent
+target_role: Lead Role
 planned_execution_agent: Product Planning Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -71,13 +71,13 @@ updated_at: '2026-08-12'
 report_to: ".ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md"
 qa_to: ".ai_project/qa/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-qa.md"
 status_ref: origin/develop
-status_ref_sha: 5cd5c22bf48dc0d26aa352ba227fbd8122b58fab
-worktree_path: "/private/tmp/cooklog-t20260812-002-ux-planning-execution"
-worktree_role: Execution Role
+status_ref_sha: c26c7820199c834df6fb239b0530de0dc29fb540
+worktree_path: "/private/tmp/cooklog-t20260812-002-product-qa"
+worktree_role: Verification Role
 base_ref: origin/develop
-base_sha: 5cd5c22bf48dc0d26aa352ba227fbd8122b58fab
+base_sha: c26c7820199c834df6fb239b0530de0dc29fb540
 branch:
-  name: task/T-20260812-002-ux-planning-execution
+  name: task/T-20260812-002-product-qa
   base: develop
 pr:
   url:
@@ -125,20 +125,20 @@ next_decision:
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product QA Agent / Verification Role이야.
-Task T-20260812-002의 제품 UX 기획 결과를 독립적으로 검증해줘.
+너는 Product Lead Agent / Lead Role이야.
+Task T-20260812-002의 재작업 범위를 조율해줘.
 
-- 현재 상태: verification_ready
+- 현재 상태: rework_requested
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 5cd5c22bf48dc0d26aa352ba227fbd8122b58fab
-- 다음에 해야 할 일: 실행 보고서와 UX 계획 문서를 PRD·User Flow·기존 상태 계약에 대조해, 기능 보존·정보 구조·레이아웃·상호작용·승인 게이트가 충돌하지 않는지 PASS/PASS_WITH_RISK/FAIL/BLOCKED로 판단해줘.
+- 기준 상태 SHA: c26c7820199c834df6fb239b0530de0dc29fb540
+- 다음에 해야 할 일: Product QA의 PQA-HIGH-812002-001~002, PQA-MEDIUM-812002-003을 기준으로 82개 상태·데이터/복구 계약 결정표, 7개 화면의 두 viewport 차이, Home 전체 보기 baseline 보완 범위를 조율해줘.
 - 기준 문서: docs/product/CookLog_PRD_v2.md, docs/product/CookLog_USER_FLOW.md, design/prototype/, design/COOKLOG_MVP_UIUX_V1_HANDOFF.md, design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md, T-002, T-004, T-008
 - 허용 경로: .ai_project/tasks/active/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions.md, .ai_project/task_board.md, .ai_project/teams/product/task_board.md, docs/product/CookLog_POP_KITSCH_UX_PLAN.md, .ai_project/reports/, .ai_project/qa/
-- 참고 산출물: docs/product/CookLog_POP_KITSCH_UX_PLAN.md, .ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md, design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png, T-004 완료본, T-008 승인 범위
-- 변경/검토 대상: 기존 기능 결정표와 Home, Library, Cooking Log, AI Review, Recipe Detail, Audio Guide, App Info의 정보 구조·핵심 기능·CTA 우선순위
-- 남은 리스크: T-008은 별도 승인된 시각 리터치 Task다. 이 Task가 자동 중단되지 않았으며, Home 구조 변경은 Product Owner가 별도 판단해야 한다.
-- 차단/결정 필요: 제거·신규 기능 후보와 T-008에 영향을 주는 Home 구조 변경은 구현하지 말고 Product Owner 결정 항목으로 분리해야 한다. 통과 후 Design Lead의 T-005~007 scope·dependency 조정이 필요하다.
-- 통과 시: status를 `verification_passed`로 바꾸고 Completion Role에 인계해줘. 수정 필요 시: `rework_requested`로 바꾸고 항목을 명확히 남겨줘.
+- 참고 산출물: docs/product/CookLog_POP_KITSCH_UX_PLAN.md, .ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md, .ai_project/qa/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-qa.md
+- 변경/검토 대상: 기존 기능 결정표, Home·Library·Cooking Log·AI Review·Recipe Detail·Audio Guide·App Info의 390×844·375×667 명세와 Home 전체 보기 기준안
+- 남은 리스크: T-008은 별도 승인 범위에서 계속 진행하며 자동 중단하지 않는다. T-005~007은 재작업·재검증 전 이 문서를 최종 scope 기준으로 확정하지 않는다.
+- 차단/결정 필요: Home 최근 섹션명·전체 보기 위치·사용자 노출 카피는 Product Owner 결정값으로 유지한다.
+- 재개 가능 시: 재작업 범위를 scoped 또는 approved로 전환할지 사용자 승인 기준으로 판단해줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -159,3 +159,7 @@ Task T-20260812-002의 제품 UX 기획 결과를 독립적으로 검증해줘.
 | 2026-08-12 | Product Planning Agent | lock | task lock |
 | 2026-08-12 | Product Planning Agent | transition: approved -> in_progress | Product Owner가 Product Lead Agent에게 Product Planning 실행 역할을 함께 부여해 기존 기능 분류와 팝 키치 UX 구조 기획을 시작한다. |
 | 2026-08-12 | Product Planning Agent | transition: in_progress -> verification_ready | 기존 기능 결정표, 화면별 UX 구조·레이아웃·상호작용·Design handoff와 실행 보고서 작성을 완료해 Product QA 독립 검증으로 인계한다. |
+| 2026-08-12 | Product QA Agent | lock | task lock |
+| 2026-08-12 | Product QA Agent | transition: verification_ready -> verification_in_progress | 실행 보고서와 UX 계획을 제품 Source of Truth 및 기존 기능·상태 계약에 대조하는 독립 검증 시작 |
+| 2026-08-12 | Product QA Agent | transition: verification_in_progress -> rework_requested | 기존 82개 상태·데이터 계약 결정표와 Home 외 375×667 화면별 UX 명세가 성공 기준에 미달하고 Home 전체 보기 기준안이 모호함 |
+| 2026-08-12 | Product QA Agent | unlock | task unlock |
