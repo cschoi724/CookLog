@@ -65,8 +65,8 @@ branch:
   name: task/T-20260811-004-concept-rework
   base: develop
 pr:
-  url:
-  status: to_create_after_execution
+  url: https://github.com/cschoi724/CookLog/pull/138
+  status: draft
 ---
 
 # 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업
@@ -118,6 +118,7 @@ Task T-20260811-004의 Foundation·Home·Library 원본 시안 재작업 결과�
 - 공용 기준: origin/develop@e0be523
 - 현재 상태: verification_ready
 - 작업 경로: /private/tmp/cooklog-t20260811-004-concept-rework
+- Draft PR: https://github.com/cschoi724/CookLog/pull/138
 - 변경 대상: design/prototype/app.js, design/prototype/styles.css, design/prototype/components.html
 - 참고 산출물: .ai_project/reports/T-20260811-004_pop-kitsch-home-library-prototype-design-report.md, .ai_project/qa/T-20260811-004_pop-kitsch-home-library-prototype-design-qa.md, design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
 - 다음에 해야 할 일: Foundation 확장 규격과 Home 9개·Library 5개 상태를 원본 concept, task report, 유지 계약 기준으로 독립 검증해줘.

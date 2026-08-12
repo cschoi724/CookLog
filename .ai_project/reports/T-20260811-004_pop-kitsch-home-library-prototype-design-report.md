@@ -5,6 +5,7 @@
 - 실행일: 2026-08-11
 - canonical 기준: `origin/develop@e0be523`
 - 작업 브랜치: `task/T-20260811-004-concept-rework`
+- Draft PR: `#138` (`develop` 대상)
 - 작업 경로: `/private/tmp/cooklog-t20260811-004-concept-rework`
 - 이전 참고 PR: `#134` — 참고 전용, 병합 보류
 
@@ -82,6 +83,7 @@ Task T-20260811-004 concept rework를 독립 검증해줘.
 
 - 현재 상태: verification_ready
 - 기준 상태: origin/develop@e0be523
+- Draft PR: https://github.com/cschoi724/CookLog/pull/138
 - 작업 경로: /private/tmp/cooklog-t20260811-004-concept-rework
 - 변경 대상: design/prototype/styles.css, design/prototype/components.html, design/prototype/app.js
 - 실행 보고서: .ai_project/reports/T-20260811-004_pop-kitsch-home-library-prototype-design-report.md
