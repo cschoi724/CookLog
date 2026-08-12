@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-002
 title: 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획
-status: completion_review
+status: done
 type: feature
 priority: P1
 priority_reason: 확정된 팝 키치 시각 언어를 실제 사용 흐름과 정보 구조에 연결해야 이후 화면군 디자인이 장식 변경에 머물지 않는다.
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 planned_execution_agent: Product Planning Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -71,19 +71,19 @@ updated_at: '2026-08-12'
 report_to: ".ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md"
 qa_to: ".ai_project/qa/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-qa.md"
 status_ref: origin/develop
-status_ref_sha: ddfac33ded48650c4cd65399f33b39c8930aad47
-worktree_path: "/private/tmp/cooklog-t20260812-002-completion"
+status_ref_sha: 465856fe46987e45d35bdec16f9b377ededa714f
+worktree_path: "/private/tmp/cooklog-t20260812-002-done"
 worktree_role: Completion Role
 base_ref: origin/develop
-base_sha: ddfac33ded48650c4cd65399f33b39c8930aad47
+base_sha: 465856fe46987e45d35bdec16f9b377ededa714f
 branch:
-  name: task/T-20260812-002-completion-review
+  name: task/T-20260812-002-complete
   base: develop
 pr:
   url:
   status:
 blocker:
-next_decision: Product Lead Agent가 PASS_WITH_RISK 잔여 리스크를 T-20260812-004로 인계한 상태로 done을 확정한다.
+next_decision: T-20260812-004에서 비공개 Figma 전환 기준과 기존 디자인·iOS·QA Task 실행 순서를 재정렬한다.
 ---
 
 # 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획
@@ -177,3 +177,4 @@ Task T-20260812-002의 완료 확정을 진행해줘.
 | 2026-08-12 | Product QA Agent | lock | task lock |
 | 2026-08-12 | Product QA Agent | transition: verification_in_progress -> verification_passed | 재작업 82개 상태 계약 1:1 추적·Home 단일 진입점·390pt 기준 통과, 375pt Legacy 기준 충돌은 T-004 후속 리스크로 인계 |
 | 2026-08-12 | Product Lead Agent | transition: verification_passed -> completion_review | Product QA PASS_WITH_RISK 결과와 82개 상태 추적·Home 단일 진입점·390×844pt 기준을 수용하고, 375×667pt Legacy 충돌을 T-20260812-004 후속 리스크로 분리해 완료 리뷰를 시작한다. |
+| 2026-08-12 | Product Lead Agent | transition: completion_review -> done | Product QA PASS_WITH_RISK와 완료 리뷰를 수용한다. 82개 상태·Home 단일 진입점·390×844pt UX 기준을 완료 산출물로 확정하고, 375×667pt Legacy 충돌은 T-20260812-004의 명시적 후속 리스크로 인계한다. |
