@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-004
 title: 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
-status: scoped
+status: approved
 type: feature
 priority: P0
 priority_reason: 기존 로컬 Prototype 중심 디자인·iOS 검증 체인과 새 비공개 Figma 원천 체인을 정렬하지 않으면 디자인·구현이
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product Lead Agent
-target_role: Direction Role
+target_agent: Product Planning Agent
+target_role: Execution Role
 planned_execution_agent: Product Planning Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -93,7 +93,7 @@ source_of_truth:
 - ".ai_project/tasks/active/T-20260812-001_ios-implementation-visual-design-qa.md"
 - Product Owner가 지정한 비공개 Draft Figma 파일 (URL·파일 키·조직 식별자는 저장소에 기록하지 않음)
 created_by: Product Lead Agent
-approved_by:
+approved_by: Product Owner (2026-08-12, T-003 중심 재정렬 패키지 일괄 실행 승인)
 locked_by:
 locked_at:
 lock_session:
@@ -103,19 +103,20 @@ updated_at: '2026-08-12'
 report_to: ".ai_project/reports/T-20260812-004_rebaseline-private-figma-delivery-flow-report.md"
 qa_to: ".ai_project/qa/T-20260812-004_rebaseline-private-figma-delivery-flow-qa.md"
 status_ref: origin/develop
-status_ref_sha: 3d9990ceeadc86c11c124de08142aa41383260a5
-worktree_path: "/private/tmp/cooklog-t20260812-004-scope"
-worktree_role: Lead Role
+status_ref_sha: 2a07dab76aa24a370bb0e1417d1555a3b00a4f80
+worktree_path: "/private/tmp/cooklog-t20260812-004-approval"
+worktree_role: Direction Role
 base_ref: origin/develop
-base_sha: 3d9990ceeadc86c11c124de08142aa41383260a5
+base_sha: 2a07dab76aa24a370bb0e1417d1555a3b00a4f80
 branch:
-  name: task/T-20260812-004-scope
+  name: task/T-20260812-004-approval
   base: develop
 pr:
   url:
   status:
 blocker:
-next_decision: Product Owner가 T-003 중심 재정렬 패키지와 기존 Task 상태·의존성 변경의 일괄 실행을 승인한다.
+next_decision: Product Planning Agent가 승인된 allowed_paths에서 재정렬안을 일괄 반영하고 Product QA
+  독립 검증으로 인계한다.
 ---
 
 # 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
@@ -198,15 +199,15 @@ T-20260812-002가 `done`되어 선행 차단은 해제됐다. 아래 분류는 T
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product Lead Agent / Direction Role이야.
-Task T-20260812-004의 재정렬 실행 승인 여부를 판단해줘.
+너는 Product Planning Agent / Execution Role이야.
+Task T-20260812-004의 승인된 재정렬안을 일괄 반영해줘.
 
-- 현재 상태: scoped
+- 현재 상태: approved
 - 선행 조건: T-20260812-002 `done` 충족
-- 다음에 해야 할 일: T-003 중심의 유지·흡수·재범위화·종료 후보 패키지와 canonical 실행 순서를 검토하고, 승인 가능하면 `approved`로 전환해 Product Planning Agent / Execution Role에 인계해줘.
+- 다음에 해야 할 일: allowed_paths 안에서 기존 Task 상태·의존성, Source of Truth, 팀 보드, Figma 전달 흐름을 승인 패키지대로 일괄 갱신하고 실행 보고서를 작성해줘.
 - 기준 문서: PRD, User Flow, 팝 키치 UX 계획, T-002·T-003, 기존 컨셉/디자인/iOS QA Task, Source of Truth.
 - 보안: Figma URL·파일 키·조직·팀·초대 대상은 저장소·보고서에 기록하지 마. 비공개 파일만 작업 대상으로 유지해.
-- 주의: T-20260811-008, T-20260811-005~007, T-20260805-008, T-20260812-001, 상위 iOS T-20260728-003의 상태·우선순위를 자동 변경하거나 완료 Task를 재오픈하지 마. 변경 패키지는 Product Owner 승인으로만 반영해.
+- 완료 시: `verification_ready`로 전환하고 Product QA Agent / Verification Role에 독립 검증을 요청해줘.
 ```
 
 ## Activity
@@ -215,9 +216,11 @@ Task T-20260812-004의 재정렬 실행 승인 여부를 판단해줘.
 |---|---|---|---|---|
 | 2026-08-12 | Product Lead Agent |  | proposed | 비공개 Figma 원천 전환에 맞춘 컨셉·기획·디자인·iOS·QA Task 흐름 및 의존성 재정렬 Task 등록 |
 | 2026-08-12 | Product Lead Agent | proposed | scoped | T-002 완료를 확인하고 T-003 중심의 기존 디자인·iOS·QA Task 분류와 실행 순서를 승인 패키지로 확정 |
+| 2026-08-12 | Product Owner | scoped | approved | T-003 중심 재정렬 패키지와 기존 Task 상태·의존성 변경의 일괄 실행 승인 |
 
 ## AI Ops CLI 기록
 
 | 날짜 | Actor | Event | Reason |
 |---|---|---|---|
 | 2026-08-12 | Product Lead Agent | transition: proposed -> scoped | T-20260812-002 완료를 확인하고 비공개 Figma 중심의 기존 컨셉·Prototype·iOS·QA Task 유지·흡수·재범위화·종료 후보와 canonical 실행 순서를 승인 패키지로 확정한다. |
+| 2026-08-12 | Product Lead Agent | transition: scoped -> approved | Product Owner가 T-003 중심 재정렬 패키지와 기존 컨셉·Prototype·iOS·QA Task 상태·의존성 변경의 일괄 실행을 승인했다. |
