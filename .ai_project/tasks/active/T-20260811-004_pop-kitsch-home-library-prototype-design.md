@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-004
 title: 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업
-status: completion_review
+status: done
 type: feature
 priority: P1
 priority_reason: Foundation 이후 첫 사용자 흐름 묶음으로 빠른 기록과 레시피 탐색을 일관되게 만든다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities: [design_scoping, component_system_design, ux_flow, ui_design, prototyping, design_handoff, developer_verification, task_reporting]
@@ -66,7 +66,7 @@ branch:
   base: develop
 pr:
   url: https://github.com/cschoi724/CookLog/pull/138
-  status: draft
+  status: ready_to_merge
 ---
 
 # 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업
@@ -136,6 +136,14 @@ Task T-20260811-004의 완료 수용 여부를 검토해줘.
 - 잔여 리스크: 외부 이미지·폰트 없이 구현한 CSS 미디어의 시각 완성도는 T-20260811-008에서 Product Owner 시각 승인과 함께 보완한다.
 - 병합 대상: PR #138만 해당하며, 이전 PR #134는 참고 기록으로 유지한다.
 
+## Completion Decision
+
+- 확정일: 2026-08-12
+- 확정 Role: Design Lead Agent / Completion Role
+- 결정: `done`
+- 수용: Product Owner가 T-004 완료 처리 및 PR #138 병합을 승인했다.
+- 후속: T-20260811-008은 T-004 완료 기준을 충족했으며, 기존 승인 범위에서 UI/UX Design Agent 실행 단계로 이어진다. T-005는 T-008의 Product Owner 시각 승인 및 Design QA PASS 전까지 대기한다.
+
 ## Activity
 
 | 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
@@ -152,3 +160,4 @@ Task T-20260811-004의 완료 수용 여부를 검토해줘.
 | 2026-08-12 | Design QA Agent | verification_ready | verification_in_progress | 최신 origin/develop 포함 상태에서 lock을 획득하고 Foundation·Home·Library concept rework 독립 검증 시작 |
 | 2026-08-12 | Design QA Agent | verification_in_progress | verification_passed | 원본 시안 위계, 14개 상태·routing, responsive/theme, 접근성, gallery·console, 외부 asset 금지를 독립 검증해 PASS로 Completion Role에 인계 |
 | 2026-08-12 | Design Lead Agent | verification_passed | completion_review | 독립 QA PASS와 잔여 리스크 분리를 수용하고 완료 확정 검토를 시작 |
+| 2026-08-12 | Design Lead Agent | completion_review | done | Product Owner의 완료·병합 승인에 따라 독립 QA PASS를 수용하고 T-008 실행 기준을 해제 |
