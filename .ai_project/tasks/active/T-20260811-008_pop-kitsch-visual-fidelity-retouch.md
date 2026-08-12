@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-008
 title: 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인
-status: proposed
+status: approved
 type: feature
 priority: P1
 priority_reason: Home 기준 화면의 시각 완성도를 확정하기 전 다음 화면군을 진행하면 약한 기존 레이아웃과 카피 밀도가 전파될 위험이 있다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent: UI/UX Design Agent
+target_role: Execution Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities: [design_scoping, visual_direction, visual_fidelity_review, ux_flow, ui_design, prototyping, design_handoff]
@@ -29,14 +29,14 @@ allowed_paths:
   - design/prototype/app.js
   - design/prototype/styles.css
   - design/prototype/components.html
-  - .ai_project/tasks/backlog/T-20260811-008_pop-kitsch-visual-fidelity-retouch.md
+  - .ai_project/tasks/active/T-20260811-008_pop-kitsch-visual-fidelity-retouch.md
   - .ai_project/tasks/backlog/T-20260811-005_pop-kitsch-log-review-detail-prototype-design.md
   - .ai_project/reports/T-20260811-008_pop-kitsch-visual-fidelity-retouch-report.md
   - .ai_project/qa/T-20260811-008_pop-kitsch-visual-fidelity-retouch-qa.md
   - .ai_project/task_board.md
   - .ai_project/teams/design/task_board.md
 source_of_truth:
-  - origin/develop@d7e9ea7
+  - origin/develop@049dab0
   - .ai_project/tasks/backlog/T-20260811-002_pop-kitsch-home-concept-source-design.md
   - .ai_project/tasks/active/T-20260811-004_pop-kitsch-home-library-prototype-design.md
   - design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
@@ -45,19 +45,19 @@ source_of_truth:
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
   - docs/product/CookLog_USER_FLOW.md
 created_by: Design Lead Agent
-approved_by:
+approved_by: Product Owner (2026-08-12, Visual Fidelity 리터치 및 시각 승인 실행 승인)
 locked_by:
 locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-11
-updated_at: 2026-08-11
+updated_at: 2026-08-12
 report_to: .ai_project/reports/T-20260811-008_pop-kitsch-visual-fidelity-retouch-report.md
 qa_to: .ai_project/qa/T-20260811-008_pop-kitsch-visual-fidelity-retouch-qa.md
 status_ref: origin/develop
-status_ref_sha: d7e9ea7
+status_ref_sha: 049dab0
 base_ref: origin/develop
-base_sha: d7e9ea7
+base_sha: 049dab0
 branch:
   name: task/T-20260811-008-visual-fidelity-retouch
   base: develop
@@ -87,8 +87,8 @@ pr:
 
 ## Execution
 
-- T-004의 독립 Design QA 통과와 완료 확정 후 Design Lead가 본 Task를 `scoped`로 조율한다.
-- Product Owner 실행 승인 후 UI/UX Design Agent가 실행한다. 시각 preview 피드백은 `in_progress` 상태에서 반영하며, Product Owner가 만족을 확인한 뒤에만 `verification_ready`로 넘긴다.
+- Product Owner가 2026-08-12 본 Task의 실행을 승인했고, T-004는 `origin/develop@049dab0`에서 `done`이다.
+- UI/UX Design Agent가 최신 `origin/develop@049dab0` 기반 전용 worktree에서 lock을 획득해 실행한다. 시각 preview 피드백은 `in_progress` 상태에서 반영하며, Product Owner가 만족을 확인한 뒤에만 `verification_ready`로 넘긴다.
 - Design QA는 routing·상태·작은 화면·명도·터치 영역·키보드·VoiceOver와 명시된 카피 밀도 계약을 독립 검증한다.
 - T-005는 T-008의 Product Owner 시각 승인과 Design QA 통과 전에는 실행하지 않는다.
 
@@ -97,19 +97,19 @@ pr:
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Design Lead Agent / Lead Role이야.
-Task T-20260811-008의 실행 범위와 T-005 대기 조건을 조율해줘.
+너는 UI/UX Design Agent / Execution Role이야.
+Task T-20260811-008은 승인된 Visual Fidelity 리터치 Task야.
 
-- 현재 상태: proposed
+- 현재 상태: approved
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: d7e9ea7
-- 다음에 해야 할 일: T-004 완료 후 Home 시안 고충실도 리터치와 Product Owner 시각 승인 범위를 scoped로 확정해줘.
+- 기준 상태 SHA: 049dab0
+- 다음에 해야 할 일: 최신 develop에서 전용 worktree와 lock을 획득해 Home·Library Visual Fidelity 리터치를 수행해줘.
 - 기준 문서: T-002, T-004, design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png, design/prototype/
 - 허용 경로: design/prototype/app.js, design/prototype/styles.css, design/prototype/components.html 및 Task frontmatter의 추적 경로
 - 참고 산출물: T-004 실행·QA 보고서와 Home 대표 preview
 - 변경/검토 대상: Home·Library Foundation 표현, Home의 타이포·카피 밀도·CTA·카드·AI 도우미 위계
 - 남은 리스크: 외부 음식 사진·고유 폰트는 승인된 자산 없이는 사용하지 않는다.
-- 차단/결정 필요: T-004 완료, Product Owner의 T-008 실행 승인과 시각 승인
+- 차단/결정 필요: T-004 완료, Product Owner 시각 승인
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -118,3 +118,6 @@ Task T-20260811-008의 실행 범위와 T-005 대기 조건을 조율해줘.
 | 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
 |---|---|---|---|---|
 | 2026-08-11 | Design Lead Agent |  | proposed | T-004 후 Home 고충실도 리터치와 Product Owner 시각 승인 전담 Task 등록 |
+| 2026-08-12 | Product Owner | scoped | approved | Visual Fidelity 리터치 및 시각 승인 실행을 승인했고, T-004 완료 후 UI/UX Design Agent 실행으로 인계 |
+| 2026-08-12 | Design Lead Agent | proposed | scoped | T-004 후속 리터치 범위, T-005 대기 조건, 허용 경로와 기준 문서를 실행 가능하게 조율 |
+| 2026-08-12 | Product Owner | scoped | approved | Visual Fidelity 리터치와 Product Owner 시각 승인 흐름 실행 승인; T-004 완료 전 실행 대기 |

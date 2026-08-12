@@ -20,7 +20,7 @@
 | `T-20260810-007` | `done` | Design Prototype GitHub Pages 공유 구성 | - | 없음 | PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260811-003` | `done` | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | T-002 scope 완료 확인 | Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | `done` | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | T-003 완료 이력·원본 concept | 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
-| `T-20260811-008` | `proposed` | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | Design Lead Agent → UI/UX Design Agent | `T-20260811-004` | Home 고충실도 리터치·Product Owner 시각 승인 후 T-005 해제 |
+| `T-20260811-008` | `approved` | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | UI/UX Design Agent / Execution Role | `T-20260811-004` 완료 | Home 고충실도 리터치·Product Owner 시각 승인 후 T-005 해제 |
 | `T-20260811-005` | `proposed` | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `T-20260811-004`, `T-20260811-008` | Core Loop 33 상태·별도 실행 승인 필요 |
 | `T-20260811-006` | `proposed` | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `T-20260811-005` | Player/Info 35 상태·별도 실행 승인 필요 |
 | `T-20260811-007` | `proposed` | 팝 키치 레시피 클럽 Prototype 통합 Design QA | Design Lead Agent → Design QA Agent | `T-20260811-003~006` | 82 상태 독립 QA·통합 QA 실행 승인 필요 |
