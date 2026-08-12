@@ -15,15 +15,15 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | 상태 | 개수 |
 |---|---:|
 | `proposed` | 15 |
-| `scoped` | 3 |
-| `approved` | 7 |
+| `scoped` | 4 |
+| `approved` | 6 |
 | `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 1 |
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
-| `blocked` | 0 |
+| `blocked` | 1 |
 | `done` | 44 |
 | `cancelled` | 1 |
 
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation T-20260728-006과 하위 T-20260804-002~007도 모두 `done`입니다. 실제 production Backend T-20260729-003은 6개 하위 패키지로 `scoped`이며 T-20260810-001~005는 모두 `done`입니다. T-006은 Gate A 독립 QA에서 HIGH 4건으로 FAIL했으며 Product Owner가 repository-only 재작업을 승인해 `approved`, Backend Agent 재실행 대기입니다. external staging Gate B는 계속 보류입니다. iOS T-003은 7개 하위 패키지로 `scoped`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
+Product `T-20260731-001`과 `T-20260804-001`은 Product QA·완료 리뷰·Product Owner 승인을 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. Backend T-020~025와 상위 T-005, Foundation T-20260728-006과 하위 T-20260804-002~007도 모두 `done`입니다. 실제 production Backend T-20260729-003은 6개 하위 패키지로 `scoped`이며 T-20260810-001~005는 모두 `done`입니다. T-006은 Gate A 독립 QA에서 HIGH 4건으로 FAIL했으며 Product Owner가 repository-only 재작업을 승인해 `approved`, Backend Agent 재실행 대기입니다. external staging Gate B는 계속 보류입니다. iOS T-003은 개발 검증 7개와 별도 Visual Design QA 1개, 총 8개 하위 패키지로 `scoped`입니다. T-008은 변경 중인 Prototype의 통합 Design QA와 baseline 고정을 기다려 `blocked`, 신규 T-20260812-001은 iOS 구현 Visual Fidelity 검증을 담당하며 `scoped`입니다. CI T-001~006은 모두 `done`입니다. AI Ops `T-20260731-002`는 독립 검증과 PR #48 병합을 마쳐 `done`입니다.
 
 Team별 요약:
 
@@ -39,8 +39,8 @@ Team별 요약:
 |---|---:|---:|---:|---|
 | Product | 1 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 4 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
-| Core Development | 13 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
-| Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
+| Core Development | 13 | 0 | 1 | `.ai_project/teams/development/task_board.md` |
+| Quality | 1 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 | AI Ops | 0 | 0 | 0 | `T-20260730-006`, `T-20260731-002` `done` |
 
 ## 4. Next Candidates
@@ -51,7 +51,7 @@ Team별 요약:
 |---|---|---|---|---|
 | `T-20260728-001` | - | iOS M8 잔여 안정화와 최종 검증 | - | `cancelled`, 유효 항목은 T-003/T-009로 통합 |
 | `T-20260728-002` | P0 | CookLog MVP UI/UX v1 설계와 Figma 버전 미러 | - | `done` |
-| `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `scoped`; T-20260805-002 완료·003 실행 승인 대기 |
+| `T-20260728-003` | P0 | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | `scoped`; 개발 검증 T-008과 별도 Design QA T-20260812-001 모두 필요 |
 | `T-20260805-001` | P1 | iOS MVP 디자인 적용 기준과 Visual QA 계약 확정 | - | `done`, 통합 82개 상태 아래 Core Loop 23개 인수 계약 |
 | `T-20260728-004` | P0 | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `done`, PR #8 squash merge |
 | `T-20260728-005` | P0 | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | `done`, PR #65 squash merge `4e0bca4` |
@@ -71,6 +71,7 @@ Team별 요약:
 | `T-20260811-005` | P1 | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, T-004·T-008 이후·Core Loop 33 상태 |
 | `T-20260811-006` | P1 | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, `T-005` 이후·35 상태 |
 | `T-20260811-007` | P1 | 팝 키치 레시피 클럽 Prototype 통합 Design QA | Design Lead Agent → Design QA Agent | `proposed`, 화면군 완료 뒤 82 상태 독립 QA |
+| `T-20260812-001` | P0 | iOS 구현 Visual Fidelity Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-20260811-007·T-20260805-008 완료 뒤 별도 실행 승인 |
 | `T-20260729-003` | P0 | 실제 AI provider와 배포 가능한 Backend gateway 구축 | Development Lead Agent | `scoped`, T-20260810-001~005 실행 승인·T-006 통합 대기 |
 | `T-20260729-004` | P0 | iOS 10초 녹음·권한·Apple 기기 내 STT 연동 | Development Lead Agent | `T-20260728-003`, `T-20260729-026` |
 | `T-20260729-005` | P0 | iOS AI 정리·처리 복구·AI Review 실서비스 연동 | Development Lead Agent | `T-20260728-003`, `T-20260728-005`, `T-20260729-003` |
@@ -119,7 +120,8 @@ iOS `T-20260728-003` 하위 실행 후보:
 | `T-20260805-005` | P0 | AI Review·완료 Recipe 편집·삭제 | iOS Agent | `proposed`, T-004 선행 |
 | `T-20260805-006` | P0 | Audio Guide·핸즈프리 UI·공통 action model | iOS Agent | `proposed`, T-005 선행 |
 | `T-20260805-007` | P0 | 앱 정보·권한·오프라인·서비스 장애 | iOS Agent | `proposed`, T-006 선행 |
-| `T-20260805-008` | P0 | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `approved`, 세 번째 독립 검증 FAIL·WP-R9~R12 재작업 승인 |
+| `T-20260805-008` | P0 | iOS UI 구현·기능·기술 접근성 통합 검증 | Development Lead Agent | `blocked`, T-20260811-007·디자인 SHA 고정 후 재개 승인 |
+| `T-20260812-001` | P0 | iOS 구현 Visual Fidelity Design QA | Design Lead Agent | `scoped`, T-20260811-007·T-20260805-008 완료 뒤 실행 승인 |
 
 CI `T-20260728-008` 하위 실행 후보:
 
@@ -328,3 +330,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-05 | Product Owner가 iOS T-20260728-003 진행을 승인하고 7개 하위 패키지로 scope, 첫 T-20260805-002를 iOS Agent 실행 승인 인계 |
 | 2026-08-05 | T-20260805-002 HIGH 2건 재작업·독립 QA·CI fixture 보강·required checks를 통과하고 PR #77 squash merge `3d1d012`로 `done` 확정, T-003 별도 실행 승인 대기 |
 | 2026-08-05 | T-20260804-004 HIGH 2건·MEDIUM 1건 재작업과 독립 QA·Lead 완료 리뷰를 통과하고 PR #79 squash merge `a73a028`로 `done` 확정, T-005 별도 실행 승인 검토로 인계 |
+| 2026-08-12 | Product Owner가 T-20260805-008의 개발 기능·기술 접근성 검증과 Visual Fidelity Design QA 분리를 승인; T-008은 최신 디자인 baseline 고정까지 `blocked`, 신규 T-20260812-001은 `scoped`로 등록 |

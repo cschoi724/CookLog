@@ -1,18 +1,20 @@
 ---
 schema: aiops.task.v1
 id: T-20260805-008
-title: iOS 접근성·작은 화면·다크 모드·통합 회귀 검증
-status: approved
+title: iOS UI 구현·기능·기술 접근성 통합 검증
+status: blocked
 type: qa
 priority: P0
-priority_reason: 82개 통합 상태와 Core Loop 23개 상태의 기능·시각·접근성 무회귀가 상위 T-003 완료 조건이다.
+priority_reason: 82개 통합 상태의 UI 구현·기능 회귀와 기술 접근성 무회귀가 상위 T-003 완료 조건이며, 시각 정합성 판정은 T-20260812-001로 분리한다.
 org_unit: Development Division
 team: Core Development Team
 team_lead: Development Lead Agent
 workflow: qa
-target_agent: iOS Agent
-target_role: Execution Role
-required_capabilities: [ios_implementation, developer_verification, task_reporting]
+target_agent: Development Lead Agent
+target_role: Lead Role
+planned_execution_agent: iOS Agent
+planned_execution_role: Execution Role
+required_capabilities: [technical_planning, dependency_management]
 depends_on:
   - T-20260805-002
   - T-20260805-003
@@ -20,8 +22,9 @@ depends_on:
   - T-20260805-005
   - T-20260805-006
   - T-20260805-007
-blocks: [T-20260728-003]
-parallel_group:
+  - T-20260811-007
+blocks: [T-20260812-001, T-20260728-003]
+parallel_group: ios-redesign-integration-sequential
 allowed_paths:
   - apps/ios/
   - .ai_project/tasks/
@@ -34,6 +37,8 @@ source_of_truth:
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
   - apps/ios/docs/TESTING.md
   - apps/ios/docs/MANUAL_QA_CHECKLIST.md
+  - .ai_project/tasks/backlog/T-20260811-007_pop-kitsch-prototype-integration-design-qa.md
+  - .ai_project/tasks/active/T-20260812-001_ios-implementation-visual-design-qa.md
 created_by: Development Lead Agent
 approved_by: Product Owner
 locked_by:
@@ -41,26 +46,31 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-05
-updated_at: 2026-08-11
+updated_at: 2026-08-12
 report_to: .ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md
 qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
+blocker: T-20260811-007 통합 Design QA가 완료되지 않았고 Product Owner가 최종 디자인 SHA를 고정하지 않아 변경 중인 Prototype 기준으로 iOS 최종 구현·검증을 재개할 수 없다.
+next_decision: T-20260811-007 완료 후 Development Lead가 보존 WIP와 최신 canonical 충돌을 조율하고 Product Owner가 고정 디자인 SHA 기준 T-20260805-008 재개를 승인할지 결정한다.
 ---
 
-# iOS 접근성·작은 화면·다크 모드·통합 회귀 검증
+# iOS UI 구현·기능·기술 접근성 통합 검증
 
 ## 범위
 
-- 390×844·375×667, Light/Dark, 기본/Accessibility 3 조합
-- Dynamic Type·VoiceOver label/value/trait·순서·44×44pt
-- Core Loop 23개 캡처와 통합 82개 상태 기능 회귀 fixture
-- Current·Reference·Diff 증빙과 Blocker/High/Medium/Low 분류
+- Product Owner가 고정한 최신 디자인 baseline의 iOS UI 반영
+- 통합 82개 상태의 routing·fixture·데이터 생명주기·오류 회복 기능 회귀
+- 390×844·375×667, Light/Dark, 기본/Accessibility 3에서 Dynamic Type·44×44pt·
+  clipping·label/value/trait·상태 알림 등 기술 접근성 검증
+- 후속 Design QA가 동일 상태를 재현할 수 있는 fixture·capture 진입점과 고정 iOS commit 인계
 
 ## 성공 기준
 
 - 작은 화면과 접근성 글자 크기에서 필수 콘텐츠·CTA가 잘리지 않는다.
 - Core Loop·다시 요리·오류 회복과 draft/Recipe 데이터 보존이 통과한다.
-- iOS QA Agent가 실행 역할과 분리된 독립 검증을 수행한다.
-- 통합 검증 통과 후에만 상위 `T-20260728-003` 완료 리뷰로 인계한다.
+- iOS QA Agent가 실행 역할과 분리해 기능 회귀와 기술 접근성을 독립 검증한다.
+- 고정 iOS 구현 commit과 재현 가능한 fixture·capture 진입점을 `T-20260812-001`에 인계한다.
+- 픽셀·색상·간격·정렬 등 Visual Fidelity PASS/FAIL은 이 Task에서 판정하지 않는다.
+- iOS QA 통과 후에도 별도 Design QA가 통과하기 전에는 상위 `T-20260728-003`을 완료하지 않는다.
 
 ## 승인 및 실행 경계
 
@@ -148,33 +158,45 @@ qa_to: .ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md
   관측한다. Core 23개 전체를 독립 기대 계약과 비교하고 실제 VoiceOver 증거가 확보되지
   않으면 PASS로 완화하지 않고 `BLOCKED`로 보고한다.
 
+## 2026-08-12 개발·디자인 검증 분리
+
+- Product Owner가 `T-20260805-008`을 iOS UI 구현·기능·기술 접근성 검증으로 재범위화하고,
+  최종 Visual Fidelity 판정을 신규 `T-20260812-001`로 분리하는 구조를 승인했다.
+- `WP-R1~R15`와 기존 Current/Reference/Diff·위험 matrix·VoiceOver 산출물, 별도 stale
+  worktree의 미커밋 변경은 삭제하거나 덮어쓰지 않는다. 이 자료는 결함 재현과 진단 이력으로
+  보존하지만 변경 중인 디자인의 최종 합격 증거로 재사용하지 않는다.
+- 실제 iPhone VoiceOver 수집은 별도 승인 전까지 최종 합격 필수 조건에서 제외한다. 대신
+  Simulator/XCTest 기반 label/value/trait, focus 계약, Dynamic Type, 44pt, clipping과
+  상태 알림을 기술 접근성 게이트로 유지한다.
+- 현재 Design Prototype은 Home부터 재작업 중이므로 `T-20260811-007` 통합 Design QA 완료와
+  Product Owner의 디자인 SHA 고정 전까지 이 Task는 `blocked`다.
+- 차단 해제 시 Development Lead가 최신 canonical과 보존 WIP 충돌을 조율하고 Product Owner의
+  재개 승인을 받아 `blocked -> approved`, iOS Agent / Execution Role로 라우팅한다.
+- iOS Agent와 iOS QA Agent는 독립 Design Reference를 만들거나 시각 PASS를 승인하지 않는다.
+  iOS QA 통과 후 고정 구현 commit을 `T-20260812-001`에 넘긴다.
+
 ## Next Agent Handoff
 
 다음 Agent에게 전달할 말:
 
-너는 iOS Agent / Execution Role이야.
-Task T-20260805-008의 승인된 재작업을 진행해줘.
+너는 Development Lead Agent / Lead Role이야.
+Task T-20260805-008의 디자인 baseline 차단과 재개 조건을 관리해줘.
 
-- 현재 상태: `approved`
+- 현재 상태: `blocked`
 - 기준 상태 ref: `origin/develop`
-- 기준 상태 SHA: `081c206f60ef6e5f3d533a5a2b3aafafaa52b133`
-- 다음에 해야 할 일: 최신 canonical 기준 전용 worktree에서 lock을 획득하고
-  `WP-R13~R15`만 수행한 뒤 기존 기능 회귀와 함께 자체 검증해.
+- 기준 상태 SHA: `2f64328ac8e24bb7cdaae33520155df4762047c3`
+- 다음에 해야 할 일: `T-20260811-007` 통합 Design QA 완료와 Product Owner의 디자인 SHA
+  고정을 기다린 뒤, 보존 중인 T-008 WIP와 최신 canonical의 충돌을 먼저 조율해.
 - 기준 문서: Task `source_of_truth` 전체
 - 허용 경로: Task frontmatter의 `allowed_paths`
 - 참고 산출물: `.ai_project/qa/T-20260805-008_ios-accessibility-visual-regression-qa.md`,
   `.ai_project/reports/T-20260805-008_ios-accessibility-visual-regression-report.md`
-- 변경/검토 대상: `apps/ios/VisualRegression/`,
-  `apps/ios/Scripts/validate-visual-regression-contract.js`, 전체 iOS 화면·테스트
-- 재작업 `WP-R13`: 실측 content feature offset을 ±2pt/±4pt 허용치에 연결하고 초과 상태 재캡처
-- 재작업 `WP-R14`: 위험 interaction 54개 원본을 실제 성공값으로 재생성하고 모든 실패값·중복 SHA 차단
-- 재작업 `WP-R15`: 기대 배열 순번이 아닌 실제 접근성 traversal/focus 순서를 Core 23개에서 관측
-- 보존: 통합 82개·Core Loop 23개 manifest, 전체 XCTest 82/82, 기존 기능·데이터 흐름
-- 남은 리스크: 네 번째 재검증에서 미정렬 Diff·실패 interaction·중복 이미지·가짜 focus 순서 반례가
-  독립 재검증에서 해소되는지 미확정
+- 보존: 별도 stale worktree의 미커밋 변경, WP-R1~R15 이력, 전체 XCTest 82/82,
+  기존 기능·데이터 흐름
+- 재개 범위: 최신 고정 디자인의 iOS UI 반영, 기능 회귀, Simulator/XCTest 기반 기술 접근성
+- 범위 제외: Visual Fidelity PASS/FAIL과 독립 Reference 생성, 실제 기기 VoiceOver 증거
 - 범위 제외: 실제 Apple STT·Backend AI·TTS 엔진, 운영 문의·법적 값
-- 차단/결정 필요: 실제 VoiceOver traversal/focus 증거를 만들 수 없으면 기대 배열 index를
-  대체 증거로 사용하지 말고 `BLOCKED`로 Lead에 보고해.
-- 완료 시: report와 iOS 문서를 갱신하고 lock을 해제한 뒤 `verification_ready`로 전환해
-  동일 iOS QA Agent / Verification Role에 독립 재검증을 요청해.
-- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
+- 차단 해제 조건: T-20260811-007 `done`, 고정 디자인 SHA 기록, Product Owner 재개 승인
+- 차단 해제 후: `approved`, iOS Agent / Execution Role로 인계하고 완료 시 iOS QA Agent /
+  Verification Role이 기능·기술 접근성을 독립 검증하도록 요청해.
+- iOS QA 통과 후: 고정 iOS commit과 fixture/capture 진입점을 T-20260812-001로 인계해.

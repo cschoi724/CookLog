@@ -8,7 +8,7 @@
 | Task ID | 상태 | Workstream | 제목 | 담당 Role | 의존성 | 다음 조치 |
 |---|---|---|---|---|---|---|
 | `T-20260728-001` | `cancelled` | iOS | iOS M8 잔여 안정화와 최종 검증 | - | - | 유효 항목 T-003/T-009 통합 |
-| `T-20260728-003` | `scoped` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | 하위 `T-20260805-002~008` | Product Owner 진행 승인, T-002 iOS Agent 인계 |
+| `T-20260728-003` | `scoped` | iOS | 확정 제품 UX·디자인과 iOS 로컬 상태 모델 적용 | Development Lead Agent | 하위 `T-20260805-002~008`, `T-20260812-001` | 개발 기능·기술 접근성과 별도 Visual Design QA 모두 통과 후 완료 리뷰 |
 | `T-20260728-004` | `done` | iOS | iOS XCTest runner 대기 원인 조사와 테스트 실행 안정화 | - | `T-20260729-001` 완료 | PR #8 squash merge 완료 |
 | `T-20260728-005` | `done` | Backend | Backend AI gateway와 기본 비활성 원격 STT adapter 계약 정의 | - | 하위 `T-20260729-020~025` 완료 | PR #65 squash merge `4e0bca4`·완료 확정 |
 | `T-20260728-006` | `done` | Backend | Backend AI gateway와 비활성 원격 STT adapter foundation 구현 | - | 하위 `T-20260804-002~007` 완료 | Product Owner 최종 완료·PR #93 병합 승인 |
@@ -48,7 +48,7 @@
 | `T-20260805-005` | `done` | iOS | AI Review·완료 Recipe 편집·삭제 | - | `T-20260805-004` 완료 | Product Owner 완료·PR #94 squash merge `7c26ebb` |
 | `T-20260805-006` | `done` | iOS | Audio Guide·핸즈프리 UI·공통 action model | - | `T-20260805-005` 완료 | Product Owner 완료·PR #101 squash merge `dcf58d5` |
 | `T-20260805-007` | `done` | iOS | 앱 정보·권한·오프라인·서비스 장애 | - | `T-20260805-006` 완료 | Product Owner 완료·PR #106 squash merge `2f309ed` |
-| `T-20260805-008` | `approved` | iOS | 접근성·작은 화면·다크 모드·통합 회귀 | iOS Agent | `T-20260805-002~007` 완료 | 네 번째 독립 검증 FAIL·HIGH 002~004 `WP-R13~R15` 재작업 승인 |
+| `T-20260805-008` | `blocked` | iOS | UI 구현·기능·기술 접근성 통합 검증 | Development Lead Agent / Lead Role | `T-20260811-007`·디자인 SHA 고정 대기 | 기존 WIP·실패 이력 보존, baseline 고정 후 iOS Agent 재개 승인; Visual QA는 T-20260812-001 |
 
 `T-20260728-005`는 최신 기기 내 STT 정책을 기준으로 6개 하위 Task까지 scope했습니다.
 T-020~025는 모두 `done`입니다. T-025는 공통 header와 negative validator 재작업,

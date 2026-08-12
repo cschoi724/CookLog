@@ -24,6 +24,7 @@
 | `T-20260811-005` | `proposed` | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `T-20260811-004`, `T-20260811-008` | Core Loop 33 상태·별도 실행 승인 필요 |
 | `T-20260811-006` | `proposed` | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `T-20260811-005` | Player/Info 35 상태·별도 실행 승인 필요 |
 | `T-20260811-007` | `proposed` | 팝 키치 레시피 클럽 Prototype 통합 Design QA | Design Lead Agent → Design QA Agent | `T-20260811-003~006` | 82 상태 독립 QA·통합 QA 실행 승인 필요 |
+| `T-20260812-001` | `scoped` | iOS 구현 Visual Fidelity Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `T-20260811-007`, `T-20260805-008` | 디자인 baseline·iOS commit 고정 후 비교 증거 준비·독립 Design QA |
 | `T-20260728-011` | `proposed` | 구독·Paywall UX 설계 | Design Lead Agent | `T-20260729-002`, `T-20260728-010` | 수익화 activation gate 대기 |
 
 `T-20260728-002`는 Design QA와 Design Lead 완료 검토를 통과하고 PR #6으로 `develop`에 squash merge되어 `done`으로 확정했습니다. `T-20260729-002`는 기존 결과를 재개방하지 않고 확정된 제품 상태를 후속 버전으로 갱신합니다.
