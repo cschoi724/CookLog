@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260811-004
 title: 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업
-status: approved
+status: done
 type: feature
 priority: P1
 priority_reason: Foundation 이후 첫 사용자 흐름 묶음으로 빠른 기록과 레시피 탐색을 일관되게 만든다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent:
+target_role:
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities: [design_scoping, component_system_design, ux_flow, ui_design, prototyping, design_handoff, developer_verification, task_reporting]
@@ -40,7 +40,7 @@ allowed_paths:
   - .ai_project/task_board.md
   - .ai_project/teams/design/task_board.md
 source_of_truth:
-  - origin/develop@639ba36
+  - origin/develop@e0be523
   - design/prototype/
   - design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
@@ -53,20 +53,20 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-11
-updated_at: 2026-08-11
+updated_at: 2026-08-12
 report_to: .ai_project/reports/T-20260811-004_pop-kitsch-home-library-prototype-design-report.md
 qa_to: .ai_project/qa/T-20260811-004_pop-kitsch-home-library-prototype-design-qa.md
 status_ref: origin/develop
-status_ref_sha: 639ba36
-parent_scope_ref: origin/develop@639ba36
+status_ref_sha: e0be523
+parent_scope_ref: origin/develop@e0be523
 base_ref: origin/develop
-base_sha: 639ba36
+base_sha: e0be523
 branch:
   name: task/T-20260811-004-concept-rework
   base: develop
 pr:
-  url:
-  status: to_create_after_execution
+  url: https://github.com/cschoi724/CookLog/pull/138
+  status: ready_to_merge
 ---
 
 # 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업
@@ -91,7 +91,7 @@ pr:
 
 - 기존 PR #134는 PASS·Completion·병합 보류 상태로 보존한다. 이 PR은 이전 구현과 QA 재작업 기록의 참고 산출물이며 재작업 결과를 병합하지 않는다.
 - Product Owner가 2026-08-11 이 범위의 재실행을 승인했다. UI/UX Design Agent / Execution Role만 재작업을 수행할 수 있다.
-- UI/UX Design Agent는 최신 `origin/develop@639ba36`에서 새 `task/T-20260811-004-concept-rework` 전용 worktree를 만들고 작업을 시작한다. 기존 Draft PR의 구현 결과는 참고만 하며, stale worktree를 자동 rebase·reset·stash하지 않는다.
+- UI/UX Design Agent는 최신 `origin/develop@e0be523`에서 새 `task/T-20260811-004-concept-rework` 전용 worktree를 만들고 작업을 시작한다. 기존 Draft PR의 구현 결과는 참고만 하며, stale worktree를 자동 rebase·reset·stash하지 않는다.
 - 완료 후 Design QA Agent가 Foundation 표현, Home·Library 14개 상태와 보존 계약을 독립 검증한다. PASS 전에는 T-005 실행·PR #134 병합 근거로 사용할 수 없다.
 
 ## Product Owner Approval
@@ -112,18 +112,37 @@ pr:
 ```text
 다음 Agent에게 전달할 말:
 
-너는 UI/UX Design Agent / Execution Role이야.
-Task T-20260811-004는 승인된 Foundation·Home·Library 단일 재작업 Task야.
+너는 Design Lead Agent / Completion Role이야.
+Task T-20260811-004의 완료 수용 여부를 검토해줘.
 
-- 공용 기준: origin/develop@639ba36
-- 현재 상태: approved
+- 공용 기준: origin/develop@e0be523
+- 현재 상태: verification_passed
+- 작업 경로: /private/tmp/cooklog-t20260811-004-concept-rework
+- Draft PR: https://github.com/cschoi724/CookLog/pull/138
 - 변경 대상: design/prototype/app.js, design/prototype/styles.css, design/prototype/components.html
 - 참고 산출물: .ai_project/reports/T-20260811-004_pop-kitsch-home-library-prototype-design-report.md, .ai_project/qa/T-20260811-004_pop-kitsch-home-library-prototype-design-qa.md, design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
-- 다음에 해야 할 일: 최신 origin/develop@639ba36에서 새 `task/T-20260811-004-concept-rework` worktree를 만들고, Foundation 보강 후 Home을 원본 시안 위계로 재구성하고 Library에 같은 Foundation을 적용해줘.
-- 유지 계약: Home/Library 14개 상태, routing, recipe lifecycle, 최근 3개, AI 비챗봇, 로컬 검색 개인정보, 390×844·375×667, Accessibility 3, 대비, 44pt, keyboard·VoiceOver·focus, 외부 asset·폰트 없음.
-- 차단/결정 필요: PR #134는 이전 구현 참고용으로 병합하지 않는다. Home 컨셉에 포함된 음식 사진은 신규 외부 asset 범위에 포함하지 않는다.
-- 완료 시: 작업 보고서를 작성하고 status를 verification_ready로 전환해 Design QA Agent / Verification Role에 인계해.
+- 다음에 해야 할 일: QA PASS, allowed paths, source-of-truth 정렬 및 잔여 리스크를 검토해 completion_review 전환 또는 보완 판단을 내려줘.
+- 확인 사항: Home/Library 14개 상태, routing, lifecycle, 최근 3개, AI 비챗봇, 로컬 검색 개인정보, 390×844·375×667, Accessibility 3, 대비, 44pt, keyboard·VoiceOver·focus, 외부 asset·폰트 없음은 Design QA PASS다.
+- 잔여 리스크: CSS 미디어 표현의 사진 수준 고충실도는 proposed T-20260811-008 범위다. PR #134는 이전 구현 참고용으로 병합하지 않는다.
+- 제한: PR #138은 Draft이며 Completion·Product Owner 승인 전 병합 또는 외부 공개를 진행하지 않는다.
 ```
+
+## Completion Review
+
+- 검토일: 2026-08-12
+- 검토 Role: Design Lead Agent / Completion Role
+- 판정: 수용
+- 근거: 독립 Design QA `PASS`, 허용 경로·정적 검사 통과, Home·Library 14개 상태 및 접근성·기능 계약 보존을 확인했다.
+- 잔여 리스크: 외부 이미지·폰트 없이 구현한 CSS 미디어의 시각 완성도는 T-20260811-008에서 Product Owner 시각 승인과 함께 보완한다.
+- 병합 대상: PR #138만 해당하며, 이전 PR #134는 참고 기록으로 유지한다.
+
+## Completion Decision
+
+- 확정일: 2026-08-12
+- 확정 Role: Design Lead Agent / Completion Role
+- 결정: `done`
+- 수용: Product Owner가 T-004 완료 처리 및 PR #138 병합을 승인했다.
+- 후속: T-20260811-008은 T-004 완료 기준을 충족했으며, 기존 승인 범위에서 UI/UX Design Agent 실행 단계로 이어진다. T-005는 T-008의 Product Owner 시각 승인 및 Design QA PASS 전까지 대기한다.
 
 ## Activity
 
@@ -136,3 +155,9 @@ Task T-20260811-004는 승인된 Foundation·Home·Library 단일 재작업 Task
 | 2026-08-11 | Design QA Agent | verification_ready | rework_requested | Product Owner 요청으로 PASS 수용·병합을 보류하고 원본 concept 기준 Foundation 보강·Home 레이아웃 정합화를 같은 T-004 재작업으로 Design Lead에 인계 |
 | 2026-08-11 | Design Lead Agent | rework_requested | scoped | T-003을 재오픈하지 않고 Foundation 보강·Home·Library 재작업을 하나의 T-004 실행 단위로 조율 |
 | 2026-08-11 | Product Owner | scoped | approved | Foundation·Home·Library 단일 재작업과 UI/UX Design Agent 재실행 승인 |
+| 2026-08-11 | UI/UX Design Agent | approved | in_progress | 최신 origin/develop@d7e9ea7 기반 전용 worktree에서 lock을 획득하고 Foundation → Home → Library 순서 재작업 시작 |
+| 2026-08-11 | UI/UX Design Agent | in_progress | verification_ready | 최신 origin/develop@e0be523 재정렬, Foundation → Home → Library 구현·정적/대표 렌더 검증 완료 후 lock 해제·Design QA 재검증 인계 |
+| 2026-08-12 | Design QA Agent | verification_ready | verification_in_progress | 최신 origin/develop 포함 상태에서 lock을 획득하고 Foundation·Home·Library concept rework 독립 검증 시작 |
+| 2026-08-12 | Design QA Agent | verification_in_progress | verification_passed | 원본 시안 위계, 14개 상태·routing, responsive/theme, 접근성, gallery·console, 외부 asset 금지를 독립 검증해 PASS로 Completion Role에 인계 |
+| 2026-08-12 | Design Lead Agent | verification_passed | completion_review | 독립 QA PASS와 잔여 리스크 분리를 수용하고 완료 확정 검토를 시작 |
+| 2026-08-12 | Design Lead Agent | completion_review | done | Product Owner의 완료·병합 승인에 따라 독립 QA PASS를 수용하고 T-008 실행 기준을 해제 |

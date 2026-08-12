@@ -29,6 +29,14 @@
     .section-intro { margin: -5px 0 14px; color: var(--text-secondary); font-size: 12px; line-height: 18px; }
     .demo-stack { display: grid; gap: 10px; }
     .component-rule { margin: 14px 0 0; padding: 11px 12px; border-radius: 14px; color: var(--text-secondary); background: var(--bg-subtle); font-size: 12px; line-height: 18px; }
+    .concept-foundation-demo { padding: 18px 14px; display: grid; justify-items: center; gap: 18px; border: 2px solid var(--border-strong); border-radius: 28px 28px 18px 28px; background: color-mix(in srgb, var(--club-paper) 88%, var(--butter)); }
+    .concept-foundation-demo .club-display { font-size: 54px; }
+    .concept-mark-row { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .concept-card-grid { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    .concept-media-card { padding: 8px; display: grid; gap: 8px; border: 2px solid var(--border); border-radius: 20px 20px 13px 20px; background: var(--bg-elevated); box-shadow: var(--card-shadow); }
+    .concept-media-card .recipe-card-media { min-height: 96px; display: block; }
+    .concept-media-card strong { font-size: 13px; line-height: 18px; }
+    .concept-media-card span:last-child { color: var(--text-secondary); font-size: 10px; line-height: 15px; }
   </style>
 </head>
 <body>
@@ -52,6 +60,25 @@
         <div class="token-card" style="--token-color:var(--info)"><i></i><strong>Info</strong><span>처리·안내</span></div>
         <div class="token-card" style="--token-color:var(--focus)"><i></i><strong>Focus</strong><span>키보드 포커스</span></div>
       </div>
+    </section>
+
+    <section class="component-section" data-component="Concept Foundation Extension">
+      <h2>Concept Foundation · Home/Library</h2>
+      <p class="section-intro">원본 시안의 큰 디스플레이, 제한된 스티커·테이프, 원형 기록 CTA, 미디어 카드, 작은 비챗봇 AI 도우미 규격입니다.</p>
+      <div class="concept-foundation-demo">
+        <div class="concept-mark-row"><span class="club-burst">오늘<br>뭐 먹지?</span><span class="club-sticker">바로 말하고 기록!</span></div>
+        <h2 class="club-display">CookLog</h2>
+        <span class="club-tape">내 손맛, 기록 한 입!</span>
+        <button class="record-club-control" type="button" aria-label="음성으로 10초 요리 기록 시작">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg>
+        </button>
+        <div class="concept-card-grid" aria-label="2열 레시피 미디어 카드 예시">
+          <div class="concept-media-card"><span class="recipe-card-media"><i class="recipe-media-sticker">BEST!</i></span><strong>오늘 저녁 기록</strong><span>기록 중 · STEP 2개</span></div>
+          <div class="concept-media-card"><span class="recipe-card-media"><i class="recipe-media-sticker">GOOD!</i></span><strong>된장국 레시피</strong><span>어제 · 약 25분</span></div>
+        </div>
+        <aside class="ai-helper-card" aria-label="AI 요리도우미 비챗봇 예시"><span class="ai-helper-face" aria-hidden="true">:)</span><span class="ai-helper-copy"><span class="club-sticker">AI 요리도우미</span><strong>오늘 뭐 만들지 고민이라면?</strong><small>기록한 STEP만 레시피로 정리해요.</small></span></aside>
+      </div>
+      <p class="component-rule">장식은 정보와 action을 가리지 않으며, AI 도우미는 입력창·대화 말풍선·자동 실행이 없는 안내 요소로만 사용합니다.</p>
     </section>
 
     <section class="component-section" data-component="Button">

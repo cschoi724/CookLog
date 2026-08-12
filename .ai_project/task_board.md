@@ -16,11 +16,11 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 |---|---:|
 | `proposed` | 16 |
 | `scoped` | 3 |
-| `approved` | 7 |
+| `approved` | 6 |
 | `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
-| `verification_passed` | 0 |
+| `verification_passed` | 1 |
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 0 |
@@ -38,7 +38,7 @@ Team별 요약:
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 1 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 5 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Design | 4 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 13 | 0 | 0 | `.ai_project/teams/development/task_board.md` |
 | Quality | 0 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 | AI Ops | 0 | 0 | 0 | `T-20260730-006`, `T-20260731-002` `done` |
@@ -66,7 +66,7 @@ Team별 요약:
 | `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | Product Lead Agent | `scoped`, 앱 전반 범위·82개 상태·화면군별 실행 순서 확정; P0 Task 무중단 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
-| `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | UI/UX Design Agent | `approved`, Foundation 보강 후 원본 concept 기준 Home·Library 단일 재작업 실행 |
+| `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | `done`, 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
 | `T-20260811-008` | P1 | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | Design Lead Agent → UI/UX Design Agent | `proposed`, T-004 이후·Home 고충실도·Product Owner 시각 승인 |
 | `T-20260811-005` | P1 | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, T-004·T-008 이후·Core Loop 33 상태 |
 | `T-20260811-006` | P1 | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, `T-005` 이후·35 상태 |
