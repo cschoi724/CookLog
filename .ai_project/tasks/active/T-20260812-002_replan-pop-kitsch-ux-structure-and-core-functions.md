@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-002
 title: 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P1
 priority_reason: 확정된 팝 키치 시각 언어를 실제 사용 흐름과 정보 구조에 연결해야 이후 화면군 디자인이 장식 변경에 머물지 않는다.
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product QA Agent
-target_role: Verification Role
+target_agent: Product Lead Agent
+target_role: Completion Role
 planned_execution_agent: Product Planning Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -71,19 +71,19 @@ updated_at: '2026-08-12'
 report_to: ".ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md"
 qa_to: ".ai_project/qa/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-qa.md"
 status_ref: origin/develop
-status_ref_sha: 706b8518bcce91cf86e3bc9c55b4388870d44a48
-worktree_path: "/private/tmp/cooklog-t20260812-002-rework-execution"
-worktree_role: Execution Role
+status_ref_sha: d7a5010af9d0b2bc9f340fa2bb15f736b6eb298b
+worktree_path: "/private/tmp/cooklog-t20260812-002-product-qa-reverify"
+worktree_role: Verification Role
 base_ref: origin/develop
-base_sha: 706b8518bcce91cf86e3bc9c55b4388870d44a48
+base_sha: d7a5010af9d0b2bc9f340fa2bb15f736b6eb298b
 branch:
-  name: task/T-20260812-002-rework-execution
+  name: task/T-20260812-002-product-qa-reverify
   base: develop
 pr:
   url:
   status:
 blocker:
-next_decision:
+next_decision: Product Lead Agent가 PASS_WITH_RISK 판정과 375×667 후속 리스크를 확인하고 완료를 확정한다.
 ---
 
 # 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획
@@ -127,20 +127,18 @@ Product Owner는 Product QA 재작업 중 375×667pt를 기본 완료 조건에�
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product QA Agent / Verification Role이야.
-Task T-20260812-002의 재작업 결과를 독립적으로 검증해줘.
+너는 Product Lead Agent / Completion Role이야.
+Task T-20260812-002의 완료 확정을 진행해줘.
 
-- 현재 상태: verification_ready
+- 현재 상태: verification_passed
+- Product QA 판정: PASS_WITH_RISK
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 706b8518bcce91cf86e3bc9c55b4388870d44a48
-- 다음에 해야 할 일: 공식 manifest의 82개 상태와 재작업 추적표를 1:1 대조하고, Home 전체 요리책 단일 진입점·390×844pt 기준·기능 확장 금지를 PASS/PASS_WITH_RISK/FAIL/BLOCKED로 판단해줘.
-- 기준 문서: docs/product/CookLog_PRD_v2.md, docs/product/CookLog_USER_FLOW.md, design/prototype/, design/COOKLOG_MVP_UIUX_V1_HANDOFF.md, design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md, T-002, T-004, T-008
-- 허용 경로: .ai_project/tasks/active/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions.md, .ai_project/task_board.md, .ai_project/teams/product/task_board.md, docs/product/CookLog_POP_KITSCH_UX_PLAN.md, .ai_project/reports/, .ai_project/qa/
-- 참고 산출물: docs/product/CookLog_POP_KITSCH_UX_PLAN.md, .ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md, .ai_project/qa/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-qa.md
-- 변경/검토 대상: docs/product/CookLog_POP_KITSCH_UX_PLAN.md와 재작업 실행 보고서
-- 남은 리스크: 375×667pt 전체 화면 명세는 Product Owner 결정으로 기본 완료 조건에서 제외됐다. 기존 Prototype의 작은 화면 계약은 Legacy/Baseline에만 남는다.
+- 기준 상태 SHA: d7a5010af9d0b2bc9f340fa2bb15f736b6eb298b
+- 다음에 해야 할 일: QA 보고서의 82개 상태 계약·Home 단일 진입점 통과 근거와 375×667 Legacy 충돌 리스크를 확인하고 완료 여부를 확정해줘.
+- 기준 문서: docs/product/CookLog_POP_KITSCH_UX_PLAN.md, 재작업 실행 보고서, Product QA 보고서, T-20260812-004
+- 남은 리스크: 기존 Prototype/iOS의 375×667 계약은 이번 Task 완료 기준에서 제외됐지만 canonical Source of Truth에는 남아 있다.
 - 차단/결정 필요: T-004 전체 재정렬 전 T-003·T-008·T-005~007과 iOS UI 동기화를 시작하지 않는다.
-- 통과 시: status를 verification_passed로 바꾸고 Product Lead Agent / Completion Role에 인계해줘. 수정 필요 시: rework_requested로 바꾸고 누락 추적 키·계약을 명확히 남겨줘.
+- 완료 후: T-20260812-004의 재정렬 승인·실행에서 390 기본/375 위험 기반 후속 원칙을 canonical 기준에 반영해줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -174,3 +172,7 @@ Task T-20260812-002의 재작업 결과를 독립적으로 검증해줘.
 | 2026-08-12 | Product Planning Agent | lock | task lock |
 | 2026-08-12 | Product Planning Agent | transition: approved -> in_progress | 승인된 재작업 범위에 따라 82개 상태·데이터/복구 계약 추적표와 Home 전체 요리책 단일 진입점 baseline을 보완한다. |
 | 2026-08-12 | Product Planning Agent | transition: in_progress -> verification_ready | 공식 82개 상태·데이터/복구 계약 추적표, 390×844pt 기본 기준, Home 전체 요리책 단일 진입점과 재작업 보고를 완료해 Product QA 독립 재검증으로 인계한다. |
+| 2026-08-12 | Product QA Agent | lock | task lock |
+| 2026-08-12 | Product QA Agent | transition: verification_ready -> verification_in_progress | 재작업 산출물 독립 재검증 착수 |
+| 2026-08-12 | Product QA Agent | lock | task lock |
+| 2026-08-12 | Product QA Agent | transition: verification_in_progress -> verification_passed | 재작업 82개 상태 계약 1:1 추적·Home 단일 진입점·390pt 기준 통과, 375pt Legacy 기준 충돌은 T-004 후속 리스크로 인계 |

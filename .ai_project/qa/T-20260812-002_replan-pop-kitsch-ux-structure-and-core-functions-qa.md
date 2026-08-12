@@ -3,8 +3,9 @@
 작성일: 2026-08-12
 작성자: Product QA Agent / Verification Role
 대상 Task: `T-20260812-002`
-최종 판정: `FAIL`
-최종 상태 인계: `verification_in_progress -> rework_requested`
+최초 판정: `FAIL`
+재작업 독립 재검증 판정: `PASS_WITH_RISK`
+최종 상태 인계: `verification_in_progress -> verification_passed`
 
 ## 1. 검증 기준
 
@@ -145,3 +146,67 @@ Task `T-20260812-002`의 재작업 범위를 조율해줘.
 - 차단/결정 필요: Home 최근 섹션명·전체 보기 위치·사용자 노출 카피는 Product Owner 결정값으로 유지한다.
 - 재개 가능 시: 재작업 범위를 `scoped` 또는 `approved`로 전환할지 사용자 승인 기준으로 판단해줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
+
+## 6. 재작업 독립 재검증
+
+### 6.1 검증 기준
+
+- 재검증 공용 상태 ref: `origin/develop`
+- 재검증 공용 상태 SHA: `d7a5010af9d0b2bc9f340fa2bb15f736b6eb298b`
+- 재검증 worktree: `/private/tmp/cooklog-t20260812-002-product-qa-reverify`
+- 재검증 branch: `task/T-20260812-002-product-qa-reverify`
+- 재작업 실행 commit: `d7a5010af9d0b2bc9f340fa2bb15f736b6eb298b`
+- 재작업 실행 보고서: `.ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md`
+
+초기 FAIL 기록은 변경 이력으로 보존하고, Product Owner가 승인한 재작업 수용 기준과 공식 Prototype·PRD·User Flow·iOS 인수 계약을 다시 대조했다.
+
+### 6.2 이전 결함별 결과
+
+| 결함 | 재검증 결과 | 근거 |
+|---|---|---|
+| `PQA-HIGH-812002-001` 82개 상태 계약 추적성 | 해결 | `HOME-01~09`, `LIB-01~05`, `LOG-01~14`, `REV-01~12`, `DETAIL-01~07`, `PLAYER-01~24`, `INFO-01~11`이 `design/prototype/app.js`의 7개 화면·82개 상태 순서와 의미상 1:1 대응한다. 행 수 82, 고유 키 82, 순번 누락 0, 필수 계약 열 누락 0이다. |
+| `PQA-HIGH-812002-002` 375×667 화면별 명세 | 승인된 범위 변경 | Product Owner가 375×667 전체 화면 명세를 이번 Task의 완료 조건에서 제외했다. Task Scope·Acceptance·Validation과 후속 `T-20260812-004`가 동일하게 390×844를 기본 기준으로 고정한다. 기존 Prototype/iOS의 작은 화면 계약은 아래 잔여 리스크로 유지한다. |
+| `PQA-MEDIUM-812002-003` Home 전체 보기 충돌 | 해결 | Home 헤더는 `CookLog / 앱 정보`만 포함하고, `전체 요리책 보기`는 최근 카드 영역의 단일 텍스트 액션으로 일관된다. 헤더 중복 진입점 금지도 기능 결정표·레이아웃·Design handoff에 동일하게 기록됐다. |
+
+### 6.3 수용 기준 및 회귀 결과
+
+| 검증 항목 | 결과 | 근거 |
+|---|---|---|
+| 82개 공식 상태 1:1 대응 | 통과 | Prototype 상태 수와 계획 추적 키가 화면별 `9/5/14/12/7/24/11`, 합계 `82/82`로 일치한다. |
+| routing·기능·데이터 보존·복구 계약 | 통과 | 각 상태에 결정·근거, routing/기능/데이터 영향, 복구·보존, 추가 승인 필요 여부가 기록됐고 PRD·User Flow의 STT 1회 재처리, 원격 fallback 금지, AI snapshot, 저장 실패 값 보존, Player 수동 재개, App Info 전송·보관 경계와 모순이 없다. |
+| 390×844 화면 구조 | 통과 | Home, Library, Cooking Log, AI Review, Recipe Detail, Audio Guide, App Info 7개 화면에 콘텐츠 순서·주/보조 CTA·상호작용 원칙이 있다. |
+| Home 단일 전체 보기 baseline | 통과 | 최근 카드 영역의 단일 액션이며 헤더 중복이 없다. |
+| 승인 없는 기능 확장 금지 | 통과 | 추천 피드·식단 계획·AI 채팅·의미 검색·클라우드 동기화를 구현 지시하지 않고 별도 승인 후보 또는 제외 항목으로 둔다. |
+| 실행 변경 경로 | 통과 | 재작업 commit의 5개 변경 파일이 모두 Task `allowed_paths` 안에 있다. Prototype·Figma·iOS·Backend 변경은 0개다. |
+| 정적·Task 검증 | 통과 | 재작업 commit `git diff --check`와 `aiops validate task ... --strict`가 통과했다. |
+
+### 6.4 잔여 리스크
+
+`RISK-PQA-812002-R1` — 기존 `design/prototype/README.md`, `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md`는 375×667 작은 화면 검증을 계속 요구하지만, 이번 제품 UX 계획은 Product Owner 승인으로 이를 완료 게이트에서 제외한다.
+
+- 영향: 후속 Design/iOS Agent가 Legacy 작은 화면 계약과 새 390×844 기본 범위를 서로 다른 완료 기준으로 해석할 수 있다.
+- 현재 통제: `T-20260812-004`가 동일한 390 기본·375 위험 기반 후속 원칙으로 Source of Truth와 Task 흐름을 재정렬하며, 그 전에는 T-003·T-008·T-005~007 및 iOS UI 동기화를 시작하지 않는다.
+- 리스크 소유: Product Lead Agent / `T-20260812-004` Completion 및 재정렬 승인.
+- 판정 영향: Product Owner가 이번 Task 수용 기준을 명시적으로 변경했고 후속 통제 Task가 존재하므로 FAIL 사유는 아니지만, canonical 기준 재정렬 전까지 닫히지 않아 `PASS_WITH_RISK`로 분류한다.
+
+## 7. 재작업 최종 판정
+
+`PASS_WITH_RISK`.
+
+재작업 필수 범위인 82개 상태 계약 추적성과 Home 단일 전체 보기 baseline이 충족됐고, 390×844 화면 구조·기능 확장 금지·허용 경로도 통과했다. 375×667의 기존 Legacy 계약과 새 제품 범위 사이의 충돌은 후속 `T-20260812-004`에서 해소해야 하는 명시적 리스크로 남긴다.
+
+다음 Agent에게 전달할 말:
+
+너는 Product Lead Agent / Completion Role이야.
+Task `T-20260812-002`의 완료 확정을 진행해줘.
+
+- 현재 상태: `verification_passed`
+- 검증 판정: `PASS_WITH_RISK`
+- 기준 상태 ref: `origin/develop`
+- 기준 상태 SHA: `d7a5010af9d0b2bc9f340fa2bb15f736b6eb298b`
+- 통과 근거: 공식 Prototype 82개 상태 1:1 추적, 상태별 routing·데이터 보존·오류 복구 계약, 390×844 화면 구조, Home 단일 전체 보기, 무단 기능 확장 금지, 허용 경로·정적 검증 통과.
+- 잔여 리스크: 기존 Prototype/iOS의 375×667 계약은 이번 Task 완료 기준에서 제외됐으나 Source of Truth에는 남아 있다.
+- 다음에 해야 할 일: 판정과 리스크를 확인해 Task 완료를 확정하고, `T-20260812-004`의 재정렬 승인·실행에서 390 기본/375 위험 기반 후속 원칙을 canonical 기준에 반영해줘.
+- 차단 조건: T-004 재정렬 전 T-003·T-008·T-005~007 및 iOS UI 동기화를 시작하지 마.
+- 참고 문서: 이 QA 보고서, 실행 보고서, `docs/product/CookLog_POP_KITSCH_UX_PLAN.md`, `T-20260812-004`.
+- 주의: 현재 Task의 workflow, status, target_agent, target_role이 Completion Role과 맞는지 먼저 확인해줘.
