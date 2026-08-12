@@ -25,6 +25,17 @@ depends_on:
   - T-20260805-006
   - T-20260805-007
   - T-20260805-008
+  - T-20260811-007
+  - T-20260812-001
+child_tasks:
+  - T-20260805-002
+  - T-20260805-003
+  - T-20260805-004
+  - T-20260805-005
+  - T-20260805-006
+  - T-20260805-007
+  - T-20260805-008
+  - T-20260812-001
 blocks:
   - T-20260729-004
   - T-20260729-005
@@ -51,6 +62,8 @@ source_of_truth:
   - design/prototype/
   - design/figma-build/manifest.json
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
+  - .ai_project/tasks/backlog/T-20260811-007_pop-kitsch-prototype-integration-design-qa.md
+  - .ai_project/tasks/active/T-20260812-001_ios-implementation-visual-design-qa.md
   - T-20260729-002의 승인된 디자인 핸드오프
   - T-20260805-001의 승인된 Core Loop 구현·Visual QA 계약
 created_by: Product Lead Agent
@@ -60,7 +73,7 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-07-28
-updated_at: 2026-08-05
+updated_at: 2026-08-12
 report_to: .ai_project/reports/T-20260728-003_apply-figma-uiux-to-ios-report.md
 qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 ---
@@ -102,7 +115,9 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 - 실제 서비스 어댑터 없이도 모든 성공·처리·오류 상태를 Mock으로 검증할 수 있다.
 - iPhone 작은 화면과 다크 모드에서 레이아웃 결함이 없다.
 - 접근성 라벨과 Dynamic Type의 핵심 흐름을 사용할 수 있다.
-- iOS QA Agent가 기능 회귀와 디자인 정합성 검증을 통과시킨다.
+- iOS QA Agent가 기능 회귀와 기술 접근성 검증을 통과시킨다.
+- Design QA Agent가 동일한 고정 디자인 SHA와 iOS 구현 commit을 기준으로 시각 정합성을 별도 검증한다.
+- 개발 검증과 디자인 검증이 모두 통과한 뒤에만 상위 Task 완료 리뷰를 진행한다.
 
 ## 사용자 결정 필요 항목
 
@@ -116,6 +131,11 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 - `T-20260728-001`의 유효 검증 항목은 이 Task와 최종 출시 게이트로 통합했고 기존 의존성을 제거했다.
 - `T-20260729-002`의 완료·승인 전에는 구현을 시작하지 않는다.
 - `T-20260805-001`은 완료됐으며 Core Loop 23개 상태 인수 계약을 제공한다. 이 하위 계약은 통합 핸드오프의 82개 상태를 축소하거나 대체하지 않는다.
+- 2026-08-12: Product Owner가 개발 검증과 디자인 검증의 책임 분리를 승인했다. 기존
+  `T-20260805-008`의 시각 증거와 실패 이력은 진단 자료로 보존하되 최종 Visual Fidelity
+  판정은 신규 `T-20260812-001`에서 Design QA Agent가 수행한다.
+- 현재 Prototype은 Home부터 전면 수정 중이므로 최신 통합 Design QA `T-20260811-007`과
+  Product Owner의 디자인 baseline 고정 전에는 iOS 최종 시각 판정을 시작하지 않는다.
 
 ## Development Lead 하위 Task 분해 요구
 
@@ -125,7 +145,8 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 4. AI Review·완료 레시피 편집·삭제
 5. Audio Guide·핸즈프리 화면 상태와 공통 action model
 6. 앱 정보·권한·오프라인·서비스 장애 상태
-7. 접근성·작은 화면·다크 모드·회귀 테스트
+7. iOS UI 구현·기능 회귀·기술 접근성 통합 검증
+8. 고정 디자인과 고정 iOS 구현 간 Visual Fidelity Design QA
 
 각 하위 Task는 iOS Agent 실행과 iOS QA 독립 검증 경계를 분리해야 한다.
 
@@ -139,9 +160,13 @@ qa_to: .ai_project/qa/T-20260728-003_apply-figma-uiux-to-ios-qa.md
 | 4 | `T-20260805-005` | AI Review·완료 레시피 편집·삭제 | `proposed` |
 | 5 | `T-20260805-006` | Audio Guide·핸즈프리 UI·공통 action model | `proposed` |
 | 6 | `T-20260805-007` | 앱 정보·권한·오프라인·서비스 장애 | `proposed` |
-| 7 | `T-20260805-008` | 접근성·작은 화면·다크 모드·통합 회귀 | `proposed` |
+| 7 | `T-20260805-008` | iOS UI 구현·기능·기술 접근성 통합 검증 | `blocked` |
+| 8 | `T-20260812-001` | iOS 구현 Visual Fidelity Design QA | `scoped` |
 
 - 2026-08-05: Product Owner가 T-003 진행을 승인했다.
 - Development Lead가 7개 구현·독립 QA 패키지로 범위화해 `proposed -> scoped`로 전환했다.
 - 공유 모델·저장 경계를 먼저 고정하기 위해 T-002만 `approved`로 iOS Agent에 인계한다.
 - 후속 Task는 선행 Task가 공용 `develop`에서 `done`이 된 뒤 별도 실행 승인한다.
+- `T-20260805-008`은 최신 디자인 baseline이 고정된 뒤 iOS Agent가 재개하고 iOS QA Agent가
+  기능·기술 접근성을 독립 검증한다. 이후 `T-20260812-001`에서 UI/UX Design Agent가 비교
+  증거를 준비하고 Design QA Agent가 시각 정합성을 독립 판정한다.
