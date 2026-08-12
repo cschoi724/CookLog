@@ -66,7 +66,7 @@ Team별 요약:
 | `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | Product Lead Agent | `scoped`, 앱 전반 범위·82개 상태·화면군별 실행 순서 확정; P0 Task 무중단 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
-| `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | Design Lead Agent | `verification_passed`, 원본 concept 정합·14개 상태·접근성·console PASS; Completion 검토 대기 |
+| `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | Design Lead Agent | `completion_review`, 독립 QA PASS 수용; PR #138 완료 확정·병합 준비 |
 | `T-20260811-008` | P1 | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | Design Lead Agent → UI/UX Design Agent | `proposed`, T-004 이후·Home 고충실도·Product Owner 시각 승인 |
 | `T-20260811-005` | P1 | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, T-004·T-008 이후·Core Loop 33 상태 |
 | `T-20260811-006` | P1 | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | Design Lead Agent → UI/UX Design Agent | `proposed`, `T-005` 이후·35 상태 |
