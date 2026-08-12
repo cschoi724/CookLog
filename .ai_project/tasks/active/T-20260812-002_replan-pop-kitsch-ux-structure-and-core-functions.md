@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-002
 title: 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획
-status: verification_passed
+status: completion_review
 type: feature
 priority: P1
 priority_reason: 확정된 팝 키치 시각 언어를 실제 사용 흐름과 정보 구조에 연결해야 이후 화면군 디자인이 장식 변경에 머물지 않는다.
@@ -71,19 +71,19 @@ updated_at: '2026-08-12'
 report_to: ".ai_project/reports/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-report.md"
 qa_to: ".ai_project/qa/T-20260812-002_replan-pop-kitsch-ux-structure-and-core-functions-qa.md"
 status_ref: origin/develop
-status_ref_sha: d7a5010af9d0b2bc9f340fa2bb15f736b6eb298b
-worktree_path: "/private/tmp/cooklog-t20260812-002-product-qa-reverify"
-worktree_role: Verification Role
+status_ref_sha: ddfac33ded48650c4cd65399f33b39c8930aad47
+worktree_path: "/private/tmp/cooklog-t20260812-002-completion"
+worktree_role: Completion Role
 base_ref: origin/develop
-base_sha: d7a5010af9d0b2bc9f340fa2bb15f736b6eb298b
+base_sha: ddfac33ded48650c4cd65399f33b39c8930aad47
 branch:
-  name: task/T-20260812-002-product-qa-reverify
+  name: task/T-20260812-002-completion-review
   base: develop
 pr:
   url:
   status:
 blocker:
-next_decision: Product Lead Agent가 PASS_WITH_RISK 판정과 375×667 후속 리스크를 확인하고 완료를 확정한다.
+next_decision: Product Lead Agent가 PASS_WITH_RISK 잔여 리스크를 T-20260812-004로 인계한 상태로 done을 확정한다.
 ---
 
 # 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획
@@ -176,3 +176,4 @@ Task T-20260812-002의 완료 확정을 진행해줘.
 | 2026-08-12 | Product QA Agent | transition: verification_ready -> verification_in_progress | 재작업 산출물 독립 재검증 착수 |
 | 2026-08-12 | Product QA Agent | lock | task lock |
 | 2026-08-12 | Product QA Agent | transition: verification_in_progress -> verification_passed | 재작업 82개 상태 계약 1:1 추적·Home 단일 진입점·390pt 기준 통과, 375pt Legacy 기준 충돌은 T-004 후속 리스크로 인계 |
+| 2026-08-12 | Product Lead Agent | transition: verification_passed -> completion_review | Product QA PASS_WITH_RISK 결과와 82개 상태 추적·Home 단일 진입점·390×844pt 기준을 수용하고, 375×667pt Legacy 충돌을 T-20260812-004 후속 리스크로 분리해 완료 리뷰를 시작한다. |
