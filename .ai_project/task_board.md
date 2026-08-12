@@ -14,7 +14,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 16 |
+| `proposed` | 17 |
 | `scoped` | 4 |
 | `approved` | 7 |
 | `in_progress` | 0 |
@@ -37,7 +37,7 @@ Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
-| Product | 2 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
+| Product | 3 | 0 | 0 | `.ai_project/teams/product/task_board.md` |
 | Design | 5 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 13 | 0 | 1 | `.ai_project/teams/development/task_board.md` |
 | Quality | 1 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
@@ -67,6 +67,7 @@ Team별 요약:
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | Product Lead Agent | `scoped`, 앱 전반 범위·82개 상태·화면군별 실행 순서 확정; P0 Task 무중단 |
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | Product Planning Agent | `approved`, 82개 상태·데이터/복구 계약 결정표와 Home 단일 전체 보기 baseline 보완 실행 승인; 375×667pt 전체 명세는 기본 범위 제외 |
 | `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `proposed`, T-002 완료 후 비공개 Figma 범위·기존 디자인 Task 영향 조율 및 실행 승인 필요 |
+| `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | Product Lead Agent | `proposed`, T-002 완료 후 컨셉·기획·디자인·iOS·QA Task의 유지·보류·재범위화와 실행 순서 조율 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | `done`, 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
 | `T-20260811-008` | P1 | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | UI/UX Design Agent | `approved`, T-004 완료·Home 고충실도·Product Owner 시각 승인 |
