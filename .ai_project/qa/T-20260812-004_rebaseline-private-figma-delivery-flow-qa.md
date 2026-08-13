@@ -3,8 +3,9 @@
 작성일: 2026-08-13
 작성자: Product QA Agent / Verification Role
 대상 Task: `T-20260812-004`
-최종 판정: `FAIL`
-최종 상태 인계: `verification_in_progress -> rework_requested`
+최초 판정: `FAIL`
+재작업 독립 재검증 판정: `PASS_WITH_RISK`
+최종 상태 인계: `verification_in_progress -> verification_passed`
 
 ## 1. 검증 기준
 
@@ -119,3 +120,68 @@ Task `T-20260812-004`의 재작업 범위를 조율해줘.
 - 보존 사항: 현재 재정렬 그래프, 취소 상태, Legacy/WIP, Backend 독립 흐름과 비공개 식별자 비기록 원칙은 변경하지 마.
 - 재검증 요청: 문서 정합성과 `git diff --check`를 수정한 뒤 Product QA Agent / Verification Role로 다시 인계해줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 Lead Role과 맞는지 먼저 확인해줘.
+
+## 6. 재작업 독립 재검증
+
+### 6.1 검증 기준
+
+- 재검증 공용 상태 ref: `origin/develop`
+- 재검증 공용 상태 SHA: `3c3388e17a833022311bc19dc0223384b054383f`
+- 재검증 worktree: `/private/tmp/cooklog-t20260812-004-product-qa-reverify`
+- 재검증 branch: `task/T-20260812-004-product-qa-reverify`
+- 재작업 실행 commit: `3c3388e17a833022311bc19dc0223384b054383f`
+- 재작업 승인 기준: `origin/develop@7135d773422192d3075d725d7291a8ff00e0552a`
+
+최초 FAIL 기록은 변경 이력으로 보존하고, 재작업 commit과 관련 Task·보드·Source of Truth·전달 흐름을 다시 대조했다.
+
+### 6.2 이전 결함별 결과
+
+| 결함 | 재검증 결과 | 근거 |
+|---|---|---|
+| `PQA-HIGH-813004-001` T-003 Handoff 충돌 | 해결 | T-003 frontmatter·blocker·Coordination Notes·Handoff가 모두 T-004 Product QA 재검증과 완료 확정 후 `done`을 선행 조건으로 사용한다. T-008·T-005~007은 이미 `cancelled`·흡수됐으며 기존 산출물과 WIP를 Legacy/Baseline으로 보존한다고 일치한다. |
+| `PQA-MEDIUM-813004-002` T-004 실행 전/후 상태 혼재 | 해결 | `승인안 실행 결과` 표가 실행 전 상태, 적용 결과, 현재 운영 기준을 분리하고 T-003 proposed, 5개 취소 Task, iOS 후속 상태와 현재 진행 위치를 canonical과 일치시킨다. |
+| `PQA-LOW-813004-003` diff 검증 증거 불일치 | 해결 | 보고서와 전달 흐름 문서의 후행 공백 4건이 제거됐다. `git diff --check 7135d77..3c3388e`와 `git diff --check b5fc2e3..3c3388e`가 모두 exit 0으로 재현된다. |
+
+### 6.3 전체 회귀 결과
+
+| 검증 항목 | 결과 | 근거 |
+|---|---|---|
+| 관련 Task 정적 검증 | 통과 | 변경 관련 Task 10개 `aiops validate task ... --strict` 모두 PASS |
+| Canonical 실행 그래프 | 통과 | T-004 완료 → T-003 scope·별도 승인·Design QA·baseline → T-20260805-008 → T-20260812-001 → T-20260728-003 완료 리뷰 순서 유지 |
+| 취소 Task·Legacy/WIP 보존 | 통과 | T-20260811-002·005·006·007·008은 `cancelled`, 라우팅 비움, 삭제 파일 0개, Legacy/Baseline 보존 지시 유지 |
+| 제품 파일 무변경 | 통과 | 재작업 diff에 Prototype·Manifest·Figma build·iOS·Backend 제품 파일 변경 0개 |
+| 비공개 식별자 비기록 | 통과 | 재작업 추가 행에 실제 Figma URL·파일 키·팀/조직 ID·초대 값 0개 |
+| Backend 독립 흐름 | 통과 | Backend Task·상태·제품 파일 변경 0개이며 UI/Figma 대기와 분리됨 |
+| 세부 Task·팀 보드 | 통과 | 관련 Task 행의 상태·담당·선행 조건과 실행 순서가 canonical Task와 일치함 |
+| 프로젝트 보드 상단 요약 | 리스크 | 상세 행은 정확하지만 상태·Team 요약 카운터가 실제 Task 집계와 일치하지 않음 |
+
+### 6.4 잔여 리스크
+
+`RISK-PQA-813004-R1` — `.ai_project/task_board.md` 상단 상태 및 Team 요약 카운터가 개별 Task와 불일치한다.
+
+- 확인 예: Task 파일의 `cancelled`는 6개인데 보드 요약은 1개다. `proposed`, `approved`, `done` 등에도 기존 전역 차이가 있다.
+- T-004 영향: 재정렬로 T-20260811-002·005·006·007·008 다섯 건을 새로 `cancelled` 처리했지만 요약 카운터는 갱신되지 않았다.
+- 완화: 같은 보드의 관련 상세 행, 각 Team Board와 Task frontmatter는 현재 상태·실행 순서에 일치하며, 보드 자체도 충돌 시 Task 파일을 우선한다고 명시한다.
+- 후속 권고: Product Lead가 Completion에서 상단 카운터를 제거·재계산하거나 별도 보드 정비 Task로 분리한다.
+- 판정 영향: 실행 라우팅과 dependency는 개별 Task가 기준이고 상세 행은 정확하므로 완료 차단 결함이 아닌 수용 가능한 보고 리스크로 분류한다.
+
+## 7. 재작업 최종 판정
+
+`PASS_WITH_RISK`.
+
+Product QA 필수 수정 3건은 모두 해소됐고, 재정렬 그래프·Legacy/WIP·Backend 독립 흐름·비공개 식별자 비기록 원칙도 회귀 없이 유지됐다. 프로젝트 보드 상단 요약 카운터의 전역 불일치는 Completion에서 수용하거나 후속 정비해야 하는 잔여 리스크로 남긴다.
+
+다음 Agent에게 전달할 말:
+
+너는 Product Lead Agent / Completion Role이야.
+Task `T-20260812-004`의 완료 확정을 진행해줘.
+
+- 현재 상태: `verification_passed`
+- Product QA 판정: `PASS_WITH_RISK`
+- 기준 상태 ref: `origin/develop`
+- 기준 상태 SHA: `3c3388e17a833022311bc19dc0223384b054383f`
+- 통과 근거: PQA-HIGH-813004-001, PQA-MEDIUM-813004-002, PQA-LOW-813004-003 해소; 관련 Task 10개 strict PASS; 재정렬 그래프·Legacy/WIP·Backend 독립 흐름·비공개 식별자 비기록 회귀 없음.
+- 잔여 리스크: 프로젝트 보드 상단 상태·Team 요약 카운터가 실제 Task 집계와 불일치한다. 상세 행과 Task frontmatter는 정확하다.
+- 다음에 해야 할 일: 판정과 리스크를 수용할지 확인하고 Task 완료를 확정해줘. 카운터 정비는 Completion 반영 또는 별도 후속 Task로 분리해줘.
+- 완료 후: T-20260812-003을 Design Lead Agent / Lead Role에 인계하되 Product Owner의 별도 Figma 실행 승인 전에는 디자인을 수정하지 마.
+- 주의: 현재 Task의 workflow, status, target_agent, target_role이 Completion Role과 맞는지 먼저 확인해줘.
