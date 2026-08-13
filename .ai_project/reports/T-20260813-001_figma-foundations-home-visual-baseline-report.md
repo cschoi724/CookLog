@@ -3,7 +3,7 @@
 ## 현재 상태
 
 - 실행 산출물 상태: `verification_ready`
-- 현재 Task 상태: `blocked` (Design QA의 비공개 Draft read-only 컨텍스트 지정 대기)
+- 현재 Task 상태: `verification_ready` (Design QA 재검증 대기)
 - 공용 기준: `origin/develop@86aa81c`
 - 실행 worktree: `task/T-20260813-001-figma-foundation-home-baseline`
 - 보안: Figma URL·파일 키·조직·초대 대상 식별자는 이 보고서에 기록하지 않는다.
@@ -81,6 +81,13 @@
 
 - Task를 `verification_ready`로 전환하고 Design QA Agent / Verification Role에 인계한다.
 - QA 기준과 재현 절차는 `.ai_project/qa/T-20260813-001_figma-foundations-home-visual-baseline-qa.md`에 기록한다.
+
+## 재인계 확인 — 2026-08-13
+
+- 기존 `BLOCKED` 사유였던 비공개 Draft read-only 입력과 원격 task branch 재현 경로는 Design Lead 확인 기록으로 해소됐다.
+- UI/UX Design Agent가 동일 Draft를 다시 read-only로 대조했다. 외부 Library 연결 0개, Home frame 18개(Light 9·Dark 9), 전부 `390×844`, 중복 이름 0개, local component set 4개, 상태 계약 1개, AX3 대표 frame 3개가 유지된다.
+- Task를 다시 `verification_ready`로 인계한다. Design QA는 같은 Draft의 비공개 read-only 입력을 받아 실제 구조·시각·token·접근성 계약을 독립 판정해야 한다.
+- 기존 리스크는 유지한다. 일반 Home 오류·삭제 상태의 32~34pt action container가 실제 hit area인지와 Light `#FFF8E8` base가 승인된 흰 캔버스 기준을 충족하는지는 Design QA가 판정한다.
 
 ## Phase 0 Gap Analysis
 

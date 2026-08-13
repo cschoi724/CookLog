@@ -2,7 +2,7 @@
 
 - 검증 Agent: Design QA Agent / Verification Role
 - 검증일: 2026-08-13
-- 최종 판정: `BLOCKED`
+- 최종 판정: `FAIL` → `rework_requested`
 - 공용 기준: `origin/develop@86aa81c4aaf541ede4a3b4da900c355cb25324be`
 - 검증 worktree: `task/T-20260813-001-figma-foundation-home-baseline` (`86aa81c`)
 - 보안: Figma URL·파일 키·조직·초대 대상 식별자는 기록하지 않는다.
@@ -46,3 +46,41 @@
 - Design QA 재검증 세션에는 Product Owner가 같은 Draft 링크를 비공개 입력으로 다시 전달해야 한다. 링크·파일 키는 저장소나 QA 보고서에 기록하지 않는다.
 - Lead 사전 감사에서 일반 Home 오류·삭제 상태의 일부 action container가 `32~34pt`로 측정됐다. 이 값이 실제 interactive target인지와 44pt 계약 충족 여부는 재검증 세션에서 독립 판정한다.
 - Light semantic `color/bg/base`는 `#FFF8E8`로 확인됐다. Task의 흰 캔버스 및 선택 시안 기준을 충족하는지, 순백으로 수정해야 하는지는 재검증 세션에서 독립 판정한다.
+
+## 재인계 준비 — UI/UX Design Agent
+
+- 동일 비공개 Draft를 read-only로 재확인했다. 외부 Library 연결 0개, Home Light 9개·Dark 9개 `390×844` frame, local component set 4개, 상태 계약 1개, AX3 대표 frame 3개가 유지된다.
+- Task는 다시 `verification_ready`로 Design QA Agent / Verification Role에 라우팅됐다.
+- Design QA는 Product Owner가 같은 Draft 링크를 저장소 밖 비공개 입력으로 제공한 상태에서만 실제 검증을 시작한다. 링크·파일 키를 이 문서에 기록하지 않는다.
+- 우선 판정 리스크: 일반 Home 오류·삭제 상태의 32~34pt action container가 실제 hit area인지, Light `#FFF8E8` base가 승인 시각 기준의 흰 캔버스로 수용 가능한지.
+
+## 최종 독립 재검증 결과
+
+비공개 Draft를 read-only로 직접 검사했다. URL·파일 키 등 식별자는 기록하지 않는다.
+
+| 범위 | 결과 | 독립 확인 |
+|---|---|---|
+| Foundations·Components | PASS | page 7개, local variable collection 3개(Primitive·Color Light/Dark·Layout), local component set 4개와 필요한 variant를 확인했다. local component의 unbound solid fill/stroke는 0건이다. |
+| Home 구조·재사용 | PASS | Light 9개·Dark 9개 총 18개 Home frame이 모두 `390×844`이다. 각 frame은 CTA·Recipe card 2개·AI helper·Tab item 4개의 local component instance를 사용한다. |
+| 시각 기준·Dark | PASS | Light Content의 큰 CookLog·원형 기록 CTA·최근 2열 카드·작은 비챗봇 AI helper 위계와 Dark Content의 의미 token/대비 계층을 실제 렌더로 확인했다. warm-white `#FFF8E8` base는 선택 시안의 크림 계열 캔버스와 일관돼 수용한다. |
+| 상태 계약·진입점 | PASS | State contract 9개와 각 Light/Dark frame을 대조했다. 모든 Home frame의 `전체 요리책 보기` 텍스트 액션은 정확히 1개이고 헤더 중복은 없다. |
+| AX3 | PASS | Content·Network error·Delete confirm 3개 대표 frame에서 텍스트 잘림이 없고, Retry `350×56`, Cancel/Delete `306×56`을 확인했다. |
+| 일반 Home 44pt action | FAIL | 아래 DQA 결함 2건이 일반 Light/Dark frame에서 발견됐다. AX3 frame의 56pt action은 일반 frame 결함을 대체하지 않는다. |
+
+### DQA-001 — Error 재시도 action hit area 미달
+
+- 재현: `Home / Error / 390×844 / Light`, `Dark`
+- 실제 측정: `다시 시도` 텍스트는 `44×15pt`이며 직접 Home frame의 child다. 44pt 이상 action container가 없다.
+- 영향: 최소 44×44pt 조작 영역 acceptance를 충족하지 못한다.
+- 수정 기준: Light/Dark 일반 Error frame에 local action component 또는 의미 있는 parent container를 배치하고 실제 hit area를 최소 `44×44pt`로 만든다.
+
+### DQA-002 — Delete confirm action hit area 미달
+
+- 재현: `Home / Delete confirm / 390×844 / Light`, `Dark`
+- 실제 측정: `취소`는 `23×16pt`, `영구 삭제`는 `48×16pt` 텍스트이며 둘 다 직접 Home frame의 child다. 44pt 이상 action container가 없다.
+- 영향: 위험 행동의 명시적 확인·취소는 접근성 핵심 계약인데 일반 화면의 touch target을 충족하지 못한다.
+- 수정 기준: Light/Dark 일반 Delete confirm의 취소·삭제 각각을 최소 `44×44pt` local action component/container로 바꾸고, 취소 시 보존·삭제 후 복구 불가 카피를 유지한다.
+
+## 다음 인계
+
+Design Lead Agent / Lead Role은 DQA-001·002를 재작업 범위로 조율하고 UI/UX Design Agent에게 재할당해야 한다. 재작업 완료 후 같은 비공개 Draft의 read-only 입력을 기준으로 Design QA가 일반 Light/Dark frame의 실제 hit area를 다시 측정한다.

@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-001
 title: 비공개 Figma Foundations·Home Visual Baseline
-status: approved
+status: rework_requested
 type: feature
 priority: P1
 priority_reason: 전체 화면을 확장하기 전에 구현 가능한 공통 토큰·컴포넌트와 Home 고충실도 기준을 먼저 고정해 반복 재작업을 차단한다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent: Design Lead Agent
+target_role: Lead Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -76,8 +76,8 @@ branch:
 pr:
   url: https://github.com/cschoi724/CookLog/pull/163
   status: draft
-blocker:
-next_decision: UI/UX Design Agent가 게시된 실행 보고서와 동일 비공개 Draft의 현재 상태를 확인하고 verification_ready 인계를 재개한 뒤, Product Owner가 같은 Draft 링크를 Design QA 세션에 비공개 입력으로 전달한다.
+blocker: 일반 Home Light/Dark Error의 재시도와 Delete confirm의 취소·영구 삭제가 44×44pt 이상 action container 없이 텍스트로 직접 배치돼 DQA-001·002를 충족하지 못한다.
+next_decision: Design Lead Agent가 DQA-001·002의 일반 Home Light/Dark touch target 재작업을 조율하고, 승인 후 UI/UX Design Agent에게 재할당한다.
 ---
 
 # 비공개 Figma Foundations·Home Visual Baseline
@@ -135,21 +135,22 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 ```text
 다음 Agent에게 전달할 말:
 
-너는 UI/UX Design Agent / Execution Role이야.
-Task T-20260813-001의 검증 인계를 재개해줘.
+너는 Design Lead Agent / Lead Role이야.
+Task T-20260813-001의 Design QA 재작업 요청을 조율해줘.
 
-- 현재 상태: approved
+- 현재 상태: rework_requested
 - 기준 상태 ref: origin/develop
 - 기준 상태 SHA: 86aa81c4aaf541ede4a3b4da900c355cb25324be
-- 다음에 해야 할 일: task branch에 게시된 실행 보고서와 동일 비공개 Draft의 현재 상태를 확인하고, 변경이 없다면 workflow에 따라 verification_ready로 다시 인계해줘.
+- 다음에 해야 할 일: DQA-001·002를 승인 재작업 범위로 명확히 하고 UI/UX Design Agent에게 재할당해줘.
 - 기준 문서: 상위 T-20260812-003, CookLog PRD·User Flow·팝 키치 UX 계획·선택 시안·handoff 및 Product Owner가 비공개 컨텍스트에서 지정하는 Draft Figma 파일
 - 허용 경로: 이 Task의 allowed_paths와 지정된 비공개 Figma 파일
 - 참고 산출물: .ai_project/reports/T-20260813-001_figma-foundations-home-visual-baseline-report.md, .ai_project/qa/T-20260813-001_figma-foundations-home-visual-baseline-qa.md
-- 변경/검토 대상: CookLog local Variables·Components·Styles, Home 390×844 Light/Dark 9상태, Home Visual Baseline v1, AX3 frame
-- 남은 리스크: Design Lead의 사전 읽기 감사에서 일반 Home 오류·삭제 상태의 일부 action container가 32~34pt로 측정됐고 Light 기본 배경 token은 순백이 아닌 `#FFF8E8`이었다. 44pt와 흰 캔버스 계약 충족 여부는 Design QA가 독립 판정해야 한다.
-- 차단/결정 필요: 없음. 단, Product Owner는 같은 Draft 링크를 Design QA 세션에 비공개 입력으로 다시 전달해야 한다.
+- 변경/검토 대상: Home 390×844 Light/Dark Error·Delete confirm의 retry/cancel/delete action container와 local component 규격
+- 남은 리스크: AX3 대표 frame의 56pt action은 통과하지만 일반 Home frame의 실제 target은 현재 15~16pt text뿐이다.
+- 차단/결정 필요: 동일 비공개 Draft 범위에서 작업하며 URL·파일 키 기록, 공개 링크, 외부 Library·자산 추가를 하지 마.
 - 보안: Figma 식별자를 저장소·Task·보고서에 기록하거나 공개 범위를 넓히지 마.
-- 완료 시: report가 현재 Figma와 일치함을 확인하고 verification_ready로 Design QA Agent / Verification Role에 인계해.
+- 통과 시: status를 verification_passed로 바꾸고 Design Lead Agent / Completion Role에 인계해.
+- 수정 필요 시: status를 rework_requested로 바꾸고 결함 ID·재현 frame·수용 기준 영향을 남겨줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -167,4 +168,8 @@ Task T-20260813-001의 검증 인계를 재개해줘.
 | 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | 공용 기준과 실행 보고서를 확인하고 비공개 Figma Foundations·Home baseline 독립 검증을 시작 |
 | 2026-08-13 | Design QA Agent | verification_in_progress | blocked | Design QA 세션의 비공개 Draft read-only 컨텍스트와 commit·push된 verification_ready 산출물이 없어 실제 Figma 구조·시각·AX3를 독립 확인할 수 없어 Lead에 차단 해소를 인계 |
 | 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 실행 보고서·BLOCKED QA 보고서·verification_ready 이력을 task branch에 게시해 공용 재현 경로를 준비하고, 남은 차단을 비공개 Figma read-only 컨텍스트 지정으로 한정 |
+| 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | Product Owner가 제공한 동일 비공개 Draft를 read-only로 열고 실제 Figma Foundations·Home baseline 재검증을 시작 |
+| 2026-08-13 | Design QA Agent | verification_in_progress | rework_requested | 직접 Figma 측정에서 일반 Light/Dark Error retry와 Delete confirm cancel/delete가 44×44pt action container 없이 텍스트로 배치된 DQA-001·002를 확인해 Lead에 재작업 인계 |
 | 2026-08-13 | Design Lead Agent | blocked | approved | Product Owner가 승인된 동일 Draft 링크를 비공개 입력으로 제공했고 read-only Figma 접근·페이지·18개 Home frame·local token/component·상태 계약·AX3 노드를 확인했다. PR #163 게시도 확인해 UI/UX Design Agent의 검증 인계 재개로 라우팅 |
+| 2026-08-13 | UI/UX Design Agent | approved | in_progress | 게시된 실행 보고서와 동일 비공개 Draft를 read-only 재확인하고, 외부 Library 0개·Home Light/Dark 18개·component set 4개·상태 계약·AX3 frame이 유지됨을 확인 |
+| 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | 재확인 결과와 기존 실행 보고서·QA 시트를 갱신해 Design QA Agent / Verification Role에 재인계 |
