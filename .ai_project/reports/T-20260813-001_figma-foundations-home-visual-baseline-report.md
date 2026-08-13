@@ -89,6 +89,21 @@
 - Task를 다시 `verification_ready`로 인계한다. Design QA는 같은 Draft의 비공개 read-only 입력을 받아 실제 구조·시각·token·접근성 계약을 독립 판정해야 한다.
 - 기존 리스크는 유지한다. 일반 Home 오류·삭제 상태의 32~34pt action container가 실제 hit area인지와 Light `#FFF8E8` base가 승인된 흰 캔버스 기준을 충족하는지는 Design QA가 판정한다.
 
+## DQA-001·002 재작업 결과 — 2026-08-13
+
+- 승인 범위만 수정했다. local `Action / Inline` component set을 추가하고 Retry/Cancel/Delete 3개 variant를 semantic token으로 바인딩했다.
+- 일반 `Home / Error / 390×844 / Light`, `Dark`의 Retry는 각각 `104×44pt` instance로 교체했다.
+- 일반 `Home / Delete confirm / 390×844 / Light`, `Dark`의 Cancel은 각각 `132×44pt`, Delete는 각각 `141×44pt` instance로 교체했다.
+- 이전의 32~34pt action rectangle과 label text는 삭제하지 않고 숨겼다. 각 대상 frame에 visible legacy action은 0건이다.
+- 정적 측정 결과: 6개 action 모두 width·height가 `44pt` 이상이며, local component의 unbound solid fill/stroke는 0건이다.
+- Light Delete confirm과 Dark Error 대표 렌더를 확인해 카피, destructive 표현, token mode, modal·panel 정보 위계가 유지됨을 확인했다.
+- 재작업 범위 밖의 `#FFF8E8` base, AX3 frame, 다른 Home 상태, prototype/iOS/공개 설정은 변경하지 않았다.
+
+## 재검증 인계
+
+- Task를 다시 `verification_ready`로 전환한다.
+- Design QA는 Product Owner가 같은 Draft를 비공개 read-only 입력으로 제공한 세션에서 6개 action target을 독립 재측정하고 DQA-001·002의 해소 여부를 판정해야 한다.
+
 ## 재작업 승인 — 2026-08-13
 
 - Product Owner가 Design QA `FAIL`의 DQA-001·002 재작업을 승인했다.

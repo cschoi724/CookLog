@@ -2,7 +2,7 @@
 
 - 검증 Agent: Design QA Agent / Verification Role
 - 검증일: 2026-08-13
-- 최종 판정: `FAIL` → `rework_requested`
+- 최종 판정: `PASS`
 - 공용 기준: `origin/develop@86aa81c4aaf541ede4a3b4da900c355cb25324be`
 - 검증 worktree: `task/T-20260813-001-figma-foundation-home-baseline` (`86aa81c`)
 - 보안: Figma URL·파일 키·조직·초대 대상 식별자는 기록하지 않는다.
@@ -90,3 +90,31 @@ Design Lead Agent / Lead Role은 DQA-001·002를 재작업 범위로 조율하�
 - Product Owner가 2026-08-13 DQA-001·002 재작업을 승인했다.
 - 승인 범위는 일반 Home Light/Dark Error retry와 Delete confirm cancel/delete의 실제 action target을 각각 최소 `44×44pt` local action component/container로 수정하는 데 한정한다.
 - 이 기록은 기존 `FAIL` 판정을 변경하지 않는다. UI/UX Design Agent의 수정·verification_ready 재인계 후 Design QA가 동일 비공개 Draft를 독립 재측정한다.
+
+## 재작업 완료 — UI/UX Design Agent
+
+- local `Action / Inline` component set을 추가했다. Retry `104×44pt`, Cancel `132×44pt`, Delete `141×44pt` 3개 token-bound variant다.
+- 일반 Home Light/Dark Error Retry 2개와 Delete confirm Cancel/Delete 4개를 해당 instance로 교체했다.
+- 자체 측정에서 6개 action instance는 모두 width·height `44pt` 이상이고, 이전 undersized legacy action은 visible 0건이다.
+- local component unbound solid fill/stroke는 0건이다.
+- 이 결과는 독립 QA 판정이 아니다. Design QA는 동일 비공개 Draft의 read-only 입력에서 실제 geometry와 visual regression을 다시 확인한다.
+
+## DQA-001·002 독립 재검증 — PASS
+
+비공개 Draft를 read-only로 재측정했다. 링크·파일 키·조직·초대 대상 식별자는 기록하지 않는다.
+
+| 검증 항목 | 결과 | 독립 확인 |
+|---|---|---|
+| DQA-001 Error retry | PASS | Light/Dark 일반 Home Error의 `Action / Inline / Retry` instance가 각각 `104×44pt`이며, Primary semantic token binding과 오류·재시도 카피가 유지된다. |
+| DQA-002 Delete confirm | PASS | Light/Dark 일반 Home Delete confirm의 Cancel instance는 각각 `132×44pt`, Delete instance는 각각 `141×44pt`이다. 취소 보존·삭제 후 복구 불가 문구와 destructive 표현이 유지된다. |
+| 컴포넌트·token | PASS | local `Action / Inline` component set은 Retry/Cancel/Delete 3개 variant를 가지며, fill·stroke·text가 Light/Dark semantic token에 바인딩돼 있다. |
+| visual regression | PASS | Light Delete confirm과 Dark Error 렌더에서 44pt action이 중복 없이 표시되고 modal/panel 정보 위계·대비·카피가 유지된다. |
+| 기존 계약 | PASS | Foundations, Home Light/Dark 18개 `390×844` frame, 단일 전체 요리책 액션, 상태 계약, AX3 대표 위험 frame 및 비공개·local-only 경계를 재확인했다. |
+
+### 판정
+
+DQA-001·002는 해소됐다. Figma에서의 44pt geometry와 시각·token 계약은 PASS다. 실제 iOS의 hit area·VoiceOver·Dynamic Type은 구현·iOS QA 단계에서 별도로 검증한다.
+
+## 다음 인계
+
+Design Lead Agent / Completion Role은 QA PASS, `375×667` 비범위 및 실제 iOS 접근성 후속 검증 필요성을 검토해 완료 수용 여부를 판단한다. PR #163은 Draft 상태로 유지하며, Completion·Product Owner 승인 전 병합하거나 Figma 공개 범위를 바꾸지 않는다.

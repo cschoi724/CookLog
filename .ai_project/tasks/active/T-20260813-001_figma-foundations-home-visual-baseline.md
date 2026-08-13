@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-001
 title: 비공개 Figma Foundations·Home Visual Baseline
-status: approved
+status: verification_passed
 type: feature
 priority: P1
 priority_reason: 전체 화면을 확장하기 전에 구현 가능한 공통 토큰·컴포넌트와 Home 고충실도 기준을 먼저 고정해 반복 재작업을 차단한다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent: Design Lead Agent
+target_role: Completion Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -77,7 +77,7 @@ pr:
   url: https://github.com/cschoi724/CookLog/pull/163
   status: draft
 blocker:
-next_decision: UI/UX Design Agent가 동일 비공개 Draft에서 DQA-001·002의 일반 Home Light/Dark action container만 수정하고 자체 측정 후 verification_ready로 Design QA에 재인계한다.
+next_decision: Design Lead Agent / Completion Role이 DQA-001·002 QA PASS와 남은 구현 단계 리스크를 수용할지 검토한다.
 ---
 
 # 비공개 Figma Foundations·Home Visual Baseline
@@ -145,21 +145,22 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 ```text
 다음 Agent에게 전달할 말:
 
-너는 UI/UX Design Agent / Execution Role이야.
-Task T-20260813-001의 승인된 DQA-001·002 재작업을 실행해줘.
+너는 Design Lead Agent / Completion Role이야.
+Task T-20260813-001의 완료 수용 여부를 검토해줘.
 
-- 현재 상태: approved
+- 현재 상태: verification_passed
 - 기준 상태 ref: origin/develop
 - 기준 상태 SHA: 86aa81c4aaf541ede4a3b4da900c355cb25324be
-- 다음에 해야 할 일: 동일 비공개 Draft에서 일반 Home Light/Dark Error retry와 Delete confirm cancel/delete의 실제 action target을 각각 최소 44×44pt local component/container로 수정하고 직접 측정해줘.
+- 다음에 해야 할 일: QA PASS, 허용 범위, 비공개 보안 경계 및 구현 단계 잔여 리스크를 검토해 completion_review 수용 여부를 판단해줘.
 - 기준 문서: 상위 T-20260812-003, CookLog PRD·User Flow·팝 키치 UX 계획·선택 시안·handoff 및 Product Owner가 비공개 컨텍스트에서 지정하는 Draft Figma 파일
 - 허용 경로: 이 Task의 allowed_paths와 지정된 비공개 Figma 파일
 - 참고 산출물: .ai_project/reports/T-20260813-001_figma-foundations-home-visual-baseline-report.md, .ai_project/qa/T-20260813-001_figma-foundations-home-visual-baseline-qa.md
-- 변경/검토 대상: Home 390×844 Light/Dark Error·Delete confirm의 retry/cancel/delete action container와 필요한 local action component 규격
-- 남은 리스크: AX3 대표 frame은 이미 PASS지만 일반 Home의 실제 target은 현재 15~16pt text뿐이다. `#FFF8E8` 배경과 나머지 PASS 범위는 재작업 대상이 아니다.
-- 차단/결정 필요: 없음. 동일 비공개 Draft 범위에서만 작업하고 URL·파일 키 기록, 공개 링크, 외부 Library·자산 추가를 하지 마.
+- 변경/검토 대상: local `Action / Inline` component와 일반 Home 390×844 Light/Dark Error·Delete confirm의 6개 retry/cancel/delete instance
+- 남은 리스크: Figma 44pt geometry는 PASS이나 실제 iOS hit area·VoiceOver·Dynamic Type은 구현·iOS QA 단계에서 검증한다. `375×667` 전체 화면은 비범위다.
+- 차단/결정 필요: PR #163은 Draft 유지. Figma URL·파일 키 기록, 공개 링크·외부 Library·자산 추가 또는 Completion·Product Owner 승인 전 병합은 허용하지 않는다.
 - 보안: Figma 식별자를 저장소·Task·보고서에 기록하거나 공개 범위를 넓히지 마.
-- 완료 시: 직접 측정 결과를 실행 보고서에 갱신하고 status를 verification_ready로 바꿔 Design QA Agent / Verification Role에 인계해.
+- 통과 시: status를 verification_passed로 바꾸고 Design Lead Agent / Completion Role에 인계해.
+- 수정 필요 시: status를 rework_requested로 바꾸고 결함 ID·재현 frame·수용 기준 영향을 남겨줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -183,3 +184,7 @@ Task T-20260813-001의 승인된 DQA-001·002 재작업을 실행해줘.
 | 2026-08-13 | UI/UX Design Agent | approved | in_progress | 게시된 실행 보고서와 동일 비공개 Draft를 read-only 재확인하고, 외부 Library 0개·Home Light/Dark 18개·component set 4개·상태 계약·AX3 frame이 유지됨을 확인 |
 | 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | 재확인 결과와 기존 실행 보고서·QA 시트를 갱신해 Design QA Agent / Verification Role에 재인계 |
 | 2026-08-13 | Design Lead Agent | rework_requested | approved | Product Owner가 DQA-001·002 재작업을 승인해 일반 Home Light/Dark Error retry와 Delete confirm cancel/delete의 최소 44×44pt action target만 UI/UX Design Agent에게 재할당 |
+| 2026-08-13 | UI/UX Design Agent | approved | in_progress | DQA-001·002 승인 범위의 일반 Home Light/Dark retry·cancel·delete action target 재작업 lock 획득 |
+| 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | local `Action / Inline` 44pt variant와 일반 Home Light/Dark Error·Delete confirm 6개 instance를 교체·직접 측정하고 Design QA에 재인계 |
+| 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | DQA-001·002 재작업 결과의 일반 Home Light/Dark 6개 action instance 독립 재측정 시작 |
+| 2026-08-13 | Design QA Agent | verification_in_progress | verification_passed | 동일 비공개 Draft에서 DQA-001·002의 6개 action instance를 직접 재측정해 44pt·token·카피·시각 회귀 없음 PASS로 Completion Role에 인계 |
