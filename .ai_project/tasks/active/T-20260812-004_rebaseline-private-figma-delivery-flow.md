@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-004
 title: 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
-status: rework_requested
+status: approved
 type: feature
 priority: P0
 priority_reason: 기존 로컬 Prototype 중심 디자인·iOS 검증 체인과 새 비공개 Figma 원천 체인을 정렬하지 않으면 디자인·구현이
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product Lead Agent
-target_role: Lead Role
+target_agent: Product Planning Agent
+target_role: Execution Role
 planned_execution_agent: Product Planning Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -94,7 +94,7 @@ source_of_truth:
 - ".ai_project/tasks/active/T-20260812-001_ios-implementation-visual-design-qa.md"
 - Product Owner가 지정한 비공개 Draft Figma 파일 (URL·파일 키·조직 식별자는 저장소에 기록하지 않음)
 created_by: Product Lead Agent
-approved_by: Product Owner (2026-08-12, T-003 중심 재정렬 패키지 일괄 실행 승인)
+approved_by: Product Owner (2026-08-12, T-003 중심 재정렬 패키지 일괄 실행 승인; 2026-08-13, Product QA 필수 3건 재작업 실행 승인)
 locked_by:
 locked_at:
 lock_session:
@@ -104,19 +104,20 @@ updated_at: '2026-08-13'
 report_to: ".ai_project/reports/T-20260812-004_rebaseline-private-figma-delivery-flow-report.md"
 qa_to: ".ai_project/qa/T-20260812-004_rebaseline-private-figma-delivery-flow-qa.md"
 status_ref: origin/develop
-status_ref_sha: b5fc2e30007ae51d6415698a4e9add093b69f417
-worktree_path: "/private/tmp/cooklog-t20260812-004-product-qa"
-worktree_role: Verification Role
+status_ref_sha: a40b927dfca0d718fc4085a3387930f1371235d1
+worktree_path: "/private/tmp/cooklog-t20260812-004-rework-execution"
+worktree_role: Direction Role
 base_ref: origin/develop
-base_sha: b5fc2e30007ae51d6415698a4e9add093b69f417
+base_sha: a40b927dfca0d718fc4085a3387930f1371235d1
 branch:
-  name: task/T-20260812-004-product-qa
+  name: task/T-20260812-004-rework-approval
   base: develop
 pr:
   url:
   status:
 blocker:
-next_decision: Product Lead Agent가 PQA-HIGH-813004-001, PQA-MEDIUM-813004-002, PQA-LOW-813004-003의 재작업 범위와 재승인을 조율한다.
+next_decision: Product Planning Agent가 T-003 Handoff, T-004 현재 결과 표기, diff 검증 증거를
+  수정한 뒤 Product QA 재검증으로 인계한다.
 ---
 
 # 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
@@ -199,14 +200,14 @@ T-20260812-002가 `done`되어 선행 차단은 해제됐다. 아래 분류는 T
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product Lead Agent / Lead Role이야.
-Task T-20260812-004의 Product QA FAIL 재작업 범위를 조율해줘.
+너는 Product Planning Agent / Execution Role이야.
+Task T-20260812-004의 승인된 Product QA FAIL 재작업을 실행해줘.
 
-- 현재 상태: rework_requested
+- 현재 상태: approved
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: b5fc2e30007ae51d6415698a4e9add093b69f417
+- 기준 상태 SHA: a40b927dfca0d718fc4085a3387930f1371235d1
 - 필수 수정: PQA-HIGH-813004-001, PQA-MEDIUM-813004-002, PQA-LOW-813004-003
-- 다음에 해야 할 일: T-003 Handoff를 현재 dependency·취소 결과와 일치시키고, T-004의 실행 전 승인안과 실행 결과를 분리하며, diff 검증 증거를 정확히 보완해줘.
+- 다음에 해야 할 일: T-003 Handoff를 현재 dependency·취소 결과와 일치시키고, T-004의 실행 전 승인안과 실행 결과를 분리하며, diff 검증 증거를 정확히 보완한 뒤 Product QA 재검증으로 인계해줘.
 - 보존 사항: 승인된 재정렬 그래프, 취소 Task와 Legacy/WIP, Backend 독립 흐름, 비공개 식별자 비기록 원칙은 유지해.
 - 참고 산출물: docs/product/CookLog_FIGMA_DELIVERY_FLOW.md, 실행 보고서, Product QA 보고서
 - 재검증: 재작업 승인·실행 후 Product QA Agent / Verification Role로 다시 인계해줘.
@@ -222,6 +223,8 @@ Task T-20260812-004의 Product QA FAIL 재작업 범위를 조율해줘.
 | 2026-08-12 | Product Owner | scoped | approved | T-003 중심 재정렬 패키지와 기존 Task 상태·의존성 변경의 일괄 실행 승인 |
 | 2026-08-12 | Product Planning Agent | approved | in_progress | 승인된 Task·Source of Truth·팀 보드·Figma 전달 흐름 일괄 재정렬 착수 |
 | 2026-08-12 | Product Planning Agent | in_progress | verification_ready | 재정렬·Legacy 보존·비공개 운영 경계·실행 보고 반영 완료, Product QA 독립 검증 인계 |
+| 2026-08-13 | Product QA Agent | verification_in_progress | rework_requested | T-003 Handoff·T-004 현재 결과·diff 검증 증거의 정합성 보완 요청 |
+| 2026-08-13 | Product Owner | rework_requested | approved | Product QA 필수 수정 3건의 문서 정합성 재작업 실행 승인 |
 
 ## AI Ops CLI 기록
 
@@ -236,3 +239,4 @@ Task T-20260812-004의 Product QA FAIL 재작업 범위를 조율해줘.
 | 2026-08-13 | Product QA Agent | transition: verification_ready -> verification_in_progress | 재정렬 Task·Source of Truth·팀 보드·전달 흐름 독립 검증 착수 |
 | 2026-08-13 | Product QA Agent | lock | task lock |
 | 2026-08-13 | Product QA Agent | transition: verification_in_progress -> rework_requested | T-003 Handoff가 T-004 dependency·취소 결과와 충돌하고 T-004 본문이 실행 전 승인안과 실행 결과를 혼재함 |
+| 2026-08-13 | Product Owner | transition: rework_requested -> approved | Product QA FAIL의 필수 수정 PQA-HIGH-813004-001, PQA-MEDIUM-813004-002, PQA-LOW-813004-003 문서 정합성 재작업 실행 승인 |
