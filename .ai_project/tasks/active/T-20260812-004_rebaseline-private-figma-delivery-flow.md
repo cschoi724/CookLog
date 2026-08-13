@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-004
 title: 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
-status: verification_passed
+status: completion_review
 type: feature
 priority: P0
 priority_reason: 기존 로컬 Prototype 중심 디자인·iOS 검증 체인과 새 비공개 Figma 원천 체인을 정렬하지 않으면 디자인·구현이
@@ -105,19 +105,20 @@ updated_at: '2026-08-13'
 report_to: ".ai_project/reports/T-20260812-004_rebaseline-private-figma-delivery-flow-report.md"
 qa_to: ".ai_project/qa/T-20260812-004_rebaseline-private-figma-delivery-flow-qa.md"
 status_ref: origin/develop
-status_ref_sha: 3c3388e17a833022311bc19dc0223384b054383f
-worktree_path: "/private/tmp/cooklog-t20260812-004-product-qa-reverify"
-worktree_role: Verification Role
+status_ref_sha: e4f2560c4e7b09a2532f563ebbcbc281eaf7e690
+worktree_path: "/private/tmp/cooklog-t20260812-004-completion-review"
+worktree_role: Completion Role
 base_ref: origin/develop
-base_sha: 3c3388e17a833022311bc19dc0223384b054383f
+base_sha: e4f2560c4e7b09a2532f563ebbcbc281eaf7e690
 branch:
-  name: task/T-20260812-004-product-qa-reverify
+  name: task/T-20260812-004-completion-review
   base: develop
 pr:
   url:
   status:
 blocker:
-next_decision: Product Lead Agent가 PASS_WITH_RISK 판정과 프로젝트 보드 요약 카운터 불일치 리스크를 확인하고 완료를 확정한다.
+next_decision: 보드 상단 요약 카운터 불일치를 비차단 운영 리스크로 수용하고 T-004 done 확정 후 T-003을 Design Lead
+  scope로 인계한다.
 ---
 
 # 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
@@ -196,21 +197,29 @@ T-20260812-002가 `done`되어 선행 차단이 해제된 뒤 Product Owner가 �
 - Development Lead는 고정 Figma baseline과 구현 동기화 범위가 확정되기 전 iOS UI 최종 통합·시각 QA를 재개하지 않는다.
 - Backend의 독립 Task는 제품 범위·배포 gate에 영향을 주지 않는 한 별도 흐름으로 유지한다.
 
+## Completion Review
+
+- Product QA의 재작업 최종 판정 `PASS_WITH_RISK`를 수용한다.
+- 최초 필수 결함 3건은 모두 해소됐고, 재정렬 그래프·Legacy/WIP 보존·Backend 독립 흐름·비공개 식별자 비기록 원칙에 회귀가 없다.
+- 프로젝트 보드 상단 상태·Team 요약 카운터 불일치는 상세 Task 행과 Task frontmatter의 실행 정확성에 영향을 주지 않는 비차단 운영 리스크로 수용한다.
+- 전역 카운터 재계산은 T-004 범위를 넘어서는 보드 정비이므로 이번 완료를 지연시키지 않는다. 이후 보드 정비 시 Task 파일을 기준으로 재계산하거나 자동 집계로 교체한다.
+- T-004를 `done`으로 확정하면 T-003의 dependency가 해제된다. 다음 단계는 Design Lead의 T-003 scope이며, Product Owner의 별도 Figma 실행 승인 전에는 디자인 파일을 수정하지 않는다.
+
 ## Handoff
 
 ```text
 다음 Agent에게 전달할 말:
 
 너는 Product Lead Agent / Completion Role이야.
-Task T-20260812-004의 완료 확정을 진행해줘.
+Task T-20260812-004의 완료 리뷰 결과를 확인하고 `done`을 확정해줘.
 
-- 현재 상태: verification_passed
+- 현재 상태: completion_review
 - Product QA 판정: PASS_WITH_RISK
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 3c3388e17a833022311bc19dc0223384b054383f
+- 기준 상태 SHA: e4f2560c4e7b09a2532f563ebbcbc281eaf7e690
 - 통과 근거: Product QA 필수 3건 해소, 관련 Task 10개 strict PASS, 재정렬 그래프·Legacy/WIP·Backend 독립 흐름·비공개 식별자 비기록 회귀 없음.
-- 잔여 리스크: 프로젝트 보드 상단 상태·Team 요약 카운터가 실제 Task 집계와 불일치한다. 상세 행과 Task frontmatter는 정확하다.
-- 다음에 해야 할 일: 잔여 리스크를 수용하거나 보드 정비 후속을 분리하고 Task 완료를 확정해줘.
+- 수용 리스크: 프로젝트 보드 상단 상태·Team 요약 카운터 불일치는 비차단 운영 리스크로 수용했다. 상세 행과 Task frontmatter를 계속 우선한다.
+- 다음에 해야 할 일: T-004를 `done`으로 확정하고 프로젝트·Product 보드를 갱신해줘.
 - 완료 후: T-20260812-003을 Design Lead Agent / Lead Role에 인계하되 Product Owner의 별도 Figma 실행 승인 전 디자인 수정은 금지해.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
@@ -228,6 +237,8 @@ Task T-20260812-004의 완료 확정을 진행해줘.
 | 2026-08-13 | Product Owner | rework_requested | approved | Product QA 필수 수정 3건의 문서 정합성 재작업 실행 승인 |
 | 2026-08-13 | Product Planning Agent | approved | in_progress | 승인된 Product QA 필수 수정 3건의 문서 정합성 재작업 착수 |
 | 2026-08-13 | Product Planning Agent | in_progress | verification_ready | 필수 수정 3건과 관련 Task strict 검증·diff 검증 완료, Product QA 재검증 인계 |
+| 2026-08-13 | Product QA Agent | verification_ready | verification_passed | 필수 수정 3건 해소와 보존 경계 회귀 통과, 보드 요약 카운터 불일치는 비차단 리스크로 인계 |
+| 2026-08-13 | Product Lead Agent | verification_passed | completion_review | Product QA 판정과 비차단 리스크를 수용하고 T-003 후속 인계 조건을 완료 검토 |
 
 ## AI Ops CLI 기록
 
@@ -251,3 +262,5 @@ Task T-20260812-004의 완료 확정을 진행해줘.
 | 2026-08-13 | Product QA Agent | transition: verification_ready -> verification_in_progress | Product QA 필수 수정 3건과 재정렬 보존 경계 독립 재검증 착수 |
 | 2026-08-13 | Product QA Agent | lock | task lock |
 | 2026-08-13 | Product QA Agent | transition: verification_in_progress -> verification_passed | Product QA 필수 3건 해소·재정렬 보존 경계 회귀 통과, 프로젝트 보드 요약 카운터 불일치는 Completion 후속 리스크로 인계 |
+| 2026-08-13 | Product Lead Agent | lock | task lock |
+| 2026-08-13 | Product Lead Agent | transition: verification_passed -> completion_review | Product QA PASS_WITH_RISK를 수용하고 필수 결함 해소, 잔여 보드 요약 카운터 리스크, 후속 T-003 인계 조건을 완료 검토 |
