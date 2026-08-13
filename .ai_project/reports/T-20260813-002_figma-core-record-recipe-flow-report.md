@@ -1,8 +1,8 @@
 # T-20260813-002 실행 보고서 — 비공개 Figma 기록·레시피 핵심 흐름
 
-작성일: 2026-08-13  
-실행 Role: UI/UX Design Agent / Execution Role  
-Task 상태: `verification_ready` (Design QA 독립 검증 대기)
+작성일: 2026-08-13
+실행 Role: UI/UX Design Agent / Execution Role
+Task 상태: `verification_ready` (DQA-002-001·002 재작업 후 Design QA 독립 재검증 대기)
 
 ## 실행 범위와 보안 경계
 
@@ -60,12 +60,18 @@ Task 상태: `verification_ready` (Design QA 독립 검증 대기)
 |---|---|---|
 | 상태 수량·이름 | PASS | 76개 frame: Library 5×2, Log 14×2, Review 12×2, Detail 7×2 |
 | 390×844pt·Light/Dark mode | PASS | 모든 76개 frame이 고정 geometry와 semantic color mode를 가짐 |
-| 최소 action target | PASS | action 86개를 직접 측정했고 모두 `44×44pt` 이상 |
+| 최소 action target | PASS | Core Flow 76개 제품 frame의 명시적 `Action /`·`Action card /` 레이어 100개를 집계했다. AX3 4개는 동일 상태의 접근성 증거 복제이므로 별도 action 수에 중복 합산하지 않으며, 모든 집계 대상은 `44×44pt` 이상이다. |
 | local 재사용 | PASS | Cooking Log Empty Light/Dark에 local `CTA / Record` instance를 적용; 외부 Library 연결 0개 |
 | 상태 단서·보존 | PASS | 모든 frame에 추적 키, 현재 상태, 짧은 계약 카피와 다음 action을 표시 |
 | AX3 대표 위험 | PASS | Library Search Light, Log Recording Error Dark, AI Review Validation Error Light, Detail Delete Confirmation Dark frame을 별도로 구성 |
 | 시각 렌더 | PASS | Light Library/AI Review, Dark Log/Detail 대표 frame을 렌더로 확인; 하단 nav와 safe area가 844pt 안에 유지 |
 | 저장소 보안 | PASS | Figma 식별자/URL/조직/초대 대상 및 외부 자산 참조를 Task·보고서·보드에 기록하지 않음 |
+
+## DQA-002 재작업
+
+- `DQA-002-001`: `AX3 / Cooking Log Recording Error / 390×844 / Dark`를 실제 `LOG-10 · Recording Error / Dark` 원본 상태로 교체했다. 재확인 결과 frame 이름·`390×844pt` geometry·추적 키·기존 STEP 및 record 보존 계약·`다시 기록하기` CTA가 원본과 일치한다.
+- `DQA-002-002`: 기존 `86개` 자체 집계는 잘못된 수치였다. 집계 범위를 Core Flow 76개 제품 frame 안의 명시적 `Action /`·`Action card /` 레이어로 고정해 독립 QA 측정값과 같은 `100개`로 정정했다. AX3 접근성 증거 frame의 복제 action은 중복 집계하지 않는다.
+- 보고서와 QA 머리말의 trailing whitespace 4건을 제거했다.
 
 ## 잔여 리스크
 

@@ -1,7 +1,7 @@
 # T-20260813-002 독립 Design QA — 비공개 Figma 기록·레시피 핵심 흐름
 
-검증일: 2026-08-13  
-검증 Role: Design QA Agent / Verification Role  
+검증일: 2026-08-13
+검증 Role: Design QA Agent / Verification Role
 판정: **FAIL**
 
 ## 판정 요약
