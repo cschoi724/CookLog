@@ -2,8 +2,8 @@
 
 ## 현재 상태
 
-- 실행 산출물 상태: `verification_ready`
-- 현재 Task 상태: `verification_ready` (Design QA 재검증 대기)
+- 이전 실행 산출물 상태: `verification_ready`
+- 현재 Task 상태: `approved` (DQA-001·002 touch target 재작업 실행 대기)
 - 공용 기준: `origin/develop@86aa81c`
 - 실행 worktree: `task/T-20260813-001-figma-foundation-home-baseline`
 - 보안: Figma URL·파일 키·조직·초대 대상 식별자는 이 보고서에 기록하지 않는다.
@@ -88,6 +88,13 @@
 - UI/UX Design Agent가 동일 Draft를 다시 read-only로 대조했다. 외부 Library 연결 0개, Home frame 18개(Light 9·Dark 9), 전부 `390×844`, 중복 이름 0개, local component set 4개, 상태 계약 1개, AX3 대표 frame 3개가 유지된다.
 - Task를 다시 `verification_ready`로 인계한다. Design QA는 같은 Draft의 비공개 read-only 입력을 받아 실제 구조·시각·token·접근성 계약을 독립 판정해야 한다.
 - 기존 리스크는 유지한다. 일반 Home 오류·삭제 상태의 32~34pt action container가 실제 hit area인지와 Light `#FFF8E8` base가 승인된 흰 캔버스 기준을 충족하는지는 Design QA가 판정한다.
+
+## 재작업 승인 — 2026-08-13
+
+- Product Owner가 Design QA `FAIL`의 DQA-001·002 재작업을 승인했다.
+- 실행 범위는 일반 Home Light/Dark Error의 retry와 Delete confirm의 cancel/delete를 각각 최소 `44×44pt` local action component/container로 수정하는 것으로 한정한다.
+- `#FFF8E8` 배경, AX3 frame, 다른 Home 상태·시각 위계와 기존 PASS 범위는 변경하지 않는다.
+- UI/UX Design Agent는 수정 후 네 action target을 직접 측정하고 이 보고서를 갱신한 뒤 Design QA에 재인계한다.
 
 ## Phase 0 Gap Analysis
 

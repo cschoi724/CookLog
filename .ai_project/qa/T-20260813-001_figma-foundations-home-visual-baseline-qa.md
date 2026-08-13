@@ -84,3 +84,9 @@
 ## 다음 인계
 
 Design Lead Agent / Lead Role은 DQA-001·002를 재작업 범위로 조율하고 UI/UX Design Agent에게 재할당해야 한다. 재작업 완료 후 같은 비공개 Draft의 read-only 입력을 기준으로 Design QA가 일반 Light/Dark frame의 실제 hit area를 다시 측정한다.
+
+## 재작업 승인 기록 — Design Lead
+
+- Product Owner가 2026-08-13 DQA-001·002 재작업을 승인했다.
+- 승인 범위는 일반 Home Light/Dark Error retry와 Delete confirm cancel/delete의 실제 action target을 각각 최소 `44×44pt` local action component/container로 수정하는 데 한정한다.
+- 이 기록은 기존 `FAIL` 판정을 변경하지 않는다. UI/UX Design Agent의 수정·verification_ready 재인계 후 Design QA가 동일 비공개 Draft를 독립 재측정한다.
