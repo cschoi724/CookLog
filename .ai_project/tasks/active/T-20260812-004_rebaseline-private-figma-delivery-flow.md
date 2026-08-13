@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-004
 title: 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P0
 priority_reason: 기존 로컬 Prototype 중심 디자인·iOS 검증 체인과 새 비공개 Figma 원천 체인을 정렬하지 않으면 디자인·구현이
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product QA Agent
-target_role: Verification Role
+target_agent: Product Lead Agent
+target_role: Completion Role
 planned_execution_agent: Product Planning Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -105,19 +105,19 @@ updated_at: '2026-08-13'
 report_to: ".ai_project/reports/T-20260812-004_rebaseline-private-figma-delivery-flow-report.md"
 qa_to: ".ai_project/qa/T-20260812-004_rebaseline-private-figma-delivery-flow-qa.md"
 status_ref: origin/develop
-status_ref_sha: 7135d773422192d3075d725d7291a8ff00e0552a
-worktree_path: "/private/tmp/cooklog-t20260812-004-rework-apply"
-worktree_role: Execution Role
+status_ref_sha: 3c3388e17a833022311bc19dc0223384b054383f
+worktree_path: "/private/tmp/cooklog-t20260812-004-product-qa-reverify"
+worktree_role: Verification Role
 base_ref: origin/develop
-base_sha: 7135d773422192d3075d725d7291a8ff00e0552a
+base_sha: 3c3388e17a833022311bc19dc0223384b054383f
 branch:
-  name: task/T-20260812-004-rework-apply
+  name: task/T-20260812-004-product-qa-reverify
   base: develop
 pr:
   url:
   status:
 blocker:
-next_decision: Product QA Agent가 세 필수 결함의 해소 여부와 보존 경계를 독립 재검증한다.
+next_decision: Product Lead Agent가 PASS_WITH_RISK 판정과 프로젝트 보드 요약 카운터 불일치 리스크를 확인하고 완료를 확정한다.
 ---
 
 # 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
@@ -201,18 +201,17 @@ T-20260812-002가 `done`되어 선행 차단이 해제된 뒤 Product Owner가 �
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product QA Agent / Verification Role이야.
-Task T-20260812-004의 재작업 결과를 독립 재검증해줘.
+너는 Product Lead Agent / Completion Role이야.
+Task T-20260812-004의 완료 확정을 진행해줘.
 
-- 현재 상태: verification_ready
+- 현재 상태: verification_passed
+- Product QA 판정: PASS_WITH_RISK
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 7135d773422192d3075d725d7291a8ff00e0552a
-- 다음에 해야 할 일: PQA-HIGH-813004-001, PQA-MEDIUM-813004-002, PQA-LOW-813004-003의 해소 여부와 기존 보존 경계를 독립 검증해줘.
-- 검증 대상: T-003 Handoff의 T-004 `done` 선행 조건, T-004의 실행 전/적용 결과 구분, 실행 보고서와 전달 흐름 문서의 후행 공백 제거 및 검증 증거.
-- 보존 사항: 승인된 재정렬 그래프, 취소 Task와 Legacy/WIP, Backend 독립 흐름, 비공개 식별자 비기록 원칙은 유지해.
-- 참고 산출물: docs/product/CookLog_FIGMA_DELIVERY_FLOW.md, .ai_project/reports/T-20260812-004_rebaseline-private-figma-delivery-flow-report.md, .ai_project/qa/T-20260812-004_rebaseline-private-figma-delivery-flow-qa.md
-- 통과 시: `verification_passed`로 전환하고 Product Lead Agent / Completion Role에 인계해줘.
-- 실패 시: `rework_requested`로 전환하고 남은 결함을 명확히 기록해줘.
+- 기준 상태 SHA: 3c3388e17a833022311bc19dc0223384b054383f
+- 통과 근거: Product QA 필수 3건 해소, 관련 Task 10개 strict PASS, 재정렬 그래프·Legacy/WIP·Backend 독립 흐름·비공개 식별자 비기록 회귀 없음.
+- 잔여 리스크: 프로젝트 보드 상단 상태·Team 요약 카운터가 실제 Task 집계와 불일치한다. 상세 행과 Task frontmatter는 정확하다.
+- 다음에 해야 할 일: 잔여 리스크를 수용하거나 보드 정비 후속을 분리하고 Task 완료를 확정해줘.
+- 완료 후: T-20260812-003을 Design Lead Agent / Lead Role에 인계하되 Product Owner의 별도 Figma 실행 승인 전 디자인 수정은 금지해.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -248,3 +247,7 @@ Task T-20260812-004의 재작업 결과를 독립 재검증해줘.
 | 2026-08-13 | Product Planning Agent | transition: approved -> in_progress | 승인된 PQA-HIGH-813004-001, PQA-MEDIUM-813004-002, PQA-LOW-813004-003 문서 정합성 재작업 착수 |
 | 2026-08-13 | Product Planning Agent | transition: in_progress -> verification_ready | Product QA 필수 3건 수정, 관련 Task 10개 strict validation 및 git diff --check PASS |
 | 2026-08-13 | Product Planning Agent | unlock | task unlock |
+| 2026-08-13 | Product QA Agent | lock | task lock |
+| 2026-08-13 | Product QA Agent | transition: verification_ready -> verification_in_progress | Product QA 필수 수정 3건과 재정렬 보존 경계 독립 재검증 착수 |
+| 2026-08-13 | Product QA Agent | lock | task lock |
+| 2026-08-13 | Product QA Agent | transition: verification_in_progress -> verification_passed | Product QA 필수 3건 해소·재정렬 보존 경계 회귀 통과, 프로젝트 보드 요약 카운터 불일치는 Completion 후속 리스크로 인계 |
