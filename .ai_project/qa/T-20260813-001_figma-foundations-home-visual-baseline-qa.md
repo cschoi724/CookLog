@@ -36,3 +36,12 @@
 3. 위 두 조건이 충족되면 Design Lead가 Task를 `approved`로 재라우팅한 뒤 Design QA가 frame·component·token·visual·AX3를 직접 검사한다.
 
 공개 링크 생성, 공유 범위 확대, 외부 Library 연결, Community 게시 또는 Figma 식별자의 저장소 기록은 재개 수단이 아니다.
+
+## 차단 해소 확인 — Design Lead
+
+- Product Owner가 승인된 동일 Draft 링크를 저장소 밖 비공개 입력으로 제공했고, Design Lead가 read-only 접근을 확인했다.
+- 실제 파일에서 지정 7개 페이지, Home Light 9개·Dark 9개 `390×844` frame, Light/Dark semantic mode, local component set 4개, 상태 계약 9개, AX3 대표 frame 3개를 확인했다.
+- 실행 보고서와 이 BLOCKED QA 보고서는 커밋 `aff35ab`, Draft PR #163으로 게시돼 원격 task branch에서 재현 가능하다.
+- 따라서 기존 두 차단 조건은 해소됐다. Task는 workflow에 따라 `approved`로 재개하며 UI/UX Design Agent가 verification_ready 인계를 복원한다.
+- Design QA 재검증 세션에는 Product Owner가 같은 Draft 링크를 비공개 입력으로 다시 전달해야 한다. 링크·파일 키는 저장소나 QA 보고서에 기록하지 않는다.
+- Lead 사전 감사에서 일반 Home 오류·삭제 상태의 일부 action container가 `32~34pt`로 측정됐다. 이 값이 실제 interactive target인지와 44pt 계약 충족 여부는 재검증 세션에서 독립 판정한다.
