@@ -11,7 +11,7 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Product Lead Agent
+target_agent: Design Lead Agent
 target_role: Lead Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
@@ -20,7 +20,7 @@ required_capabilities:
   - design_dependency_management
 ownership:
   paths:
-    - ".ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md"
+    - ".ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md"
     - ".ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md"
     - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
     - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
@@ -55,7 +55,7 @@ blocks:
   - T-20260805-008
 parallel_group: private-figma-source-transition
 allowed_paths:
-  - ".ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md"
+  - ".ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md"
   - ".ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md"
   - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
   - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
@@ -186,15 +186,16 @@ Product Owner가 지정한 비공개 Draft Figma 파일을 팝 키치 레시피 
 - T-20260805-008, T-20260812-001 및 iOS UI 동기화는 Figma baseline 고정 전까지 시작하지 않는다. Backend 독립 Task는 기존 흐름을 유지한다.
 - 같은 Figma 파일·Variables·Components를 공유하므로 T-20260813-001→002→003→004를 직렬 실행한다. 여러 UI/UX Agent가 같은 파일을 동시에 수정하는 병렬 실행은 허용하지 않는다.
 
-## Handoff
+## Ownership Review Request
 
 ```text
-다음 Agent에게 전달할 말:
+ownership reviewer에게 전달할 말:
 
 너는 Product Lead Agent / Lead Role이야.
 Task T-20260812-003의 제품 계약 ownership review를 진행해줘.
 
 - 현재 상태: scoped
+- 상태 소유자: Design Lead Agent / Lead Role. Product Lead는 Design Task 상태를 전이하지 않고 제품 계약 review만 수행한다.
 - 기준 상태 ref: origin/develop
 - 기준 상태 SHA: bcbd3aa
 - 선행 조건: T-20260812-004 `done`, 해소됨.
@@ -205,7 +206,7 @@ Task T-20260812-003의 제품 계약 ownership review를 진행해줘.
 - 확인할 쟁점: Dark 제외가 기능·상태·접근성 의미 계약 삭제로 해석되지 않는지, 82개 상태 추적과 Home 단일 전체 보기 baseline이 유지되는지 확인해줘.
 - 구현 동기화: 전체 핵심 흐름의 Product Owner 시각 승인과 Design QA 통과 전에는 로컬/iOS 구현을 시작하지 마. 기존 로컬·Git UI는 Legacy/Baseline으로 유지해.
 - Legacy/Baseline: T-008 및 T-005~007은 T-004에서 이미 `cancelled`되어 이 Task에 흡수됐다. 기존 산출물과 미병합 WIP는 삭제하지 말고 설계 입력으로 보존해.
-- 리뷰 통과 후: Product Owner에게 UI/UX Design Agent의 비공개 Figma 실행 승인을 요청해.
+- 리뷰 통과 후: review 결과를 Design Lead와 Product Owner에게 인계해. Product Owner가 T-20260813-001을 승인하면 Design Lead가 UI/UX Design Agent 실행 상태로 라우팅한다.
 ```
 
 ## Activity
@@ -215,3 +216,4 @@ Task T-20260812-003의 제품 계약 ownership review를 진행해줘.
 | 2026-08-12 | Product Lead Agent |  | proposed | 비공개 Draft Figma 원천 전환, 독립 로컬 디자인 시스템, 핵심 흐름 완성 후 일괄 구현 동기화 원칙을 Task로 등록 |
 | 2026-08-13 | Design Lead Agent | proposed | scoped | T-004 완료를 확인하고 Home Light 선승인·전체 핵심 흐름·82개 상태·로컬 디자인 시스템·독립 QA·Figma 보안 경계를 실행 가능한 범위로 조율 |
 | 2026-08-13 | Design Lead Agent | scoped | scoped | 실행 범위를 T-20260813-001~004 직렬 하위 Task로 분리하고 상위 Task를 baseline 완료 집계 단위로 전환 |
+| 2026-08-13 | Design Lead Agent | scoped | scoped | PR #161 재감사에서 기존 cross-team Source of Truth 참조를 보존하도록 Task 경로를 복구하고, Design Team 상태 소유자는 Design Lead로 유지하며 Product Lead는 ownership reviewer로 한정 |

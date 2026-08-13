@@ -66,7 +66,7 @@ Team별 요약:
 | `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | - | `cancelled`, 선택 컨셉·시안을 T-20260812-003 Legacy/Baseline 입력으로 보존 |
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | `done`, Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 375×667 Legacy 충돌은 T-20260812-004로 인계 |
-| `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Product Lead Agent | `scoped`, 상위 완료 집계; 하위 T-20260813-001~004 직렬 실행·Product Lead ownership review·Product Owner 승인 대기 |
+| `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, 상위 완료 집계; 하위 T-20260813-001~004 직렬 실행·Product Lead ownership review·Product Owner 승인 대기 |
 | `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | Design Lead Agent → UI/UX Design Agent | `scoped`, Home 390×844 Light·Home 9상태·Product Owner `Home Visual Baseline v1` 승인 |
 | `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-001 이후 Library·Log·Review·Detail 38상태 |
 | `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-002 이후 Player·Info 35상태·전체 Light 시각 승인 |

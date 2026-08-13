@@ -46,7 +46,7 @@ allowed_paths:
   - ".ai_project/task_board.md"
   - ".ai_project/teams/design/task_board.md"
 source_of_truth:
-  - ".ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md"
+  - ".ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md"
   - docs/product/CookLog_PRD_v2.md
   - docs/product/CookLog_USER_FLOW.md
   - docs/product/CookLog_POP_KITSCH_UX_PLAN.md
@@ -98,6 +98,7 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 - Home 9개 상태를 추적 키·발생 조건·다음 행동·복구 계약과 함께 frame 또는 component/state configuration으로 표현한다.
 - 일반 텍스트 대비, 최소 44pt 터치 영역, 색 외 상태 단서, 읽기 순서와 Accessibility 3 대표 위험 frame을 확인한다.
 - Product Owner가 전체 확장 전에 `Home Visual Baseline v1`을 직접 시각 승인한다.
+- 전체 요리책 진입은 최근 레시피 영역의 단일 텍스트 액션으로 두고, 헤더에 중복 진입점을 만들지 않는다.
 
 ## Out of Scope
 
@@ -113,8 +114,9 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 3. Home Content 390×844 Light가 선택 시안의 정보 위계·비율·여백·타이포·CTA·카드·AI 도우미에 고충실도로 맞는다.
 4. Home 9개 상태가 기능·행동·데이터 보존·복구 계약과 함께 추적 가능하다.
 5. Light 기준 대비·44pt·색 외 상태 단서·읽기 순서·AX3 대표 위험 frame이 PASS한다.
-6. Product Owner의 `Home Visual Baseline v1` 승인 사실이 민감 식별자 없이 보고서에 남고, Design QA가 위 계약을 독립 검증한다.
-7. Product Owner 승인 전에는 T-20260813-002를 실행하지 않는다.
+6. 전체 요리책 진입은 최근 레시피 영역의 단일 텍스트 액션이며 헤더 중복 진입점이 없다.
+7. Product Owner의 `Home Visual Baseline v1` 승인 사실이 민감 식별자 없이 보고서에 남고, Design QA가 위 계약을 독립 검증한다.
+8. Product Owner 승인 전에는 T-20260813-002를 실행하지 않는다.
 
 ## Coordination Notes
 
@@ -143,3 +145,4 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 | 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
 |---|---|---|---|---|
 | 2026-08-13 | Design Lead Agent |  | scoped | Figma Foundations·Components와 Home 390×844 Light 선승인 게이트를 독립 실행 Task로 등록 |
+| 2026-08-13 | Design Lead Agent | scoped | scoped | PR #161 재감사에서 T-20260812-002의 Home 전체 요리책 단일 텍스트 진입점·헤더 중복 금지 계약을 명시 |

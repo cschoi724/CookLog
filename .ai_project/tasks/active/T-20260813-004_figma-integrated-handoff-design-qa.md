@@ -54,7 +54,7 @@ allowed_paths:
   - ".ai_project/teams/design/task_board.md"
   - ".ai_project/teams/quality/task_board.md"
 source_of_truth:
-  - ".ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md"
+  - ".ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md"
   - ".ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md"
   - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
   - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"

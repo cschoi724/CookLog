@@ -46,7 +46,7 @@ allowed_paths:
   - ".ai_project/task_board.md"
   - ".ai_project/teams/design/task_board.md"
 source_of_truth:
-  - ".ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md"
+  - ".ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md"
   - ".ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md"
   - docs/product/CookLog_PRD_v2.md
   - docs/product/CookLog_USER_FLOW.md
