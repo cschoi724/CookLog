@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-002
 title: 비공개 Figma 기록·레시피 핵심 흐름
-status: verification_passed
+status: done
 type: feature
 priority: P1
 priority_reason: 승인된 Home 시각 기준으로 기록부터 저장·재사용까지 핵심 제품 흐름을 한 덩어리로 완성해야 한다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -77,9 +77,9 @@ branch:
   base: develop
 pr:
   url: https://github.com/cschoi724/CookLog/pull/164
-  status: draft
+  status: ready_to_merge
 blocker:
-next_decision: Design Lead Agent가 Design QA PASS와 잔여 iOS 구현·QA 리스크를 수용할지 Completion Review에서 판단한다.
+next_decision: 완료. 후속 T-20260813-003과 화면별 집중 시각 보강 Task는 별도 승인·검증 절차로 진행한다.
 ---
 
 # 비공개 Figma 기록·레시피 핵심 흐름
@@ -133,6 +133,19 @@ next_decision: Design Lead Agent가 Design QA PASS와 잔여 iOS 구현·QA 리�
 - Home, Audio Guide, App Info, iOS, Backend, `design/prototype/`, 공개 공유 설정, 외부 Library·자산은 수정하지 않는다.
 - 완료 후 같은 비공개 Draft와 PR #164에서 Design QA Agent가 DQA-002-001·002 및 기존 통과 범위 무회귀를 독립 재검증한다.
 
+## Completion Review
+
+- Design QA의 최종 `PASS`를 수용한다. `DQA-002-001`의 실제 `LOG-10 · Recording Error / Dark` AX3와 `DQA-002-002`의 Core Flow action 100개 집계 정합성이 확인됐다.
+- Library 5·Cooking Log 14·AI Review 12·Recipe Detail 7, 총 38개 상태와 Light/Dark 76개 `390×844pt` frame, 상태·데이터 보존 계약, local color mode, 최소 44pt와 비공개 보안 경계가 무회귀로 통과했다.
+- 실제 iOS hit area·VoiceOver·Dynamic Type·런타임 동작은 디자인 원본의 미완료가 아니라 후속 iOS 구현·QA 범위로 수용한다.
+- 이번 완료는 기능·상태·접근성 디자인 계약의 기준선을 확정한다. Home 및 나머지 화면의 팝 키치 시각 완성도 보강은 별도 하위 Task로 분리하며 이 Task를 재개방하지 않는다.
+
+## Completion Decision
+
+- Product Owner의 완료 리뷰·병합 승인을 반영해 `completion_review`를 거쳐 `done`으로 확정한다.
+- T-20260813-003의 선행 의존성은 해제한다. 다만 상위 T-20260812-003 완료는 후속 화면별 집중 시각 보강과 최종 통합 Design QA까지 통과해야 한다.
+- PR #164는 checks 확인 후 `develop`에 squash merge한다.
+
 ## Handoff
 
 ```text
@@ -173,3 +186,5 @@ Task T-20260813-002의 완료 확정 여부를 검토해줘.
 | 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | AX3 Cooking Log를 실제 LOG-10 Recording Error Dark 원본으로 교체하고 action 집계를 100개 Core Flow 기준으로 정정해 Design QA 독립 재검증에 인계 |
 | 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | DQA-002-001·002 재작업과 기존 통과 범위의 무회귀 독립 재검증 시작 |
 | 2026-08-13 | Design QA Agent | verification_in_progress | verification_passed | DQA-002-001 AX3 LOG-10 일치와 DQA-002-002 100개 action 집계·44pt·38개 상태/76개 frame 무회귀를 독립 확인해 PASS로 Completion Role에 인계 |
+| 2026-08-13 | Design Lead Agent | verification_passed | completion_review | 독립 Design QA PASS와 후속 iOS 구현·QA 잔여 리스크를 수용하고 기능·상태·접근성 디자인 계약 완료 판정 |
+| 2026-08-13 | Product Owner | completion_review | done | T-20260813-002 완료 리뷰와 PR #164 병합 승인; 시각 완성도 보강은 별도 하위 Task로 분리 |
