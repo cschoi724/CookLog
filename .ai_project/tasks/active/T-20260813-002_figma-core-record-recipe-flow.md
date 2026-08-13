@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-002
 title: 비공개 Figma 기록·레시피 핵심 흐름
-status: scoped
+status: done
 type: feature
 priority: P1
 priority_reason: 승인된 Home 시각 기준으로 기록부터 저장·재사용까지 핵심 제품 흐름을 한 덩어리로 완성해야 한다.
@@ -10,13 +10,15 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent:
+target_role:
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
-  - design_scoping
-  - design_dependency_management
+  - ux_flow
+  - ui_design
+  - prototyping
+  - design_handoff
 ownership:
   paths:
     - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
@@ -40,6 +42,7 @@ blocks:
   - T-20260813-003
 parallel_group: private-figma-source-transition
 allowed_paths:
+  - "Product Owner가 지정한 비공개 Draft Figma 파일 (저장소 외부 작업공간; URL·파일 키·조직 식별자는 비기록)"
   - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
   - ".ai_project/reports/T-20260813-002_figma-core-record-recipe-flow-report.md"
   - ".ai_project/qa/T-20260813-002_figma-core-record-recipe-flow-qa.md"
@@ -56,7 +59,7 @@ source_of_truth:
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
   - "Product Owner가 지정한 비공개 Draft Figma 파일 (URL·파일 키·조직 식별자는 저장소에 기록하지 않음)"
 created_by: Design Lead Agent
-approved_by:
+approved_by: Product Owner (2026-08-13, T-001 canonical done 확인 후 기록·레시피 핵심 흐름 38상태 비공개 Figma 실행 승인; DQA-002-001·002 재작업 승인)
 locked_by:
 locked_at:
 lock_session:
@@ -66,17 +69,17 @@ updated_at: 2026-08-13
 report_to: ".ai_project/reports/T-20260813-002_figma-core-record-recipe-flow-report.md"
 qa_to: ".ai_project/qa/T-20260813-002_figma-core-record-recipe-flow-qa.md"
 status_ref: origin/develop
-status_ref_sha: bcbd3aa6bd5d307da03238aabd5c0ebcd811d583
+status_ref_sha: fa39d0621227de954c131dc544f595522a08a85d
 base_ref: origin/develop
-base_sha: bcbd3aa6bd5d307da03238aabd5c0ebcd811d583
+base_sha: fa39d0621227de954c131dc544f595522a08a85d
 branch:
   name: task/T-20260813-002-figma-core-record-recipe-flow
   base: develop
 pr:
-  url:
-  status:
-blocker: T-20260813-001의 Product Owner Home Visual Baseline v1 승인과 Design QA 통과가 필요하다.
-next_decision: 선행 Task 완료 뒤 Product Owner가 실행을 승인해 UI/UX Design Agent에게 인계한다.
+  url: https://github.com/cschoi724/CookLog/pull/164
+  status: ready_to_merge
+blocker:
+next_decision: 완료. 후속 T-20260813-003과 화면별 집중 시각 보강 Task는 별도 승인·검증 절차로 진행한다.
 ---
 
 # 비공개 Figma 기록·레시피 핵심 흐름
@@ -121,18 +124,51 @@ next_decision: 선행 Task 완료 뒤 Product Owner가 실행을 승인해 UI/UX
 - 새 기능·routing·데이터 계약이 필요해 보이면 디자인으로 확정하지 않고 Product Lead에게 결정 요청한다.
 - 완료·검증 후에만 T-20260813-003을 실행한다.
 
+## Approved Rework Scope — DQA-002-001·002
+
+- `DQA-002-001`: `AX3 / Cooking Log Recording Error / 390×844 / Dark`를 실제 `LOG-10 · Recording Error / Dark` 상태로 교체한다. frame 이름·추적 키·계약 문구·시각 내용은 기존 STEP·record 보존과 `다시 기록하기` 행동까지 모두 일치해야 한다.
+- `DQA-002-002`: 실행 보고서의 action 집계 86개를 독립 QA 측정 100개와 일치시키거나, 86개가 가리키는 별도 집계 대상과 제외 기준을 재현 가능하게 명시한다.
+- 실행 보고서·QA 머리말의 trailing whitespace 4건을 정리하고 `git diff --check`를 통과시킨다.
+- 이미 통과한 38개 상태·Light/Dark 76개 `390×844` frame·100개 action의 최소 44pt·상태 계약·local color mode·비공개 보안 경계는 변경하지 않는다.
+- Home, Audio Guide, App Info, iOS, Backend, `design/prototype/`, 공개 공유 설정, 외부 Library·자산은 수정하지 않는다.
+- 완료 후 같은 비공개 Draft와 PR #164에서 Design QA Agent가 DQA-002-001·002 및 기존 통과 범위 무회귀를 독립 재검증한다.
+
+## Completion Review
+
+- Design QA의 최종 `PASS`를 수용한다. `DQA-002-001`의 실제 `LOG-10 · Recording Error / Dark` AX3와 `DQA-002-002`의 Core Flow action 100개 집계 정합성이 확인됐다.
+- Library 5·Cooking Log 14·AI Review 12·Recipe Detail 7, 총 38개 상태와 Light/Dark 76개 `390×844pt` frame, 상태·데이터 보존 계약, local color mode, 최소 44pt와 비공개 보안 경계가 무회귀로 통과했다.
+- 실제 iOS hit area·VoiceOver·Dynamic Type·런타임 동작은 디자인 원본의 미완료가 아니라 후속 iOS 구현·QA 범위로 수용한다.
+- 이번 완료는 기능·상태·접근성 디자인 계약의 기준선을 확정한다. Home 및 나머지 화면의 팝 키치 시각 완성도 보강은 별도 하위 Task로 분리하며 이 Task를 재개방하지 않는다.
+
+## Completion Decision
+
+- Product Owner의 완료 리뷰·병합 승인을 반영해 `completion_review`를 거쳐 `done`으로 확정한다.
+- T-20260813-003의 선행 의존성은 해제한다. 다만 상위 T-20260812-003 완료는 후속 화면별 집중 시각 보강과 최종 통합 Design QA까지 통과해야 한다.
+- PR #164는 checks 확인 후 `develop`에 squash merge한다.
+
 ## Handoff
 
 ```text
 다음 Agent에게 전달할 말:
 
-너는 UI/UX Design Agent / Execution Role이야.
-T-20260813-001이 완료되고 Product Owner가 이 Task를 승인한 뒤 T-20260813-002를 실행해줘.
+너는 Design Lead Agent / Completion Role이야.
+Task T-20260813-002의 완료 확정 여부를 검토해줘.
 
-- 범위: Library 5·Cooking Log 14·AI Review 12·Recipe Detail 7, 총 38상태의 390×844 Light/Dark
-- 기준: 승인된 Home Visual Baseline v1과 같은 Figma local Variables·Components
-- 금지: Home 재설계, Audio/Info 선행 제작, iOS·Prototype 수정, 외부 Library 사용
-- 완료 후: 보고서를 작성하고 verification_ready로 Design QA Agent에게 인계해.
+- 현재 상태: verification_passed
+- 기준 상태 ref: origin/develop
+- 기준 상태 SHA: fa39d0621227de954c131dc544f595522a08a85d
+- 다음에 해야 할 일: DQA-002-001·002 재검증 PASS, 잔여 iOS 구현·QA 리스크, 후속 T-20260813-003 의존성 해제 가능 여부를 검토해 completion_review 수용 여부를 판단해줘.
+- 기준 문서: .ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md, docs/product/CookLog_PRD_v2.md, docs/product/CookLog_USER_FLOW.md, docs/product/CookLog_POP_KITSCH_UX_PLAN.md, T-001 실행·QA 보고서
+- 허용 경로: Product Owner 지정 비공개 Draft Figma 파일, 이 Task·실행 보고서·QA 문서·공용/Design 보드의 allowed_paths
+- 참고 산출물: .ai_project/reports/T-20260813-002_figma-core-record-recipe-flow-report.md, .ai_project/qa/T-20260813-002_figma-core-record-recipe-flow-qa.md, PR #164
+- 변경/검토 대상: AX3 Cooking Log Recording Error Dark frame, 실행 보고서 action 집계, 38개 상태·76개 frame의 검증 결과
+- 검증 결과: DQA-002-001·002와 기존 통과 범위를 독립 재측정해 PASS
+- 보안: Figma URL·파일 키·조직·초대 대상 식별자를 저장소·Task·보고서에 기록하거나 공유 범위를 확대하지 마.
+- 남은 리스크: 실제 iOS hit area·VoiceOver·Dynamic Type은 구현·iOS QA 단계에서 별도 검증하며 375×667 전체 화면은 비범위다.
+- 차단/결정 필요: 새 기능·routing·데이터 계약이 필요하면 임의 확정하지 말고 Product Lead 결정으로 분리해줘.
+- 잔여 리스크: 실제 iOS hit area·VoiceOver·Dynamic Type과 network·권한·저장 런타임은 iOS 구현·QA에서 별도 검증하며 375×667 전체 화면은 비범위다.
+- 완료 가능 시: completion_review를 거쳐 done 처리와 T-20260813-003 의존성 해제를 판단해줘.
+- 주의: Figma URL·파일 키·조직·초대 대상은 저장소에 기록하지 말고, PR 병합은 Product Owner 승인 전 진행하지 마.
 ```
 
 ## Activity
@@ -140,3 +176,15 @@ T-20260813-001이 완료되고 Product Owner가 이 Task를 승인한 뒤 T-2026
 | 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
 |---|---|---|---|---|
 | 2026-08-13 | Design Lead Agent |  | scoped | 승인 Home baseline을 확장하는 기록·저장·재사용 4개 화면군 38상태 Task 등록 |
+| 2026-08-13 | Product Owner | scoped | approved | T-001의 canonical done과 비공개·local-only 경계를 확인하고 UI/UX Design Agent의 4개 화면군 38상태 실행 승인 |
+| 2026-08-13 | UI/UX Design Agent | approved | in_progress | PR #164 전용 브랜치와 비공개 Draft의 local Foundation·Component·38개 상태 계약을 확인하고 실행 잠금 획득 |
+| 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | Library 5·Log 14·Review 12·Detail 7 상태를 Light/Dark 76개 frame으로 구현하고 실행 보고서·자체 검증을 완료해 Design QA에 인계 |
+| 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | 비공개 Draft와 실행 보고서·제품 상태 계약을 기준으로 38개 핵심 흐름 독립 검증 시작 |
+| 2026-08-13 | Design QA Agent | verification_in_progress | rework_requested | DQA-002-001 AX3 Cooking Log frame이 Recording Error로 명명됐지만 Offline Recording을 복제한 불일치와 DQA-002-002 action 집계 정합성 결함을 확인해 Design Lead에 재작업 인계 |
+| 2026-08-13 | Product Owner | rework_requested | approved | DQA-002-001 AX3 Recording Error 상태 교체와 DQA-002-002 action 집계·문서 포맷 정정을 승인하고 UI/UX Design Agent에 재할당 |
+| 2026-08-13 | UI/UX Design Agent | approved | in_progress | 승인된 DQA-002-001·002 재작업 잠금을 획득하고 비공개 Draft의 LOG-10 AX3 및 실행 보고서 정정 시작 |
+| 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | AX3 Cooking Log를 실제 LOG-10 Recording Error Dark 원본으로 교체하고 action 집계를 100개 Core Flow 기준으로 정정해 Design QA 독립 재검증에 인계 |
+| 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | DQA-002-001·002 재작업과 기존 통과 범위의 무회귀 독립 재검증 시작 |
+| 2026-08-13 | Design QA Agent | verification_in_progress | verification_passed | DQA-002-001 AX3 LOG-10 일치와 DQA-002-002 100개 action 집계·44pt·38개 상태/76개 frame 무회귀를 독립 확인해 PASS로 Completion Role에 인계 |
+| 2026-08-13 | Design Lead Agent | verification_passed | completion_review | 독립 Design QA PASS와 후속 iOS 구현·QA 잔여 리스크를 수용하고 기능·상태·접근성 디자인 계약 완료 판정 |
+| 2026-08-13 | Product Owner | completion_review | done | T-20260813-002 완료 리뷰와 PR #164 병합 승인; 시각 완성도 보강은 별도 하위 Task로 분리 |
