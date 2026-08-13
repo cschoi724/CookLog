@@ -151,12 +151,12 @@ Product Owner가 지정한 비공개 Draft Figma 파일을 팝 키치 레시피 
 Task T-20260812-003은 CookLog의 UI/UX 원천을 비공개 Draft Figma로 전환하고, 팝 키치 핵심 흐름을 완성한 뒤 한 번에 구현 동기화하기 위한 제안 Task야.
 
 - 현재 상태: proposed
-- 선행 조건: T-20260812-002가 Product QA 검증과 완료 확정을 마쳐야 한다.
-- 다음에 해야 할 일: T-002 완료 후 비공개 운영 원칙, ownership, 기존 T-008·T-005~007과의 충돌·재사용·순서, Figma 실행 산출물과 QA 게이트를 scoped로 조율해줘.
+- 선행 조건: T-20260812-004가 Product QA 재검증과 완료 확정을 거쳐 `done`이어야 한다.
+- 다음에 해야 할 일: T-004 완료 후 비공개 운영 원칙, ownership, Figma 실행 산출물과 QA 게이트를 scoped로 조율하고 Product Owner에게 Figma 실행 승인을 별도로 요청해줘.
 - 기준 문서: CookLog PRD·User Flow·팝 키치 UX 계획·선택 시안·기존 Prototype·handoff 및 Product Owner가 지정한 비공개 Figma 파일.
 - 보안: Figma URL·파일 키·팀/조직 식별자·초대 대상·회사 자산 정보를 저장소나 보고서에 쓰지 마. 공개 공유·외부 Library·회사 자산 사용도 금지야.
 - 구현 동기화: 핵심 흐름 전체의 Product Owner 시각 승인과 Design QA 통과 전에는 로컬/iOS 구현을 시작하지 마. 기존 로컬·Git UI는 Legacy/Baseline으로 유지해.
-- 주의: T-008 및 T-005~007의 상태를 자동 변경하지 말고, 변경 필요 시 Product Owner에게 별도 scope 제안을 올려줘.
+- Legacy/Baseline: T-008 및 T-005~007은 T-004에서 이미 `cancelled`되어 이 Task에 흡수됐다. 기존 산출물과 미병합 WIP는 삭제하지 말고 설계 입력으로 보존해.
 ```
 
 ## Activity

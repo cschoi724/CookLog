@@ -1,7 +1,7 @@
 # T-20260812-004 실행 보고서
 
-작성일: 2026-08-12  
-실행 Agent: Product Planning Agent / Execution Role  
+작성일: 2026-08-12
+실행 Agent: Product Planning Agent / Execution Role
 공용 기준: `origin/develop@d6653525069af39685b19636c99a847a8907946b`
 
 ## 결과
@@ -40,3 +40,14 @@ Product QA는 다음을 독립 검증한다.
 - 변경 경로: T-004 `allowed_paths` 안의 Task·보드·Source of Truth·전달 흐름·실행 보고서만 변경
 - Figma·Prototype·iOS·Backend 제품 파일 변경: 0건
 - `aiops validate project --strict`: 기존 프로젝트 전역 경고로 FAIL. 이번 변경과 무관한 archive Task schema 누락, core workflow catalog 탐지 실패, 기존 Task metadata/source_of_truth 경고가 원인이다. 변경한 Task들의 개별 strict validation은 모두 통과했다.
+
+## Product QA FAIL 재작업
+
+작성일: 2026-08-13
+실행 Agent: Product Planning Agent / Execution Role
+
+- `PQA-HIGH-813004-001`: T-003 Handoff의 선행 조건을 T-004 `done`으로 교체하고, 이미 `cancelled`·흡수된 T-008·T-005~007의 산출물과 WIP를 Legacy/Baseline으로 보존하도록 정정했다.
+- `PQA-MEDIUM-813004-002`: T-004의 실행 전 승인안을 `실행 전 상태 / 적용 결과 / 현재 운영 기준`으로 구분해 현재 canonical 상태와 일치시켰다.
+- `PQA-LOW-813004-003`: 실행 보고서와 전달 흐름 문서의 Markdown 후행 공백 4건을 제거했다. 재작업 diff 기준 `git diff --check`를 다시 실행해 PASS를 확인했다.
+- 관련 Task 10개를 `aiops validate task ... --strict`로 재검증해 모두 PASS를 확인했다.
+- 기존 재정렬 그래프, 취소 Task, Legacy/WIP, Backend 독립 흐름, 비공개 식별자 비기록 원칙은 변경하지 않았다.
