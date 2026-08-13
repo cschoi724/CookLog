@@ -67,7 +67,7 @@ Team별 요약:
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | - | `cancelled`, 선택 컨셉·시안을 T-20260812-003 Legacy/Baseline 입력으로 보존 |
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | `done`, Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 375×667 Legacy 충돌은 T-20260812-004로 인계 |
 | `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `proposed`, T-004 완료 후 전체 핵심 흐름·로컬 디자인 시스템·시각 승인·독립 Design QA scope 조율 |
-| `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | Product QA Agent | `verification_ready`, T-003 중심 Task·Source of Truth·전달 흐름 일괄 재정렬 독립 검증 대기 |
+| `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | Product Lead Agent | `rework_requested`, Product QA FAIL; T-003 Handoff·T-004 현재 결과·diff 검증 증거 정합성 보완 필요 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | `done`, 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
 | `T-20260811-008` | P1 | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | - | `cancelled`, 결과·미병합 WIP 보존 후 T-20260812-003으로 흡수 |
