@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-001
 title: 비공개 Figma Foundations·Home Visual Baseline
-status: approved
+status: blocked
 type: feature
 priority: P1
 priority_reason: 전체 화면을 확장하기 전에 구현 가능한 공통 토큰·컴포넌트와 Home 고충실도 기준을 먼저 고정해 반복 재작업을 차단한다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: UI/UX Design Agent
-target_role: Execution Role
+target_agent: Design Lead Agent
+target_role: Lead Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -67,17 +67,17 @@ updated_at: 2026-08-13
 report_to: ".ai_project/reports/T-20260813-001_figma-foundations-home-visual-baseline-report.md"
 qa_to: ".ai_project/qa/T-20260813-001_figma-foundations-home-visual-baseline-qa.md"
 status_ref: origin/develop
-status_ref_sha: 788e2b7190ba27499ca8f840b7b0087e938314f3
+status_ref_sha: 86aa81c4aaf541ede4a3b4da900c355cb25324be
 base_ref: origin/develop
-base_sha: 788e2b7190ba27499ca8f840b7b0087e938314f3
+base_sha: 86aa81c4aaf541ede4a3b4da900c355cb25324be
 branch:
   name: task/T-20260813-001-figma-foundation-home-baseline
   base: develop
 pr:
   url:
   status:
-blocker:
-next_decision: UI/UX Design Agent가 최신 origin/develop 기준 전용 worktree에서 lock을 획득하고 승인 범위의 비공개 Figma Foundations·Components·Home Visual Baseline을 실행한다.
+blocker: 현재 Design QA 세션에 승인된 비공개 Draft Figma의 read-only 컨텍스트가 지정되지 않아 실제 frame·token·component·AX3·시각 위계를 독립 확인할 수 없다.
+next_decision: Product Owner가 승인된 동일 Draft를 Design QA 세션의 비공개 read-only 컨텍스트로 지정하면 Design Lead Agent가 차단 해소를 확인하고 approved 재개 여부를 처리한다.
 ---
 
 # 비공개 Figma Foundations·Home Visual Baseline
@@ -135,21 +135,19 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 ```text
 다음 Agent에게 전달할 말:
 
-너는 UI/UX Design Agent / Execution Role이야.
-Task T-20260813-001은 승인된 비공개 Figma 실행 Task야.
+너는 Design Lead Agent / Lead Role이야.
+Task T-20260813-001의 독립 검증 차단을 해소해줘.
 
-- 현재 상태: approved
+- 현재 상태: blocked
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 788e2b7190ba27499ca8f840b7b0087e938314f3
-- 다음에 해야 할 일: 전용 worktree와 lock을 획득하고 CookLog 전용 local Foundations·Components, Home Light 첫 승인 화면, Home 9개 상태의 Light/Dark 구성을 완료해줘.
+- 기준 상태 SHA: 86aa81c4aaf541ede4a3b4da900c355cb25324be
+- 다음에 해야 할 일: task branch에 게시된 verification_ready 실행·QA 인계를 확인하고, Design QA 세션에 동일한 승인 비공개 Draft의 read-only Figma 컨텍스트를 지정한 뒤 Task의 approved 재개 여부를 처리해줘.
 - 기준 문서: 상위 T-20260812-003, CookLog PRD·User Flow·팝 키치 UX 계획·선택 시안·handoff 및 Product Owner가 비공개 컨텍스트에서 지정하는 Draft Figma 파일
 - 허용 경로: 이 Task의 allowed_paths와 지정된 비공개 Figma 파일
-- 참고 산출물: .ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md
-- 변경/검토 대상: CookLog local Variables·Components·Styles, Home 390×844 Light/Dark 9상태, Home Visual Baseline v1
-- 남은 리스크: Figma 접근·비공개 설정과 외부 Library 미연결 여부는 실행 시작 시 확인해야 한다.
-- 차단/결정 필요: 시안과 다른 폰트·자산 제약이 있으면 임의 대체하지 말고 Product Owner에게 차이와 대안을 요청해.
-- 보안: Figma URL·파일 키·조직·초대 대상 식별자를 저장소·Task·보고서에 기록하지 마.
-- 완료 시: 자체 검증과 report 작성 후 status를 verification_ready로 전환하고 Design QA Agent / Verification Role에 인계해.
+- 참고 산출물: .ai_project/reports/T-20260813-001_figma-foundations-home-visual-baseline-report.md, .ai_project/qa/T-20260813-001_figma-foundations-home-visual-baseline-qa.md
+- 변경/검토 대상: CookLog local Variables·Components·Styles, Home 390×844 Light/Dark 9상태, Home Visual Baseline v1, AX3 frame
+- 남은 리스크: Figma read-only 접근이 없으면 visual·component·AX3 독립 PASS는 불가능하다. 실행·QA 인계는 task branch로 게시한다.
+- 차단/결정 필요: Figma 식별자를 저장소에 기록하거나 공개 범위를 넓히지 말고, 승인된 비공개 컨텍스트에서만 read-only 접근을 제공해.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -160,3 +158,10 @@ Task T-20260813-001은 승인된 비공개 Figma 실행 Task야.
 | 2026-08-13 | Design Lead Agent |  | scoped | Figma Foundations·Components와 Home 390×844 Light 선승인 게이트를 독립 실행 Task로 등록 |
 | 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 PR #161 재감사 결과로 T-20260812-002의 Home 전체 요리책 단일 텍스트 진입점·헤더 중복 금지 계약을 명시 |
 | 2026-08-13 | Product Owner | scoped | approved | PR #161 재검토 PASS와 T-20260812-004 done을 확인하고 UI/UX Design Agent / Execution Role의 비공개 Figma 실행을 승인 |
+| 2026-08-13 | UI/UX Design Agent | approved | in_progress | `origin/develop@86aa81c` 기반 전용 worktree에서 lock을 획득하고, 비공개 Figma 원천·로컬 Foundation·Home Visual Baseline의 Phase 0 Discovery를 시작 |
+| 2026-08-13 | UI/UX Design Agent | in_progress | in_progress | Product Owner가 지정한 비공개 Draft를 생성하고 외부 Library 미연결 상태에서 local Foundations·Components 및 `Home / Content / 390×844 / Light` first visual gate를 구성. Product Owner 시각 승인 대기 |
+| 2026-08-13 | Product Owner | in_progress | in_progress | `Home / Content / 390×844 / Light`를 Home Visual Baseline v1으로 시각 승인. 나머지 Home 상태와 Dark mode 확장 허용 |
+| 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | Home 9개 상태 Light/Dark 18개 frame, 상태 계약 9개, AX3 위험 frame 3개와 local token·component 정적 검증을 완료하고 Design QA에 인계 |
+| 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | 공용 기준과 실행 보고서를 확인하고 비공개 Figma Foundations·Home baseline 독립 검증을 시작 |
+| 2026-08-13 | Design QA Agent | verification_in_progress | blocked | Design QA 세션의 비공개 Draft read-only 컨텍스트와 commit·push된 verification_ready 산출물이 없어 실제 Figma 구조·시각·AX3를 독립 확인할 수 없어 Lead에 차단 해소를 인계 |
+| 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 실행 보고서·BLOCKED QA 보고서·verification_ready 이력을 task branch에 게시해 공용 재현 경로를 준비하고, 남은 차단을 비공개 Figma read-only 컨텍스트 지정으로 한정 |
