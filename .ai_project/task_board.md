@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환을 기준으로 Task 체계를 재정렬 중이며, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존하고 T-20260812-003에 흡수했습니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
+Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. 다음은 T-20260812-003 Design Lead scope이며, iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
 
 Team별 요약:
 
@@ -67,7 +67,7 @@ Team별 요약:
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | - | `cancelled`, 선택 컨셉·시안을 T-20260812-003 Legacy/Baseline 입력으로 보존 |
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | `done`, Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 375×667 Legacy 충돌은 T-20260812-004로 인계 |
 | `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `proposed`, T-004 완료 후 전체 핵심 흐름·로컬 디자인 시스템·시각 승인·독립 Design QA scope 조율 |
-| `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | Product Lead Agent | `completion_review`, Product QA `PASS_WITH_RISK` 수용; 필수 3건 해소·보드 요약 카운터 불일치는 비차단 운영 리스크 |
+| `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | - | `done`, Product QA `PASS_WITH_RISK`·Completion Review 수용; T-003 Design Lead scope 선행 조건 해제 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | `done`, 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
 | `T-20260811-008` | P1 | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | - | `cancelled`, 결과·미병합 WIP 보존 후 T-20260812-003으로 흡수 |
