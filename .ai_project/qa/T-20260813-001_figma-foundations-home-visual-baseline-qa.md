@@ -45,3 +45,4 @@
 - 따라서 기존 두 차단 조건은 해소됐다. Task는 workflow에 따라 `approved`로 재개하며 UI/UX Design Agent가 verification_ready 인계를 복원한다.
 - Design QA 재검증 세션에는 Product Owner가 같은 Draft 링크를 비공개 입력으로 다시 전달해야 한다. 링크·파일 키는 저장소나 QA 보고서에 기록하지 않는다.
 - Lead 사전 감사에서 일반 Home 오류·삭제 상태의 일부 action container가 `32~34pt`로 측정됐다. 이 값이 실제 interactive target인지와 44pt 계약 충족 여부는 재검증 세션에서 독립 판정한다.
+- Light semantic `color/bg/base`는 `#FFF8E8`로 확인됐다. Task의 흰 캔버스 및 선택 시안 기준을 충족하는지, 순백으로 수정해야 하는지는 재검증 세션에서 독립 판정한다.

@@ -146,7 +146,7 @@ Task T-20260813-001의 검증 인계를 재개해줘.
 - 허용 경로: 이 Task의 allowed_paths와 지정된 비공개 Figma 파일
 - 참고 산출물: .ai_project/reports/T-20260813-001_figma-foundations-home-visual-baseline-report.md, .ai_project/qa/T-20260813-001_figma-foundations-home-visual-baseline-qa.md
 - 변경/검토 대상: CookLog local Variables·Components·Styles, Home 390×844 Light/Dark 9상태, Home Visual Baseline v1, AX3 frame
-- 남은 리스크: Design Lead의 사전 읽기 감사에서 일반 Home 오류·삭제 상태의 일부 action container가 32~34pt로 측정됐다. 44pt 계약 충족 여부는 Design QA가 독립 판정해야 한다.
+- 남은 리스크: Design Lead의 사전 읽기 감사에서 일반 Home 오류·삭제 상태의 일부 action container가 32~34pt로 측정됐고 Light 기본 배경 token은 순백이 아닌 `#FFF8E8`이었다. 44pt와 흰 캔버스 계약 충족 여부는 Design QA가 독립 판정해야 한다.
 - 차단/결정 필요: 없음. 단, Product Owner는 같은 Draft 링크를 Design QA 세션에 비공개 입력으로 다시 전달해야 한다.
 - 보안: Figma 식별자를 저장소·Task·보고서에 기록하거나 공개 범위를 넓히지 마.
 - 완료 시: report가 현재 Figma와 일치함을 확인하고 verification_ready로 Design QA Agent / Verification Role에 인계해.
