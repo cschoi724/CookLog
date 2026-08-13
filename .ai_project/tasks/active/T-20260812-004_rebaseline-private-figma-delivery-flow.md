@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260812-004
 title: 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
-status: completion_review
+status: done
 type: feature
 priority: P0
 priority_reason: 기존 로컬 Prototype 중심 디자인·iOS 검증 체인과 새 비공개 Figma 원천 체인을 정렬하지 않으면 디자인·구현이
@@ -11,8 +11,8 @@ org_unit: Product Division
 team: Product Team
 team_lead: Product Lead Agent
 workflow: feature
-target_agent: Product Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 planned_execution_agent: Product Planning Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -105,20 +105,20 @@ updated_at: '2026-08-13'
 report_to: ".ai_project/reports/T-20260812-004_rebaseline-private-figma-delivery-flow-report.md"
 qa_to: ".ai_project/qa/T-20260812-004_rebaseline-private-figma-delivery-flow-qa.md"
 status_ref: origin/develop
-status_ref_sha: e4f2560c4e7b09a2532f563ebbcbc281eaf7e690
-worktree_path: "/private/tmp/cooklog-t20260812-004-completion-review"
+status_ref_sha: 8d2f6a096e252a8b56eae7162ed76a93d3936f2f
+worktree_path: "/private/tmp/cooklog-t20260812-004-complete"
 worktree_role: Completion Role
 base_ref: origin/develop
-base_sha: e4f2560c4e7b09a2532f563ebbcbc281eaf7e690
+base_sha: 8d2f6a096e252a8b56eae7162ed76a93d3936f2f
 branch:
-  name: task/T-20260812-004-completion-review
+  name: task/T-20260812-004-complete
   base: develop
 pr:
   url:
   status:
 blocker:
-next_decision: 보드 상단 요약 카운터 불일치를 비차단 운영 리스크로 수용하고 T-004 done 확정 후 T-003을 Design Lead
-  scope로 인계한다.
+next_decision: T-20260812-003을 Design Lead Agent가 scoped로 조율하고 Product Owner의 별도 Figma
+  실행 승인을 요청한다.
 ---
 
 # 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬
@@ -157,8 +157,8 @@ T-20260812-002가 `done`되어 선행 차단이 해제된 뒤 Product Owner가 �
 ### Canonical 실행 순서와 현재 위치
 
 1. **완료**: T-004 실행으로 위 Task 분류·의존성·Source of Truth 변경을 한 번에 반영했다.
-2. **현재**: T-004의 Product QA 재검증과 완료 확정을 진행한다.
-3. **대기**: T-004가 `done`이면 Design Lead가 T-003을 scoped로 조율하고 Product Owner가 Figma 실행을 별도 승인한다.
+2. **완료**: T-004의 Product QA 재검증 `PASS_WITH_RISK`와 Completion Review를 수용하고 `done`으로 확정했다.
+3. **다음**: Design Lead가 T-003을 scoped로 조율하고 Product Owner가 Figma 실행을 별도 승인한다.
 4. **대기**: UI/UX Design Agent가 지정된 비공개 Draft 파일에서 CookLog 로컬 Foundations·Components와 전체 핵심 흐름을 완성한다.
 5. **대기**: Product Owner 시각 승인과 Design QA 통과 후 Figma baseline을 고정한다.
 6. **대기**: Development Lead가 변경된 Figma 기준 iOS 일괄 동기화 범위를 확정하고 구현·기능·기술 접근성 QA를 재개한다.
@@ -210,17 +210,18 @@ T-20260812-002가 `done`되어 선행 차단이 해제된 뒤 Product Owner가 �
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product Lead Agent / Completion Role이야.
-Task T-20260812-004의 완료 리뷰 결과를 확인하고 `done`을 확정해줘.
+너는 Design Lead Agent / Lead Role이야.
+완료된 Task T-20260812-004의 재정렬 결과를 기준으로 T-20260812-003의 scope를 조율해줘.
 
-- 현재 상태: completion_review
+- 현재 상태: T-20260812-004 `done`, T-20260812-003 `proposed`
 - Product QA 판정: PASS_WITH_RISK
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: e4f2560c4e7b09a2532f563ebbcbc281eaf7e690
+- 기준 상태 SHA: 8d2f6a096e252a8b56eae7162ed76a93d3936f2f
 - 통과 근거: Product QA 필수 3건 해소, 관련 Task 10개 strict PASS, 재정렬 그래프·Legacy/WIP·Backend 독립 흐름·비공개 식별자 비기록 회귀 없음.
 - 수용 리스크: 프로젝트 보드 상단 상태·Team 요약 카운터 불일치는 비차단 운영 리스크로 수용했다. 상세 행과 Task frontmatter를 계속 우선한다.
-- 다음에 해야 할 일: T-004를 `done`으로 확정하고 프로젝트·Product 보드를 갱신해줘.
-- 완료 후: T-20260812-003을 Design Lead Agent / Lead Role에 인계하되 Product Owner의 별도 Figma 실행 승인 전 디자인 수정은 금지해.
+- 다음에 해야 할 일: T-003의 전체 핵심 흐름·CookLog 로컬 디자인 시스템·시각 승인·독립 Design QA 범위를 `scoped`로 조율해줘.
+- 실행 경계: Product Owner가 별도로 Figma 실행을 승인하기 전에는 지정된 비공개 Draft 파일을 수정하지 마.
+- 보존 경계: T-008·T-005~007의 기존 산출물과 WIP는 Legacy/Baseline으로만 사용하고, iOS 동기화는 Figma baseline 고정 후 일괄 범위로 넘겨.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -239,6 +240,7 @@ Task T-20260812-004의 완료 리뷰 결과를 확인하고 `done`을 확정해�
 | 2026-08-13 | Product Planning Agent | in_progress | verification_ready | 필수 수정 3건과 관련 Task strict 검증·diff 검증 완료, Product QA 재검증 인계 |
 | 2026-08-13 | Product QA Agent | verification_ready | verification_passed | 필수 수정 3건 해소와 보존 경계 회귀 통과, 보드 요약 카운터 불일치는 비차단 리스크로 인계 |
 | 2026-08-13 | Product Lead Agent | verification_passed | completion_review | Product QA 판정과 비차단 리스크를 수용하고 T-003 후속 인계 조건을 완료 검토 |
+| 2026-08-13 | Product Lead Agent | completion_review | done | 완료 리뷰를 수용하고 재정렬 결과를 확정, T-003 Design Lead scope 인계 조건 해제 |
 
 ## AI Ops CLI 기록
 
@@ -264,3 +266,6 @@ Task T-20260812-004의 완료 리뷰 결과를 확인하고 `done`을 확정해�
 | 2026-08-13 | Product QA Agent | transition: verification_in_progress -> verification_passed | Product QA 필수 3건 해소·재정렬 보존 경계 회귀 통과, 프로젝트 보드 요약 카운터 불일치는 Completion 후속 리스크로 인계 |
 | 2026-08-13 | Product Lead Agent | lock | task lock |
 | 2026-08-13 | Product Lead Agent | transition: verification_passed -> completion_review | Product QA PASS_WITH_RISK를 수용하고 필수 결함 해소, 잔여 보드 요약 카운터 리스크, 후속 T-003 인계 조건을 완료 검토 |
+| 2026-08-13 | Product Lead Agent | lock | task lock |
+| 2026-08-13 | Product Lead Agent | transition: completion_review -> done | Product QA PASS_WITH_RISK와 완료 리뷰를 수용한다. 필수 결함 3건 해소와 재정렬 결과를 확정하고 보드 요약 카운터 불일치는 비차단 운영 리스크로 보존한다. |
+| 2026-08-13 | Product Lead Agent | unlock | task unlock |
