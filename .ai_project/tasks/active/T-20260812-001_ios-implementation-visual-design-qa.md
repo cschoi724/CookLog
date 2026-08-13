@@ -40,7 +40,7 @@ allowed_paths:
 source_of_truth:
   - .ai_project/tasks/active/T-20260728-003_apply-figma-uiux-to-ios.md
   - .ai_project/tasks/active/T-20260805-008_ios-accessibility-visual-regression.md
-  - .ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md
+  - .ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md
   - docs/product/CookLog_FIGMA_DELIVERY_FLOW.md
   - design/prototype/ # Legacy/Baseline 참고
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md

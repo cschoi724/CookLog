@@ -37,7 +37,7 @@ source_of_truth:
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
   - apps/ios/docs/TESTING.md
   - apps/ios/docs/MANUAL_QA_CHECKLIST.md
-  - .ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md
+  - .ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md
   - docs/product/CookLog_FIGMA_DELIVERY_FLOW.md
   - .ai_project/tasks/active/T-20260812-001_ios-implementation-visual-design-qa.md
 created_by: Development Lead Agent

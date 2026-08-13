@@ -60,7 +60,7 @@ source_of_truth:
   - apps/ios/docs/ARCHITECTURE.md
   - apps/ios/docs/STATUS.md
   - docs/product/CookLog_FIGMA_DELIVERY_FLOW.md
-  - .ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md
+  - .ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md
   - design/prototype/ # Legacy/Baseline 참고
   - design/figma-build/manifest.json # Legacy 상태 계약 참고
   - design/IOS_MVP_IMPLEMENTATION_ACCEPTANCE.md
