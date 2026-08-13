@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-002
 title: 비공개 Figma 기록·레시피 핵심 흐름
-status: verification_ready
+status: verification_passed
 type: feature
 priority: P1
 priority_reason: 승인된 Home 시각 기준으로 기록부터 저장·재사용까지 핵심 제품 흐름을 한 덩어리로 완성해야 한다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design QA Agent
-target_role: Verification Role
+target_agent: Design Lead Agent
+target_role: Completion Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -79,7 +79,7 @@ pr:
   url: https://github.com/cschoi724/CookLog/pull/164
   status: draft
 blocker:
-next_decision: Design QA Agent가 DQA-002-001·002 및 기존 통과 범위의 무회귀를 독립 재검증한다.
+next_decision: Design Lead Agent가 Design QA PASS와 잔여 iOS 구현·QA 리스크를 수용할지 Completion Review에서 판단한다.
 ---
 
 # 비공개 Figma 기록·레시피 핵심 흐름
@@ -138,26 +138,24 @@ next_decision: Design QA Agent가 DQA-002-001·002 및 기존 통과 범위의 �
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Design QA Agent / Verification Role이야.
-Task T-20260813-002의 DQA-002-001·002 재작업 결과를 독립적으로 검증해줘.
+너는 Design Lead Agent / Completion Role이야.
+Task T-20260813-002의 완료 확정 여부를 검토해줘.
 
-- 현재 상태: verification_ready
+- 현재 상태: verification_passed
 - 기준 상태 ref: origin/develop
 - 기준 상태 SHA: fa39d0621227de954c131dc544f595522a08a85d
-- 다음에 해야 할 일: 같은 비공개 Draft에서 AX3 Cooking Log가 실제 `LOG-10 · Recording Error / Dark`와 text·contract·CTA·geometry까지 일치하는지, 실행 보고서가 Core Flow 76개 frame의 Action/action-card 100개 집계를 정확히 설명하는지, 기존 통과 범위가 회귀하지 않았는지 확인해줘.
+- 다음에 해야 할 일: DQA-002-001·002 재검증 PASS, 잔여 iOS 구현·QA 리스크, 후속 T-20260813-003 의존성 해제 가능 여부를 검토해 completion_review 수용 여부를 판단해줘.
 - 기준 문서: .ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md, docs/product/CookLog_PRD_v2.md, docs/product/CookLog_USER_FLOW.md, docs/product/CookLog_POP_KITSCH_UX_PLAN.md, T-001 실행·QA 보고서
 - 허용 경로: Product Owner 지정 비공개 Draft Figma 파일, 이 Task·실행 보고서·QA 문서·공용/Design 보드의 allowed_paths
 - 참고 산출물: .ai_project/reports/T-20260813-002_figma-core-record-recipe-flow-report.md, .ai_project/qa/T-20260813-002_figma-core-record-recipe-flow-qa.md, PR #164
-- 변경/검토 대상: AX3 Cooking Log Recording Error Dark frame, 실행 보고서 action 집계, 보고서·QA 포맷
-- 독립 QA 통과 범위: 38개 상태·Light/Dark 76개 frame·상태 계약·최소 44pt·local 색상 mode·보안 비기록
-- 변경 금지: 기존 통과 frame·상태 계약·action geometry, Home, Audio/Info, iOS·Backend·Prototype, 공개 설정과 외부 의존성
+- 변경/검토 대상: AX3 Cooking Log Recording Error Dark frame, 실행 보고서 action 집계, 38개 상태·76개 frame의 검증 결과
+- 검증 결과: DQA-002-001·002와 기존 통과 범위를 독립 재측정해 PASS
 - 보안: Figma URL·파일 키·조직·초대 대상 식별자를 저장소·Task·보고서에 기록하거나 공유 범위를 확대하지 마.
 - 남은 리스크: 실제 iOS hit area·VoiceOver·Dynamic Type은 구현·iOS QA 단계에서 별도 검증하며 375×667 전체 화면은 비범위다.
 - 차단/결정 필요: 새 기능·routing·데이터 계약이 필요하면 임의 확정하지 말고 Product Lead 결정으로 분리해줘.
-- 실행 검증: AX3는 `390×844`, `LOG-10 · Recording Error`, 기존 STEP·record 보존 계약, `다시 기록하기` CTA를 직접 확인했고, 문서 trailing whitespace를 제거해 `git diff --check` 통과를 준비했다.
-- 통과 시: status를 `verification_passed`로 바꾸고 Design Lead Agent / Completion Role에 인계해줘.
-- 수정 필요 시: status를 `rework_requested`로 바꾸고 구체적인 결함을 남겨줘.
-- 주의: 현재 Task의 workflow, status, target_agent, target_role과 lock 상태를 먼저 확인하고 승인 범위 밖 화면은 수정하지 마.
+- 잔여 리스크: 실제 iOS hit area·VoiceOver·Dynamic Type과 network·권한·저장 런타임은 iOS 구현·QA에서 별도 검증하며 375×667 전체 화면은 비범위다.
+- 완료 가능 시: completion_review를 거쳐 done 처리와 T-20260813-003 의존성 해제를 판단해줘.
+- 주의: Figma URL·파일 키·조직·초대 대상은 저장소에 기록하지 말고, PR 병합은 Product Owner 승인 전 진행하지 마.
 ```
 
 ## Activity
@@ -173,3 +171,5 @@ Task T-20260813-002의 DQA-002-001·002 재작업 결과를 독립적으로 검�
 | 2026-08-13 | Product Owner | rework_requested | approved | DQA-002-001 AX3 Recording Error 상태 교체와 DQA-002-002 action 집계·문서 포맷 정정을 승인하고 UI/UX Design Agent에 재할당 |
 | 2026-08-13 | UI/UX Design Agent | approved | in_progress | 승인된 DQA-002-001·002 재작업 잠금을 획득하고 비공개 Draft의 LOG-10 AX3 및 실행 보고서 정정 시작 |
 | 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | AX3 Cooking Log를 실제 LOG-10 Recording Error Dark 원본으로 교체하고 action 집계를 100개 Core Flow 기준으로 정정해 Design QA 독립 재검증에 인계 |
+| 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | DQA-002-001·002 재작업과 기존 통과 범위의 무회귀 독립 재검증 시작 |
+| 2026-08-13 | Design QA Agent | verification_in_progress | verification_passed | DQA-002-001 AX3 LOG-10 일치와 DQA-002-002 100개 action 집계·44pt·38개 상태/76개 frame 무회귀를 독립 확인해 PASS로 Completion Role에 인계 |
