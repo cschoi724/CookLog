@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-001
 title: 비공개 Figma Foundations·Home Visual Baseline
-status: verification_passed
+status: done
 type: feature
 priority: P1
 priority_reason: 전체 화면을 확장하기 전에 구현 가능한 공통 토큰·컴포넌트와 Home 고충실도 기준을 먼저 고정해 반복 재작업을 차단한다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -75,9 +75,9 @@ branch:
   base: develop
 pr:
   url: https://github.com/cschoi724/CookLog/pull/163
-  status: draft
+  status: ready_to_merge
 blocker:
-next_decision: Design Lead Agent / Completion Role이 DQA-001·002 QA PASS와 남은 구현 단계 리스크를 수용할지 검토한다.
+next_decision: T-20260813-002의 최신 scope와 비공개 Figma 실행 경계를 확인하고 Product Owner의 별도 실행 승인을 받는다.
 ---
 
 # 비공개 Figma Foundations·Home Visual Baseline
@@ -140,27 +140,42 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 - 시안과 달라야 하는 폰트·자산 제약은 임의 대체하지 않고 차이와 대안을 Product Owner에게 먼저 제시한다.
 - Home 첫 승인만 Light이며, Task 완료와 후속 화면군에는 Light/Dark 계약을 적용한다.
 
+## Completion Review
+
+- 검토일: 2026-08-13
+- 검토 Role: Design Lead Agent / Completion Role
+- 판정: 수용
+- 근거: 독립 Design QA 최종 `PASS`, 일반 Home Light/Dark Error·Delete confirm의 Retry `104×44pt`, Cancel `132×44pt`, Delete `141×44pt` 6개 action instance와 semantic token·카피·시각 회귀 없음이 확인됐다.
+- 보존 계약: Foundations, Home Light/Dark 18개 `390×844` frame, 상태 계약, 단일 전체 요리책 진입, AX3 대표 위험 frame 및 비공개·local-only 경계가 유지됐다.
+- 잔여 리스크: 실제 iOS hit area·VoiceOver·Dynamic Type은 구현·iOS QA에서 검증한다. `375×667` 전체 화면은 이번 Task 비범위이며 완료 차단으로 보지 않는다.
+
+## Completion Decision
+
+- 확정일: 2026-08-13
+- 확정 Role: Design Lead Agent / Completion Role
+- 결정: `done`
+- 수용: Product Owner가 완료 리뷰, PR #163 Draft 해제·병합 및 Task 완료 처리를 승인했다.
+- 후속: T-20260813-002는 T-001의 canonical 병합을 확인한 뒤 별도 실행 승인을 받아야 하며, 이번 승인으로 자동 실행하지 않는다.
+
 ## Handoff
 
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Design Lead Agent / Completion Role이야.
-Task T-20260813-001의 완료 수용 여부를 검토해줘.
+너는 Design Lead Agent / Lead Role이야.
+완료된 Task T-20260813-001을 기준으로 T-20260813-002의 실행 준비를 검토해줘.
 
-- 현재 상태: verification_passed
+- 현재 상태: T-20260813-001 `done`, T-20260813-002 `scoped`
 - 기준 상태 ref: origin/develop
 - 기준 상태 SHA: 86aa81c4aaf541ede4a3b4da900c355cb25324be
-- 다음에 해야 할 일: QA PASS, 허용 범위, 비공개 보안 경계 및 구현 단계 잔여 리스크를 검토해 completion_review 수용 여부를 판단해줘.
+- 다음에 해야 할 일: PR #163의 canonical 병합을 확인하고 T-20260813-002의 scope·allowed_paths·source_of_truth·비공개 보안 경계를 최신 기준으로 재확인한 뒤 Product Owner에게 별도 실행 승인을 요청해줘.
 - 기준 문서: 상위 T-20260812-003, CookLog PRD·User Flow·팝 키치 UX 계획·선택 시안·handoff 및 Product Owner가 비공개 컨텍스트에서 지정하는 Draft Figma 파일
-- 허용 경로: 이 Task의 allowed_paths와 지정된 비공개 Figma 파일
+- 허용 경로: T-20260813-002의 allowed_paths와 지정된 비공개 Figma 파일
 - 참고 산출물: .ai_project/reports/T-20260813-001_figma-foundations-home-visual-baseline-report.md, .ai_project/qa/T-20260813-001_figma-foundations-home-visual-baseline-qa.md
-- 변경/검토 대상: local `Action / Inline` component와 일반 Home 390×844 Light/Dark Error·Delete confirm의 6개 retry/cancel/delete instance
-- 남은 리스크: Figma 44pt geometry는 PASS이나 실제 iOS hit area·VoiceOver·Dynamic Type은 구현·iOS QA 단계에서 검증한다. `375×667` 전체 화면은 비범위다.
-- 차단/결정 필요: PR #163은 Draft 유지. Figma URL·파일 키 기록, 공개 링크·외부 Library·자산 추가 또는 Completion·Product Owner 승인 전 병합은 허용하지 않는다.
+- 변경/검토 대상: T-20260813-002의 Library·Cooking Log·AI Review·Recipe Detail 38개 상태
+- 남은 리스크: 실제 iOS 접근성은 구현 단계에서 별도 검증하며 `375×667` 전체 화면은 비범위다.
+- 차단/결정 필요: T-20260813-002 실행은 Product Owner의 별도 승인이 필요하다.
 - 보안: Figma 식별자를 저장소·Task·보고서에 기록하거나 공개 범위를 넓히지 마.
-- 통과 시: status를 verification_passed로 바꾸고 Design Lead Agent / Completion Role에 인계해.
-- 수정 필요 시: status를 rework_requested로 바꾸고 결함 ID·재현 frame·수용 기준 영향을 남겨줘.
 - 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
@@ -188,3 +203,5 @@ Task T-20260813-001의 완료 수용 여부를 검토해줘.
 | 2026-08-13 | UI/UX Design Agent | in_progress | verification_ready | local `Action / Inline` 44pt variant와 일반 Home Light/Dark Error·Delete confirm 6개 instance를 교체·직접 측정하고 Design QA에 재인계 |
 | 2026-08-13 | Design QA Agent | verification_ready | verification_in_progress | DQA-001·002 재작업 결과의 일반 Home Light/Dark 6개 action instance 독립 재측정 시작 |
 | 2026-08-13 | Design QA Agent | verification_in_progress | verification_passed | 동일 비공개 Draft에서 DQA-001·002의 6개 action instance를 직접 재측정해 44pt·token·카피·시각 회귀 없음 PASS로 Completion Role에 인계 |
+| 2026-08-13 | Design Lead Agent | verification_passed | completion_review | 독립 Design QA PASS와 비공개·local-only 보존 계약을 확인하고 iOS 접근성·375×667 후속 리스크를 수용해 완료 검토 시작 |
+| 2026-08-13 | Design Lead Agent | completion_review | done | Product Owner의 완료·PR #163 병합 승인에 따라 T-001을 완료 확정하고 T-002의 dependency 해제 조건을 충족 |
