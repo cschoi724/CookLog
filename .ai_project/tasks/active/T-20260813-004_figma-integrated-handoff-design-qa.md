@@ -54,7 +54,7 @@ allowed_paths:
   - ".ai_project/teams/design/task_board.md"
   - ".ai_project/teams/quality/task_board.md"
 source_of_truth:
-  - ".ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md"
+  - ".ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md"
   - ".ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md"
   - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
   - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
@@ -85,7 +85,7 @@ branch:
 pr:
   url:
   status:
-blocker: T-20260813-003의 Product Owner 전체 Light 시각 승인과 Design QA 통과가 필요하다.
+blocker: T-20260813-003의 Product Owner 전체 Light/Dark 시각 승인과 Design QA 통과가 필요하다.
 next_decision: 선행 Task 완료 뒤 Product Owner가 UI/UX handoff 준비를 승인하고, 완료 산출물을 Design QA Agent에게 독립 검증으로 인계한다.
 ---
 
@@ -99,7 +99,7 @@ Product Owner가 승인한 비공개 Figma 완성본을 82개 상태와 구현 �
 
 ### UI/UX Design Agent
 
-- 7개 화면군·82개 상태 추적 매트릭스와 Home·전체 Light 시각 승인 사실을 민감 식별자 없이 실행 보고서에 정리한다.
+- 7개 화면군·82개 상태 추적 매트릭스와 Home Light baseline·전체 Light/Dark 시각 승인 사실을 민감 식별자 없이 실행 보고서에 정리한다.
 - frame/component/variable 이름, revision label, component usage, state variant와 `고정`·`반응형`·`플랫폼 적응` annotation을 정리한다.
 - `design/figma-build/manifest.json`, `design/COOKLOG_MVP_UIUX_V1_HANDOFF.md`, `.ai_project/source_of_truth.md`를 Figma 우선·Prototype Legacy 원칙으로 서로 맞춘다.
 - 저장소 문서에는 Figma URL·파일 키·조직·초대 대상 식별자를 쓰지 않고 비공개 작업 컨텍스트에서만 대상 파일을 지정한다.
@@ -109,7 +109,7 @@ Product Owner가 승인한 비공개 Figma 완성본을 82개 상태와 구현 �
 
 - UI/UX Design Agent와 분리된 Verification Role 세션에서 독립 검증한다.
 - 82개 상태의 누락·중복·발생 조건·다음 행동·데이터 보존·복구·연결 대상을 확인한다.
-- `390×844 Light`에서 선택 시안·Home baseline·7개 화면군 시각 언어의 일관성을 확인한다.
+- `390×844 Light/Dark`에서 선택 시안·Home baseline·7개 화면군 시각 언어와 semantic state의 일관성을 확인한다.
 - 대비, 최소 44pt, 색 외 상태 단서, 읽기 순서와 AX3 대표 위험 frame을 확인한다.
 - CookLog local Library 전용, 외부 의존성 없음, 민감 식별자 비기록, 문서 3종 정합성을 확인한다.
 - 결과를 `PASS`, `PASS_WITH_RISK`, `FAIL`, `BLOCKED`로 판정한다.
@@ -117,16 +117,16 @@ Product Owner가 승인한 비공개 Figma 완성본을 82개 상태와 구현 �
 ## Out of Scope
 
 - Figma 화면 재설계와 기능·routing·데이터 계약 변경
-- Dark mode 정밀 화면·시각 QA, 375×667 전체 화면 QA
+- 375×667 전체 화면 QA
 - iOS·Backend·`design/prototype/` 구현 동기화
 - 공개 링크·Community 게시·외부 배포와 Figma 식별자 저장
 
 ## Acceptance Criteria
 
-1. Product Owner의 Home Visual Baseline v1 및 전체 390×844 Light 시각 승인 사실이 식별자 없이 추적된다.
+1. Product Owner의 Home Visual Baseline v1 Light 승인 및 전체 390×844 Light/Dark 시각 승인 사실이 식별자 없이 추적된다.
 2. 7개 화면군·82개 상태가 frame/component와 연결되고 상태·복구 계약이 누락 없이 검사 가능하다.
 3. local Variables·Components와 구현 속성·annotation이 iOS Agent가 임의 재해석 없이 읽을 수 있는 수준으로 정리된다.
-4. Light 기준 대비·44pt·색 외 상태 단서·읽기 순서·AX3 대표 위험 frame이 독립 QA에서 PASS한다.
+4. Light/Dark 기준 대비·44pt·색 외 상태 단서·읽기 순서·AX3 대표 위험 frame이 독립 QA에서 PASS한다.
 5. 저장소와 보고서에 Figma URL·파일 키·조직·초대 대상 식별자와 외부 Library 의존성이 없다.
 6. Source of Truth·manifest·handoff가 Figma 우선, Prototype/iOS 현행 UI는 Legacy/Baseline이라는 같은 전환 시점을 설명한다.
 7. Design QA가 PASS 또는 Product Owner가 명시적으로 수용한 PASS_WITH_RISK를 내기 전 상위 T-20260812-003을 완료하거나 iOS 동기화를 재개하지 않는다.
@@ -147,7 +147,7 @@ Product Owner가 승인한 비공개 Figma 완성본을 82개 상태와 구현 �
 T-20260813-003이 완료되고 Product Owner가 이 Task를 승인한 뒤 T-20260813-004를 실행해줘.
 
 - 범위: 82상태 추적·구현 annotation·manifest·handoff·Source of Truth 변경안·QA 증거
-- 금지: 화면 재설계, iOS·Prototype 수정, Dark 정밀 QA, Figma 식별자 저장
+- 금지: 화면 재설계, iOS·Prototype 수정, Figma 식별자 저장
 - 완료 후: verification_ready로 전환하고 Design QA Agent에게 독립 검증을 인계해.
 - QA 통과 뒤: Design Lead Agent가 상위 T-20260812-003 완료 리뷰를 진행해.
 ```
@@ -156,4 +156,4 @@ T-20260813-003이 완료되고 Product Owner가 이 Task를 승인한 뒤 T-2026
 
 | 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
 |---|---|---|---|---|
-| 2026-08-13 | Design Lead Agent |  | scoped | Figma baseline 문서화·82상태·Light 접근성·비공개 운영을 독립 검증하는 통합 Task 등록 |
+| 2026-08-13 | Design Lead Agent |  | scoped | Figma baseline 문서화·82상태·Light/Dark 접근성·비공개 운영을 독립 검증하는 통합 Task 등록 |

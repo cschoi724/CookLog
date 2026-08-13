@@ -69,8 +69,8 @@ Team별 요약:
 | `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, 상위 완료 집계; 하위 T-20260813-001~004 직렬 실행·Product Lead ownership review·Product Owner 승인 대기 |
 | `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | Design Lead Agent → UI/UX Design Agent | `scoped`, Home 390×844 Light·Home 9상태·Product Owner `Home Visual Baseline v1` 승인 |
 | `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-001 이후 Library·Log·Review·Detail 38상태 |
-| `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-002 이후 Player·Info 35상태·전체 Light 시각 승인 |
-| `T-20260813-004` | P1 | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-003 이후 manifest·handoff·Source of Truth·독립 Design QA |
+| `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-002 이후 Player·Info 35상태·전체 Light/Dark 시각 승인 |
+| `T-20260813-004` | P1 | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-003 이후 Light/Dark manifest·handoff·Source of Truth·독립 Design QA |
 | `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | - | `done`, Product QA `PASS_WITH_RISK`·Completion Review 수용; T-003 Design Lead scope 선행 조건 해제 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | `done`, 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |

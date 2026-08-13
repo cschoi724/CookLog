@@ -46,7 +46,7 @@ allowed_paths:
   - ".ai_project/task_board.md"
   - ".ai_project/teams/design/task_board.md"
 source_of_truth:
-  - ".ai_project/tasks/backlog/T-20260812-003_private-figma-source-core-flow-design.md"
+  - ".ai_project/tasks/active/T-20260812-003_private-figma-source-core-flow-design.md"
   - ".ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md"
   - docs/product/CookLog_PRD_v2.md
   - docs/product/CookLog_USER_FLOW.md
@@ -87,7 +87,7 @@ next_decision: 선행 Task 완료 뒤 Product Owner가 실행을 승인해 UI/UX
 
 ## Scope
 
-- `390×844pt Light`에서 다음 4개 화면군 38개 상태를 만든다.
+- `390×844pt Light/Dark`에서 다음 4개 화면군 38개 상태를 만든다.
   - Library 5개
   - Cooking Log 14개
   - AI Review 12개
@@ -101,7 +101,7 @@ next_decision: 선행 Task 완료 뒤 Product Owner가 실행을 승인해 UI/UX
 ## Out of Scope
 
 - Home baseline 재설계, Audio Guide와 App Info 제작
-- Dark mode 정밀 화면·시각 QA, 375×667 전체 화면 명세
+- 375×667 전체 화면 명세
 - iOS, Backend, `design/prototype/` 수정과 자동 생성 코드 적용
 - 공개 공유·외부 Library·회사 자산 사용
 
@@ -111,7 +111,7 @@ next_decision: 선행 Task 완료 뒤 Product Owner가 실행을 승인해 UI/UX
 2. 기록→저장→검색/상세→재사용 흐름과 cancel/retry/recovery가 제품 문서의 데이터 보존 계약과 일치한다.
 3. 모든 화면이 승인 Home baseline의 layout language·type scale·color·component hierarchy를 공유하고 기존 Prototype 레이아웃으로 회귀하지 않는다.
 4. frame과 component 속성에서 구현자가 geometry·spacing·typography·copy·color·state variant를 직접 읽을 수 있다.
-5. Light 기준 대비·44pt·색 외 상태 단서·읽기 순서·AX3 대표 위험 frame이 PASS한다.
+5. Light/Dark 기준 대비·44pt·색 외 상태 단서·읽기 순서·AX3 대표 위험 frame이 PASS한다.
 6. Figma 민감 식별자와 외부 의존성이 저장소·보고서에 없고 Design QA가 38개 상태 계약을 독립 검증한다.
 
 ## Coordination Notes
@@ -129,9 +129,9 @@ next_decision: 선행 Task 완료 뒤 Product Owner가 실행을 승인해 UI/UX
 너는 UI/UX Design Agent / Execution Role이야.
 T-20260813-001이 완료되고 Product Owner가 이 Task를 승인한 뒤 T-20260813-002를 실행해줘.
 
-- 범위: Library 5·Cooking Log 14·AI Review 12·Recipe Detail 7, 총 38상태
+- 범위: Library 5·Cooking Log 14·AI Review 12·Recipe Detail 7, 총 38상태의 390×844 Light/Dark
 - 기준: 승인된 Home Visual Baseline v1과 같은 Figma local Variables·Components
-- 금지: Home 재설계, Audio/Info 선행 제작, Dark 정밀 화면, iOS·Prototype 수정, 외부 Library 사용
+- 금지: Home 재설계, Audio/Info 선행 제작, iOS·Prototype 수정, 외부 Library 사용
 - 완료 후: 보고서를 작성하고 verification_ready로 Design QA Agent에게 인계해.
 ```
 

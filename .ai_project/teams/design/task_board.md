@@ -24,8 +24,8 @@
 | `T-20260812-003` | `scoped` | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent / Lead Role | `T-20260812-004`, T-20260813-001~004 | 상위 완료 집계·Product Lead ownership review·Product Owner 실행 승인 대기 |
 | `T-20260813-001` | `scoped` | 비공개 Figma Foundations·Home Visual Baseline | Design Lead Agent → UI/UX Design Agent | `T-20260812-004` | Home 390×844 Light·Home 9상태·Product Owner baseline 승인 |
 | `T-20260813-002` | `scoped` | 비공개 Figma 기록·레시피 핵심 흐름 | Design Lead Agent → UI/UX Design Agent | `T-20260813-001` | Library·Cooking Log·AI Review·Recipe Detail 38상태 |
-| `T-20260813-003` | `scoped` | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `T-20260813-002` | Audio Guide·App Info 35상태·전체 Light 시각 승인 |
-| `T-20260813-004` | `scoped` | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `T-20260813-003` | manifest·handoff·Source of Truth·독립 Design QA |
+| `T-20260813-003` | `scoped` | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `T-20260813-002` | Audio Guide·App Info 35상태·전체 Light/Dark 시각 승인 |
+| `T-20260813-004` | `scoped` | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `T-20260813-003` | Light/Dark manifest·handoff·Source of Truth·독립 Design QA |
 | `T-20260811-005` | `cancelled` | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | - | - | 화면·상태 계약을 T-20260812-003으로 흡수 |
 | `T-20260811-006` | `cancelled` | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | - | - | 화면·상태 계약을 T-20260812-003으로 흡수 |
 | `T-20260811-007` | `cancelled` | 팝 키치 레시피 클럽 Prototype 통합 Design QA | - | - | 독립 QA 책임을 T-20260812-003 Figma Design QA로 흡수 |
