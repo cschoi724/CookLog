@@ -18,11 +18,11 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `scoped` | 2 |
 | `approved` | 7 |
 | `in_progress` | 0 |
-| `verification_ready` | 1 |
+| `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
 | `verification_passed` | 1 |
 | `completion_review` | 0 |
-| `rework_requested` | 0 |
+| `rework_requested` | 1 |
 | `blocked` | 1 |
 | `done` | 45 |
 | `cancelled` | 1 |
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. T-20260813-001은 DQA-001·002 재검증 PASS와 Product Owner의 완료·병합 승인에 따라 `done`입니다. T-20260813-002는 Product Owner 실행 승인에 따라 UI/UX Design Agent의 38개 상태 실행 단계입니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
+Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. T-20260813-001은 DQA-001·002 재검증 PASS와 Product Owner의 완료·병합 승인에 따라 `done`입니다. T-20260813-002는 38개 상태·76개 frame의 핵심 구현은 통과했지만 AX3 Cooking Log 상태 불일치와 action 집계 정합성 재작업이 필요합니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
 
 Team별 요약:
 
@@ -68,7 +68,7 @@ Team별 요약:
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | `done`, Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 375×667 Legacy 충돌은 T-20260812-004로 인계 |
 | `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, 상위 완료 집계; Product Lead ownership review 완료·T-20260813-001 승인·하위 Task 직렬 실행 |
 | `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #163 병합 승인; T-002 dependency 해제 |
-| `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | UI/UX Design Agent | `approved`, T-001 완료 기준 Library·Log·Review·Detail 38상태 실행 승인 |
+| `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | Design Lead Agent | `rework_requested`, DQA-002-001 AX3 Cooking Log 상태 불일치와 DQA-002-002 action 집계 정합성 수정 후 독립 재검증 |
 | `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-002 이후 Player·Info 35상태·전체 Light/Dark 시각 승인 |
 | `T-20260813-004` | P1 | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-003 이후 Light/Dark manifest·handoff·Source of Truth·독립 Design QA |
 | `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | - | `done`, Product QA `PASS_WITH_RISK`·Completion Review 수용; T-003 Design Lead scope 선행 조건 해제 |
@@ -338,3 +338,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-05 | T-20260805-002 HIGH 2건 재작업·독립 QA·CI fixture 보강·required checks를 통과하고 PR #77 squash merge `3d1d012`로 `done` 확정, T-003 별도 실행 승인 대기 |
 | 2026-08-05 | T-20260804-004 HIGH 2건·MEDIUM 1건 재작업과 독립 QA·Lead 완료 리뷰를 통과하고 PR #79 squash merge `a73a028`로 `done` 확정, T-005 별도 실행 승인 검토로 인계 |
 | 2026-08-12 | Product Owner가 T-20260805-008의 개발 기능·기술 접근성 검증과 Visual Fidelity Design QA 분리를 승인; T-008은 최신 디자인 baseline 고정까지 `blocked`, 신규 T-20260812-001은 `scoped`로 등록 |
+| 2026-08-13 | Design QA가 T-20260813-002의 38개 상태·76개 frame·44pt·보안 경계 통과를 확인했으나 AX3 Cooking Log frame 내용 불일치와 action 집계 정합성 결함으로 `rework_requested`로 Design Lead에 인계 |
