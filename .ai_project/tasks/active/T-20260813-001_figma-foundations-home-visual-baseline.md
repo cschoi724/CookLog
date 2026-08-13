@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-001
 title: 비공개 Figma Foundations·Home Visual Baseline
-status: scoped
+status: approved
 type: feature
 priority: P1
 priority_reason: 전체 화면을 확장하기 전에 구현 가능한 공통 토큰·컴포넌트와 Home 고충실도 기준을 먼저 고정해 반복 재작업을 차단한다.
@@ -10,13 +10,15 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent: UI/UX Design Agent
+target_role: Execution Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
-  - design_scoping
-  - design_dependency_management
+  - ux_flow
+  - ui_design
+  - prototyping
+  - design_handoff
 ownership:
   paths:
     - ".ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md"
@@ -55,7 +57,7 @@ source_of_truth:
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
   - "Product Owner가 지정한 비공개 Draft Figma 파일 (URL·파일 키·조직 식별자는 저장소에 기록하지 않음)"
 created_by: Design Lead Agent
-approved_by:
+approved_by: Product Owner (2026-08-13, PR #161 재검토 PASS 후 비공개 Figma Foundations·Home Visual Baseline 실행 승인)
 locked_by:
 locked_at:
 lock_session:
@@ -65,17 +67,17 @@ updated_at: 2026-08-13
 report_to: ".ai_project/reports/T-20260813-001_figma-foundations-home-visual-baseline-report.md"
 qa_to: ".ai_project/qa/T-20260813-001_figma-foundations-home-visual-baseline-qa.md"
 status_ref: origin/develop
-status_ref_sha: bcbd3aa6bd5d307da03238aabd5c0ebcd811d583
+status_ref_sha: 788e2b7190ba27499ca8f840b7b0087e938314f3
 base_ref: origin/develop
-base_sha: bcbd3aa6bd5d307da03238aabd5c0ebcd811d583
+base_sha: 788e2b7190ba27499ca8f840b7b0087e938314f3
 branch:
   name: task/T-20260813-001-figma-foundation-home-baseline
   base: develop
 pr:
   url:
   status:
-blocker: 상위 T-20260812-003 패키지의 Product Lead ownership review와 Product Owner의 비공개 Figma 실행 승인이 필요하다.
-next_decision: 리뷰 수용 후 Product Owner가 이 Task를 approved로 전환해 UI/UX Design Agent에게 인계한다.
+blocker:
+next_decision: UI/UX Design Agent가 최신 origin/develop 기준 전용 worktree에서 lock을 획득하고 승인 범위의 비공개 Figma Foundations·Components·Home Visual Baseline을 실행한다.
 ---
 
 # 비공개 Figma Foundations·Home Visual Baseline
@@ -133,14 +135,22 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Product Lead Agent / Lead Role이야.
-상위 T-20260812-003과 하위 T-20260813-001~004를 한 패키지로 ownership review해줘.
+너는 UI/UX Design Agent / Execution Role이야.
+Task T-20260813-001은 승인된 비공개 Figma 실행 Task야.
 
-- 현재 상태: scoped
-- 이 Task의 실행 게이트: Home / Content / 390×844 / Light 한 장과 Home 9상태
-- 확인할 것: 선택 시안 고충실도, 82개 기능·상태 계약 비축소, Home 첫 Light 승인과 전체 Light/Dark 완료 계약의 양립
-- 리뷰 수용 후: Product Owner가 T-20260813-001 실행을 별도 승인하면 UI/UX Design Agent에게 인계해.
-- 보안: Figma URL·파일 키·조직·초대 대상 식별자를 저장소에 기록하지 마.
+- 현재 상태: approved
+- 기준 상태 ref: origin/develop
+- 기준 상태 SHA: 788e2b7190ba27499ca8f840b7b0087e938314f3
+- 다음에 해야 할 일: 전용 worktree와 lock을 획득하고 CookLog 전용 local Foundations·Components, Home Light 첫 승인 화면, Home 9개 상태의 Light/Dark 구성을 완료해줘.
+- 기준 문서: 상위 T-20260812-003, CookLog PRD·User Flow·팝 키치 UX 계획·선택 시안·handoff 및 Product Owner가 비공개 컨텍스트에서 지정하는 Draft Figma 파일
+- 허용 경로: 이 Task의 allowed_paths와 지정된 비공개 Figma 파일
+- 참고 산출물: .ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md
+- 변경/검토 대상: CookLog local Variables·Components·Styles, Home 390×844 Light/Dark 9상태, Home Visual Baseline v1
+- 남은 리스크: Figma 접근·비공개 설정과 외부 Library 미연결 여부는 실행 시작 시 확인해야 한다.
+- 차단/결정 필요: 시안과 다른 폰트·자산 제약이 있으면 임의 대체하지 말고 Product Owner에게 차이와 대안을 요청해.
+- 보안: Figma URL·파일 키·조직·초대 대상 식별자를 저장소·Task·보고서에 기록하지 마.
+- 완료 시: 자체 검증과 report 작성 후 status를 verification_ready로 전환하고 Design QA Agent / Verification Role에 인계해.
+- 주의: 현재 Task의 workflow, status, target_agent, target_role이 네 Role과 맞는지 먼저 확인해줘.
 ```
 
 ## Activity
@@ -149,3 +159,4 @@ CookLog 전용 비공개 Figma 파일에 구현 가능한 Foundations·Component
 |---|---|---|---|---|
 | 2026-08-13 | Design Lead Agent |  | scoped | Figma Foundations·Components와 Home 390×844 Light 선승인 게이트를 독립 실행 Task로 등록 |
 | 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 PR #161 재감사 결과로 T-20260812-002의 Home 전체 요리책 단일 텍스트 진입점·헤더 중복 금지 계약을 명시 |
+| 2026-08-13 | Product Owner | scoped | approved | PR #161 재검토 PASS와 T-20260812-004 done을 확인하고 UI/UX Design Agent / Execution Role의 비공개 Figma 실행을 승인 |

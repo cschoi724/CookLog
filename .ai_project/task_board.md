@@ -15,8 +15,8 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | 상태 | 개수 |
 |---|---:|
 | `proposed` | 17 |
-| `scoped` | 4 |
-| `approved` | 6 |
+| `scoped` | 3 |
+| `approved` | 7 |
 | `in_progress` | 0 |
 | `verification_ready` | 1 |
 | `verification_in_progress` | 0 |
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. T-20260812-003은 Design Lead scope를 완료했고 Product Lead ownership review와 Product Owner의 별도 Figma 실행 승인을 기다립니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
+Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. T-20260812-003의 Design Lead scope와 Product Lead ownership review를 완료했고, T-20260813-001은 Product Owner 승인에 따라 UI/UX Design Agent 실행을 기다립니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
 
 Team별 요약:
 
@@ -66,8 +66,8 @@ Team별 요약:
 | `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | - | `cancelled`, 선택 컨셉·시안을 T-20260812-003 Legacy/Baseline 입력으로 보존 |
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | `done`, Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 375×667 Legacy 충돌은 T-20260812-004로 인계 |
-| `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, 상위 완료 집계; 하위 T-20260813-001~004 직렬 실행·Product Lead ownership review·Product Owner 승인 대기 |
-| `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | Design Lead Agent → UI/UX Design Agent | `scoped`, Home 390×844 Light·Home 9상태·Product Owner `Home Visual Baseline v1` 승인 |
+| `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, 상위 완료 집계; Product Lead ownership review 완료·T-20260813-001 승인·하위 Task 직렬 실행 |
+| `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | UI/UX Design Agent | `approved`, 비공개 Figma Foundations·Components·Home 390×844 Light/Dark 9상태 실행 대기; 첫 시각 승인은 Home Light |
 | `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-001 이후 Library·Log·Review·Detail 38상태 |
 | `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-002 이후 Player·Info 35상태·전체 Light/Dark 시각 승인 |
 | `T-20260813-004` | P1 | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-003 이후 Light/Dark manifest·handoff·Source of Truth·독립 Design QA |
