@@ -76,8 +76,8 @@ branch:
   name: task/T-20260813-002-figma-core-record-recipe-flow
   base: develop
 pr:
-  url:
-  status:
+  url: https://github.com/cschoi724/CookLog/pull/164
+  status: draft
 blocker:
 next_decision: UI/UX Design Agent가 승인된 비공개 Draft에서 38개 상태를 실행하고 자체 검증 후 Design QA로 인계한다.
 ---
