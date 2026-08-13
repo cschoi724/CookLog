@@ -13,7 +13,7 @@
 | `T-20260804-001` | `done` | 수익화 Source of Truth와 T-010~018 후보 Task 복구 | - | 없음 | Product QA PASS·Product Lead 완료 리뷰·Product Owner 최종 승인, develop 통합 대기 |
 | `T-20260811-002` | `cancelled` | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | - | 없음 | 선택 컨셉·시안을 T-20260812-003 Legacy/Baseline 입력으로 보존 |
 | `T-20260812-002` | `done` | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | 없음 | Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 390×844pt·82개 상태 기준 확정, 375×667pt Legacy 충돌은 T-20260812-004로 인계 |
-| `T-20260812-004` | `approved` | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | Product Planning Agent / Execution Role | `T-20260812-002` 완료 | Product QA 필수 3건 문서 정합성 재작업 승인; 완료·재검증 전 T-003 대기 |
+| `T-20260812-004` | `verification_ready` | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | Product QA Agent / Verification Role | `T-20260812-002` 완료 | Product QA 필수 3건 재작업 완료·독립 재검증 대기; 완료 확정 전 T-003 대기 |
 | `T-20260728-010` | `proposed` | 수익화 가격·원가와 출시 정책 확정 | Product Lead Agent / Lead Role | `T-20260728-006`, `009` | Core v1 막바지 activation gate 대기 |
 | `T-20260728-013` | `proposed` | App Store 구독 상품과 법무·운영 정보 준비 | Product Lead Agent / Lead Role | `T-20260728-007`, `009`, `010` | 수익화 정책 확정 후 scope |
 | `T-20260728-018` | `proposed` | 초기 실서비스 수익화 출시 준비 완료 판정 | Product Lead Agent / Lead Role | `T-20260728-017` | 통합 QA 후 scope·완료 검토 |
