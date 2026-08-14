@@ -14,7 +14,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 17 |
+| `proposed` | 24 |
 | `scoped` | 2 |
 | `approved` | 8 |
 | `in_progress` | 0 |
@@ -38,7 +38,7 @@ Team별 요약:
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 2 | 1 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 3 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Design | 10 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 13 | 0 | 1 | `.ai_project/teams/development/task_board.md` |
 | Quality | 1 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 | AI Ops | 0 | 0 | 0 | `T-20260730-006`, `T-20260731-002` `done` |
@@ -66,11 +66,18 @@ Team별 요약:
 | `T-20260810-007` | P2 | Design Prototype GitHub Pages 공유 구성 | - | `done`, PR #118 squash merge·Design QA PASS; Gate B 미승인 |
 | `T-20260811-002` | P1 | 팝 키치 레시피 클럽 앱 전반 디자인 방향 확정 및 원본 발전 | - | `cancelled`, 선택 컨셉·시안을 T-20260812-003 Legacy/Baseline 입력으로 보존 |
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | `done`, Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 375×667 Legacy 충돌은 T-20260812-004로 인계 |
-| `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, 상위 완료 집계; Product Lead ownership review 완료·T-20260813-001 승인·하위 Task 직렬 실행 |
+| `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, T-003 기능·상태 완결 → T-005~011 화면별 시각 보강 → T-004 통합 QA 직렬 완료 필요 |
 | `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #163 병합 승인; T-002 dependency 해제 |
 | `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #164 병합 승인; T-003 dependency 해제 |
-| `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-002 이후 Player·Info 35상태·전체 Light/Dark 시각 승인 |
-| `T-20260813-004` | P1 | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-003 이후 Light/Dark manifest·handoff·Source of Truth·독립 Design QA |
+| `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-002 완료; Audio·Info 35상태와 전체 82상태 기능·복구 계약 완결 실행 승인 대기 |
+| `T-20260813-005` | P1 | Home 로컬 기준 고정·Figma 정확 동기화 | Design Lead Agent | `proposed`, T-003 후 보존 ref 확정·Product Owner 대표 Light 승인 필요 |
+| `T-20260813-006` | P1 | Library 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-005 후 대표 Light 승인 → 5상태 Light/Dark 확장 |
+| `T-20260813-007` | P1 | Cooking Log 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-006 후 대표 Light 승인 → 14상태 Light/Dark 확장 |
+| `T-20260813-008` | P1 | AI Review 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-007 후 대표 Light 승인 → 12상태 Light/Dark 확장 |
+| `T-20260813-009` | P1 | Recipe Detail 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-008 후 대표 Light 승인 → 7상태 Light/Dark 확장 |
+| `T-20260813-010` | P1 | Audio Guide 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-009 후 대표 Light 승인 → 24상태 Light/Dark 확장 |
+| `T-20260813-011` | P1 | App Info 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-010 후 대표 Light 승인 → 11상태 Light/Dark 확장 |
+| `T-20260813-004` | P1 | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `scoped`, T-011 이후 시각 충실도·82상태·Light/Dark·handoff·Source of Truth 독립 QA |
 | `T-20260812-004` | P0 | 비공개 Figma 원천 전환 기반 Task 흐름·의존성 재정렬 | - | `done`, Product QA `PASS_WITH_RISK`·Completion Review 수용; T-003 Design Lead scope 선행 조건 해제 |
 | `T-20260811-003` | P1 | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | `done`, Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | P1 | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | `done`, 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
@@ -341,3 +348,4 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-13 | Design QA가 T-20260813-002 DQA-002-001 AX3 Cooking Log LOG-10 일치와 DQA-002-002 100개 action 집계·44pt·76개 frame 무회귀를 독립 재검증해 `verification_passed`로 Completion Role에 인계 |
 | 2026-08-13 | Design Lead가 T-20260813-002 Design QA PASS와 후속 iOS 리스크를 수용하고 Product Owner 완료·병합 승인에 따라 `completion_review -> done` 확정; 시각 완성도 보강은 별도 하위 Task로 분리 |
 | 2026-08-13 | Design QA가 T-20260813-002의 38개 상태·76개 frame·44pt·보안 경계 통과를 확인했으나 AX3 Cooking Log frame 내용 불일치와 action 집계 정합성 결함으로 `rework_requested`로 Design Lead에 인계 |
+| 2026-08-14 | Design Lead가 T-20260812-003 완료 게이트에 Home 정확 동기화와 Library·Log·Review·Detail·Audio·Info 화면별 집중 리터치 T-20260813-005~011을 `proposed`로 추가하고 T-003→T-005~011→T-004 직렬 순서로 재정렬 |

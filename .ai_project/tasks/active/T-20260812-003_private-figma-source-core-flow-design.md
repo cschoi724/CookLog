@@ -25,6 +25,13 @@ ownership:
     - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
     - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
     - ".ai_project/tasks/active/T-20260813-004_figma-integrated-handoff-design-qa.md"
+    - ".ai_project/tasks/active/T-20260813-005_figma-home-local-baseline-parity-retouch.md"
+    - ".ai_project/tasks/active/T-20260813-006_figma-library-focused-visual-retouch.md"
+    - ".ai_project/tasks/active/T-20260813-007_figma-cooking-log-focused-visual-retouch.md"
+    - ".ai_project/tasks/active/T-20260813-008_figma-ai-review-focused-visual-retouch.md"
+    - ".ai_project/tasks/active/T-20260813-009_figma-recipe-detail-focused-visual-retouch.md"
+    - ".ai_project/tasks/active/T-20260813-010_figma-audio-guide-focused-visual-retouch.md"
+    - ".ai_project/tasks/active/T-20260813-011_figma-app-info-focused-visual-retouch.md"
     - ".ai_project/task_board.md"
     - ".ai_project/teams/design/task_board.md"
     - ".ai_project/source_of_truth.md"
@@ -45,11 +52,25 @@ depends_on:
   - T-20260813-001
   - T-20260813-002
   - T-20260813-003
+  - T-20260813-005
+  - T-20260813-006
+  - T-20260813-007
+  - T-20260813-008
+  - T-20260813-009
+  - T-20260813-010
+  - T-20260813-011
   - T-20260813-004
 child_tasks:
   - T-20260813-001
   - T-20260813-002
   - T-20260813-003
+  - T-20260813-005
+  - T-20260813-006
+  - T-20260813-007
+  - T-20260813-008
+  - T-20260813-009
+  - T-20260813-010
+  - T-20260813-011
   - T-20260813-004
 blocks:
   - T-20260805-008
@@ -60,7 +81,25 @@ allowed_paths:
   - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
   - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
   - ".ai_project/tasks/active/T-20260813-004_figma-integrated-handoff-design-qa.md"
+  - ".ai_project/tasks/active/T-20260813-005_figma-home-local-baseline-parity-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-006_figma-library-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-007_figma-cooking-log-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-008_figma-ai-review-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-009_figma-recipe-detail-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-010_figma-audio-guide-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-011_figma-app-info-focused-visual-retouch.md"
   - ".ai_project/tasks/active/T-20260812-004_rebaseline-private-figma-delivery-flow.md"
+  - ".ai_project/tasks/active/T-20260813-001_figma-foundations-home-visual-baseline.md"
+  - ".ai_project/tasks/active/T-20260813-002_figma-core-record-recipe-flow.md"
+  - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
+  - ".ai_project/tasks/active/T-20260813-004_figma-integrated-handoff-design-qa.md"
+  - ".ai_project/tasks/active/T-20260813-005_figma-home-local-baseline-parity-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-006_figma-library-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-007_figma-cooking-log-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-008_figma-ai-review-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-009_figma-recipe-detail-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-010_figma-audio-guide-focused-visual-retouch.md"
+  - ".ai_project/tasks/active/T-20260813-011_figma-app-info-focused-visual-retouch.md"
   - ".ai_project/tasks/active/T-20260805-008_ios-accessibility-visual-regression.md"
   - ".ai_project/tasks/active/T-20260812-001_ios-implementation-visual-design-qa.md"
   - ".ai_project/tasks/active/T-20260728-003_apply-figma-uiux-to-ios.md"
@@ -90,23 +129,23 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-12
-updated_at: 2026-08-13
+updated_at: 2026-08-14
 report_to: ".ai_project/reports/T-20260812-003_private-figma-source-core-flow-design-report.md"
 qa_to: ".ai_project/qa/T-20260812-003_private-figma-source-core-flow-design-qa.md"
 status_ref: origin/develop
-status_ref_sha: bcbd3aa6bd5d307da03238aabd5c0ebcd811d583
+status_ref_sha: 0d871680a2258fb812fad9251eaa433a8489186a
 worktree_path: "/private/tmp/cooklog-t20260812-003-scope"
 worktree_role: Lead Role
 base_ref: origin/develop
-base_sha: bcbd3aa6bd5d307da03238aabd5c0ebcd811d583
+base_sha: 0d871680a2258fb812fad9251eaa433a8489186a
 branch:
   name: task/T-20260812-003-scope
   base: develop
 pr:
   url:
   status:
-blocker: 하위 T-20260813-001~004 scope의 Product Lead Agent 제품 계약 ownership review와 Product Owner의 비공개 Figma 실행 승인이 필요하다.
-next_decision: Product Lead ownership review에서 Home 첫 승인만 Light로 한정하고 전체 82개 상태·접근성·완료 QA는 Light/Dark를 유지하는지 확인한 뒤 Product Owner가 UI/UX Design Agent 실행을 승인한다.
+blocker: T-20260813-003 실행 승인, 화면별 집중 시각 보강 T-20260813-005~011의 개별 scope·실행 승인과 완료, T-20260813-004 통합 QA가 필요하다.
+next_decision: T-20260813-003을 먼저 승인·완료한 뒤 T-20260813-005의 Home 정확 기준 ref를 확정하고 화면별 직렬 실행을 승인한다.
 ---
 
 # CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축
@@ -158,9 +197,9 @@ Product Owner가 지정한 비공개 Draft Figma 파일을 팝 키치 레시피 
 
 1. 비공개 접근·외부 의존성 금지·민감정보 비기록 원칙이 Figma 작업과 QA 체크에 적용되고, 저장소에는 URL·파일 키·조직 식별자가 남지 않는다.
 2. Figma 파일은 CookLog 전용 로컬 Foundations, Components, Styles와 화면·상태 페이지 구조를 갖고 외부 팀 Library에 의존하지 않는다.
-3. `Home / Content / 390×844 / Light`는 선택 시안의 정보 위계·구성 비율·여백·타이포·CTA·카드·AI 도우미를 고충실도로 재현하고, Product Owner가 `Home Visual Baseline v1`로 승인한다.
-4. 승인된 Home baseline의 시각 언어로 `390×844pt Light/Dark` 핵심 흐름 7개 화면군과 82개 상태·상호작용·복구 계약을 추적 가능하게 완성한다.
-5. Product Owner가 전체 핵심 흐름 완성본의 시각 방향을 승인하고, Design QA가 Light/Dark 기준 흐름·82개 상태·대비·44pt·색 외 상태 단서·읽기 순서·Accessibility 3 대표 위험 frame·handoff·비공개 운영 정합성을 독립 판정한다. 375×667 전체 화면 QA는 판정 대상이 아니다.
+3. `Home / Content / 390×844 / Light`는 Product Owner가 지정하는 보존된 로컬 Home 기준 ref와 geometry·spacing·typography·copy·color·component hierarchy가 측정 가능하게 일치하며 Product Owner가 최종 승인한다.
+4. 나머지 6개 화면군은 82개 기능·상태 계약을 보존하면서 화면별로 대표 Light 방향을 먼저 승인받고, 흰 캔버스·토마토 레드 CTA·버터 옐로·코발트 블루·제한된 스티커/낙서·큰 타이포·짧은 카피의 팝 키치·힙 컨셉으로 독립 재구성한다. Home 레이아웃 복제와 기존 Prototype 단순 재색칠은 허용하지 않는다.
+5. 화면별 승인 결과를 전체 `390×844pt Light/Dark` 상태에 확장하고, Design QA가 흐름·82개 상태·대비·44pt·색 외 상태 단서·읽기 순서·Accessibility 3 대표 위험 frame·시각 충실도·handoff·비공개 운영 정합성을 독립 판정한다. 375×667 전체 화면 QA는 판정 대상이 아니다.
 6. Figma 기준 구현 동기화는 핵심 흐름 전체의 승인·QA 통과 후에만 하나의 후속 구현 범위로 제안된다. 그 전 로컬/Git UI는 Legacy/Baseline으로 유지된다.
 7. 원천 전환 후 저장소의 Source of Truth·handoff·manifest는 Figma 우선과 Legacy 처리 원칙을 서로 모순 없이 설명한다. 단, 실제 Figma URL·파일 키는 포함하지 않는다.
 
@@ -168,9 +207,10 @@ Product Owner가 지정한 비공개 Draft Figma 파일을 팝 키치 레시피 
 
 1. `T-20260813-001`: 비공개 접근·MCP 경계를 확인하고 CookLog Foundations·Components와 Home 9개 상태를 만든다. `Home / Content / 390×844 / Light`는 Product Owner의 `Home Visual Baseline v1` 승인을 받아야 한다.
 2. `T-20260813-002`: 승인 Home baseline을 Light/Dark에 적용하고 Library 5개·Cooking Log 14개·AI Review 12개·Recipe Detail 7개 상태와 기록→저장→재사용 흐름을 완성한다.
-3. `T-20260813-003`: Audio Guide 24개·App Info 11개 상태와 전체 `States & Flows`를 Light/Dark로 완성하고 82개 상태 추적성을 닫는다. Product Owner가 전체 Light/Dark 핵심 흐름을 시각 승인한다.
-4. `T-20260813-004`: UI/UX Design Agent가 manifest·handoff·Source of Truth 변경안과 Light/Dark QA 증거를 준비하고, Design QA Agent가 82개 상태·접근성·비공개 운영·handoff를 독립 검증한다.
-5. 하위 4개가 모두 `done`이면 Design Lead가 상위 T-20260812-003 Completion Review에서 Figma baseline을 고정하고 T-20260805-008 인계 조건을 해제한다.
+3. `T-20260813-003`: Audio Guide 24개·App Info 11개 상태와 전체 `States & Flows`를 Light/Dark로 완성해 82개 기능·상태 추적성을 닫는다.
+4. `T-20260813-005~011`: Home의 보존된 로컬 기준 정확 동기화 후 Library, Cooking Log, AI Review, Recipe Detail, Audio Guide, App Info를 한 화면군씩 직렬 리터치하고 화면별 Product Owner 시각 승인을 받는다.
+5. `T-20260813-004`: UI/UX Design Agent가 manifest·handoff·Source of Truth 변경안과 Light/Dark QA 증거를 준비하고, Design QA Agent가 82개 상태·접근성·시각 충실도·비공개 운영·handoff를 독립 검증한다.
+6. 모든 하위 Task가 `done`이면 Design Lead가 상위 T-20260812-003 Completion Review에서 Figma baseline을 고정하고 T-20260805-008 인계 조건을 해제한다.
 
 ## Fidelity and Handoff Contract
 
@@ -188,7 +228,8 @@ Product Owner가 지정한 비공개 Draft Figma 파일을 팝 키치 레시피 
 - Design QA Agent는 외부 공유 여부와 설정 식별자를 수집하지 않고, 민감정보 비기록·외부 의존성 미사용·화면 상태·handoff 완결성만 독립 검토한다.
 - Product Lead Agent는 실행 승인 전에 Home 첫 승인만 Light로 한정되고 전체 화면군·82개 상태·접근성·Design QA의 Light/Dark 계약이 유지되는지 ownership review한다.
 - T-20260805-008, T-20260812-001 및 iOS UI 동기화는 Figma baseline 고정 전까지 시작하지 않는다. Backend 독립 Task는 기존 흐름을 유지한다.
-- 같은 Figma 파일·Variables·Components를 공유하므로 T-20260813-001→002→003→004를 직렬 실행한다. 여러 UI/UX Agent가 같은 파일을 동시에 수정하는 병렬 실행은 허용하지 않는다.
+- 같은 Figma 파일·Variables·Components를 공유하므로 T-20260813-001→002→003→005→006→007→008→009→010→011→004를 직렬 실행한다. 여러 UI/UX Agent가 같은 파일을 동시에 수정하는 병렬 실행은 허용하지 않는다.
+- T-20260811-008 로컬 WIP는 자동으로 공식 Source of Truth가 되지 않는다. T-20260813-005 실행 승인 전 Design Lead가 Home 관련 변경만 식별 가능한 commit/ref로 보존하고 Product Owner가 정확 비교 대상을 지정해야 한다.
 - T-20260812-004, T-20260805-008, T-20260812-001, T-20260728-003은 이번 재작업에서 T-003의 `active/` 이동에 따른 `source_of_truth` 경로만 갱신한다. 해당 Task의 status·priority·dependency·실행 scope는 변경하지 않는다.
 
 ## Ownership Review Request
@@ -204,7 +245,7 @@ Task T-20260812-003의 제품 계약 ownership review를 진행해줘.
 - 기준 상태 ref: origin/develop
 - 기준 상태 SHA: bcbd3aa
 - 선행 조건: T-20260812-004 `done`, 해소됨.
-- 다음에 해야 할 일: 하위 T-20260813-001~004의 Home 390×844 Light 선승인 → 7개 화면군·82개 상태 → 전체 시각 승인 → Design QA → baseline 고정 순서가 제품 계약과 충돌하지 않는지 검토해줘.
+- 다음에 해야 할 일: T-003의 82개 기능·상태 계약 완결 → T-005 Home 정확 동기화 → T-006~011 화면별 대표 Light 승인과 Light/Dark 확장 → T-004 통합 Design QA → baseline 고정 순서가 제품 계약과 충돌하지 않는지 검토해줘.
 - 기준 문서: CookLog PRD·User Flow·팝 키치 UX 계획·선택 시안·기존 Prototype·handoff 및 Product Owner가 지정한 비공개 Figma 파일.
 - 보안: Figma URL·파일 키·팀/조직 식별자·초대 대상·회사 자산 정보를 저장소나 보고서에 쓰지 마. 공개 공유·외부 Library·회사 자산 사용도 금지야.
 - 운영 전제: Product Owner가 지정한 Draft에서 작업하고 외부 MCP를 사용하며 추후 개인 팀으로 이전한다.
@@ -223,3 +264,4 @@ Task T-20260812-003의 제품 계약 ownership review를 진행해줘.
 | 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 실행 범위를 T-20260813-001~004 직렬 하위 Task로 분리하고 상위 Task를 baseline 완료 집계 단위로 갱신 |
 | 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 PR #161 재감사 결과를 반영해 Design Team 상태 소유자는 Design Lead로 유지하고 Product Lead는 ownership reviewer로 한정 |
 | 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 Product Lead 재검토의 Light/Dark·외부 운영 전제·active 경로 결함 3건을 재조율 |
+| 2026-08-14 | Design Lead Agent | - | - | T-002 완료 수용 후 기능·상태 완결 T-003은 유지하고 화면별 집중 시각 보강 T-005~011과 최종 T-004를 직렬 완료 게이트로 추가 |

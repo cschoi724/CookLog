@@ -37,7 +37,7 @@ ownership_review:
 depends_on:
   - T-20260813-002
 blocks:
-  - T-20260813-004
+  - T-20260813-005
 parallel_group: private-figma-source-transition
 allowed_paths:
   - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
@@ -62,21 +62,21 @@ locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-13
-updated_at: 2026-08-13
+updated_at: 2026-08-14
 report_to: ".ai_project/reports/T-20260813-003_figma-audio-info-82-state-completion-report.md"
 qa_to: ".ai_project/qa/T-20260813-003_figma-audio-info-82-state-completion-qa.md"
 status_ref: origin/develop
-status_ref_sha: bcbd3aa6bd5d307da03238aabd5c0ebcd811d583
+status_ref_sha: 0d871680a2258fb812fad9251eaa433a8489186a
 base_ref: origin/develop
-base_sha: bcbd3aa6bd5d307da03238aabd5c0ebcd811d583
+base_sha: 0d871680a2258fb812fad9251eaa433a8489186a
 branch:
   name: task/T-20260813-003-figma-audio-info-82-state-completion
   base: develop
 pr:
   url:
   status:
-blocker: T-20260813-002의 완료와 Design QA 통과가 필요하다.
-next_decision: 선행 Task 완료 뒤 Product Owner가 실행을 승인해 UI/UX Design Agent에게 인계한다.
+blocker:
+next_decision: Product Owner가 Audio Guide 24·App Info 11상태와 전체 82상태 기능 계약 완결 실행을 승인하면 UI/UX Design Agent에게 인계한다.
 ---
 
 # 비공개 Figma Audio·Info·82상태 완결
@@ -92,7 +92,7 @@ Audio Guide와 App Info의 35개 상태를 설계하고 앞선 47개 상태와 �
 - `04 States & Flows`에 Home 9 + 핵심 기록/레시피 38 + Audio/Info 35 = 82개 추적 매트릭스를 완성한다.
 - 82개 각 상태의 발생 조건, UI 단서, 다음 행동, 데이터 보존, 복구, 연결 frame/component를 검사 가능하게 한다.
 - 승인된 local Variables·Components와 Home baseline을 유지하고 필요한 상태 variant만 확장한다.
-- Product Owner가 7개 화면군 전체의 `390×844pt Light/Dark` 시각 방향을 승인한다.
+- 후속 화면별 집중 리터치가 안전하게 진행되도록 7개 화면군의 기능·상태·복구 계약 기준선을 고정한다.
 - 일반 텍스트 대비, 44pt, 색 외 상태 단서, 읽기 순서와 AX3 대표 위험 frame을 확인한다.
 
 ## Out of Scope
@@ -100,22 +100,22 @@ Audio Guide와 App Info의 35개 상태를 설계하고 앞선 47개 상태와 �
 - Home과 앞선 38개 상태의 근거 없는 재설계
 - 375×667 전체 화면 명세
 - iOS, Backend, `design/prototype/` 수정과 자동 생성 코드 적용
-- manifest·handoff·Source of Truth 확정과 통합 Design QA
+- 화면별 최종 시각 승인, manifest·handoff·Source of Truth 확정과 통합 Design QA
 
 ## Acceptance Criteria
 
 1. Audio Guide 24개와 App Info 11개, 합계 35개 상태가 추적 가능하다.
 2. 7개 화면군·82개 상태가 중복·누락 없이 상태 키, 발생 조건, 다음 행동, 데이터 보존·복구, 연결 대상을 가진다.
 3. 오디오·권한·오프라인·서비스 장애 흐름이 PRD/User Flow와 충돌하지 않으며 비시각적 상태 단서가 있다.
-4. 모든 화면이 승인 Home baseline과 같은 local Variables·Components·시각 언어를 사용한다.
-5. Product Owner가 전체 390×844 Light/Dark 핵심 흐름의 시각 방향을 승인하고 그 사실이 민감 식별자 없이 보고서에 기록된다.
-6. Light/Dark 기준 대비·44pt·읽기 순서·AX3 대표 위험 frame과 Figma 비공개 운영이 Design QA에서 PASS한다.
+4. 모든 화면이 승인된 local Variables·Components를 사용하고 후속 리터치가 상태 계약을 잃지 않도록 추적 가능하다.
+5. Light/Dark 기준 대비·44pt·읽기 순서·AX3 대표 위험 frame과 Figma 비공개 운영이 Design QA에서 PASS한다.
+6. 최종 시각 완성도와 Product Owner 화면별 승인 게이트는 T-20260813-005~011에서 별도로 진행하며, 이 Task의 기능·상태 기준선을 재개방하지 않는다.
 
 ## Coordination Notes
 
 - T-20260813-002가 `done`이 되기 전 실행하지 않는다.
 - 82개 기능·상태는 Light/Dark 모두에서 같은 routing·데이터·복구 계약을 유지한다.
-- Product Owner 전체 시각 승인 또는 Design QA 전에는 T-20260813-004를 실행하지 않는다.
+- Design QA 통과와 완료 확정 전에는 T-20260813-005를 실행하지 않는다.
 - iOS·Prototype은 여전히 Legacy/Baseline이며 이 Task에서 동기화하지 않는다.
 
 ## Handoff
@@ -127,9 +127,10 @@ Audio Guide와 App Info의 35개 상태를 설계하고 앞선 47개 상태와 �
 T-20260813-002가 완료되고 Product Owner가 이 Task를 승인한 뒤 T-20260813-003을 실행해줘.
 
 - 범위: Audio Guide 24·App Info 11상태와 전체 82상태 추적 매트릭스
-- 승인 게이트: Product Owner의 7개 화면군 전체 390×844 Light/Dark 시각 승인
+- 완료 게이트: 82개 기능·상태·복구 계약과 Light/Dark 접근성 기준선의 Design QA PASS
 - 금지: iOS·Prototype 수정, 외부 Library 사용, Figma 식별자 저장
 - 완료 후: 보고서를 작성하고 verification_ready로 Design QA Agent에게 인계해.
+- 주의: 최종 시각 리터치는 T-20260813-005~011에서 화면별 Product Owner 승인과 함께 별도로 진행해.
 ```
 
 ## Activity
@@ -137,3 +138,4 @@ T-20260813-002가 완료되고 Product Owner가 이 Task를 승인한 뒤 T-2026
 | 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
 |---|---|---|---|---|
 | 2026-08-13 | Design Lead Agent |  | scoped | Audio·Info 35상태와 7개 화면군·82상태 완결 및 전체 Light/Dark 시각 승인 Task 등록 |
+| 2026-08-14 | Design Lead Agent | - | - | T-002 완료 후 기능·상태·복구 계약 완결에 집중하고 최종 화면별 시각 승인은 T-005~011로 분리 |
