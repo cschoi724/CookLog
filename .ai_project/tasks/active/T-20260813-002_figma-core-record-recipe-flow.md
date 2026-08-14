@@ -77,7 +77,7 @@ branch:
   base: develop
 pr:
   url: https://github.com/cschoi724/CookLog/pull/164
-  status: ready_to_merge
+  status: merged
 blocker:
 next_decision: 완료. 후속 T-20260813-003과 화면별 집중 시각 보강 Task는 별도 승인·검증 절차로 진행한다.
 ---
@@ -144,7 +144,7 @@ next_decision: 완료. 후속 T-20260813-003과 화면별 집중 시각 보강 T
 
 - Product Owner의 완료 리뷰·병합 승인을 반영해 `completion_review`를 거쳐 `done`으로 확정한다.
 - T-20260813-003의 선행 의존성은 해제한다. 다만 상위 T-20260812-003 완료는 후속 화면별 집중 시각 보강과 최종 통합 Design QA까지 통과해야 한다.
-- PR #164는 checks 확인 후 `develop`에 squash merge한다.
+- PR #164는 checks 통과 후 `develop`에 squash merge됐으며 canonical merge SHA는 `0d871680a2258fb812fad9251eaa433a8489186a`다.
 
 ## Handoff
 
@@ -188,3 +188,4 @@ Task T-20260813-002의 완료 확정 여부를 검토해줘.
 | 2026-08-13 | Design QA Agent | verification_in_progress | verification_passed | DQA-002-001 AX3 LOG-10 일치와 DQA-002-002 100개 action 집계·44pt·38개 상태/76개 frame 무회귀를 독립 확인해 PASS로 Completion Role에 인계 |
 | 2026-08-13 | Design Lead Agent | verification_passed | completion_review | 독립 Design QA PASS와 후속 iOS 구현·QA 잔여 리스크를 수용하고 기능·상태·접근성 디자인 계약 완료 판정 |
 | 2026-08-13 | Product Owner | completion_review | done | T-20260813-002 완료 리뷰와 PR #164 병합 승인; 시각 완성도 보강은 별도 하위 Task로 분리 |
+| 2026-08-13 | Design Lead Agent | done | done | PR #164 squash merge SHA `0d871680a2258fb812fad9251eaa433a8489186a`와 canonical 완료 상태 확인 |

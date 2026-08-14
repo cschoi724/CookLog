@@ -68,7 +68,7 @@ Team별 요약:
 | `T-20260812-002` | P1 | 팝 키치 레시피 클럽 UX 구조·핵심 기능 재기획 | - | `done`, Product QA `PASS_WITH_RISK`·Product Lead 완료 수용; 375×667 Legacy 충돌은 T-20260812-004로 인계 |
 | `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, T-003 기능·상태 완결 → T-005~011 화면별 시각 보강 → T-004 통합 QA 직렬 완료 필요 |
 | `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #163 병합 승인; T-002 dependency 해제 |
-| `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #164 병합 승인; T-003 dependency 해제 |
+| `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | - | `done`, 독립 Design QA PASS·PR #164 squash merge `0d87168`; T-003 dependency 해제 |
 | `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `scoped`, T-002 완료; Audio·Info 35상태와 전체 82상태 기능·복구 계약 완결 실행 승인 대기 |
 | `T-20260813-005` | P1 | Home 로컬 기준 고정·Figma 정확 동기화 | Design Lead Agent | `proposed`, T-003 후 보존 ref 확정·Product Owner 대표 Light 승인 필요 |
 | `T-20260813-006` | P1 | Library 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-005 후 대표 Light 승인 → 5상태 Light/Dark 확장 |
