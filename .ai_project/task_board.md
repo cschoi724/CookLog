@@ -16,7 +16,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 |---|---:|
 | `proposed` | 24 |
 | `scoped` | 1 |
-| `approved` | 9 |
+| `approved` | 8 |
 | `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
@@ -24,21 +24,21 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 | `completion_review` | 0 |
 | `rework_requested` | 0 |
 | `blocked` | 1 |
-| `done` | 46 |
+| `done` | 47 |
 | `cancelled` | 1 |
 
 기존 Task에 기록된 `ready_for_qa`, `qa_in_progress`, `qa_passed` 상태 이력은 변경하지 않습니다. 신규 Task부터 vNext 상태를 사용합니다.
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. T-20260813-001과 T-20260813-002는 `done`이며, Product Owner가 T-20260813-003의 Audio·Info 35상태·전체 82상태 기능 계약 실행과 Design QA 독립 검증을 승인했습니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
+Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. T-20260813-001~003은 독립 Design QA와 완료 리뷰를 거쳐 `done`이며, 다음 Design 순서는 T-20260813-005 Home 기준 ref scope와 별도 실행 승인입니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
 
 Team별 요약:
 
 | Team | Active | In Verification | Blocked | Board |
 |---|---:|---:|---:|---|
 | Product | 2 | 1 | 0 | `.ai_project/teams/product/task_board.md` |
-| Design | 10 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
+| Design | 9 | 0 | 0 | `.ai_project/teams/design/task_board.md` |
 | Core Development | 13 | 0 | 1 | `.ai_project/teams/development/task_board.md` |
 | Quality | 1 | 0 | 0 | `.ai_project/teams/quality/task_board.md` |
 | AI Ops | 0 | 0 | 0 | `T-20260730-006`, `T-20260731-002` `done` |
@@ -69,7 +69,7 @@ Team별 요약:
 | `T-20260812-003` | P1 | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent | `scoped`, T-003 기능·상태 완결 → T-005~011 화면별 시각 보강 → T-004 통합 QA 직렬 완료 필요 |
 | `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #163 병합 승인; T-002 dependency 해제 |
 | `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | - | `done`, 독립 Design QA PASS·PR #164 squash merge `0d87168`; T-003 dependency 해제 |
-| `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | UI/UX Design Agent | `approved`, Product Owner 실행 승인·Design QA 독립 검증 조건; lock 획득 후 실행 인계 |
+| `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #168 병합 승인; T-005 dependency 해제 |
 | `T-20260813-005` | P1 | Home 로컬 기준 고정·Figma 정확 동기화 | Design Lead Agent | `proposed`, T-003 후 보존 ref 확정·Product Owner 대표 Light 승인 필요 |
 | `T-20260813-006` | P1 | Library 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-005 후 대표 Light 승인 → 5상태 Light/Dark 확장 |
 | `T-20260813-007` | P1 | Cooking Log 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-006 후 대표 Light 승인 → 14상태 Light/Dark 확장 |
@@ -350,3 +350,5 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-13 | Design QA가 T-20260813-002의 38개 상태·76개 frame·44pt·보안 경계 통과를 확인했으나 AX3 Cooking Log frame 내용 불일치와 action 집계 정합성 결함으로 `rework_requested`로 Design Lead에 인계 |
 | 2026-08-14 | Design Lead가 T-20260812-003 완료 게이트에 Home 정확 동기화와 Library·Log·Review·Detail·Audio·Info 화면별 집중 리터치 T-20260813-005~011을 `proposed`로 추가하고 T-003→T-005~011→T-004 직렬 순서로 재정렬 |
 | 2026-08-14 | Product Owner가 T-20260813-003 Audio·Info 35상태·전체 82상태 기능·복구 계약 완결을 승인하고 UI/UX Design Agent 실행·Design QA 독립 검증으로 인계 |
+| 2026-08-14 | Design QA가 T-20260813-003 Audio·Info 35상태 Light/Dark 70개 frame·AX3 2개·82상태 매트릭스·170개 action 44pt·보안 경계를 독립 검증해 `verification_passed`로 Completion Role에 인계 |
+| 2026-08-14 | Design Lead가 T-20260813-003 QA PASS와 잔여 리스크를 수용하고 Product Owner 완료·PR #168 병합 승인에 따라 `completion_review -> done` 확정; T-005 별도 scope·승인으로 인계 |
