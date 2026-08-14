@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-003
 title: 비공개 Figma Audio·Info·82상태 완결
-status: scoped
+status: approved
 type: feature
 priority: P1
 priority_reason: 오디오·권한·오프라인·서비스 상태를 포함해야 82개 제품 상태와 핵심 흐름이 구현 기준으로 완결된다.
@@ -10,13 +10,15 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent: UI/UX Design Agent
+target_role: Execution Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
-  - design_scoping
-  - design_dependency_management
+  - ux_flow
+  - ui_design
+  - prototyping
+  - design_handoff
 ownership:
   paths:
     - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
@@ -56,7 +58,7 @@ source_of_truth:
   - design/COOKLOG_MVP_UIUX_V1_HANDOFF.md
   - "Product Owner가 지정한 비공개 Draft Figma 파일 (URL·파일 키·조직 식별자는 저장소에 기록하지 않음)"
 created_by: Design Lead Agent
-approved_by:
+approved_by: Product Owner (2026-08-14, Audio Guide 24·App Info 11상태와 전체 82상태 기능·복구 계약 완결 실행 승인; UI/UX Design Agent 실행·Design QA 독립 검증 조건)
 locked_by:
 locked_at:
 lock_session:
@@ -66,9 +68,9 @@ updated_at: 2026-08-14
 report_to: ".ai_project/reports/T-20260813-003_figma-audio-info-82-state-completion-report.md"
 qa_to: ".ai_project/qa/T-20260813-003_figma-audio-info-82-state-completion-qa.md"
 status_ref: origin/develop
-status_ref_sha: 0d871680a2258fb812fad9251eaa433a8489186a
+status_ref_sha: e7f1bf4686f02cd77cdf083c3995c5ce73478396
 base_ref: origin/develop
-base_sha: 0d871680a2258fb812fad9251eaa433a8489186a
+base_sha: e7f1bf4686f02cd77cdf083c3995c5ce73478396
 branch:
   name: task/T-20260813-003-figma-audio-info-82-state-completion
   base: develop
@@ -76,7 +78,7 @@ pr:
   url:
   status:
 blocker:
-next_decision: Product Owner가 Audio Guide 24·App Info 11상태와 전체 82상태 기능 계약 완결 실행을 승인하면 UI/UX Design Agent에게 인계한다.
+next_decision: UI/UX Design Agent가 canonical 승인 상태를 확인하고 전용 task branch에서 lock을 획득해 실행한다.
 ---
 
 # 비공개 Figma Audio·Info·82상태 완결
@@ -124,13 +126,21 @@ Audio Guide와 App Info의 35개 상태를 설계하고 앞선 47개 상태와 �
 다음 Agent에게 전달할 말:
 
 너는 UI/UX Design Agent / Execution Role이야.
-T-20260813-002가 완료되고 Product Owner가 이 Task를 승인한 뒤 T-20260813-003을 실행해줘.
+Task T-20260813-003은 승인된 실행 Task야.
 
-- 범위: Audio Guide 24·App Info 11상태와 전체 82상태 추적 매트릭스
-- 완료 게이트: 82개 기능·상태·복구 계약과 Light/Dark 접근성 기준선의 Design QA PASS
-- 금지: iOS·Prototype 수정, 외부 Library 사용, Figma 식별자 저장
-- 완료 후: 보고서를 작성하고 verification_ready로 Design QA Agent에게 인계해.
-- 주의: 최종 시각 리터치는 T-20260813-005~011에서 화면별 Product Owner 승인과 함께 별도로 진행해.
+- 현재 상태: approved
+- 기준 상태 ref: origin/develop
+- 기준 상태 SHA: e7f1bf4686f02cd77cdf083c3995c5ce73478396
+- 다음에 해야 할 일: 최신 canonical 승인 상태와 빈 lock을 확인하고 전용 task branch에서 lock을 획득한 뒤 Audio Guide 24개·App Info 11개 상태와 전체 82개 상태 추적 매트릭스를 완결해.
+- 기준 문서: 상위 T-20260812-003, 완료 T-20260813-001·002, CookLog PRD v2, User Flow, Pop Kitsch UX Plan, 기존 Prototype·handoff, Product Owner 지정 비공개 Draft Figma 파일.
+- 허용 경로: Product Owner 지정 비공개 Draft Figma 파일, 이 Task·실행 보고서·QA 문서·공용/Design 보드의 allowed_paths만 사용해.
+- 참고 산출물: .ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md, .ai_project/reports/T-20260813-003_figma-audio-info-82-state-completion-report.md
+- 변경/검토 대상: Audio Guide 24상태, App Info 11상태, Home 9 + 기록·레시피 38 + Audio·Info 35 = 전체 82상태의 Light/Dark 기능·상태·복구 계약과 추적성.
+- 남은 리스크: 최종 화면별 시각 충실도와 Product Owner 시각 승인은 T-20260813-005~011에서 별도로 수행해. 이 Task에서 기능·상태 기준선을 이유 없이 재설계하지 마.
+- 차단/결정 필요: 새 기능·routing·데이터 계약 또는 외부 자산이 필요하면 임의 확정하지 말고 Design Lead에게 재조율을 요청해.
+- 보안: Figma URL·파일 키·조직·초대 대상 식별자를 저장소·Task·보고서에 기록하지 말고 공개 공유·외부 Library·회사 자산을 사용하지 마.
+- 완료 시: 자체 검증과 실행 보고서를 작성하고 status를 verification_ready, target_agent를 Design QA Agent, target_role을 Verification Role로 전환해 독립 검증을 인계해.
+- 금지: iOS·Backend·design/prototype/ 수정, manifest·handoff·Source of Truth 확정, T-20260813-005~011 선행 실행.
 ```
 
 ## Activity
@@ -139,3 +149,4 @@ T-20260813-002가 완료되고 Product Owner가 이 Task를 승인한 뒤 T-2026
 |---|---|---|---|---|
 | 2026-08-13 | Design Lead Agent |  | scoped | Audio·Info 35상태와 7개 화면군·82상태 완결 및 전체 Light/Dark 시각 승인 Task 등록 |
 | 2026-08-14 | Design Lead Agent | - | - | T-002 완료 후 기능·상태·복구 계약 완결에 집중하고 최종 화면별 시각 승인은 T-005~011로 분리 |
+| 2026-08-14 | Product Owner | scoped | approved | Audio Guide 24·App Info 11상태와 전체 82상태 기능·복구 계약 완결을 승인하고 UI/UX Design Agent 실행·Design QA 독립 검증 조건으로 인계 |

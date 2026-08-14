@@ -144,8 +144,8 @@ branch:
 pr:
   url:
   status:
-blocker: T-20260813-003 실행 승인, 화면별 집중 시각 보강 T-20260813-005~011의 개별 scope·실행 승인과 완료, T-20260813-004 통합 QA가 필요하다.
-next_decision: T-20260813-003을 먼저 승인·완료한 뒤 T-20260813-005의 Home 정확 기준 ref를 확정하고 화면별 직렬 실행을 승인한다.
+blocker: 승인된 T-20260813-003의 실행·독립 검증·완료, 화면별 집중 시각 보강 T-20260813-005~011의 개별 scope·실행 승인과 완료, T-20260813-004 통합 QA가 필요하다.
+next_decision: UI/UX Design Agent가 T-20260813-003을 실행하고 Design QA 독립 검증과 완료 수용을 마친 뒤 T-20260813-005의 Home 정확 기준 ref를 확정한다.
 ---
 
 # CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축
@@ -265,3 +265,4 @@ Task T-20260812-003의 제품 계약 ownership review를 진행해줘.
 | 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 PR #161 재감사 결과를 반영해 Design Team 상태 소유자는 Design Lead로 유지하고 Product Lead는 ownership reviewer로 한정 |
 | 2026-08-13 | Design Lead Agent | - | - | 상태 변경 없이 Product Lead 재검토의 Light/Dark·외부 운영 전제·active 경로 결함 3건을 재조율 |
 | 2026-08-14 | Design Lead Agent | - | - | T-002 완료 수용 후 기능·상태 완결 T-003은 유지하고 화면별 집중 시각 보강 T-005~011과 최종 T-004를 직렬 완료 게이트로 추가 |
+| 2026-08-14 | Product Owner | - | - | T-20260813-003의 Audio·Info 35상태·전체 82상태 기능 계약 실행과 Design QA 독립 검증을 승인 |
