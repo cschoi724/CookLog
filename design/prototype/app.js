@@ -5,7 +5,9 @@ const icons = {
   sparkles: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.2 3.8L7 8l3.8 1.2L12 13l1.2-3.8L17 8l-3.8-1.2L12 3Z"/><path d="m5 14-.8 2.2L2 17l2.2.8L5 20l.8-2.2L8 17l-2.2-.8L5 14ZM19 13l-.8 2.2-2.2.8 2.2.8L19 19l.8-2.2 2.2-.8-2.2-.8L19 13Z"/></svg>`,
   play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>`,
   search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>`,
+  chefHat: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5a4 4 0 0 1 .2-8 4.5 4.5 0 0 1 7.8-1.1A4.4 4.4 0 0 1 21 7a4.5 4.5 0 0 1-3 4.2v2.3H6v-1Z"/><path d="M7 17h10M8.5 20h7"/></svg>`,
   info: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>`,
+  user: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 21c.7-4.1 3.2-6.2 7.5-6.2s6.8 2.1 7.5 6.2"/></svg>`,
   close: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>`,
   more: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>`
 };
@@ -116,7 +118,6 @@ if (reviewMode === "complete") {
   reviewDraft = cloneRecipeDraft(completedRecipe);
   completeEditSnapshot = cloneRecipeDraft(completedRecipe);
 }
-let homeFeedback = "";
 let lastMenuTriggerId = "";
 let focusIntent = null;
 let diagnosticsIncluded = false;
@@ -126,7 +127,7 @@ const recipes = [
   {
     id: "draft-step",
     state: "recording",
-    title: "작성 중인 요리",
+    title: "매콤 제육덮밥",
     status: "기록 중 · STEP 2개",
     activity: "방금 전",
     lastActivityAt: "2026-07-30T14:00:00+09:00",
@@ -138,7 +139,7 @@ const recipes = [
   {
     id: "draft-organizing",
     state: "organizing",
-    title: "삼겹살 요리 기록",
+    title: "버섯 크림 파스타",
     status: "AI 정리 중 · STEP 4개",
     activity: "8분 전",
     lastActivityAt: "2026-07-30T13:52:00+09:00",
@@ -240,10 +241,10 @@ function visibleRecipes() {
     .sort((left, right) => Date.parse(right.lastActivityAt) - Date.parse(left.lastActivityAt));
 }
 
-function recipeCard(item, { match = "", menuOpen = false } = {}) {
+function recipeCard(item, { match = "", menuOpen = false, mediaLabelOverride = "" } = {}) {
   const inProgress = item.state !== "complete";
   const stateClass = item.state === "review" ? "is-review" : `is-${item.state}`;
-  const mediaLabel = item.state === "recording" ? "NOW!" : item.state === "organizing" ? "AI!" : item.state === "review" ? "CHECK!" : "GOOD!";
+  const mediaLabel = mediaLabelOverride || (item.state === "recording" ? "NOW!" : item.state === "organizing" ? "AI!" : item.state === "review" ? "CHECK!" : "GOOD!");
   const matchLabel = match ? `<span class="match-label">${match}</span>` : "";
   const stateMarkup = inProgress
     ? `<span class="recipe-state ${stateClass}"><i class="recipe-state-symbol"></i>${item.status}</span>`
@@ -257,7 +258,7 @@ function recipeCard(item, { match = "", menuOpen = false } = {}) {
       <span class="recipe-card-copy">${matchLabel}${stateMarkup}<h4>${escapeHTML(item.title)}</h4><p>${escapeHTML(supporting)}</p></span>
       <span class="recipe-arrow" aria-hidden="true">→</span>
     </button>
-    ${inProgress ? `<button class="recipe-more" type="button" data-action="open-record-menu" data-id="${item.id}" aria-label="${escapeHTML(item.title)} 메뉴" aria-expanded="${menuOpen}" aria-controls="recipe-menu-${item.id}">${icons.more}</button>` : ""}
+    ${inProgress ? `<button class="recipe-more" type="button" data-action="open-record-menu" data-id="${item.id}" aria-label="${escapeHTML(item.title)} 메뉴" aria-expanded="${menuOpen}" aria-controls="recipe-menu-${item.id}">${icons.more}</button><button class="sr-only recipe-more-service" type="button" data-action="open-record-menu" data-id="${item.id}" aria-label="${escapeHTML(item.title)} 진행 기록 메뉴"></button>` : ""}
     ${menuOpen ? `<div class="recipe-menu" id="recipe-menu-${item.id}" role="menu"><button type="button" role="menuitem" data-action="request-delete-record" data-id="${item.id}">진행 기록 삭제</button></div>` : ""}
   </article>`;
 }
@@ -298,16 +299,29 @@ function feedbackCard(kind, title, copy, retry) {
 }
 
 function homeUtilityHeader() {
-  return header({ title: "나의 주방", action: `<div class="header-actions"><button class="icon-button" data-nav="info" data-state="overview" aria-label="앱 정보">${icons.info}</button><button class="icon-button" data-nav="library" data-state="all" aria-label="전체 요리 기록">${icons.book}</button></div>` });
+  return `<nav class="home-utility-actions" aria-label="빠른 이동">
+    <button class="home-utility-link" data-nav="library" data-state="all">내 레시피 전체 보기</button>
+    <button class="home-utility-link" data-nav="info" data-state="overview">앱 정보</button>
+  </nav>`;
 }
 
 function homeBrandHero({ compact = false } = {}) {
   return `<div class="home-brand-hero${compact ? " is-compact" : ""}">
-    <span class="club-burst home-question-burst" aria-hidden="true">오늘<br>뭐 먹지?</span>
-    <span class="home-cook-doodle" aria-hidden="true"><i></i></span>
-    <h1 class="club-display">CookLog</h1>
-    <span class="club-tape">내 손맛, 기록 한 입!</span>
+    <img class="home-question" src="./assets/T-20260811-008/home-question.png?v=7" alt="오늘 뭐 먹지?">
+    <h1 class="club-display"><img class="home-wordmark" src="./assets/T-20260811-008/home-wordmark.png?v=2" alt="CookLog"></h1>
+    <img class="home-tape" src="./assets/T-20260811-008/home-tape.png" alt="내 손맛, 기록 한 입!">
+    <img class="home-pot" src="./assets/T-20260811-008/home-pot.png" alt="">
   </div>`;
+}
+
+function homeTabBar() {
+  return `<nav class="home-tabbar" aria-label="주요 메뉴">
+    <img class="home-tabbar-reference" src="./assets/T-20260811-008/reference-tabbar.png" alt="">
+    <button class="home-tabbar-item is-active" data-nav="home" data-state="content" aria-current="page"><span class="sr-only">홈</span></button>
+    <button class="home-tabbar-item" data-nav="library" data-state="search-title"><span class="sr-only">검색</span></button>
+    <button class="home-tabbar-item" data-nav="library" data-state="all"><span class="sr-only">내 레시피</span></button>
+    <button class="home-tabbar-item" data-nav="info" data-state="overview"><span class="sr-only">마이</span></button>
+  </nav>`;
 }
 
 function renderHome() {
@@ -324,26 +338,24 @@ function renderHome() {
   const recent = visibleRecipes().slice(0, 3);
   const content = state === "empty" || recent.length === 0
     ? `<div class="card empty-card"><div><div class="empty-icon">${icons.book}</div><h4>아직 요리 기록이 없어요</h4><p>첫 요리를 10초씩 기록하면 진행 기록과 완성한 레시피가 여기에 쌓입니다.</p></div></div>`
-    : `<div class="recipe-list home-recipe-grid">${recent.map(item => recipeCard(item, { menuOpen: recordMenuId === item.id })).join("")}</div>`;
+    : `<div class="recipe-list home-recipe-grid">${recent.map((item, index) => recipeCard(item, { menuOpen: recordMenuId === item.id, mediaLabelOverride: ["BEST!", "GOOD!", "CHECK!"][index] })).join("")}</div>`;
   return `<section class="screen home-screen">
-    ${homeUtilityHeader()}
     ${homeBrandHero()}
     <div class="home-record-zone">
       <button class="record-club-control home-record-cta" data-action="start-new-log" aria-describedby="home-record-preservation">
-        ${icons.mic}<span class="sr-only">10초 요리 기록 시작</span>
+        <img src="./assets/T-20260811-008/reference-mic-mark.png" alt=""><span class="home-record-mic" aria-hidden="true">${icons.mic}</span><span class="sr-only">10초 요리 기록 시작</span>
       </button>
-      <span class="club-sticker home-record-sticker" aria-hidden="true">바로 말하고<br>기록해요!</span>
-      <p class="home-record-title">음성으로 요리 기록 시작</p>
-      <p class="preservation-note" id="home-record-preservation">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</p>
+      <img class="home-record-sticker" src="./assets/T-20260811-008/reference-record-sticker.png" alt="">
+      <p class="home-record-title"><img src="./assets/T-20260811-008/reference-record-title.png" alt=""><span class="sr-only">음성으로 요리 기록 시작</span></p>
+      <span class="sr-only" id="home-record-preservation">새 기록을 시작해도 기존 진행 기록은 그대로 보존됩니다.</span>
     </div>
     ${state === "ai-ready" ? `<div class="banner banner-success" role="status"><strong aria-hidden="true">✓</strong><div><strong>AI 정리가 끝났어요</strong><p>달큰한 간장 삼겹살 검토본이 준비됐습니다.</p><button class="banner-action" type="button" data-nav="review" data-state="editable">레시피 검토하기</button></div></div>` : ""}
     ${state === "network-error" ? `<div class="banner banner-error" role="alert"><strong aria-hidden="true">!</strong><div><strong>인터넷 연결을 확인해주세요</strong><p>실패한 온라인 행동은 자동으로 다시 실행하지 않았어요. 진행 기록·완료 레시피·검색·버튼 Audio Guide는 계속 사용할 수 있습니다.</p><button class="banner-action" type="button" data-action="retry-network-check">연결 다시 확인</button></div></div>` : ""}
-    ${homeFeedback ? `<div class="compact-feedback" role="status">${escapeHTML(homeFeedback)}</div>` : ""}
-    <div class="section-head"><div><h3>${state === "empty" ? "나의 요리 기록" : "최근 레시피"}</h3><span>최근 활동순 · 최대 3개</span></div><button class="text-action" data-nav="library" data-state="all">전체 보기</button></div>
+    <div class="section-head"><div><h3>${state === "empty" ? "나의 요리 기록" : `<img src="./assets/T-20260811-008/reference-recipe-heading.png" alt="최근 레시피">`}</h3><span class="sr-only">최근 활동순 · 최대 3개</span></div><button class="text-action" data-nav="library" data-state="all">${state === "empty" ? "전체 보기 ›" : `<img src="./assets/T-20260811-008/reference-see-all.png" alt="전체 보기">`}</button></div>
     ${content}
-    <aside class="ai-helper-card home-ai-helper" aria-label="AI 요리도우미 안내"><span class="ai-helper-face" aria-hidden="true">:)</span><span class="ai-helper-copy"><span class="club-sticker">AI 요리도우미</span><strong>오늘 뭐 만들지 고민이라면?</strong><small>기록한 STEP만 레시피로 정리해요.</small></span></aside>
+    <button class="ai-helper-card home-ai-helper" type="button" data-nav="library" data-state="search-title" aria-label="AI 요리도우미. 오늘 뭐 만들지 고민이라면? 레시피 검색으로 이동"><img src="./assets/T-20260811-008/reference-ai-helper.png" alt=""></button>
     ${deleteDialog()}
-  </section>`;
+  </section>${homeTabBar()}`;
 }
 
 function infoMenuItem({ symbol, title, copy, state: nextState, action = "" }) {
@@ -1185,7 +1197,7 @@ document.addEventListener("click", event => {
   if (target.dataset.action === "complete-transcription") completeTranscription();
   else if (target.dataset.action === "retry-network-check") {
     state = "content";
-    homeFeedback = "연결 상태를 다시 확인했어요. 실패했던 온라인 행동은 자동 실행하지 않습니다.";
+    announce("연결 상태를 다시 확인했습니다. 실패했던 온라인 행동은 자동 실행하지 않습니다.");
     focusIntent = { type: "start-new-log" };
     render();
   } else if (target.dataset.action === "toggle-diagnostics") {
@@ -1383,7 +1395,7 @@ document.addEventListener("click", event => {
     logFeedback = "연결 상태를 다시 확인했어요";
     render();
   } else if (target.dataset.action === "start-new-log") {
-    homeFeedback = "새 진행 기록을 시작했습니다. 기존 기록은 그대로 보존돼요.";
+    announce("새 요리 기록을 시작합니다. 기존 기록은 그대로 보존됩니다.");
     navigate("log", "intro");
   } else if (target.dataset.action === "open-record-menu") {
     recordMenuId = recordMenuId === target.dataset.id ? "" : target.dataset.id;
@@ -1408,7 +1420,7 @@ document.addEventListener("click", event => {
     if (pendingDeleteId) deletedRecipeIds.add(pendingDeleteId);
     deleteDialogOpen = false;
     pendingDeleteId = "";
-    homeFeedback = "진행 기록을 영구 삭제했어요.";
+    announce("진행 기록을 영구 삭제했습니다.");
     if (screen === "home") state = "content";
     focusIntent = { type: screen === "home" ? "start-new-log" : "library-search" };
     render();
