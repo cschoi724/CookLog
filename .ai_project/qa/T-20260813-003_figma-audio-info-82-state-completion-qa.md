@@ -1,7 +1,7 @@
 # T-20260813-003 독립 Design QA — 비공개 Figma Audio·Info·82상태 완결
 
-검증일: 2026-08-14  
-검증 Role: Design QA Agent / Verification Role  
+검증일: 2026-08-14
+검증 Role: Design QA Agent / Verification Role
 판정: **PASS**
 
 ## 독립 검증 결과

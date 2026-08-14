@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-003
 title: 비공개 Figma Audio·Info·82상태 완결
-status: verification_passed
+status: done
 type: feature
 priority: P1
 priority_reason: 오디오·권한·오프라인·서비스 상태를 포함해야 82개 제품 상태와 핵심 흐름이 구현 기준으로 완결된다.
@@ -10,8 +10,8 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Completion Role
+target_agent:
+target_role:
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
@@ -75,10 +75,10 @@ branch:
   name: task/T-20260813-003-figma-audio-info-82-state-completion
   base: develop
 pr:
-  url:
-  status:
+  url: https://github.com/cschoi724/CookLog/pull/168
+  status: merged
 blocker:
-next_decision: Design Lead Agent가 Design QA PASS와 iOS·시각 승인 잔여 리스크를 Completion Review에서 수용할지 판단한다.
+next_decision: 완료. Design Lead Agent가 T-20260813-005의 보존 Home ref·정확 비교 기준을 scope한 뒤 별도 실행 승인을 요청한다.
 ---
 
 # 비공개 Figma Audio·Info·82상태 완결
@@ -120,26 +120,37 @@ Audio Guide와 App Info의 35개 상태를 설계하고 앞선 47개 상태와 �
 - Design QA 통과와 완료 확정 전에는 T-20260813-005를 실행하지 않는다.
 - iOS·Prototype은 여전히 Legacy/Baseline이며 이 Task에서 동기화하지 않는다.
 
+## Completion Review
+
+- Design QA의 최종 `PASS`를 수용한다. Audio Guide 24개·App Info 11개 상태의 Light/Dark 70개 frame, AX3 2개, 전체 82개 상태 추적 매트릭스와 action 170개 최소 44pt가 독립 검증됐다.
+- 상태 발생 조건·다음 행동·데이터 보존·복구, local Light/Dark mode, 읽기 순서와 비공개 운영 경계가 제품 계약과 일치한다.
+- 실제 iOS hit area·VoiceOver·Dynamic Type·시스템 권한창·오디오 인터럽션 런타임은 후속 iOS 구현·QA 범위로 수용한다.
+- 화면별 최종 시각 충실도와 Product Owner 시각 승인은 T-20260813-005~011에서 진행하므로 이 Task의 기능·상태 기준선을 재개방하지 않는다.
+- QA 보고서 trailing whitespace 2건을 정정하고 `git diff --check`를 통과시킨다.
+
+## Completion Decision
+
+- Product Owner의 완료 리뷰·PR 생성·병합 승인을 반영해 `completion_review`를 거쳐 `done`으로 확정한다.
+- T-20260813-005의 선행 의존성은 PR #168이 canonical `origin/develop`에 병합된 뒤 해제한다.
+- T-20260813-005는 아직 `proposed`이며 Home 기준 ref 고정과 별도 Product Owner 실행 승인 전에는 실행하지 않는다.
+
 ## Handoff
 
 ```text
 다음 Agent에게 전달할 말:
 
-너는 Design Lead Agent / Completion Role이야.
-Task T-20260813-003의 완료 확정 여부를 검토해줘.
+너는 Design Lead Agent / Lead Role이야.
+T-20260813-003이 canonical에서 `done`인지 확인한 뒤 T-20260813-005를 scope해줘.
 
-- 현재 상태: verification_passed
+- 현재 상태: T-20260813-003 `done`, T-20260813-005 `proposed`
 - 기준 상태 ref: origin/develop
-- 기준 상태 SHA: 06ad84260c20bd568d8765c640200430c0eedb0b
-- 다음에 해야 할 일: Design QA PASS와 잔여 iOS·화면별 시각 승인 리스크를 검토하고, completion_review 수용 및 T-20260813-005 의존성 해제 가능 여부를 판단해.
-- 기준 문서: 상위 T-20260812-003, 완료 T-20260813-001·002, CookLog PRD v2, User Flow, Pop Kitsch UX Plan, 기존 Prototype·handoff, Product Owner 지정 비공개 Draft Figma 파일.
-- 허용 경로: Product Owner 지정 비공개 Draft Figma 파일, 이 Task·실행 보고서·QA 문서·공용/Design 보드의 allowed_paths만 사용해.
-- 참고 산출물: .ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md, .ai_project/reports/T-20260813-003_figma-audio-info-82-state-completion-report.md
-- 검증 결과: Audio 24·Info 11 상태의 Light/Dark 70개 frame, AX3 2개, 82개 상태 매트릭스, 170개 action 최소 44pt, 계약·mode·보안 비기록을 독립 검증해 PASS.
-- 남은 리스크: 실제 iOS hit area·VoiceOver·Dynamic Type과 권한·오디오 인터럽션 런타임은 iOS 구현·QA 범위다. 화면별 최종 시각 충실도와 Product Owner 승인은 T-20260813-005~011에서 진행한다.
-- 차단/결정 필요: QA PASS 수용·completion_review 전환 및 T-20260813-005 의존성 해제 여부를 판단해.
-- 보안: Figma URL·파일 키·조직·초대 대상 식별자를 저장소·Task·보고서에 기록하지 말고 공개 공유·외부 Library·회사 자산을 사용하지 마.
-- 주의: Product Owner 승인 전 PR 병합이나 공개 설정 변경을 하지 마.
+- 기준 상태 SHA: PR #168 병합 후 최신 canonical SHA를 직접 확인해.
+- 다음에 해야 할 일: 보존된 T-20260811-008 Home 관련 WIP를 식별 가능한 commit/ref로 고정하고, `390×844 Light` 정확 비교 대상·최대 2pt geometry 허용 오차·동일 font/copy/color/asset 기준을 T-20260813-005에 확정해.
+- 기준 문서: T-20260812-003, 완료 T-20260813-001~003, T-20260813-005, Pop Kitsch UX Plan, 선택 컨셉, 보존 Home ref.
+- 허용 경로: T-20260813-005의 allowed_paths와 Product Owner 지정 비공개 Draft Figma 파일.
+- 남은 리스크: 실제 iOS 접근성·런타임은 후속 iOS QA, 화면별 시각 완성도는 T-20260813-005~011 범위다.
+- 차단/결정 필요: 정확 비교할 Home commit/ref를 확정하고 Product Owner에게 T-20260813-005 실행 승인을 별도로 요청해.
+- 주의: T-20260813-005는 아직 proposed이므로 자동 실행하거나 Figma 공유 범위를 변경하지 마.
 ```
 
 ## Activity
@@ -153,3 +164,5 @@ Task T-20260813-003의 완료 확정 여부를 검토해줘.
 | 2026-08-14 | UI/UX Design Agent | in_progress | verification_ready | Audio 24·Info 11 상태의 Light/Dark 70개 frame·AX3 2개와 82개 상태 추적 매트릭스를 완성하고 자체 검증 후 Design QA에 인계 |
 | 2026-08-14 | Design QA Agent | verification_ready | verification_in_progress | 비공개 Draft·82상태 매트릭스·제품 계약을 기준으로 Audio·Info 독립 검증 시작 |
 | 2026-08-14 | Design QA Agent | verification_in_progress | verification_passed | Audio 24·Info 11 상태의 Light/Dark 70개 frame·AX3 2개·82상태 매트릭스·170개 action 44pt·보안 경계를 독립 확인해 PASS로 Completion Role에 인계 |
+| 2026-08-14 | Design Lead Agent | verification_passed | completion_review | 독립 Design QA PASS와 후속 iOS·화면별 시각 승인 잔여 리스크를 수용하고 QA 보고서 포맷 정정을 확인 |
+| 2026-08-14 | Product Owner | completion_review | done | T-20260813-003 완료 리뷰와 PR #168 생성·병합 승인; T-005는 별도 scope·실행 승인 유지 |
