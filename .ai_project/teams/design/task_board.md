@@ -21,11 +21,18 @@
 | `T-20260811-003` | `done` | 팝 키치 레시피 클럽 Foundation·공통 컴포넌트 원본 정비 | - | T-002 scope 완료 확인 | Design QA PASS·Design Lead 완료 리뷰·Product Owner 병합 승인 |
 | `T-20260811-004` | `done` | 팝 키치 레시피 클럽 Foundation·Home·Library 원본 시안 재작업 | - | T-003 완료 이력·원본 concept | 독립 Design QA PASS·Design Lead 완료 수용·PR #138 병합 승인; T-008 실행 기준 충족 |
 | `T-20260811-008` | `cancelled` | 팝 키치 레시피 클럽 Visual Fidelity 리터치 및 시각 승인 | - | - | 기존 결과·미병합 WIP를 Legacy로 보존하고 T-20260812-003으로 흡수 |
-| `T-20260812-003` | `scoped` | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent / Lead Role | `T-20260812-004`, T-20260813-001~004 | 상위 완료 집계·Product Lead ownership review 완료·T-20260813-001 승인·하위 Task 직렬 실행 |
+| `T-20260812-003` | `scoped` | CookLog 비공개 Figma 원천 전환과 팝 키치 핵심 흐름 UI/UX 원본 구축 | Design Lead Agent / Lead Role | `T-20260812-004`, T-20260813-001~011 | T-003 기능·상태 완결 → T-005~011 화면별 시각 보강 → T-004 통합 QA 직렬 완료 필요 |
 | `T-20260813-001` | `done` | 비공개 Figma Foundations·Home Visual Baseline | - | `T-20260812-004` | 독립 Design QA PASS·완료 리뷰 수용·PR #163 병합 승인; T-002 dependency 해제 |
 | `T-20260813-002` | `done` | 비공개 Figma 기록·레시피 핵심 흐름 | - | `T-20260813-001` 완료 | 독립 Design QA PASS·완료 리뷰 수용·PR #164 병합 승인; T-003 dependency 해제 |
-| `T-20260813-003` | `scoped` | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `T-20260813-002` | Audio Guide·App Info 35상태·전체 Light/Dark 시각 승인 |
-| `T-20260813-004` | `scoped` | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `T-20260813-003` | Light/Dark manifest·handoff·Source of Truth·독립 Design QA |
+| `T-20260813-003` | `scoped` | 비공개 Figma Audio·Info·82상태 완결 | Design Lead Agent → UI/UX Design Agent | `T-20260813-002` 완료 | Audio·Info 35상태와 전체 82상태 기능·복구 계약 완결 실행 승인 대기 |
+| `T-20260813-005` | `proposed` | Home 로컬 기준 고정·Figma 정확 동기화 | Design Lead Agent / Lead Role | `T-20260813-003` | 보존 ref 확정·대표 Light 정확 일치 승인 후 9상태 Light/Dark 확장 |
+| `T-20260813-006` | `proposed` | Library 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-005` | 대표 Light 승인 후 5상태 Light/Dark 확장 |
+| `T-20260813-007` | `proposed` | Cooking Log 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-006` | 대표 Light 승인 후 14상태 Light/Dark 확장 |
+| `T-20260813-008` | `proposed` | AI Review 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-007` | 대표 Light 승인 후 12상태 Light/Dark 확장 |
+| `T-20260813-009` | `proposed` | Recipe Detail 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-008` | 대표 Light 승인 후 7상태 Light/Dark 확장 |
+| `T-20260813-010` | `proposed` | Audio Guide 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-009` | 대표 Light 승인 후 24상태 Light/Dark 확장 |
+| `T-20260813-011` | `proposed` | App Info 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-010` | 대표 Light 승인 후 11상태 Light/Dark 확장 |
+| `T-20260813-004` | `scoped` | 비공개 Figma 통합 Handoff·Design QA | Design Lead Agent → UI/UX Design Agent → Design QA Agent | `T-20260813-011` | 시각 충실도·82상태·Light/Dark·handoff·Source of Truth 독립 Design QA |
 | `T-20260811-005` | `cancelled` | 팝 키치 레시피 클럽 Log·Review·Detail 원본 시안 적용 | - | - | 화면·상태 계약을 T-20260812-003으로 흡수 |
 | `T-20260811-006` | `cancelled` | 팝 키치 레시피 클럽 Player·Info·오류 원본 시안 적용 | - | - | 화면·상태 계약을 T-20260812-003으로 흡수 |
 | `T-20260811-007` | `cancelled` | 팝 키치 레시피 클럽 Prototype 통합 Design QA | - | - | 독립 QA 책임을 T-20260812-003 Figma Design QA로 흡수 |
