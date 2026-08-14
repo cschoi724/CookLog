@@ -14,9 +14,9 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 | 상태 | 개수 |
 |---|---:|
-| `proposed` | 24 |
+| `proposed` | 23 |
 | `scoped` | 1 |
-| `approved` | 8 |
+| `approved` | 9 |
 | `in_progress` | 0 |
 | `verification_ready` | 0 |
 | `verification_in_progress` | 0 |
@@ -31,7 +31,7 @@ Task 실행 기준은 항상 개별 Task 파일입니다. 이 문서와 Task 파
 
 ## 3. Active Tasks
 
-Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. T-20260813-001~003은 독립 Design QA와 완료 리뷰를 거쳐 `done`이며, 다음 Design 순서는 T-20260813-005 Home 기준 ref scope와 별도 실행 승인입니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
+Product `T-20260731-001`, `T-20260804-001`, `T-20260812-002`, `T-20260812-004`는 검증과 완료 리뷰를 거쳐 `done`입니다. Design `T-20260729-002`와 하위 `T-20260729-008~014`, iOS 구현 인수 계약 `T-20260805-001`도 모두 `done`입니다. T-20260812-004는 비공개 Figma 원천 전환 기준의 Task 재정렬을 완료했고, 기존 T-20260811-002·005~008은 `cancelled` 후 Legacy/Baseline으로 보존해 T-20260812-003에 흡수했습니다. T-20260813-001~003은 독립 Design QA와 완료 리뷰를 거쳐 `done`이며, T-20260813-005는 Home 참조용 원격 ref `1348f05`를 기준으로 `approved`되어 UI/UX Design Agent 실행과 대표 Light 시각 승인 대기입니다. iOS T-20260805-008과 T-20260812-001은 고정 Figma baseline 이후 순차 재개합니다. Backend 독립 흐름과 CI 상태는 기존 기준을 유지합니다.
 
 Team별 요약:
 
@@ -70,7 +70,7 @@ Team별 요약:
 | `T-20260813-001` | P1 | 비공개 Figma Foundations·Home Visual Baseline | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #163 병합 승인; T-002 dependency 해제 |
 | `T-20260813-002` | P1 | 비공개 Figma 기록·레시피 핵심 흐름 | - | `done`, 독립 Design QA PASS·PR #164 squash merge `0d87168`; T-003 dependency 해제 |
 | `T-20260813-003` | P1 | 비공개 Figma Audio·Info·82상태 완결 | - | `done`, 독립 Design QA PASS·완료 리뷰 수용·PR #168 병합 승인; T-005 dependency 해제 |
-| `T-20260813-005` | P1 | Home 로컬 기준 고정·Figma 정확 동기화 | Design Lead Agent | `proposed`, T-003 후 보존 ref 확정·Product Owner 대표 Light 승인 필요 |
+| `T-20260813-005` | P1 | Home 로컬 기준 고정·Figma 정확 동기화 | UI/UX Design Agent | `approved`, Home ref `1348f05` 정확 동기화 후 Product Owner 대표 Light 시각 승인 필요 |
 | `T-20260813-006` | P1 | Library 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-005 후 대표 Light 승인 → 5상태 Light/Dark 확장 |
 | `T-20260813-007` | P1 | Cooking Log 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-006 후 대표 Light 승인 → 14상태 Light/Dark 확장 |
 | `T-20260813-008` | P1 | AI Review 화면 집중 팝 키치 시각 리터치 | Design Lead Agent | `proposed`, T-007 후 대표 Light 승인 → 12상태 Light/Dark 확장 |
@@ -349,6 +349,7 @@ CI `T-20260728-008` 하위 실행 후보:
 | 2026-08-13 | Design Lead가 T-20260813-002 Design QA PASS와 후속 iOS 리스크를 수용하고 Product Owner 완료·병합 승인에 따라 `completion_review -> done` 확정; 시각 완성도 보강은 별도 하위 Task로 분리 |
 | 2026-08-13 | Design QA가 T-20260813-002의 38개 상태·76개 frame·44pt·보안 경계 통과를 확인했으나 AX3 Cooking Log frame 내용 불일치와 action 집계 정합성 결함으로 `rework_requested`로 Design Lead에 인계 |
 | 2026-08-14 | Design Lead가 T-20260812-003 완료 게이트에 Home 정확 동기화와 Library·Log·Review·Detail·Audio·Info 화면별 집중 리터치 T-20260813-005~011을 `proposed`로 추가하고 T-003→T-005~011→T-004 직렬 순서로 재정렬 |
+| 2026-08-14 | T-008 Home prototype WIP만 참조용 원격 ref `1348f05`로 보존하고 Product Owner 승인에 따라 T-20260813-005를 `approved`로 UI/UX Design Agent에 인계 |
 | 2026-08-14 | Product Owner가 T-20260813-003 Audio·Info 35상태·전체 82상태 기능·복구 계약 완결을 승인하고 UI/UX Design Agent 실행·Design QA 독립 검증으로 인계 |
 | 2026-08-14 | Design QA가 T-20260813-003 Audio·Info 35상태 Light/Dark 70개 frame·AX3 2개·82상태 매트릭스·170개 action 44pt·보안 경계를 독립 검증해 `verification_passed`로 Completion Role에 인계 |
 | 2026-08-14 | Design Lead가 T-20260813-003 QA PASS와 잔여 리스크를 수용하고 Product Owner 완료·PR #168 병합 승인에 따라 `completion_review -> done` 확정; T-005 별도 scope·승인으로 인계 |

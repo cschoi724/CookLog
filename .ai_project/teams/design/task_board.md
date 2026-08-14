@@ -25,7 +25,7 @@
 | `T-20260813-001` | `done` | 비공개 Figma Foundations·Home Visual Baseline | - | `T-20260812-004` | 독립 Design QA PASS·완료 리뷰 수용·PR #163 병합 승인; T-002 dependency 해제 |
 | `T-20260813-002` | `done` | 비공개 Figma 기록·레시피 핵심 흐름 | - | `T-20260813-001` 완료 | 독립 Design QA PASS·PR #164 squash merge `0d87168`; T-003 dependency 해제 |
 | `T-20260813-003` | `done` | 비공개 Figma Audio·Info·82상태 완결 | - | `T-20260813-002` 완료 | 독립 Design QA PASS·완료 리뷰 수용·PR #168 병합 승인; T-005 dependency 해제 |
-| `T-20260813-005` | `proposed` | Home 로컬 기준 고정·Figma 정확 동기화 | Design Lead Agent / Lead Role | `T-20260813-003` | 보존 ref 확정·대표 Light 정확 일치 승인 후 9상태 Light/Dark 확장 |
+| `T-20260813-005` | `approved` | Home 로컬 기준 고정·Figma 정확 동기화 | UI/UX Design Agent / Execution Role | `T-20260813-003` 완료 | Home ref `1348f05` 정확 동기화 후 Product Owner 대표 Light 시각 승인 → 9상태 Light/Dark 확장 |
 | `T-20260813-006` | `proposed` | Library 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-005` | 대표 Light 승인 후 5상태 Light/Dark 확장 |
 | `T-20260813-007` | `proposed` | Cooking Log 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-006` | 대표 Light 승인 후 14상태 Light/Dark 확장 |
 | `T-20260813-008` | `proposed` | AI Review 화면 집중 팝 키치 시각 리터치 | Design Lead Agent / Lead Role | `T-20260813-007` | 대표 Light 승인 후 12상태 Light/Dark 확장 |
