@@ -2,7 +2,7 @@
 schema: aiops.task.v1
 id: T-20260813-005
 title: Home 로컬 기준 고정·Figma 정확 동기화
-status: proposed
+status: approved
 type: feature
 priority: P1
 priority_reason: Home은 새 해석이 아니라 Product Owner가 만족한 로컬 시안과 측정 가능한 수준으로 일치해야 이후 화면의 시각 기준이 안정된다.
@@ -10,14 +10,15 @@ org_unit: Experience Division
 team: Design Team
 team_lead: Design Lead Agent
 workflow: feature
-target_agent: Design Lead Agent
-target_role: Lead Role
+target_agent: UI/UX Design Agent
+target_role: Execution Role
 planned_execution_agent: UI/UX Design Agent
 planned_execution_role: Execution Role
 required_capabilities:
-  - design_scoping
-  - visual_fidelity
-  - figma_authoring
+  - ux_flow
+  - ui_design
+  - prototyping
+  - design_handoff
 ownership:
   paths:
     - ".ai_project/tasks/active/T-20260813-005_figma-home-local-baseline-parity-retouch.md"
@@ -51,30 +52,31 @@ source_of_truth:
   - ".ai_project/tasks/active/T-20260813-003_figma-audio-info-82-state-completion.md"
   - design/concepts/2026-08-11-home-options/a-pop-kitsch-recipe-club.png
   - design/prototype/
-  - "Product Owner가 실행 승인 전에 지정할 보존된 T-20260811-008 Home 기준 commit/ref"
+  - "T-20260811-008 Home 보존 기준: task/T-20260811-008-visual-fidelity-retouch@1348f05353bd2f0383dd0441545c0f4455759926 (design/prototype/ Home 참조용, develop 병합 금지)"
+  - "Home 비교 frame: design/prototype/index.html?screen=home&state=content, 390×844, Light"
   - "Product Owner가 지정한 비공개 Draft Figma 파일 (URL·파일 키·조직 식별자는 저장소에 기록하지 않음)"
 created_by: Design Lead Agent
-approved_by:
+approved_by: Product Owner (2026-08-14, 보존 Home 기준과의 정확 동기화·대표 Light 시각 승인 Gate·Design QA 독립 검증 조건으로 실행 승인)
 locked_by:
 locked_at:
 lock_session:
 lock_timeout_minutes: 240
 created_at: 2026-08-13
-updated_at: 2026-08-13
+updated_at: 2026-08-14
 report_to: ".ai_project/reports/T-20260813-005_figma-home-local-baseline-parity-retouch-report.md"
 qa_to: ".ai_project/qa/T-20260813-005_figma-home-local-baseline-parity-retouch-qa.md"
 status_ref: origin/develop
-status_ref_sha: 0d871680a2258fb812fad9251eaa433a8489186a
+status_ref_sha: ec91d25e6fb3e9e7535e6b6951185430a04c5b7c
 base_ref: origin/develop
-base_sha: 0d871680a2258fb812fad9251eaa433a8489186a
+base_sha: ec91d25e6fb3e9e7535e6b6951185430a04c5b7c
 branch:
   name: task/T-20260813-005-figma-home-local-baseline-parity-retouch
   base: develop
 pr:
   url:
   status:
-blocker: T-20260811-008 로컬 WIP의 Home 관련 변경을 식별 가능한 commit/ref로 보존하고 Product Owner가 정확 비교 기준을 지정해야 한다.
-next_decision: Design Lead가 보존 ref·기준 frame·비교 허용 오차를 scope에 고정한 뒤 Product Owner에게 실행 승인을 요청한다.
+blocker:
+next_decision: UI/UX Design Agent가 최신 canonical 승인·빈 lock을 확인하고 대표 Home Light를 기준 ref에 정확히 동기화한 뒤 Product Owner 시각 승인을 요청한다.
 ---
 
 # Home 로컬 기준 고정·Figma 정확 동기화
@@ -109,8 +111,32 @@ Product Owner가 만족한 로컬 Home 기준을 Figma Home에 임의 재해석 
 - Product Owner의 대표 Light 승인 전 다른 Home 상태나 T-006을 시작하지 않는다.
 - 완료 후 Design QA와 Completion Review를 거쳐 `done`일 때만 T-006을 연다.
 
+## Handoff
+
+```text
+다음 Agent에게 전달할 말:
+
+너는 UI/UX Design Agent / Execution Role이야.
+Task T-20260813-005를 실행해줘.
+
+- 현재 상태: approved
+- 기준 상태 ref: origin/develop
+- 기준 상태 SHA: ec91d25e6fb3e9e7535e6b6951185430a04c5b7c
+- Home 정확 비교 ref: task/T-20260811-008-visual-fidelity-retouch@1348f05353bd2f0383dd0441545c0f4455759926
+- 비교 화면: design/prototype/index.html?screen=home&state=content, 390×844, Light
+- 먼저 할 일: canonical의 approved·T-003 done·빈 lock을 확인하고 T-005 lock을 획득해.
+- 실행 순서: 보존 ref의 대표 Light를 동일 크기로 캡처·계측해 비공개 Figma Home에 반영하고, 나머지 8개 상태·Dark 확장 전 Product Owner에게 시각 승인을 요청해.
+- 정확도: 주요 bounding box 좌표·크기·간격 편차는 최대 2pt, font family·weight·size·line height·copy·color token·asset 비율·crop은 기준과 동일하게 맞춰.
+- 필수 보존: Home 9상태 Light/Dark, 대비, 44pt, 색 외 단서, 읽기 순서, AX3 대표 위험 계약.
+- 허용 범위: Product Owner가 지정한 비공개 Figma Draft와 T-005 task/report/qa·두 board만.
+- 금지: design/prototype/, iOS, Backend 수정; 참조용 T-008 브랜치의 develop 병합; Figma URL·파일 키·조직 식별자 기록; 공개 공유.
+- Product Owner가 대표 Light를 승인하면 나머지 Home 상태와 Dark를 확장하고, 자체 검증 후 verification_ready로 Design QA Agent에게 인계해.
+```
+
 ## Activity
 
 | 날짜 | Agent | 이전 상태 | 다음 상태 | 요약 |
 |---|---|---|---|---|
 | 2026-08-13 | Design Lead Agent |  | proposed | 로컬 Home 기준 ref 고정·Figma 정확 동기화·Product Owner 대표 화면 승인 Task 등록 |
+| 2026-08-14 | Design Lead Agent | proposed | scoped | T-003 `done`과 T-008 Home 참조용 원격 ref `1348f05`를 확인하고 390×844 Light·2pt·동일 타이포·자산 비교 계약을 고정 |
+| 2026-08-14 | Product Owner | scoped | approved | 보존 Home 기준 정확 동기화, 대표 Light 시각 승인 Gate, UI/UX Design Agent 실행·Design QA 독립 검증 조건으로 승인 |
